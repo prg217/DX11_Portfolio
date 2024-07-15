@@ -6,6 +6,8 @@
 #include "ImGui/imgui_impl_win32.h"
 #include <Engine/CDevice.h>
 
+#include "ParamUI.h"
+
 #include "Inspector.h"
 #include "Content.h"
 #include "Outliner.h"
@@ -109,6 +111,9 @@ void CEditorMgr::ImGuiProgress()
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
+
+    // ParamUI ID Reset
+    ParamUI::ResetID();
 
     // ImGui Tick
     ImGuiTick();

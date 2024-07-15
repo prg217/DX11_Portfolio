@@ -30,7 +30,7 @@ void CTestLevel::CreateTestLevel()
 	CLevel* pLevel = new CLevel;
 
 	// 레벨 지정
-	ChangeLevel(pLevel, LEVEL_STATE::PLAY);
+	ChangeLevel(pLevel, LEVEL_STATE::STOP);
 
 	pLevel->GetLayer(0)->SetName(L"Default");
 	pLevel->GetLayer(1)->SetName(L"Background");

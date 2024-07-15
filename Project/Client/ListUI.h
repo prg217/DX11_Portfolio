@@ -26,6 +26,7 @@ public:
     string GetSelectName() { return m_SelectedName ; }
     int GetSelectIdx() { return m_SelectedIdx; }
 
+    virtual void Activate() override;
     virtual void Deactivate() override;
 
 public:

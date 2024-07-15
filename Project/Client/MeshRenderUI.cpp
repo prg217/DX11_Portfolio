@@ -29,7 +29,10 @@ void MeshRenderUI::Update()
 	// 메쉬 정보
 	Ptr<CMesh> pMesh = pMeshRender->GetMesh();
 
-	string MeshName = string(pMesh->GetKey().begin(), pMesh->GetKey().end());
+	string MeshName;
+	if (pMesh.Get())
+		MeshName = string(pMesh->GetKey().begin(), pMesh->GetKey().end());
+
 	ImGui::Text("Mesh");
 	ImGui::SameLine(100);	
 	ImGui::SetNextItemWidth(150.f);
@@ -69,7 +72,10 @@ void MeshRenderUI::Update()
 	// 머티리얼 정보
 	Ptr<CMaterial> pMtrl = pMeshRender->GetMaterial();
 
-	string MtrlName = string(pMtrl->GetKey().begin(), pMtrl->GetKey().end());
+	string MtrlName;
+	if (pMtrl.Get())
+		MtrlName = string(pMtrl->GetKey().begin(), pMtrl->GetKey().end());
+
 	ImGui::Text("Material");
 	ImGui::SameLine(100);
 	ImGui::SetNextItemWidth(150.f);
@@ -111,8 +117,16 @@ void MeshRenderUI::Update()
 
 void MeshRenderUI::SelectMesh(DWORD_PTR _ListUI)
 {
+	CMeshRender* pMeshRender = GetTargetObject()->MeshRender();
+
 	ListUI* pListUI = (ListUI*)_ListUI;
 	string strName = pListUI->GetSelectName();
+
+	if (strName == "None")
+	{
+		pMeshRender->SetMesh(nullptr);
+		return;
+	}
 
 	wstring strAssetName = wstring(strName.begin(), strName.end());
 
@@ -120,14 +134,21 @@ void MeshRenderUI::SelectMesh(DWORD_PTR _ListUI)
 
 	assert(pMesh.Get());
 
-	CMeshRender* pMeshRender = GetTargetObject()->MeshRender();
 	pMeshRender->SetMesh(pMesh);
 }
 
 void MeshRenderUI::SelectMaterial(DWORD_PTR _ListUI)
 {
+	CMeshRender* pMeshRender = GetTargetObject()->MeshRender();
+
 	ListUI* pListUI = (ListUI*)_ListUI;
 	string strName = pListUI->GetSelectName();
+
+	if ("None" == strName)
+	{
+		pMeshRender->SetMaterial(nullptr);
+		return;
+	}
 
 	wstring strAssetName = wstring(strName.begin(), strName.end());
 
@@ -135,6 +156,5 @@ void MeshRenderUI::SelectMaterial(DWORD_PTR _ListUI)
 
 	assert(pMtrl.Get());
 
-	CMeshRender* pMeshRender = GetTargetObject()->MeshRender();
 	pMeshRender->SetMaterial(pMtrl);
 }
