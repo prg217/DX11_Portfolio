@@ -82,7 +82,7 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->AddComponent(new CMeshRender);
 	pPlayer->AddComponent(new CRigidBody);
 	pPlayer->AddComponent(new CCollider2D);
-	pPlayer->AddComponent(new CFlipBookComponent);
+	//pPlayer->AddComponent(new CFlipBookComponent);
 	pPlayer->AddComponent(new CPlayerScript);
 	pPlayer->Transform()->SetRelativePos(0.f, 0.f, 100.f);
 	pPlayer->Transform()->SetRelativeScale(200.f, 200.f, 1.f);
@@ -94,8 +94,8 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pPlayer->MeshRender()->SetMaterial(pMtrl);
 
-	pPlayer->FlipBookComponent()->AddFlipBook(5, CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Link_MoveDown"));
-	pPlayer->FlipBookComponent()->Play(5, 10, true);
+	//pPlayer->FlipBookComponent()->AddFlipBook(5, CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Link_MoveDown"));
+	//pPlayer->FlipBookComponent()->Play(5, 10, true);
 
 	//pPlayer->RigidBody()->UseGravity(true);
 

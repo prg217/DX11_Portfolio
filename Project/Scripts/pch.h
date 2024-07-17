@@ -20,4 +20,6 @@
 #include <Engine/CEngine.h>
 
 
+#include "CScriptMgr.h"
+
 #endif //PCH_H
