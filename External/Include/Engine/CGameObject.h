@@ -46,11 +46,12 @@ public:
     GET_COMPONENT(Transform, TRANSFORM);
     GET_COMPONENT(MeshRender, MESHRENDER);
     GET_COMPONENT(Camera, CAMERA);
-    GET_COMPONENT(RigidBody, RIGIDBODY);
     GET_COMPONENT(Collider2D, COLLIDER2D);
     GET_COMPONENT(FlipBookComponent, FLIPBOOKCOMPONENT);
     GET_COMPONENT(TileMap, TILEMAP);
     GET_COMPONENT(Light2D, LIGHT2D);
+    GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
+
 
 public:
     void Begin();
@@ -61,6 +62,7 @@ public:
 public:
     virtual CGameObject* Clone() { return new CGameObject(*this); }
     CGameObject();
+    CGameObject(const CGameObject& _Origin);
     ~CGameObject();
 
     friend class CLevel;

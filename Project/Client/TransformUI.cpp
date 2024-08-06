@@ -52,4 +52,5 @@ void TransformUI::Update()
 	{
 		pTrans->SetIndependentScale(IS);
 	}
+
 }

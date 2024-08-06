@@ -9,7 +9,7 @@
 #include <Engine/CAssetMgr.h>
 
 MaterialUI::MaterialUI()
-	: AssetUI(ASSET_TYPE::MATERIAL)
+	: AssetUI(ASSET_TYPE::MATERIAL)	
 {
 }
 
@@ -37,7 +37,7 @@ void MaterialUI::Update()
 		Name = string(pShader->GetKey().begin(), pShader->GetKey().end());
 
 	// 쉐이더 이름
-	ImGui::Text("Shader Name");
+	ImGui::Text("Shader");
 	ImGui::SameLine(100);
 	ImGui::InputText("##ShaderName", (char*)Name.c_str(), Name.length(), ImGuiInputTextFlags_ReadOnly);
 
@@ -53,6 +53,7 @@ void MaterialUI::Update()
 			if (ASSET_TYPE::GRAPHIC_SHADER == pAsset->GetAssetType())
 			{
 				pMtrl->SetShader((CGraphicShader*)pAsset.Get());
+				SaveMaterialToFile();
 			}
 		}
 
@@ -71,12 +72,13 @@ void MaterialUI::Update()
 		pListUI->SetActive(true);
 	}
 
+
 	ImGui::Text("");
 	ImGui::Text("");
 	ImGui::Text("Shader Parameter");
 
 	// Shader Parameter
-	ShaderParameter();
+	ShaderParameter();	
 }
 
 
@@ -90,7 +92,8 @@ void MaterialUI::ShaderParameter()
 
 	// Shader 가 요구하는 파라미터 목록을 가져온다.
 	const vector<tScalarParam>& vecScalarParam = pShader->GetScalarParam();
-	const vector<tTexParam>& vecTexParam = pShader->GetTexParam();
+	const vector<tTexParam>& vecTexParam = pShader->GetTexParam();	
+
 
 	// Scalar 파라미터 대응
 	for (size_t i = 0; i < vecScalarParam.size(); ++i)
@@ -102,26 +105,28 @@ void MaterialUI::ShaderParameter()
 		case INT_2:
 		case INT_3:
 		{
-			int data = *((int*)pMtrl->GetScalarParam(vecScalarParam[i].ParamType));
+			int data = *((int*)pMtrl->GetScalarParam(vecScalarParam[i].ParamType));			
 			if (ParamUI::DragInt(&data, 1, vecScalarParam[i].strDesc))
 			{
 				pMtrl->SetScalarParam(vecScalarParam[i].ParamType, data);
+				SaveMaterialToFile();
 			}
 		}
-
-		break;
+		
+			break;
 		case FLOAT_0:
 		case FLOAT_1:
 		case FLOAT_2:
 		case FLOAT_3:
 		{
-			float data = *((float*)pMtrl->GetScalarParam(vecScalarParam[i].ParamType));
+			float data = *((float*)pMtrl->GetScalarParam(vecScalarParam[i].ParamType));			
 			if (ParamUI::DragFloat(&data, 0.1f, vecScalarParam[i].strDesc))
 			{
 				pMtrl->SetScalarParam(vecScalarParam[i].ParamType, data);
+				SaveMaterialToFile();
 			}
 		}
-		break;
+			break;
 		case VEC2_0:
 		case VEC2_1:
 		case VEC2_2:
@@ -131,9 +136,10 @@ void MaterialUI::ShaderParameter()
 			if (ParamUI::DragVec2(&data, 0.1f, vecScalarParam[i].strDesc))
 			{
 				pMtrl->SetScalarParam(vecScalarParam[i].ParamType, data);
+				SaveMaterialToFile();
 			}
 		}
-		break;
+			break;
 		case VEC4_0:
 		case VEC4_1:
 		case VEC4_2:
@@ -143,31 +149,32 @@ void MaterialUI::ShaderParameter()
 			if (ParamUI::DragVec4(&data, 0.1f, vecScalarParam[i].strDesc))
 			{
 				pMtrl->SetScalarParam(vecScalarParam[i].ParamType, data);
+				SaveMaterialToFile();
 			}
 		}
-		break;
+			break;
 		case MAT_0:
 		case MAT_1:
 		case MAT_2:
 		case MAT_3:
 		{
 			Matrix data = *((Matrix*)pMtrl->GetScalarParam(vecScalarParam[i].ParamType));
-
+			SaveMaterialToFile();
 		}
-		break;
+			break;
 		}
 	}
 
 	// Texture 파라미터 대응
-
 	for (size_t i = 0; i < vecTexParam.size(); ++i)
 	{
-		Ptr<CTexture> pCurTex = pMtrl->GetTexParam(vecTexParam[i].ParamType);
+		Ptr<CTexture> pCurTex = pMtrl->GetTexParam(vecTexParam[i].ParamType);		
 
 		if (ParamUI::InputTexture(pCurTex, vecTexParam[i].strDesc, this, (DELEGATE_1)&MaterialUI::ChangeTexture))
 		{
 			pMtrl->SetTexParam(vecTexParam[i].ParamType, pCurTex);
 			m_SelectTexParam = vecTexParam[i].ParamType;
+			SaveMaterialToFile();
 		}
 	}
 }
@@ -176,13 +183,14 @@ void MaterialUI::ShaderParameter()
 void MaterialUI::SelectShader(DWORD_PTR _ListUI)
 {
 	Ptr<CMaterial> pMtrl = (CMaterial*)GetAsset().Get();
-
+	
 	ListUI* pListUI = (ListUI*)_ListUI;
 	string strName = pListUI->GetSelectName();
 
 	if ("None" == strName)
 	{
 		pMtrl->SetShader(nullptr);
+		SaveMaterialToFile();
 		return;
 	}
 
@@ -193,6 +201,20 @@ void MaterialUI::SelectShader(DWORD_PTR _ListUI)
 	assert(pShader.Get());
 
 	pMtrl->SetShader(pShader);
+	SaveMaterialToFile();
+}
+
+void MaterialUI::SaveMaterialToFile()
+{
+	Ptr<CMaterial> pMtrl = (CMaterial*)GetAsset().Get();
+
+	if (!pMtrl->IsEngineAsset())
+	{
+		if (FAILED(pMtrl->Save(pMtrl->GetRelativePath())))
+		{
+			int a = 0;
+		}
+	}
 }
 
 
@@ -208,6 +230,7 @@ void MaterialUI::ChangeTexture(DWORD_PTR Param)
 	if ("None" == strName)
 	{
 		pMtrl->SetTexParam(m_SelectTexParam, nullptr);
+		SaveMaterialToFile();
 		return;
 	}
 
@@ -218,4 +241,5 @@ void MaterialUI::ChangeTexture(DWORD_PTR Param)
 	assert(pMtrl.Get());
 
 	pMtrl->SetTexParam(m_SelectTexParam, pTex);
+	SaveMaterialToFile();
 }

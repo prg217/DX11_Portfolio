@@ -52,6 +52,7 @@ void CAssetMgr::CreateEngineMesh()
 
 	pMesh = new CMesh;
 	pMesh->Create(arrVtx, 4, arrIdx, 6);
+	pMesh->SetEngineAsset();
 	AddAsset(L"RectMesh", pMesh);
 
 
@@ -60,6 +61,7 @@ void CAssetMgr::CreateEngineMesh()
 
 	pMesh = new CMesh;
 	pMesh->Create(arrVtx, 4, arrIdx, 5);
+	pMesh->SetEngineAsset();
 	AddAsset(L"RectMesh_Debug", pMesh);
 
 
@@ -100,17 +102,19 @@ void CAssetMgr::CreateEngineMesh()
 
 	pMesh = new CMesh;
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
+	pMesh->SetEngineAsset();
 	AddAsset(L"CircleMesh", pMesh);
 
 	// CircleMesh_Debug
 	vecIdx.clear();
 	for (size_t i = 1; i < vecVtx.size(); ++i)
 	{
-		vecIdx.push_back(i);
+		vecIdx.push_back((UINT)i);
 	}
 
 	pMesh = new CMesh;
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
+	pMesh->SetEngineAsset();
 	AddAsset(L"CircleMesh_Debug", pMesh);
 }
 
@@ -118,8 +122,11 @@ void CAssetMgr::CreateEngineTexture()
 {
 	// PostProcess 용도 텍스쳐 생성
 	Vec2 Resolution = CDevice::GetInst()->GetResolution();
-	CreateTexture(L"PostProcessTex", (UINT)Resolution.x, (UINT)Resolution.y
-				, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
+	Ptr<CTexture> pPostProcessTex = CreateTexture(
+									L"PostProcessTex"
+									, (UINT)Resolution.x, (UINT)Resolution.y
+									, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
+	
 
 	// Noise Texture
 	Load<CTexture>(L"texture\\noise\\noise_01.png", L"texture\\noise\\noise_01.png");
@@ -129,7 +136,7 @@ void CAssetMgr::CreateEngineTexture()
 
 void CAssetMgr::CreateEngineSprite()
 {
-	wstring strContentPath = CPathMgr::GetInst()->GetContentPath();
+	//wstring strContentPath = CPathMgr::GetInst()->GetContentPath();
 
 	//Ptr<CSprite> pSprite = nullptr;
 
@@ -156,8 +163,8 @@ void CAssetMgr::CreateEngineSprite()
 	//AddAsset(L"Link_MoveDown", pFilpBook);
 	//pFilpBook->Save(strContentPath + L"Animation\\" + L"Link_MoveDown" + L".flip");
 
-	Ptr<CFlipBook> pFilpBook = new CFlipBook;
-	Load<CFlipBook>(L"Link_MoveDown", L"Animation\\Link_MoveDown.flip");
+	//Ptr<CFlipBook> pFilpBook = new CFlipBook;
+	//Load<CFlipBook>(L"Link_MoveDown", L"Animation\\Link_MoveDown.flip");
 }
 
 void CAssetMgr::CreateEngineGraphicShader()
@@ -174,7 +181,7 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
-
+	
 	pShader->AddTexParam(TEX_0, "OutputTexture");
 
 	AddAsset(L"Std2DShader", pShader);
@@ -225,6 +232,17 @@ void CAssetMgr::CreateEngineGraphicShader()
 	AddAsset(L"TileMapShader", pShader);
 
 
+	// ParticleShader
+	pShader = new CGraphicShader;
+	pShader->CreateVertexShader(L"shader\\particle.fx", "VS_Particle");
+	pShader->CreatePixelShader(L"shader\\particle.fx", "PS_Particle");
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ALPHABLEND);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_PARTICLE);
+	AddAsset(L"ParticleRenderShader", pShader);
+
+
 	// GrayFilterShader
 	pShader = new CGraphicShader;
 	pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_GrayFilter");
@@ -235,7 +253,7 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 	AddAsset(L"GrayFilterShader", pShader);
 
-	// GrayFilterShader
+	// DistortionShader
 	pShader = new CGraphicShader;
 	pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Distortion");
 	pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_Distortion");
@@ -250,33 +268,38 @@ void CAssetMgr::CreateEngineComputeShader()
 {
 }
 
-
 void CAssetMgr::CreateEngineMaterial()
 {
 	Ptr<CMaterial>	pMtrl = nullptr;
 
 	// Std2DMtrl
-	pMtrl = new CMaterial();
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DShader"));
 	AddAsset(L"Std2DMtrl", pMtrl);
 
 	// Std2DAlphaBlendMtrl
-	pMtrl = new CMaterial();
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DAlphaBlendShader"));
 	AddAsset(L"Std2DAlphaBlendMtrl", pMtrl);
 
 	// DebugShapeMtrl
-	pMtrl = new CMaterial();
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"DebugShapeShader"));
 	AddAsset(L"DebugShapeMtrl", pMtrl);
 
 	// TileMapMtrl
-	pMtrl = new CMaterial();
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"TileMapShader"));
 	AddAsset(L"TileMapMtrl", pMtrl);
 
+	// ParticleRenderMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicShader>(L"ParticleRenderShader"));
+	AddAsset(L"ParticleRenderMtrl", pMtrl);
+
+
 	// GrayFilterMtrl
-	pMtrl = new CMaterial();
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"GrayFilterShader"));
 	pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"PostProcessTex"));
 	pMtrl->SetTexParam(TEX_1, FindAsset<CTexture>(L"texture\\noise\\noise_01.png"));
@@ -285,7 +308,7 @@ void CAssetMgr::CreateEngineMaterial()
 	AddAsset(L"GrayFilterMtrl", pMtrl);
 
 	// DistortionMtrl
-	pMtrl = new CMaterial();
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"DistortionShader"));
 	pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"PostProcessTex"));
 	pMtrl->SetTexParam(TEX_1, FindAsset<CTexture>(L"texture\\noise\\noise_01.png"));

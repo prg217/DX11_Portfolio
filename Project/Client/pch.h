@@ -17,3 +17,7 @@
 #else
 #pragma comment(lib, "Scripts\\Scripts")
 #endif
+
+
+#include <set>
+using std::set;

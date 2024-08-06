@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CRenderComponent.h"
 
+#include "CAssetMgr.h"
 #include "CLevelMgr.h"
 #include "CLevel.h"
 
@@ -10,6 +11,25 @@ CRenderComponent::CRenderComponent(COMPONENT_TYPE _Type)
 	, m_Mesh(nullptr)
 	, m_Mtrl(nullptr)
 {
+}
+
+CRenderComponent::CRenderComponent(const CRenderComponent& _Origin)
+	: CComponent(_Origin)
+	, m_Mesh(_Origin.m_Mesh)
+	, m_Mtrl(_Origin.m_Mtrl)
+	, m_SharedMtrl(_Origin.m_Mtrl)
+{
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	if (nullptr != pCurLevel)
+	{
+		assert(!(pCurLevel->GetState() != LEVEL_STATE::PLAY 
+			     && nullptr != _Origin.m_DynamicMtrl));
+	}
+
+	if (nullptr != _Origin.m_DynamicMtrl)
+	{
+		GetDynamicMaterial();
+	}
 }
 
 CRenderComponent::~CRenderComponent()
@@ -38,4 +58,18 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial()
 	m_Mtrl = m_DynamicMtrl = m_SharedMtrl->Clone();
 
 	return m_Mtrl;
+}
+
+void CRenderComponent::SaveDataToFile(FILE* _File)
+{
+	SaveAssetRef(m_Mesh, _File);
+	SaveAssetRef(m_Mtrl, _File);
+	SaveAssetRef(m_SharedMtrl, _File);
+}
+
+void CRenderComponent::LoadDataFromFile(FILE* _File)
+{
+	LoadAssetRef(m_Mesh, _File);
+	LoadAssetRef(m_Mtrl, _File);
+	LoadAssetRef(m_SharedMtrl, _File);
 }

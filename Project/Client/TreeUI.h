@@ -52,6 +52,8 @@ private:
     TreeNode*   m_DragedNode;
     TreeNode*   m_DroppedNode;
 
+
+
     UINT        m_NodeID;
     bool        m_ShowRoot;
     bool        m_ShowNameOnly;
@@ -68,6 +70,9 @@ private:
     DELEGATE_2  m_DropFunc;
     string      m_DropPayLoadName;
 
+    EditorUI*   m_PopupInst;
+    DELEGATE_1  m_PopupFunc;
+
 
 public:
     TreeNode* AddNode(TreeNode* _Parent, const string& _Name, DWORD_PTR _Data = 0);
@@ -80,6 +85,7 @@ public:
     void SetSelectedNode(TreeNode* _Node);
     void SetDragedNode(TreeNode* _Node);
     void SetDroppedNode(TreeNode* _Node);
+    void PopupMenu(TreeNode* _Node);
 
     void UseDrag(bool _Drag) { m_UseDrag = _Drag; }
     void UseDrop(bool _Drop) { m_UseDrop = _Drop; }
@@ -93,6 +99,7 @@ public:
     void AddClickedDelegate(EditorUI* _Inst, DELEGATE_1 _Func) { m_ClickedInst = _Inst; m_ClickedFunc = _Func; }
     void AddDragDropDelegate(EditorUI* _Inst, DELEGATE_2 _Func) { m_SelfDragDropInst = _Inst; m_SelfDragDropFunc = _Func; }
     void AddDropDelegate(EditorUI* _Inst, DELEGATE_2 _Func) { m_DropInst = _Inst; m_DropFunc = _Func; }
+    void AddPopupDelegate(EditorUI* _Inst, DELEGATE_1 _Func) { m_PopupInst = _Inst; m_PopupFunc = _Func; }
 
     void Clear();
 

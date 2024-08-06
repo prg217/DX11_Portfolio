@@ -13,6 +13,9 @@
 #include "Outliner.h"
 #include "ListUI.h"
 #include "MenuUI.h"
+#include "SpriteEditor.h"
+#include "SE_AtlasView.h"
+#include "SE_Detail.h"
 
 void CEditorMgr::InitImGui()
 {
@@ -67,7 +70,22 @@ void CEditorMgr::InitImGui()
     CreateEditorUI();
 }
 
+void CEditorMgr::ObserveContent()
+{   
+    // 지정된 상황이 발생했는지 확인
+    DWORD dwStatus = WaitForSingleObject(m_hNotifyHandle, 0);
 
+    // 컨텐츠 폴더에 변경점이 발생했다면,
+    if (dwStatus == WAIT_OBJECT_0)
+    {
+        // Content 폴더에 있는 모든 에셋과 메모리에 로딩되어있는 에셋을 동기화
+        Content* pContent = (Content*)FindEditorUI("Content");
+        pContent->Reload();
+
+        // 다시 Content 폴더에 변경점이 발생하는지 확인하도록 함
+        FindNextChangeNotification(m_hNotifyHandle);
+    }    
+}
 
 
 void CEditorMgr::CreateEditorUI()
@@ -76,6 +94,7 @@ void CEditorMgr::CreateEditorUI()
 
     // Content
     pUI = new Content;
+    pUI->Init();
     pUI->SetName("Content");
     m_mapUI.insert(make_pair(pUI->GetName(), pUI));
 
@@ -101,6 +120,25 @@ void CEditorMgr::CreateEditorUI()
     pUI = new MenuUI;
     pUI->Init();
     pUI->SetName("MainMenu");
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
+    // SE_AtlasView
+    pUI = new SE_AtlasView;
+    pUI->Init();
+    pUI->SetName("SE_AtlasView");
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
+    // SE_Detail
+    pUI = new SE_Detail;
+    pUI->Init();
+    pUI->SetName("SE_Detail");
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
+    // SpriteEditor
+    pUI = new SpriteEditor;
+    pUI->Init();
+    pUI->SetName("SpriteEditor");
+    pUI->SetActive(false);
     m_mapUI.insert(make_pair(pUI->GetName(), pUI));
 }
 

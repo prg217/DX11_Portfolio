@@ -1,10 +1,18 @@
 #include "pch.h"
 #include "MenuUI.h"
 
+#include <Engine/CLevelMgr.h>
+#include <Engine/CLevel.h>
 #include <Engine/CAssetMgr.h>
 #include <Engine/assets.h>
-
 #include <Scripts/CScriptMgr.h>
+#include <Engine/CGameObject.h>
+#include <Engine/CScript.h>
+
+#include "CEditorMgr.h"
+#include "Inspector.h"
+#include "CLevelSaveLoad.h"
+
 
 MenuUI::MenuUI()
 {
@@ -60,26 +68,56 @@ void MenuUI::File()
 
 void MenuUI::Level()
 {
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+	ImGui::BeginDisabled(!pCurLevel);
+
 	if (ImGui::BeginMenu("Level"))
 	{
+		LEVEL_STATE State = LEVEL_STATE::STOP;
+		if (nullptr != pCurLevel)
+			State = pCurLevel->GetState();
+
+		ImGui::BeginDisabled(LEVEL_STATE::PLAY == State);
 		if (ImGui::MenuItem("Play"))
-		{
-
+		{			
+			if (LEVEL_STATE::STOP == State)
+			{
+				wstring strLevelPath = CPathMgr::GetInst()->GetContentPath();
+				strLevelPath += L"level\\Temp.lv";
+				CLevelSaveLoad::SaveLevel(strLevelPath, pCurLevel);
+			}
+			
+			ChangeLevelState(LEVEL_STATE::PLAY);
 		}
+		ImGui::EndDisabled();
 
-
+		ImGui::BeginDisabled(LEVEL_STATE::PLAY != State);
 		if (ImGui::MenuItem("Pause"))
 		{
-
+			ChangeLevelState(LEVEL_STATE::PAUSE);
 		}
+		ImGui::EndDisabled();
 
+		ImGui::BeginDisabled(LEVEL_STATE::STOP == State);
 		if (ImGui::MenuItem("Stop"))
 		{
+			wstring StrLevelLoadPath = CPathMgr::GetInst()->GetContentPath();
+			StrLevelLoadPath += L"level\\Temp.lv";
+			CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(StrLevelLoadPath);
+			ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
 
+			// Inspector Clear 하기 (이전 오브젝트 정보를 보여주고 있을 수가 있기 때문에)				
+			Inspector* pInspector = (Inspector*)CEditorMgr::GetInst()->FindEditorUI("Inspector");
+			pInspector->SetTargetObject(nullptr);
+			pInspector->SetTargetAsset(nullptr);
 		}
+		ImGui::EndDisabled();
 
 		ImGui::EndMenu();
 	}
+
+	ImGui::EndDisabled();
 }
 
 void MenuUI::GameObject()
@@ -102,6 +140,7 @@ void MenuUI::GameObject()
 
 		AddScript();
 
+
 		ImGui::EndMenu();
 	}
 }
@@ -114,15 +153,22 @@ void MenuUI::AddScript()
 		CScriptMgr::GetScriptInfo(vecScriptsName);
 
 		for (size_t i = 0; i < vecScriptsName.size(); ++i)
-		{
+		{			
 			if (ImGui::MenuItem(string(vecScriptsName[i].begin(), vecScriptsName[i].end()).c_str()))
 			{
+				//CScript* pScript = CScriptMgr::GetScript(vecScriptsName[i]);
+
 				// 인스펙터
+				Inspector* pInspector = (Inspector*)CEditorMgr::GetInst()->FindEditorUI("Inspector");
 
 				// 타겟 오브젝트 알아냄
-
-				// 오브젝트에, 선택한 스크립트를 추가해줌
-				CScriptMgr::GetScript(vecScriptsName[i]);
+				CGameObject* pObject = pInspector->GetTargetObject();
+				if (nullptr != pObject)
+				{
+					// 오브젝트에, 선택한 스크립트를 추가해줌
+					CScript* pScript = CScriptMgr::GetScript(vecScriptsName[i]);
+					pObject->AddComponent(pScript);
+				}
 			}
 		}
 
@@ -130,6 +176,7 @@ void MenuUI::AddScript()
 	}
 
 }
+
 
 void MenuUI::Assets()
 {
@@ -143,9 +190,21 @@ void MenuUI::Assets()
 			pMtrl->Save(Key);
 		}
 
+
+
+		EditorUI* pSpriteEditor = CEditorMgr::GetInst()->FindEditorUI("SpriteEditor");				
+		bool IsActive = pSpriteEditor->IsActive();
+
+		if (ImGui::MenuItem("Sprite Editor", nullptr, &IsActive))
+		{			
+			CEditorMgr::GetInst()->FindEditorUI("SpriteEditor")->SetActive(IsActive);
+		}
+
 		ImGui::EndMenu();
 	}
 }
+
+
 
 wstring MenuUI::GetAssetKey(ASSET_TYPE _Type, const wstring& _KeyFormat)
 {

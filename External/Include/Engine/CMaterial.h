@@ -13,7 +13,6 @@ private:
     tMtrlConst              m_Const;
     Ptr<CTexture>           m_arrTex[TEX_PARAM::END];
 
-
 public:
     template<typename T>
     void SetScalarParam(SCALAR_PARAM _Param, const T& _Data);
@@ -21,6 +20,9 @@ public:
 
     void* GetScalarParam(SCALAR_PARAM _Param);
     Ptr<CTexture> GetTexParam(TEX_PARAM _Param) { return m_arrTex[(UINT)_Param]; }
+
+
+
 
 public:
     void SetShader(Ptr<CGraphicShader> _Shader) { m_Shader = _Shader; }
@@ -35,7 +37,7 @@ public:
 
 public:
     CLONE(CMaterial);
-    CMaterial();
+    CMaterial(bool _IsEngine = false);
     ~CMaterial();
 };
 

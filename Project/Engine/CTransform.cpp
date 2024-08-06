@@ -17,6 +17,8 @@ CTransform::~CTransform()
 {
 }
 
+
+
 void CTransform::FinalTick()
 {
 	// 오브젝트의 월드행렬 계산
@@ -114,4 +116,20 @@ Vec3 CTransform::GetWorldScale()
 	}
 
 	return vWorldScale;
+}
+
+void CTransform::SaveToFile(FILE* _File)
+{
+	fwrite(&m_RelativePos, sizeof(Vec3), 1, _File);
+	fwrite(&m_RelativeScale, sizeof(Vec3), 1, _File);
+	fwrite(&m_RelativeRotation, sizeof(Vec3), 1, _File);
+	fwrite(&m_IndependentScale, sizeof(bool), 1, _File);
+}
+
+void CTransform::LoadFromFile(FILE* _File)
+{
+	fread(&m_RelativePos, sizeof(Vec3), 1, _File);
+	fread(&m_RelativeScale, sizeof(Vec3), 1, _File);
+	fread(&m_RelativeRotation, sizeof(Vec3), 1, _File);
+	fread(&m_IndependentScale, sizeof(bool), 1, _File);
 }

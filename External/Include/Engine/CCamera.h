@@ -14,7 +14,7 @@ class CCamera :
 {
 private:
     int                     m_Priority;
-    UINT                    m_LayerCheck;       // 원하는 레이만 카메라에 찍히도록 설정
+    UINT                    m_LayerCheck;       // 원하는 레이어만 카메라에 찍히도록 설정
 
     PROJ_TYPE               m_ProjType;
 
@@ -87,7 +87,8 @@ public:
 public:
     virtual void Begin() override;
     virtual void FinalTick() override;
-    
+    virtual void SaveToFile(FILE* _File) override;
+    virtual void LoadFromFile(FILE* _File) override;
 
 public:
     CLONE(CCamera);

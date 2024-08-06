@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CEntity.h"
 
+
 UINT CEntity::g_ID = 0;
 
 CEntity::CEntity()

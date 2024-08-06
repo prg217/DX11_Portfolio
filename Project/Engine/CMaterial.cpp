@@ -7,16 +7,20 @@
 #include "CAssetMgr.h"
 #include "CPathMgr.h"
 
-CMaterial::CMaterial()
+CMaterial::CMaterial(bool _IsEngine)
 	: CAsset(ASSET_TYPE::MATERIAL)
 {
-
+	if (_IsEngine)
+	{
+		SetEngineAsset();
+	}
 }
 
 CMaterial::~CMaterial()
 {
 
 }
+
 
 void* CMaterial::GetScalarParam(SCALAR_PARAM _Param)
 {
@@ -54,6 +58,8 @@ void* CMaterial::GetScalarParam(SCALAR_PARAM _Param)
 		return  m_Const.matArr + (_Param - MAT_0);
 		break;
 	}
+
+	return nullptr;
 }
 
 void CMaterial::Binding()

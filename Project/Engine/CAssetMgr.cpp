@@ -49,6 +49,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(wstring _strKey, UINT _Width, UINT _Heigh
 	}
 
 	pTexture->m_Key = _strKey;	
+	pTexture->SetEngineAsset();
 	m_mapAsset[(UINT)ASSET_TYPE::TEXTURE].insert(make_pair(_strKey, pTexture.Get()));
 
 	return pTexture;
@@ -68,6 +69,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(wstring _strKey, ComPtr<ID3D11Texture2D> 
 	}
 
 	pTexture->m_Key = _strKey;
+	pTexture->SetEngineAsset();
 	m_mapAsset[(UINT)ASSET_TYPE::TEXTURE].insert(make_pair(_strKey, pTexture.Get()));
 
 	return pTexture;
@@ -79,4 +81,15 @@ void CAssetMgr::GetAssetNames(ASSET_TYPE _Type, vector<string>& _vecOut)
 	{
 		_vecOut.push_back(string(pair.first.begin(), pair.first.end()));
 	}
+}
+
+
+void CAssetMgr::DeleteAsset(ASSET_TYPE _Type, const wstring& _Key)
+{
+	map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[(UINT)_Type].find(_Key);
+	assert(iter != m_mapAsset[(UINT)_Type].end());
+	m_mapAsset[(UINT)_Type].erase(iter);
+
+	// Asset 변경 알림
+	CTaskMgr::GetInst()->AddTask(tTask{ ASSET_CHANGED });
 }

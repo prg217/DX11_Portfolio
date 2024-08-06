@@ -75,6 +75,16 @@ void TreeNode::Update()
 		// Drop 체크
 		DropCheck();
 
+		// 우클릭시 팝업메뉴
+		if (ImGui::BeginPopupContextItem()) // <-- use last item id as popup id
+		{
+			// Popup 내용을 어떻게 채울지
+			m_Owner->PopupMenu(this);
+
+			// 노드를 우클릭시 선택된것으로 본다.
+			m_Owner->SetSelectedNode(this);
+		}
+
 		for (size_t i = 0; i < m_vecChildNode.size(); ++i)
 		{
 			m_vecChildNode[i]->Update();
@@ -247,6 +257,14 @@ void TreeUI::SetDroppedNode(TreeNode* _Node)
 			if (m_SelfDragDropInst && m_SelfDragDropFunc)
 				(m_SelfDragDropInst->*m_SelfDragDropFunc)((DWORD_PTR)m_DragedNode, (DWORD_PTR)m_DroppedNode);
 		}		
+	}
+}
+
+void TreeUI::PopupMenu(TreeNode* _Node)
+{
+	if (m_PopupInst && m_PopupFunc)
+	{
+		(m_PopupInst->*m_PopupFunc)((DWORD_PTR)_Node);
 	}
 }
 

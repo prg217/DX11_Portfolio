@@ -22,7 +22,6 @@ public:
     Vec3 GetScale() { return m_Scale; }
     Vec3 GetWorldPos() { return m_matColWorld.Translation(); }
     const Matrix& GetWorldMat() { return m_matColWorld; }
-    bool GetIndependentScale() { return m_IndependentScale; }
 
     int GetOverlapCount() { return m_OverlapCount; }
 
@@ -33,9 +32,12 @@ public:
 
 public:
     virtual void FinalTick() override;
+    virtual void SaveToFile(FILE* _File) override;
+    virtual void LoadFromFile(FILE* _File) override;
 
 public:
     CLONE(CCollider2D);
     CCollider2D();
+    CCollider2D(const CCollider2D& _Origin);
     ~CCollider2D();
 };

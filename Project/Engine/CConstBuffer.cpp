@@ -15,8 +15,9 @@ CConstBuffer::~CConstBuffer()
 
 int CConstBuffer::Create(CB_TYPE _type, UINT _BufferSize)
 {
-    m_CBType = _type;
+    assert(0 == (_BufferSize % 16));
 
+    m_CBType = _type;
     m_Desc.ByteWidth = _BufferSize;
     m_Desc.Usage = D3D11_USAGE_DYNAMIC;
     m_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -44,5 +45,9 @@ void CConstBuffer::Binding()
     CONTEXT->DSSetConstantBuffers((UINT)m_CBType, 1, m_CB.GetAddressOf());
     CONTEXT->GSSetConstantBuffers((UINT)m_CBType, 1, m_CB.GetAddressOf());
     CONTEXT->PSSetConstantBuffers((UINT)m_CBType, 1, m_CB.GetAddressOf());
+}
+
+void CConstBuffer::Binding_CS()
+{
     CONTEXT->CSSetConstantBuffers((UINT)m_CBType, 1, m_CB.GetAddressOf());
 }

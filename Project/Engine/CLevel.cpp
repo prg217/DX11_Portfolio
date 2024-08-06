@@ -16,6 +16,17 @@ CLevel::CLevel()
 	}
 }
 
+CLevel::CLevel(const CLevel& _Origin)
+	: CEntity(_Origin)
+	, m_Layer{}
+	, m_State(LEVEL_STATE::STOP)
+{
+	for (UINT i = 0; i < MAX_LAYER; ++i)
+	{
+		m_Layer[i] = _Origin.m_Layer[i]->Clone();
+	}
+}
+
 CLevel::~CLevel()
 {
 	Delete_Array(m_Layer);

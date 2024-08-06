@@ -7,6 +7,9 @@ CPlayerScript::CPlayerScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERSCRIPT))
 	, m_Speed(400.f)
 {
+	AddScriptParam(SCRIPT_PARAM::FLOAT, "PlayerSpeed", &m_Speed);
+	AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
+	AddScriptParam(SCRIPT_PARAM::PREFAB, "Missile", &m_MissilePref);
 }
 
 CPlayerScript::~CPlayerScript()
@@ -16,6 +19,7 @@ CPlayerScript::~CPlayerScript()
 void CPlayerScript::Begin()
 {
 	GetRenderComponent()->GetDynamicMaterial();
+	//m_MissilePref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"MissilePref");
 }
 
 void CPlayerScript::Tick()
@@ -51,21 +55,10 @@ void CPlayerScript::Tick()
 	if (KEY_TAP(KEY::SPACE))
 	{
 		// 미사일 발사
-		CGameObject* pMissileObject = new CGameObject;
-		pMissileObject->AddComponent(new CTransform);
-		pMissileObject->AddComponent(new CMeshRender);
-		pMissileObject->AddComponent(new CCollider2D);
-		pMissileObject->AddComponent(new CMissileScript);
-
-		Vec3 vMissilePos = Transform()->GetRelativePos();
-		vMissilePos.y += Transform()->GetRelativeScale().y / 2.f;
-
-		pMissileObject->Transform()->SetRelativePos(vMissilePos);
-		pMissileObject->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
-
-		pMissileObject->Collider2D()->SetScale(Vec3(1.f, 1.f, 1.f));
-
-		CreateObject(pMissileObject, 5);
+		if (nullptr != m_MissilePref)
+		{
+			Instantiate(m_MissilePref, 5, Transform()->GetWorldPos(), L"Missile");
+		}		
 	}	
 
 	Transform()->SetRelativePos(vPos);
@@ -81,4 +74,18 @@ void CPlayerScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherO
 	Collider2D()->SetScale(Collider2D()->GetScale() + Vec3(10.f, 10.f, 0.f));
 
 	Transform()->SetRelativeScale(vScale);
+}
+
+void CPlayerScript::SaveToFile(FILE* _File)
+{
+	fwrite(&m_Speed, sizeof(float), 1, _File);
+	SaveAssetRef(m_Texture, _File);
+	SaveAssetRef(m_MissilePref, _File);	
+}
+
+void CPlayerScript::LoadFromFile(FILE* _File)
+{
+	fread(&m_Speed, sizeof(float), 1, _File);
+	LoadAssetRef(m_Texture, _File);
+	LoadAssetRef(m_MissilePref, _File);
 }

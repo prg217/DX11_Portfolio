@@ -6,6 +6,7 @@
 #include <Engine/CDevice.h>
 #include "ImGui/imgui_impl_win32.h"
 
+#include "CLevelSaveLoad.h"
 #include "CTestLevel.h"
 
 // 전역 변수:
@@ -39,20 +40,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UpdateWindow(hWnd);
 
     // CEngine 객체 초기화
-    if (FAILED(CEngine::GetInst()->Init(hWnd, POINT{ 1280, 768 })))
+    if (FAILED(CEngine::GetInst()->Init( hWnd
+                                      , POINT{ 1280, 768 }
+                                      , (OBJECT_SAVE)&CLevelSaveLoad::SaveGameObject
+                                      , (OBJECT_LOAD)&CLevelSaveLoad::LoadGameObject)))
     {
         MessageBox(nullptr, L"CEngine 초기화 실패", L"엔진 초기화 실패", MB_OK);
         return 0;
     }
 
-    // 테스트용 레벨 초기상태 만들기
-    CTestLevel::CreateTestLevel();
-
-
 #ifdef _DEBUG
     // CEditorMgr 초기화
     CEditorMgr::GetInst()->Init();
 #endif
+
+    // 테스트용 레벨 초기상태 만들기
+    CTestLevel::CreateTestLevel();
 
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));

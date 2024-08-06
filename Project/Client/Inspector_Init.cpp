@@ -28,6 +28,7 @@
 #include "GraphicShaderUI.h"
 #include "ComputeShaderUI.h"
 
+#include "ScriptUI.h"
 
 void Inspector::Init()
 {
@@ -82,10 +83,25 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::TILEMAP]->SetChildSize(ImVec2(0.f, 100.f));
 	AddChild(m_arrComUI[(UINT)COMPONENT_TYPE::TILEMAP]);
 
-	m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLE_SYSTEM] = new ParticleSystemUI;
-	m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLE_SYSTEM]->SetName("ParticleSystemUI");
-	m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLE_SYSTEM]->SetChildSize(ImVec2(0.f, 100.f));
-	AddChild(m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLE_SYSTEM]);
+	m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLESYSTEM] = new ParticleSystemUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]->SetName("ParticleSystemUI");
+	m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]->SetChildSize(ImVec2(0.f, 100.f));
+	AddChild(m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]);
+}
+
+void Inspector::CreateScriptUI(UINT _Count)
+{
+	for (UINT i = 0; i < _Count; ++i)
+	{
+		ScriptUI* pScriptUI = new ScriptUI;
+		
+		char szScriptUIName[255] = {};
+		sprintf_s(szScriptUIName, 255, "ScriptUI##%d", (int)m_vecScriptUI.size());
+		pScriptUI->SetName(szScriptUIName);
+
+		AddChild(pScriptUI);
+		m_vecScriptUI.push_back(pScriptUI);
+	}
 }
 
 void Inspector::CreateAssetUI()

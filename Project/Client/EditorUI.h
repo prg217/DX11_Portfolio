@@ -21,6 +21,8 @@ private:
 
 	bool				m_Modal;
 	bool				m_ChildBorder;
+	bool				m_UseMenuBar;
+	bool				m_Move;	
 
 
 public:
@@ -38,6 +40,8 @@ public:
 
 	bool IsActive() { return m_Active; }
 		
+	void UseMenuBar(bool _Use) { m_UseMenuBar = _Use; }
+	void SetMove(bool _Move) { m_Move = _Move; }
 
 	void SetChildBorder(bool _Set) { m_ChildBorder = _Set; }
 	void SetChildSize(ImVec2 _Size) { m_ChildSize = _Size; }

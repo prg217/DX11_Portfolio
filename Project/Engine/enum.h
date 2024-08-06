@@ -45,7 +45,7 @@ enum class COMPONENT_TYPE
 
 	MESHRENDER,
 	TILEMAP,
-	PARTICLE_SYSTEM,
+	PARTICLESYSTEM,
 	DECAl,
 	SKYBOX,
 	LANDSCAPE,
@@ -82,6 +82,7 @@ enum class DS_TYPE
 	GREATER,
 
 	NO_TEST,
+	NO_WRITE,
 	NO_TEST_NO_WRITE,
 
 	END,
@@ -158,6 +159,9 @@ enum TASK_TYPE
 
 	// Param_0 : Level Adress, Param_1 : Level State
 	CHANGE_LEVEL,
+
+	// Param_0 : AssetAdress
+	DEL_ASSET,
 
 	LEVEL_CHANGED,
 	ASSET_CHANGED,

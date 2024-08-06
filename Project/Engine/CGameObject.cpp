@@ -9,6 +9,7 @@
 #include "CLayer.h"
 
 #include "components.h"
+#include "CScript.h"
 
 
 CGameObject::CGameObject()
@@ -18,6 +19,40 @@ CGameObject::CGameObject()
 	, m_LayerIdx(-1) // 어느 레이어 소속도 아니다(레벨안에 있지 않은 상태)
 	, m_Dead(false)
 {
+}
+
+CGameObject::CGameObject(const CGameObject& _Origin)
+	: CEntity(_Origin)
+	, m_arrCom{}
+	, m_RenderCom(nullptr)
+	, m_Parent(nullptr)
+	, m_LayerIdx(-1)
+	, m_Dead(false)
+{
+	// 컴포넌트 복사
+	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
+	{
+		if (nullptr == _Origin.m_arrCom[i])
+			continue;
+
+		CComponent* pClonedCom = _Origin.m_arrCom[i]->Clone();
+
+		AddComponent(pClonedCom);
+
+		pClonedCom->Init();
+	}
+	
+	// Script 복사
+	for (size_t i = 0; i < _Origin.m_vecScript.size(); ++i)
+	{
+		AddComponent(_Origin.m_vecScript[i]->Clone());
+	}
+	
+	// 자식 오브젝트 복사
+	for (size_t i = 0; i < _Origin.m_vecChildren.size(); ++i)
+	{
+		AddChild(_Origin.m_vecChildren[i]->Clone());
+	}
 }
 
 CGameObject::~CGameObject()

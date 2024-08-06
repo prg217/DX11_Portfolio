@@ -13,11 +13,12 @@ public:
 
 private:
     void ShaderParameter();
-
     void ChangeTexture(DWORD_PTR Param);
 
 private:
     void SelectShader(DWORD_PTR _ListUI);
+    void SaveMaterialToFile();
+
 
 public:
     MaterialUI();

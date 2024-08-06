@@ -46,6 +46,32 @@ struct tLightInfo
 };
 
 
+struct tPixel
+{
+	BYTE b;
+	BYTE g;
+	BYTE r;
+	BYTE a;
+};
+
+// Particle
+struct tParticle
+{
+	Vec3	vLocalPos;
+	Vec3	vWorldPos;
+	Vec4	vColor;
+
+	float	Mass;
+	int		Active;
+};
+
+
+
+
+
+
+
+
 // ===================
 // 상수버퍼 연동 구조체
 // ===================

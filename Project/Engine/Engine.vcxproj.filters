@@ -142,8 +142,14 @@
     <ClInclude Include="CLight2D.h">
       <Filter>08. Component\08. Light2D</Filter>
     </ClInclude>
-    <ClInclude Include="CRigidBody.h">
-      <Filter>08. Component\06. RigidBody</Filter>
+    <ClInclude Include="CPrefab.h">
+      <Filter>06. Asset\04. Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticleSystem.h">
+      <Filter>08. Component\RenderComponent\03. ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CSetColorCS.h">
+      <Filter>HLSL\03. Compute\01. SetColorShader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -265,8 +271,14 @@
     <ClCompile Include="CLight2D.cpp">
       <Filter>08. Component\08. Light2D</Filter>
     </ClCompile>
-    <ClCompile Include="CRigidBody.cpp">
-      <Filter>08. Component\06. RigidBody</Filter>
+    <ClCompile Include="CPrefab.cpp">
+      <Filter>06. Asset\04. Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleSystem.cpp">
+      <Filter>08. Component\RenderComponent\03. ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CSetColorCS.cpp">
+      <Filter>HLSL\03. Compute\01. SetColorShader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -429,6 +441,12 @@
     <Filter Include="HLSL\02. Render\03. PostProcee">
       <UniqueIdentifier>{ff224fe6-f02d-4dd0-b515-b5a69bddfc38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL\03. Compute">
+      <UniqueIdentifier>{6e6bcbeb-97c5-4555-b34f-7987d6f04e10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\03. Compute\01. SetColorShader">
+      <UniqueIdentifier>{dbf13034-44c4-44a2-8551-2a579929cc8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -456,6 +474,12 @@
     </FxCompile>
     <FxCompile Include="postprocess.fx">
       <Filter>HLSL\02. Render\03. PostProcee</Filter>
+    </FxCompile>
+    <FxCompile Include="setcolor.fx">
+      <Filter>HLSL\03. Compute\01. SetColorShader</Filter>
+    </FxCompile>
+    <FxCompile Include="particle.fx">
+      <Filter>HLSL\02. Render\01. 2D</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

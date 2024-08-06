@@ -1,7 +1,6 @@
 #pragma once
 #include "CComponent.h"
 
-
 class CTransform :
     public CComponent
 {
@@ -43,10 +42,10 @@ public:
     Vec3 GetRelativeDir(DIR _Type) { return m_RelativeDir[_Type]; }
     Vec3 GetWorldDir(DIR _Type) { return m_WorldDir[_Type]; }
 
-
-
     const Matrix& GetWorldMat() { return m_matWorld; }
 
+    virtual void SaveToFile(FILE* _File) override;
+    virtual void LoadFromFile(FILE* _File) override;
 
 public:
     CLONE(CTransform);

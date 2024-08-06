@@ -149,6 +149,7 @@
     <ClInclude Include="CEditorCameraScript.h" />
     <ClInclude Include="CEditorMgr.h" />
     <ClInclude Include="CGameObjectEx.h" />
+    <ClInclude Include="CLevelSaveLoad.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Collider2DUI.h" />
     <ClInclude Include="ComponentUI.h" />
@@ -169,7 +170,11 @@
     <ClInclude Include="ParticleSystemUI.h" />
     <ClInclude Include="PrefabUI.h" />
     <ClInclude Include="ScriptUI.h" />
+    <ClInclude Include="SE_AtlasView.h" />
+    <ClInclude Include="SE_Detail.h" />
+    <ClInclude Include="SE_Sub.h" />
     <ClInclude Include="SoundUI.h" />
+    <ClInclude Include="SpriteEditor.h" />
     <ClInclude Include="SpriteUI.h" />
     <ClInclude Include="TextureUI.h" />
     <ClInclude Include="TileMapUI.h" />
@@ -198,6 +203,7 @@
     <ClCompile Include="CEditorMgr.cpp" />
     <ClCompile Include="CEditorMgr_EditorUI.cpp" />
     <ClCompile Include="CGameObjectEx.cpp" />
+    <ClCompile Include="CLevelSaveLoad.cpp" />
     <ClCompile Include="Collider2DUI.cpp" />
     <ClCompile Include="ComponentUI.cpp" />
     <ClCompile Include="ComputeShaderUI.cpp" />
@@ -218,7 +224,11 @@
     <ClCompile Include="ParticleSystemUI.cpp" />
     <ClCompile Include="PrefabUI.cpp" />
     <ClCompile Include="ScriptUI.cpp" />
+    <ClCompile Include="SE_AtlasView.cpp" />
+    <ClCompile Include="SE_Detail.cpp" />
+    <ClCompile Include="SE_Sub.cpp" />
     <ClCompile Include="SoundUI.cpp" />
+    <ClCompile Include="SpriteEditor.cpp" />
     <ClCompile Include="SpriteUI.cpp" />
     <ClCompile Include="TextureUI.cpp" />
     <ClCompile Include="TileMapUI.cpp" />

@@ -29,8 +29,10 @@ void MeshRenderUI::Update()
 	// 메쉬 정보
 	Ptr<CMesh> pMesh = pMeshRender->GetMesh();
 
+
 	string MeshName;
-	if (pMesh.Get())
+	
+	if(pMesh.Get())
 		MeshName = string(pMesh->GetKey().begin(), pMesh->GetKey().end());
 
 	ImGui::Text("Mesh");
@@ -73,7 +75,7 @@ void MeshRenderUI::Update()
 	Ptr<CMaterial> pMtrl = pMeshRender->GetMaterial();
 
 	string MtrlName;
-	if (pMtrl.Get())
+	if(pMtrl.Get())
 		MtrlName = string(pMtrl->GetKey().begin(), pMtrl->GetKey().end());
 
 	ImGui::Text("Material");
@@ -133,7 +135,7 @@ void MeshRenderUI::SelectMesh(DWORD_PTR _ListUI)
 	Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(strAssetName);
 
 	assert(pMesh.Get());
-
+	
 	pMeshRender->SetMesh(pMesh);
 }
 

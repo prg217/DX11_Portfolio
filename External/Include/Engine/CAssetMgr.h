@@ -50,6 +50,9 @@ private:
 	void CreateEngineGraphicShader();
 	void CreateEngineComputeShader();
 
+private:
+	void DeleteAsset(ASSET_TYPE _Type, const wstring& _Key);
+
 	friend class CTaskMgr;
 };
 

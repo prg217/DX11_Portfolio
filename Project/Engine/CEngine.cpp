@@ -10,6 +10,7 @@
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CTaskMgr.h"
+#include "CPrefab.h"
 
 CEngine::CEngine()
 	: m_hWnd(nullptr)
@@ -21,7 +22,7 @@ CEngine::~CEngine()
 {	
 }
 
-int CEngine::Init(HWND _wnd, POINT _ptResolution)
+int CEngine::Init(HWND _wnd, POINT _ptResolution, OBJECT_SAVE _SaveFunc, OBJECT_LOAD _Func)
 {
 	m_hWnd = _wnd;
 	m_ptResolution = _ptResolution;
@@ -43,8 +44,13 @@ int CEngine::Init(HWND _wnd, POINT _ptResolution)
 	CLevelMgr::GetInst()->Init();
 	
 
+	// Prefab Function µî·Ï
+	CPrefab::g_ObjectSaveFunc = _SaveFunc;
+	CPrefab::g_ObjectLoadFunc = _Func;
+
 	return S_OK;
 }
+
 
 
 void CEngine::Progress()

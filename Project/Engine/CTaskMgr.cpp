@@ -42,7 +42,7 @@ void CTaskMgr::ExecuteTask()
 		case TASK_TYPE::CREATE_OBJECT:
 		{
 			CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-			int LayerIndex = task.Param_0;
+			int LayerIndex = (int)task.Param_0;
 			CGameObject* pObject = (CGameObject*)task.Param_1;
 			pCurLevel->AddObject(LayerIndex, pObject);
 
@@ -93,6 +93,14 @@ void CTaskMgr::ExecuteTask()
 		case TASK_TYPE::LEVEL_CHANGED:
 		{
 			CLevelMgr::GetInst()->m_LevelChanged = true;
+		}
+		break;
+
+		case TASK_TYPE::DEL_ASSET:
+		{
+			CAsset* pAsset = (CAsset*)task.Param_0;
+			ASSET_TYPE Type = pAsset->GetAssetType();
+			CAssetMgr::GetInst()->DeleteAsset(Type, pAsset->GetKey());
 		}
 		break;
 		}

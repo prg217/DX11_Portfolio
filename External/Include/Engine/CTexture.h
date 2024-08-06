@@ -15,6 +15,9 @@ private:
 
     D3D11_TEXTURE2D_DESC                m_Desc;
 
+    UINT                                m_RecentBindingRegisterNum;
+
+
 public:
     ComPtr<ID3D11Texture2D>             GetTex2D() { return m_Tex2D; }
     ComPtr<ID3D11RenderTargetView>      GetRTV() { return m_RTV; }
@@ -23,6 +26,7 @@ public:
     ComPtr<ID3D11UnorderedAccessView>   GetUAV() { return m_UAV; }
     const D3D11_TEXTURE2D_DESC&         GetDesc(){ return m_Desc;}
 
+    tPixel* GetPixels() { return (tPixel*)m_Image.GetPixels(); }
 
 public:
     UINT Width() { return m_Desc.Width; }
@@ -35,7 +39,11 @@ public:
     int Create(ComPtr<ID3D11Texture2D> _Tex2D);
 
     void Binding(UINT _RegisterNum);
+    void Binding_CS_UAV(UINT _RegisterNum);
+
     static void Clear(UINT _RegisterNum);
+    void Clear_CS_UAV();
+    
 
     virtual int Load(const wstring& _FilePath) override;
     virtual int Save(const wstring& _FilePath) override;

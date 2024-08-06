@@ -11,7 +11,6 @@ private:
     vector<CGameObject*>    m_Objects; // 해당 레이어 소속 오브젝트 중에서 부모 자식 상관없는 모든 오브젝트
     const int               m_LayerIdx;
 
-
 public:
     int GetLayerIdx() { return m_LayerIdx; }
     void AddObject(CGameObject* _Object, bool _bMoveChild);
@@ -20,7 +19,6 @@ public:
     void ClearObject() { m_Objects.clear(); }
     void RegisterGameObject(CGameObject* _Object) { m_Objects.push_back(_Object); }
     void DisconnectWithObject(CGameObject* _Object);
-    void LayerChange(CGameObject* _Object, int _LayerIdx);
 
     void RegisterAsParent(CGameObject* _Object);
     void DeregisterObjectAsParent(CGameObject* _Object);
@@ -35,6 +33,7 @@ public:
 public:
     virtual CLayer* Clone() { return new CLayer(*this); }
     CLayer(int _LayerIdx);
+    CLayer(const CLayer& _Origin);
     ~CLayer();
 };
 

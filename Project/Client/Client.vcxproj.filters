@@ -104,10 +104,25 @@
       <UniqueIdentifier>{b63c7858-7abd-45a9-abb1-747321502f32}</UniqueIdentifier>
     </Filter>
     <Filter Include="EditorUI\07. Module">
-      <UniqueIdentifier>{82174e8b-c4fe-42ac-b907-73a188f45f5d}</UniqueIdentifier>
+      <UniqueIdentifier>{c3df9423-c97b-4d56-aedc-72b91bef8c80}</UniqueIdentifier>
     </Filter>
     <Filter Include="EditorUI\01. Inspector\ComponentUI\09. ScriptUI">
-      <UniqueIdentifier>{43b2a6b9-5fdd-4ad7-af03-a5e0d9bdaead}</UniqueIdentifier>
+      <UniqueIdentifier>{b3df3552-a29c-43c3-a26a-599a2015d9e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\03. LevelSaveLoad">
+      <UniqueIdentifier>{9d4d094c-4261-4f31-bd1e-ab748bdc44b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\08. SpriteEditor">
+      <UniqueIdentifier>{81adf1c2-7ca4-46ef-989b-96a2bbd81417}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\08. SpriteEditor\SE_Sub">
+      <UniqueIdentifier>{2203be1f-db69-44dd-9fdf-ad683f5788ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\08. SpriteEditor\SE_Sub\SE_Detatil">
+      <UniqueIdentifier>{1534f3cb-07e2-4a2a-9fcb-038f45a0df7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\08. SpriteEditor\SE_Sub\SE_AtlasView">
+      <UniqueIdentifier>{e34f6401-5b14-4f41-88dd-ca6e7804459c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +264,21 @@
     <ClInclude Include="ScriptUI.h">
       <Filter>EditorUI\01. Inspector\ComponentUI\09. ScriptUI</Filter>
     </ClInclude>
+    <ClInclude Include="CLevelSaveLoad.h">
+      <Filter>Manager\03. LevelSaveLoad</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteEditor.h">
+      <Filter>EditorUI\08. SpriteEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="SE_Sub.h">
+      <Filter>EditorUI\08. SpriteEditor\SE_Sub</Filter>
+    </ClInclude>
+    <ClInclude Include="SE_AtlasView.h">
+      <Filter>EditorUI\08. SpriteEditor\SE_Sub\SE_AtlasView</Filter>
+    </ClInclude>
+    <ClInclude Include="SE_Detail.h">
+      <Filter>EditorUI\08. SpriteEditor\SE_Sub\SE_Detatil</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -389,6 +419,21 @@
     </ClCompile>
     <ClCompile Include="ScriptUI.cpp">
       <Filter>EditorUI\01. Inspector\ComponentUI\09. ScriptUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelSaveLoad.cpp">
+      <Filter>Manager\03. LevelSaveLoad</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteEditor.cpp">
+      <Filter>EditorUI\08. SpriteEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="SE_Sub.cpp">
+      <Filter>EditorUI\08. SpriteEditor\SE_Sub</Filter>
+    </ClCompile>
+    <ClCompile Include="SE_AtlasView.cpp">
+      <Filter>EditorUI\08. SpriteEditor\SE_Sub\SE_AtlasView</Filter>
+    </ClCompile>
+    <ClCompile Include="SE_Detail.cpp">
+      <Filter>EditorUI\08. SpriteEditor\SE_Sub\SE_Detatil</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

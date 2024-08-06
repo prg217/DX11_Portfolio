@@ -13,6 +13,7 @@ struct tTexParam
     string          strDesc;
 };
 
+
 class CGraphicShader :
     public CShader
 {
@@ -36,6 +37,7 @@ private:
     vector<tScalarParam>        m_ScalarParam;
     vector<tTexParam>           m_TexParam;
 
+
 public:
     void SetDomain(SHADER_DOMAIN _Domain) { m_Domain = _Domain; }
 
@@ -50,7 +52,7 @@ public:
     DS_TYPE GetDSType() { return m_DSType; }
     BS_TYPE GetBSType() { return m_BSType; }
 
-    void AddScalarParam(SCALAR_PARAM _Type, const string& _Desc) { m_ScalarParam.push_back(tScalarParam{ _Type, _Desc }); }
+    void AddScalarParam(SCALAR_PARAM _Type, const string& _Desc)  {  m_ScalarParam.push_back(tScalarParam{ _Type, _Desc }); }
     void AddTexParam(TEX_PARAM _Type, const string& _Desc) { m_TexParam.push_back(tTexParam{ _Type, _Desc }); }
 
     const vector<tScalarParam>& GetScalarParam() { return m_ScalarParam; }
@@ -60,6 +62,9 @@ public:
     int CreateVertexShader(const wstring& _RelativePath, const string& _FuncName);
     int CreatePixelShader(const wstring& _RelativePath, const string& _FuncName);
     void Binding();
+
+
+
 
 
 
