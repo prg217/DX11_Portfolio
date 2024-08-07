@@ -11,6 +11,9 @@
 #include "AssetUI.h"
 #include "ScriptUI.h"
 
+#include "CEditorMgr.h"
+#include "ListUI.h"
+
 
 Inspector::Inspector()
 	: m_TargetObject(nullptr)
@@ -108,12 +111,12 @@ void Inspector::Update()
 	// ======
 	int LayerIdx = m_TargetObject->GetLayerIdx();
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-	CLayer* pLayer = pCurLevel->GetLayer(LayerIdx);	
+	CLayer* pLayer = pCurLevel->GetLayer(LayerIdx);
 	string LayerName = string(pLayer->GetName().begin(), pLayer->GetName().end());
 
 	char buffer[50] = {};
 
-	if(LayerName.empty())
+	if (LayerName.empty())
 		sprintf_s(buffer, 50, "%d : %s", LayerIdx, "None");
 	else
 		sprintf_s(buffer, 50, "%d : %s", LayerIdx, LayerName.c_str());
@@ -121,4 +124,34 @@ void Inspector::Update()
 	ImGui::Text("Layer");
 	ImGui::SameLine(108);
 	ImGui::InputText("##LayerName", buffer, strlen(buffer), ImGuiInputTextFlags_ReadOnly);
+
+	// 레이어 변경
+	ImGui::SameLine();
+	if (ImGui::Button("##LayerBtn", ImVec2(18.f, 18.f)))
+	{
+		ListUI* pListUI = (ListUI*)CEditorMgr::GetInst()->FindEditorUI("List");
+		pListUI->SetName("Layer");
+		vector<string> vecLayerNames;
+		// 레이어 목록
+		for (int i = 0; i < MAX_LAYER; i++)
+		{
+			CLayer* pLayerIdx = pCurLevel->GetLayer(i);
+			vecLayerNames.push_back(string(pLayerIdx->GetName().begin(), pLayerIdx->GetName().end()));
+		}
+		pListUI->AddList(vecLayerNames);
+		pListUI->AddDelegate(this, (DELEGATE_1)&Inspector::SelectLayer);
+		pListUI->SetActive(true);
+	}
+}
+
+void Inspector::SelectLayer(DWORD_PTR _ListUI)
+{
+	ListUI* pListUI = (ListUI*)_ListUI;
+	int selectIdx = pListUI->GetSelectIdx();
+
+	int LayerIdx = m_TargetObject->GetLayerIdx();
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	CLayer* pLayer = pCurLevel->GetLayer(LayerIdx);
+
+	pLayer->LayerChange(m_TargetObject, selectIdx);
 }

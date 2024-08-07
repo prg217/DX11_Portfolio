@@ -19,6 +19,7 @@ public:
     void ClearObject() { m_Objects.clear(); }
     void RegisterGameObject(CGameObject* _Object) { m_Objects.push_back(_Object); }
     void DisconnectWithObject(CGameObject* _Object);
+    void LayerChange(CGameObject* _Object, int _LayerIdx);
 
     void RegisterAsParent(CGameObject* _Object);
     void DeregisterObjectAsParent(CGameObject* _Object);

@@ -110,11 +110,13 @@ public:
 
 public:
     virtual void FinalTick() override;
+    virtual void SaveToFile(FILE* _File) override;
+    virtual void LoadFromFile(FILE* _File) override;
 
 public:
     CLONE(CRigidBody);
     CRigidBody();
-    CRigidBody(const CRigidBody& _Other);
+    CRigidBody(const CRigidBody& _Origin);
     ~CRigidBody();
 };
 

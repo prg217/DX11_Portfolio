@@ -1,3 +1,5 @@
+#include "CRigidBody.h"
+#include "CRigidBody.h"
 #include "pch.h"
 #include "CRigidBody.h"
 
@@ -25,17 +27,17 @@ CRigidBody::CRigidBody()
 
 }
 
-CRigidBody::CRigidBody(const CRigidBody& _Other)
-	: CComponent(COMPONENT_TYPE::RIGIDBODY)
-	, m_Mass(_Other.m_Mass)
-	, m_InitWalkSpeed(_Other.m_InitWalkSpeed)
-	, m_MaxWalkSpeed(_Other.m_MaxWalkSpeed)
-	, m_MaxGravitySpeed(_Other.m_MaxGravitySpeed)
-	, m_Friction(_Other.m_Friction)
-	, m_GravityAccel(_Other.m_GravityAccel)
-	, m_UseGravity(_Other.m_UseGravity)
-	, m_Ground(_Other.m_Ground)
-	, m_JumpSpeed(_Other.m_JumpSpeed)
+CRigidBody::CRigidBody(const CRigidBody& _Origin)
+	: CComponent(_Origin)
+	, m_Mass(_Origin.m_Mass)
+	, m_InitWalkSpeed(_Origin.m_InitWalkSpeed)
+	, m_MaxWalkSpeed(_Origin.m_MaxWalkSpeed)
+	, m_MaxGravitySpeed(_Origin.m_MaxGravitySpeed)
+	, m_Friction(_Origin.m_Friction)
+	, m_GravityAccel(_Origin.m_GravityAccel)
+	, m_UseGravity(_Origin.m_UseGravity)
+	, m_Ground(_Origin.m_Ground)
+	, m_JumpSpeed(_Origin.m_JumpSpeed)
 	//, m_GroundFunc(nullptr)
 	//, m_AirFunc(nullptr)
 	//, m_GroundInst(nullptr)
@@ -146,4 +148,48 @@ void CRigidBody::FinalTick()
 	// 이번 프레임 힘 초기화
 	m_Force = Vec3(0.f, 0.f, 0.f);
 	m_AddVelocity = Vec3(0.f, 0.f, 0.f);
+}
+
+void CRigidBody::SaveToFile(FILE* _File)
+{
+	fwrite(&m_Velocity, sizeof(Vec3), 1, _File);
+	fwrite(&m_VelocityByGravity, sizeof(Vec3), 1, _File);
+	fwrite(&m_AddVelocity, sizeof(Vec3), 1, _File);
+
+	fwrite(&m_Mass, sizeof(float), 1, _File);
+	fwrite(&m_Force, sizeof(Vec3), 1, _File);
+
+	fwrite(&m_InitWalkSpeed, sizeof(float), 1, _File);
+	fwrite(&m_MaxWalkSpeed, sizeof(float), 1, _File);
+	fwrite(&m_MaxGravitySpeed, sizeof(float), 1, _File);
+
+	fwrite(&m_Friction, sizeof(float), 1, _File);
+
+	fwrite(&m_GravityAccel, sizeof(float), 1, _File);
+
+	fwrite(&m_UseGravity, sizeof(bool), 1, _File);
+	//bool    m_Ground;               // 땅 위에 서있는지 체크
+	fwrite(&m_JumpSpeed, sizeof(float), 1, _File);
+}
+
+void CRigidBody::LoadFromFile(FILE* _File)
+{
+	fread(&m_Velocity, sizeof(Vec3), 1, _File);
+	fread(&m_VelocityByGravity, sizeof(Vec3), 1, _File);
+	fread(&m_AddVelocity, sizeof(Vec3), 1, _File);
+
+	fread(&m_Mass, sizeof(float), 1, _File);
+	fread(&m_Force, sizeof(Vec3), 1, _File);
+
+	fread(&m_InitWalkSpeed, sizeof(float), 1, _File);
+	fread(&m_MaxWalkSpeed, sizeof(float), 1, _File);
+	fread(&m_MaxGravitySpeed, sizeof(float), 1, _File);
+
+	fread(&m_Friction, sizeof(float), 1, _File);
+
+	fread(&m_GravityAccel, sizeof(float), 1, _File);
+
+	fread(&m_UseGravity, sizeof(bool), 1, _File);
+	//bool    m_Ground;               // 땅 위에 서있는지 체크
+	fread(&m_JumpSpeed, sizeof(float), 1, _File);
 }

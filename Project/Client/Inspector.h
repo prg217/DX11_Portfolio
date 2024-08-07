@@ -31,6 +31,8 @@ public:
     virtual void Init() override;
     virtual void Update() override;
 
+private:
+    void SelectLayer(DWORD_PTR _ListUI);
 
 public:
     Inspector();

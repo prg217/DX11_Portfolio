@@ -26,6 +26,7 @@ public:
     GET_OTHER_COMPONENT(Transform);
     GET_OTHER_COMPONENT(MeshRender);
     GET_OTHER_COMPONENT(Camera);
+    GET_OTHER_COMPONENT(RigidBody);
     GET_OTHER_COMPONENT(Collider2D);
     GET_OTHER_COMPONENT(FlipBookComponent);
     GET_OTHER_COMPONENT(TileMap);

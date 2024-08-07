@@ -2,7 +2,8 @@
 #include "CLayer.h"
 
 #include "CGameObject.h"
-
+#include "CLevelMgr.h"
+#include "CLevel.h"
 
 CLayer::CLayer(int _LayerIdx)
 	: m_LayerIdx(_LayerIdx)
@@ -110,6 +111,18 @@ void CLayer::DisconnectWithObject(CGameObject* _Object)
 	}
 
 	assert(nullptr);
+}
+
+void CLayer::LayerChange(CGameObject* _Object, int _LayerIdx)
+{
+	if (_Object->GetLayerIdx() == _LayerIdx)
+	{
+		return;
+	}
+
+	_Object->DisconnectWithLayer();
+	_Object->m_LayerIdx = _LayerIdx;
+	CLevelMgr::GetInst()->GetCurrentLevel()->RegisterAsParent(_Object->GetLayerIdx(), _Object);
 }
 
 void CLayer::RegisterAsParent(CGameObject* _Object)

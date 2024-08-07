@@ -46,7 +46,20 @@ void CalculateLight2D(int _LightIdx, float3 _WorldPos, inout tLight _Light)
     // SpotLight 인 경우
     else
     {
-        
+        // 점광원과 픽셀까지의 거리
+        float fDist = distance(Info.WorldPos.xy, _WorldPos.xy);
+
+        // 거리값을 각도로 치환해서 거리에 따른 빛의 세기를 코사인 그래프 형태로 사용한다.
+        float fPow = saturate(cos((fDist / Info.Radius) * (PI / 2.f)));
+
+        if ((Info.Angle / 2.f) > dot(normalize(Info.WorldDir.xy), normalize(Info.WorldPos.xy - _WorldPos.xy)))
+        {
+            fPow = 0.f;
+        }
+
+        // 최종 색상 계산 = 빛의 색 * 거리에따른 세기
+        _Light.Color.rgb += Info.light.Color.rgb * fPow;
+        _Light.Ambient.rgb += Info.light.Ambient.rgb;
     }    
 }
 

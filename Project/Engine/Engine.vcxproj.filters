@@ -151,6 +151,9 @@
     <ClInclude Include="CSetColorCS.h">
       <Filter>HLSL\03. Compute\01. SetColorShader</Filter>
     </ClInclude>
+    <ClInclude Include="CRigidBody.h">
+      <Filter>08. Component\06. RigidBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -279,6 +282,9 @@
     </ClCompile>
     <ClCompile Include="CSetColorCS.cpp">
       <Filter>HLSL\03. Compute\01. SetColorShader</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>08. Component\06. RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

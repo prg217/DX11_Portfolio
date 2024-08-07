@@ -110,6 +110,7 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->SetName(L"Player");
 	pPlayer->AddComponent(new CTransform);
 	pPlayer->AddComponent(new CMeshRender);
+	pPlayer->AddComponent(new CRigidBody);
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->AddComponent(new CFlipBookComponent);
 	pPlayer->AddComponent(new CPlayerScript);
@@ -119,6 +120,8 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->Collider2D()->SetIndependentScale(false);
 	pPlayer->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Collider2D()->SetScale(Vec3(1.f, 1.f, 1.f));
+
+	//pPlayer->RigidBody()->UseGravity(true);
 
 	pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pPlayer->MeshRender()->SetMaterial(pMtrl);
