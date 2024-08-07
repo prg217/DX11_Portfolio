@@ -5,6 +5,8 @@
 #include "CAssetMgr.h"
 #include "CStructuredBuffer.h"
 
+#include "CTransform.h"
+
 CParticleSystem::CParticleSystem()
 	: CRenderComponent(COMPONENT_TYPE::PARTICLESYSTEM)	
 	, m_ParticleBuffer(nullptr)
@@ -14,18 +16,24 @@ CParticleSystem::CParticleSystem()
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleRenderMtrl"));
 
+	// ParticleTick ComputeShader
+	m_TickCS = (CParticleTickCS*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"ParticleTickCS").Get();
+
+	m_ParticleTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\particle\\CartoonSmoke.png");
+
 	// 파티클 100개 초기 설정
 	tParticle arrParticle[100] = {};
-	Vec2 vResolution = CDevice::GetInst()->GetResolution();
-	Vec3 vStart = Vec3(-vResolution.x / 2.f, 0.f, 100.f);
-	float step = vResolution.x / (float)m_MaxParticeCount;
+
+	float Angle = XM_2PI / m_MaxParticeCount;
 
 	for (int i = 0; i < m_MaxParticeCount; ++i)
 	{
-		arrParticle[i].Active = true;
+		arrParticle[i].Active = false;
 		arrParticle[i].Mass = 1.f;
 		arrParticle[i].vLocalPos = Vec3(0.f, 0.f, 0.f);
-		arrParticle[i].vWorldPos = vStart + Vec3(step * (float)i, 0.f, 0.f);
+		arrParticle[i].vWorldPos = Vec3(0.f, 0.f, 0.f);
+		arrParticle[i].vColor = Vec4(0.9f, 0.34f, 0.5f, 1.f);
+		arrParticle[i].vVelocity = Vec3(cosf(Angle * (float)i), sinf(Angle * (float)i), 0.f) * 200.f;
 	}
 
 	m_ParticleBuffer = new CStructuredBuffer;
@@ -40,19 +48,27 @@ CParticleSystem::~CParticleSystem()
 
 void CParticleSystem::FinalTick()
 {
-	
+	m_TickCS->SetParticleBuffer(m_ParticleBuffer);
+	m_TickCS->Execute();
 }
 
 void CParticleSystem::Render()
 {
-	m_ParticleBuffer->Binding(20);
+	// 위치정보 바인딩
+	Transform()->Binding();
 
-	for (int i = 0; i < m_MaxParticeCount; ++i)
-	{
-		GetMaterial()->SetScalarParam(INT_0, i);
-		GetMaterial()->Binding();
-		GetMesh()->Render();
-	}
+	// 파티클 버퍼 바인딩
+	m_ParticleBuffer->Binding(20); // t20
+
+	// 재질정보 바인딩
+	GetMaterial()->SetTexParam(TEX_0, m_ParticleTex);
+	GetMaterial()->Binding();
+
+	// 렌더링
+	GetMesh()->Render_Particle(m_MaxParticeCount);
+
+	// 파티클 버퍼 바인딩 해제
+	m_ParticleBuffer->Clear(20);
 }
 
 void CParticleSystem::SaveToFile(FILE* _File)

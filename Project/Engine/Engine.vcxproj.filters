@@ -151,6 +151,9 @@
     <ClInclude Include="CSetColorCS.h">
       <Filter>HLSL\03. Compute\01. SetColorShader</Filter>
     </ClInclude>
+    <ClInclude Include="CParticleTickCS.h">
+      <Filter>HLSL\03. Compute\02. ParticleTick</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -279,6 +282,9 @@
     </ClCompile>
     <ClCompile Include="CSetColorCS.cpp">
       <Filter>HLSL\03. Compute\01. SetColorShader</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleTickCS.cpp">
+      <Filter>HLSL\03. Compute\02. ParticleTick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -447,6 +453,9 @@
     <Filter Include="HLSL\03. Compute\01. SetColorShader">
       <UniqueIdentifier>{dbf13034-44c4-44a2-8551-2a579929cc8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL\03. Compute\02. ParticleTick">
+      <UniqueIdentifier>{5669b2b3-b2c9-42eb-baac-bce6d1b399cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -480,6 +489,9 @@
     </FxCompile>
     <FxCompile Include="particle.fx">
       <Filter>HLSL\02. Render\01. 2D</Filter>
+    </FxCompile>
+    <FxCompile Include="particletick.fx">
+      <Filter>HLSL\03. Compute\02. ParticleTick</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

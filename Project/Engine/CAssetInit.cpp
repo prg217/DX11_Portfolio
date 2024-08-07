@@ -264,8 +264,15 @@ void CAssetMgr::CreateEngineGraphicShader()
 	AddAsset(L"DistortionShader", pShader);
 }
 
+#include "CParticleTickCS.h"
+
 void CAssetMgr::CreateEngineComputeShader()
 {
+	// ParticleTick
+	Ptr<CComputeShader> pCS = nullptr;
+
+	pCS = new CParticleTickCS;
+	AddAsset<CComputeShader>(L"ParticleTickCS", pCS);
 }
 
 void CAssetMgr::CreateEngineMaterial()

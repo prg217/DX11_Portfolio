@@ -60,6 +60,7 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial()
 	return m_Mtrl;
 }
 
+
 void CRenderComponent::SaveDataToFile(FILE* _File)
 {
 	SaveAssetRef(m_Mesh, _File);

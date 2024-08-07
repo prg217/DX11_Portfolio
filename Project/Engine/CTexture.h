@@ -38,10 +38,16 @@ public:
     int Create(UINT _Width, UINT _Height, DXGI_FORMAT _PixelFormat, UINT _Flags, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
     int Create(ComPtr<ID3D11Texture2D> _Tex2D);
 
+    // GracphiShader - t register
     void Binding(UINT _RegisterNum);
-    void Binding_CS_UAV(UINT _RegisterNum);
-
     static void Clear(UINT _RegisterNum);
+
+    // ComputeShader - t register
+    void Binding_CS_SRV(UINT _RegisterNum);
+    void Clear_CS_SRV();
+
+    // ComputeShader - u register
+    void Binding_CS_UAV(UINT _RegisterNum);
     void Clear_CS_UAV();
     
 

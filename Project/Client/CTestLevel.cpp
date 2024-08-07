@@ -106,7 +106,7 @@ void CTestLevel::CreateTestLevel()
 		
 
 	// 플레이어 오브젝트
-	CGameObject* pPlayer = new CGameObject;
+	/*CGameObject* pPlayer = new CGameObject;
 	pPlayer->SetName(L"Player");
 	pPlayer->AddComponent(new CTransform);
 	pPlayer->AddComponent(new CMeshRender);
@@ -127,72 +127,71 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->FlipBookComponent()->AddFlipBook(5, pFlipBook);
 	pPlayer->FlipBookComponent()->Play(5, 10, true);
 
-	pLevel->AddObject(3, pPlayer);
+	pLevel->AddObject(3, pPlayer);*/
 
 
 	// Monster Object
-	CGameObject* pMonster = new CGameObject;
-	pMonster->SetName(L"Monster");
+	//CGameObject* pMonster = new CGameObject;
+	//pMonster->SetName(L"Monster");
 
-	pMonster->AddComponent(new CTransform);
-	pMonster->AddComponent(new CMeshRender);
-	pMonster->AddComponent(new CCollider2D);
+	//pMonster->AddComponent(new CTransform);
+	//pMonster->AddComponent(new CMeshRender);
+	//pMonster->AddComponent(new CCollider2D);
 
-	pMonster->Transform()->SetRelativePos(-400.f, 0.f, 100.f);
-	pMonster->Transform()->SetRelativeScale(150.f, 150.f, 1.f);	
+	//pMonster->Transform()->SetRelativePos(-400.f, 0.f, 100.f);
+	//pMonster->Transform()->SetRelativeScale(150.f, 150.f, 1.f);	
 
-	pMonster->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pMonster->Collider2D()->SetScale(Vec3(1.2f, 1.2f, 1.f));
+	//pMonster->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	//pMonster->Collider2D()->SetScale(Vec3(1.2f, 1.2f, 1.f));
 
-	pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pMonster->MeshRender()->SetMaterial(pMtrl);
+	//pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pMonster->MeshRender()->SetMaterial(pMtrl);
 
-
-
-	pLevel->AddObject(4, pMonster);
+	//pLevel->AddObject(4, pMonster);
 
 	// TileMap Object
-	CGameObject* pTileMapObj = new CGameObject;
-	pTileMapObj->SetName(L"TileMap");
+	//CGameObject* pTileMapObj = new CGameObject;
+	//pTileMapObj->SetName(L"TileMap");
 
-	pTileMapObj->AddComponent(new CTransform);
-	pTileMapObj->AddComponent(new CTileMap);
+	//pTileMapObj->AddComponent(new CTransform);
+	//pTileMapObj->AddComponent(new CTileMap);
 
-	pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
+	//pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
 
-	pTileMapObj->TileMap()->SetRowCol(20, 20);
-	pTileMapObj->TileMap()->SetTileSize(Vec2(64.f, 64.f));
+	//pTileMapObj->TileMap()->SetRowCol(20, 20);
+	//pTileMapObj->TileMap()->SetTileSize(Vec2(64.f, 64.f));
 
-	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\TILE.bmp");
-	pTileMapObj->TileMap()->SetAtlasTexture(pTileAtlas);
-	pTileMapObj->TileMap()->SetAtlasTileSize(Vec2(64.f, 64.f));
+	//Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\TILE.bmp");
+	//pTileMapObj->TileMap()->SetAtlasTexture(pTileAtlas);
+	//pTileMapObj->TileMap()->SetAtlasTileSize(Vec2(64.f, 64.f));
 
-	pLevel->AddObject(2, pTileMapObj);
+	//pLevel->AddObject(2, pTileMapObj);
 
 
 	// Particle Object
 	CGameObject* pParticleObj = new CGameObject;
+	pParticleObj->SetName(L"Particle");
 
 	pParticleObj->AddComponent(new CTransform);
 	pParticleObj->AddComponent(new CParticleSystem);
 
-	pTileMapObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	pParticleObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 
 	pLevel->AddObject(0, pParticleObj);
 
 
 	// PostProcess Object
-	CGameObject* pGrayFilterObj = new CGameObject;
-	pGrayFilterObj->SetName(L"GrayFilter");
-	pGrayFilterObj->AddComponent(new CTransform);
-	pGrayFilterObj->AddComponent(new CMeshRender);
+	//CGameObject* pGrayFilterObj = new CGameObject;
+	//pGrayFilterObj->SetName(L"GrayFilter");
+	//pGrayFilterObj->AddComponent(new CTransform);
+	//pGrayFilterObj->AddComponent(new CMeshRender);
 
-	pGrayFilterObj->Transform()->SetRelativeScale(150.f, 150.f, 1.f);
+	//pGrayFilterObj->Transform()->SetRelativeScale(150.f, 150.f, 1.f);
 
-	pGrayFilterObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pGrayFilterObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DistortionMtrl"));
+	//pGrayFilterObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pGrayFilterObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DistortionMtrl"));
 
-	pLevel->AddObject(0, pGrayFilterObj);
+	//pLevel->AddObject(0, pGrayFilterObj);
 
 	ChangeLevel(pLevel, LEVEL_STATE::STOP);
 
