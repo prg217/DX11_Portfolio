@@ -26,6 +26,8 @@ private:
     UINT                                m_ElementCount;
     UINT                                m_ElementSize;
 
+    UINT                                m_RecentRegisterNum;
+
 public:
     UINT GetElementCount() { return m_ElementCount; }
     UINT GetElementSize() { return m_ElementSize; }
@@ -34,7 +36,21 @@ public:
     void SetData(void* _pData, UINT _DataSize = 0);
     void GetData(void* _pData, UINT _DataSize = 0);
 
+    // GracphiShader - t register
     void Binding(UINT _RegisterNum);
+    void Clear(UINT _RegisterNum);
+
+    // ComputeShader - t register
+    void Binding_CS_SRV(UINT _RegisterNum);
+    void Clear_CS_SRV();
+
+    // ComputeShader - u register
+    void Binding_CS_UAV(UINT _RegisterNum);
+    void Clear_CS_UAV();
+
+   
+   
+
 
 
 public:
