@@ -9,10 +9,12 @@ class CParticleTickCS :
 {
 private:
     CStructuredBuffer*  m_ParticleBuffer;
+    CStructuredBuffer*  m_SpawnCountBuffer;
     
 
 public:
     void SetParticleBuffer(CStructuredBuffer* _Buffer) { m_ParticleBuffer = _Buffer; }
+    void SetSpawnCount(CStructuredBuffer* _Buffer) { m_SpawnCountBuffer = _Buffer; }
 
 
 public:

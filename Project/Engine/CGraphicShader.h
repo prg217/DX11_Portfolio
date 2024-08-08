@@ -18,24 +18,26 @@ class CGraphicShader :
     public CShader
 {
 private:
-    ComPtr<ID3DBlob>			m_VSBlob;
-    ComPtr<ID3DBlob>			m_PSBlob;
+    ComPtr<ID3DBlob>			    m_VSBlob;
+    ComPtr<ID3DBlob>			    m_GSBlob;
+    ComPtr<ID3DBlob>			    m_PSBlob;
 
-    ComPtr<ID3D11VertexShader>  m_VS;
-    ComPtr<ID3D11PixelShader>	m_PS;
+    ComPtr<ID3D11VertexShader>      m_VS;
+    ComPtr<ID3D11GeometryShader>    m_GS;
+    ComPtr<ID3D11PixelShader>	    m_PS;
 
-    ComPtr<ID3D11InputLayout>   m_Layout;
-    D3D11_PRIMITIVE_TOPOLOGY    m_Topology;
+    ComPtr<ID3D11InputLayout>       m_Layout;
+    D3D11_PRIMITIVE_TOPOLOGY        m_Topology;
 
-    RS_TYPE                     m_RSType;
-    DS_TYPE                     m_DSType;
-    BS_TYPE                     m_BSType;
+    RS_TYPE                         m_RSType;
+    DS_TYPE                         m_DSType;
+    BS_TYPE                         m_BSType;
 
-    SHADER_DOMAIN               m_Domain;   // ½¦ÀÌ´õÀÇ ·»´õ¸µ ¹æ½Ä
+    SHADER_DOMAIN                   m_Domain;   // ½¦ÀÌ´õÀÇ ·»´õ¸µ ¹æ½Ä
 
     // Shader Parameter
-    vector<tScalarParam>        m_ScalarParam;
-    vector<tTexParam>           m_TexParam;
+    vector<tScalarParam>            m_ScalarParam;
+    vector<tTexParam>               m_TexParam;
 
 
 public:
@@ -60,7 +62,9 @@ public:
 
 public:
     int CreateVertexShader(const wstring& _RelativePath, const string& _FuncName);
+    int CreateGeometryShader(const wstring& _RelativePath, const string& _FuncName);
     int CreatePixelShader(const wstring& _RelativePath, const string& _FuncName);
+
     void Binding();
 
 
