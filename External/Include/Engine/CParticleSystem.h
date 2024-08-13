@@ -1,18 +1,35 @@
 #pragma once
 #include "CRenderComponent.h"
 
+#include "CParticleTickCS.h"
+
 class CStructuredBuffer;
+
+struct tSpawnCount
+{
+    UINT    iSpawnCount;
+    UINT    padding[3];
+};
 
 class CParticleSystem :
     public CRenderComponent
 {
 private:
-    CStructuredBuffer*  m_ParticleBuffer;
+    Ptr<CParticleTickCS>    m_TickCS;
+    CStructuredBuffer*      m_ParticleBuffer;       // 모든 파티클 정보
+    CStructuredBuffer*      m_SpawnCountBuffer;     // 파티클 활성화 숫자 전달용 버퍼
 
-    int                 m_MaxParticeCount;
+    Ptr<CTexture>           m_ParticleTex;
+    float                   m_Time;                 // 누적시간
+
+    int                     m_MaxParticeCount;
 
 
 
+
+
+public:
+    void SetParticleTexture(Ptr<CTexture> _Texture) { m_ParticleTex = _Texture; }
 
 public:
     virtual void FinalTick() override;

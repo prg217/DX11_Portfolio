@@ -24,6 +24,7 @@
   .\Project\Engine\CMeshRender.h
   .\Project\Engine\components.h
   .\Project\Engine\CParticleSystem.h
+  .\Project\Engine\CParticleTickCS.h
   .\Project\Engine\CPathMgr.h
   .\Project\Engine\CPrefab.h
   .\Project\Engine\CRenderComponent.h
@@ -47,25 +48,103 @@
   .\Project\Engine\SimpleMath.h
   .\Project\Engine\singleton.h
   .\Project\Engine\struct.h
-  49개 파일이 복사되었습니다.
+  50개 파일이 복사되었습니다.
   .\Project\Engine\SimpleMath.inl
   1개 파일이 복사되었습니다.
   .\Project\Engine\debug.fx
   .\Project\Engine\func.fx
   .\Project\Engine\particle.fx
+  .\Project\Engine\particletick.fx
   .\Project\Engine\postprocess.fx
   .\Project\Engine\setcolor.fx
   .\Project\Engine\std2d.fx
   .\Project\Engine\struct.fx
   .\Project\Engine\tilemap.fx
   .\Project\Engine\value.fx
-  9개 파일이 복사되었습니다.
+  10개 파일이 복사되었습니다.
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\particle.fx(59,12-88): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\particle.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\particletick.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\setcolor.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\debug.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\func.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\postprocess.fx(98,11-130): warning X3206: implicit truncation of vector type
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\postprocess.fx(141,12-31): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\postprocess.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\std2d.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\struct.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\tilemap.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\value.cso
+  pch.cpp
+  CFlipBookComponent.cpp
+  CAsset.cpp
+  CAssetInit.cpp
+  CAssetMgr.cpp
   CCamera.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\xutility(4672,18): warning C4244: '=': 'const wchar_t'에서 'char'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  CCollider2D.cpp
   CCollisionMgr.cpp
+  CComponent.cpp
+  CComputeShader.cpp
+  CConstBuffer.cpp
+  CDevice.cpp
+  CEngine.cpp
+  CEntity.cpp
+  CFlipBook.cpp
   CGameObject.cpp
+  CGraphicShader.cpp
+  CKeyMgr.cpp
   CLayer.cpp
   CLevel.cpp
   CLevelMgr.cpp
+  코드를 생성하고 있습니다...
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CComputeShader.cpp(48,1): warning C4715: 'CComputeShader::Execute': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  컴파일하고 있습니다...
+  CLight2D.cpp
+  CMaterial.cpp
+  CMesh.cpp
+  CMeshRender.cpp
+  CParticleSystem.cpp
+  CParticleTickCS.cpp
+  CPathMgr.cpp
+  CPrefab.cpp
+  CRenderComponent.cpp
+  CRenderMgr.cpp
+  CRigidBody.cpp
+  CScript.cpp
+  CSetColorCS.cpp
+  CShader.cpp
+  CSprite.cpp
+  CStructuredBuffer.cpp
   CTaskMgr.cpp
+  CTexture.cpp
+  CTileMap.cpp
+  CTimeMgr.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  CTransform.cpp
+  Engine.cpp
+  extern.cpp
+  func.cpp
   코드를 생성하고 있습니다...
   Engine.vcxproj -> C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\Engine_D.lib

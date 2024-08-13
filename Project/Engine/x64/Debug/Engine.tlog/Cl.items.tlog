@@ -23,6 +23,7 @@ C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CMaterial.cpp;C:\AssortRoc
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CMesh.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CMesh.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CMeshRender.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CMeshRender.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CParticleSystem.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CParticleSystem.obj
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CParticleTickCS.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CParticleTickCS.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CPathMgr.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CPathMgr.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CPrefab.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CPrefab.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CRenderComponent.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CRenderComponent.obj
