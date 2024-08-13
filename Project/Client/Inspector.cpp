@@ -102,9 +102,21 @@ void Inspector::Update()
 	// Object Name
 	// ===========
 	string strObjectName = string(m_TargetObject->GetName().begin(), m_TargetObject->GetName().end());
+	string saveObjName = strObjectName;
 	ImGui::Text("Object Name");
 	ImGui::SameLine(108);		
-	ImGui::InputText("##ObjectName", (char*)strObjectName.c_str(), strObjectName.length(), ImGuiInputTextFlags_ReadOnly);
+	//ImGui::InputText("##ObjectName", (char*)strObjectName.c_str(), strObjectName.length(), ImGuiInputTextFlags_ReadOnly);
+	ImGui::InputText("##ObjectName", (char*)strObjectName.c_str(), strObjectName.length());
+
+	// 오브젝트 이름 바꾸기
+	if (saveObjName != strObjectName)
+	{
+		wstring changeObjName;
+		changeObjName.assign(strObjectName.begin(), strObjectName.end());
+		m_TargetObject->SetName(changeObjName);
+
+		CLevelMgr::GetInst()->LevelChanged();
+	}
 
 	// ======
 	// Layer
@@ -147,7 +159,13 @@ void Inspector::Update()
 void Inspector::SelectLayer(DWORD_PTR _ListUI)
 {
 	ListUI* pListUI = (ListUI*)_ListUI;
-	int selectIdx = pListUI->GetSelectIdx();
+	int selectIdx = pListUI->GetSelectIdx() - 1;
+
+	// none을 선택한 경우 리턴
+	if (selectIdx < 0)
+	{
+		return;
+	}
 
 	int LayerIdx = m_TargetObject->GetLayerIdx();
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();

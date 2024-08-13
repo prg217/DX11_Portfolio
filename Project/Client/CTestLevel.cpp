@@ -106,7 +106,7 @@ void CTestLevel::CreateTestLevel()
 		
 
 	// 플레이어 오브젝트
-	/*CGameObject* pPlayer = new CGameObject;
+	CGameObject* pPlayer = new CGameObject;
 	pPlayer->SetName(L"Player");
 	pPlayer->AddComponent(new CTransform);
 	pPlayer->AddComponent(new CMeshRender);
@@ -130,7 +130,7 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->FlipBookComponent()->AddFlipBook(5, pFlipBook);
 	pPlayer->FlipBookComponent()->Play(5, 10, true);
 
-	pLevel->AddObject(3, pPlayer);*/
+	pLevel->AddObject(3, pPlayer);
 
 
 	// Monster Object
