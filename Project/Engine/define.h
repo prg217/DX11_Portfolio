@@ -21,6 +21,7 @@
 #define CLONE(Type) virtual Type* Clone(){return new Type(*this); }
 #define CLONE_DISABLE(Type) virtual Type* Clone() { return nullptr; }
 
+#define DELETE(p) if(nullptr != p) delete p; p = nullptr;
 
 
 typedef Vector2 Vec2;

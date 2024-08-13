@@ -14,7 +14,7 @@ CParticleSystem::CParticleSystem()
 	, m_ParticleBuffer(nullptr)
 	, m_SpawnCountBuffer(nullptr)
 	, m_Time(0.f)
-	, m_MaxParticeCount(100)
+	, m_MaxParticeCount(1000)
 {
 	// Mesh / Material 
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
@@ -26,20 +26,17 @@ CParticleSystem::CParticleSystem()
 	m_ParticleTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\particle\\TX_GlowScene_2.png");
 
 	// 파티클 100개 초기 설정
-	tParticle arrParticle[100] = {};
+	tParticle arrParticle[1000] = {};
 
 	float Angle = XM_2PI / m_MaxParticeCount;
 
 	for (int i = 0; i < m_MaxParticeCount; ++i)
 	{
-		arrParticle[i].Active = false;
-		arrParticle[i].Mass = 1.f;
+		arrParticle[i].Active = false;		
 		arrParticle[i].vLocalPos = Vec3(0.f, 0.f, 0.f);
 		arrParticle[i].vWorldPos = Vec3(0.f, 0.f, 0.f);
 		arrParticle[i].vWorldScale = Vec3(20.f, 20.f, 0.f);
 		arrParticle[i].vColor = Vec4(0.9f, 0.34f, 0.5f, 1.f);
-
-		arrParticle[i].vVelocity = Vec3(cosf(Angle * (float)i), sinf(Angle * (float)i), 0.f) * 5.f;
 	}
 
 	m_ParticleBuffer = new CStructuredBuffer;
@@ -51,22 +48,26 @@ CParticleSystem::CParticleSystem()
 
 CParticleSystem::~CParticleSystem()
 {
-	if (nullptr != m_ParticleBuffer)
-		delete m_ParticleBuffer;
+	DELETE(m_ParticleBuffer);
+	DELETE(m_SpawnCountBuffer);
 }
 
 void CParticleSystem::FinalTick()
 {
 	// SpawnCount
 	m_Time += EngineDT;
-	if (1.f <= m_Time)
-	{
-		tSpawnCount count = {};
-		count.iSpawnCount = 1;
-		m_SpawnCountBuffer->SetData(&count);
+
+	tSpawnCount count = {};
+
+	if (0.02f <= m_Time)
+	{		
+		count.iSpawnCount = 2;	
 		m_Time = 0.f;
 	}
 
+	m_SpawnCountBuffer->SetData(&count);
+
+	m_TickCS->SetParticleWorldPos(Transform()->GetWorldPos());
 	m_TickCS->SetParticleBuffer(m_ParticleBuffer);
 	m_TickCS->SetSpawnCount(m_SpawnCountBuffer);
 	m_TickCS->Execute();
