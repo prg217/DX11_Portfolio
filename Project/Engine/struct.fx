@@ -25,15 +25,13 @@ struct tParticle
     float3  vLocalPos;
     float3  vWorldPos;
     float3  vWorldScale;
-    float4  vColor;
-    
-    float3  vForce;
+    float4  vColor;    
 	float3  vVelocity;    
     
-    float   Mass;
+    float   Age;
+    float   Life;
+    float   NormalizedAge;    
     int     Active;
-    
-    int3	Padding;
 };
 
 struct tSpawnCount
