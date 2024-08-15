@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -144,6 +144,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AE_SpriteView.h" />
+    <ClInclude Include="AE_Detail.h" />
+    <ClInclude Include="AE_Sub.h" />
+    <ClInclude Include="AnimationEditor.h" />
     <ClInclude Include="AssetUI.h" />
     <ClInclude Include="CameraUI.h" />
     <ClInclude Include="CEditorCameraScript.h" />
@@ -197,6 +201,10 @@
     <ClInclude Include="TreeUI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AE_SpriteView.cpp" />
+    <ClCompile Include="AE_Detail.cpp" />
+    <ClCompile Include="AE_Sub.cpp" />
+    <ClCompile Include="AnimationEditor.cpp" />
     <ClCompile Include="AssetUI.cpp" />
     <ClCompile Include="CameraUI.cpp" />
     <ClCompile Include="CEditorCameraScript.cpp" />

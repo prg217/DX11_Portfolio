@@ -118,11 +118,23 @@
     <Filter Include="EditorUI\08. SpriteEditor\SE_Sub">
       <UniqueIdentifier>{2203be1f-db69-44dd-9fdf-ad683f5788ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EditorUI\08. SpriteEditor\SE_Sub\SE_Detatil">
-      <UniqueIdentifier>{1534f3cb-07e2-4a2a-9fcb-038f45a0df7d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="EditorUI\08. SpriteEditor\SE_Sub\SE_AtlasView">
       <UniqueIdentifier>{e34f6401-5b14-4f41-88dd-ca6e7804459c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\09. AnimationEditor">
+      <UniqueIdentifier>{b3079566-e1c1-48e0-b865-25daa580f8cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\09. AnimationEditor\AE_Sub">
+      <UniqueIdentifier>{9b3bd8cc-1eef-413f-916c-a28968f88f63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\09. AnimationEditor\AE_Sub\AE_Detail">
+      <UniqueIdentifier>{23e18d3f-6f56-46ad-89b2-b6f1e873f0ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\08. SpriteEditor\SE_Sub\SE_Detail">
+      <UniqueIdentifier>{1534f3cb-07e2-4a2a-9fcb-038f45a0df7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\09. AnimationEditor\AE_Sub\AE_SpriteView">
+      <UniqueIdentifier>{145e6879-a636-4e17-a1f1-78e71a44ee03}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -277,7 +289,19 @@
       <Filter>EditorUI\08. SpriteEditor\SE_Sub\SE_AtlasView</Filter>
     </ClInclude>
     <ClInclude Include="SE_Detail.h">
-      <Filter>EditorUI\08. SpriteEditor\SE_Sub\SE_Detatil</Filter>
+      <Filter>EditorUI\08. SpriteEditor\SE_Sub\SE_Detail</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationEditor.h">
+      <Filter>EditorUI\09. AnimationEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="AE_Sub.h">
+      <Filter>EditorUI\09. AnimationEditor\AE_Sub</Filter>
+    </ClInclude>
+    <ClInclude Include="AE_Detail.h">
+      <Filter>EditorUI\09. AnimationEditor\AE_Sub\AE_Detail</Filter>
+    </ClInclude>
+    <ClInclude Include="AE_SpriteView.h">
+      <Filter>EditorUI\09. AnimationEditor\AE_Sub\AE_SpriteView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -433,7 +457,19 @@
       <Filter>EditorUI\08. SpriteEditor\SE_Sub\SE_AtlasView</Filter>
     </ClCompile>
     <ClCompile Include="SE_Detail.cpp">
-      <Filter>EditorUI\08. SpriteEditor\SE_Sub\SE_Detatil</Filter>
+      <Filter>EditorUI\08. SpriteEditor\SE_Sub\SE_Detail</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationEditor.cpp">
+      <Filter>EditorUI\09. AnimationEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="AE_Sub.cpp">
+      <Filter>EditorUI\09. AnimationEditor\AE_Sub</Filter>
+    </ClCompile>
+    <ClCompile Include="AE_Detail.cpp">
+      <Filter>EditorUI\09. AnimationEditor\AE_Sub\AE_Detail</Filter>
+    </ClCompile>
+    <ClCompile Include="AE_SpriteView.cpp">
+      <Filter>EditorUI\09. AnimationEditor\AE_Sub\AE_SpriteView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

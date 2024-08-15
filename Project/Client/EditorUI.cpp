@@ -31,7 +31,7 @@ void EditorUI::Tick()
 	UINT flag = ImGuiWindowFlags_HorizontalScrollbar;
 	if (m_UseMenuBar)
 		flag = ImGuiWindowFlags_MenuBar;
-	if(!m_Move)
+	if (!m_Move)
 		flag |= ImGuiWindowFlags_NoMove;
 
 

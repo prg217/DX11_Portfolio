@@ -16,6 +16,9 @@
 #include "SpriteEditor.h"
 #include "SE_AtlasView.h"
 #include "SE_Detail.h"
+#include "AnimationEditor.h"
+#include "AE_Detail.h"
+#include "AE_SpriteView.h"
 
 void CEditorMgr::InitImGui()
 {
@@ -138,6 +141,25 @@ void CEditorMgr::CreateEditorUI()
     pUI = new SpriteEditor;
     pUI->Init();
     pUI->SetName("SpriteEditor");
+    pUI->SetActive(false);
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
+    // AE_Detail
+    pUI = new AE_Detail;
+    pUI->Init();
+    pUI->SetName("AE_Detail");
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
+    // AE_SpriteView
+    pUI = new AE_SpriteView;
+    pUI->Init();
+    pUI->SetName("AE_SpriteView");
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
+    // AnimationEditor
+    pUI = new AnimationEditor;
+    pUI->Init();
+    pUI->SetName("AnimationEditor");
     pUI->SetActive(false);
     m_mapUI.insert(make_pair(pUI->GetName(), pUI));
 }

@@ -45,6 +45,11 @@ void ListUI::Update()
 				(m_UI->*m_MemFunc)((DWORD_PTR)this);
 			}
 
+			if (m_UI && m_MemFunc2)
+			{
+				(m_UI->*m_MemFunc2)((DWORD_PTR)this, (DWORD_PTR)this);
+			}
+
 			SetActive(false);
 		}
 
@@ -77,4 +82,5 @@ void ListUI::Deactivate()
 	m_SelectedIdx = -1;
 	m_UI = nullptr;
 	m_MemFunc = nullptr;
+	m_MemFunc2 = nullptr;
 }

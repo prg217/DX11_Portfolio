@@ -193,13 +193,21 @@ void MenuUI::Assets()
 
 
 		EditorUI* pSpriteEditor = CEditorMgr::GetInst()->FindEditorUI("SpriteEditor");				
-		bool IsActive = pSpriteEditor->IsActive();
+		bool IsSpriteActive = pSpriteEditor->IsActive();
 
-		if (ImGui::MenuItem("Sprite Editor", nullptr, &IsActive))
+		if (ImGui::MenuItem("Sprite Editor", nullptr, &IsSpriteActive))
 		{			
-			CEditorMgr::GetInst()->FindEditorUI("SpriteEditor")->SetActive(IsActive);
+			CEditorMgr::GetInst()->FindEditorUI("SpriteEditor")->SetActive(IsSpriteActive);
 		}
+		
+		EditorUI* pAnimationEditor = CEditorMgr::GetInst()->FindEditorUI("AnimationEditor");
+		bool IsAnimationActive = pAnimationEditor->IsActive();
 
+		if (ImGui::MenuItem("Animation Editor", nullptr, &IsAnimationActive))
+		{
+			CEditorMgr::GetInst()->FindEditorUI("AnimationEditor")->SetActive(IsAnimationActive);
+		}
+		
 		ImGui::EndMenu();
 	}
 }
