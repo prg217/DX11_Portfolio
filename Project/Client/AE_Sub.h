@@ -15,7 +15,6 @@ public:
     class AE_Detail* GetDetail() { return m_Owner->GetDetail(); }
     class AE_SpriteView* GetSpriteView() { return m_Owner->GetSpriteView(); }
 
-
 public:
     AE_Sub();
     ~AE_Sub();

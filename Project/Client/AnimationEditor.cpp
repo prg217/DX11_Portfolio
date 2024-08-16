@@ -130,7 +130,7 @@ void AnimationEditor::Sprite(int _Count)
 		pListUI->AddList(vecSpriteNames);
 		pListUI->AddDelegate(this, (DELEGATE_2)&AnimationEditor::SelectSprite, _Count);
 		pListUI->SetActive(true);
-		// 두번째 시도부터 UI가 뒤에 있음...
+		// 두번째 시도부터 UI가 뒤에 있음 수정 예정
 	}
 }
 

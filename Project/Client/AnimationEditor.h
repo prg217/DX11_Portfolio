@@ -12,15 +12,13 @@ class AnimationEditor :
     //  1-1. 스프라이트 하나를 추가하면 다음 스프라이트를 추가할 수 있게 해야 함
     //  1-2. 스프라이트 벡터 맨 마지막을 none으로 바꾼다면 pop... 
     // 2. 추가한 스프라이트들의 순서를 조정
-    // 3. 추가한 스프라이트... 마다 구조체? 그거... 몇 초 동안 보여지는지, 위치는 어디인지
+    // 3. 추가한 스프라이트... 마다 구조체? 그거... 몇 초 동안 보여지는지, 위치는 어디인지 
     //  3-1. 스프라이트를 선택하면 그 스프라이트에 맞는 디테일(구조체)이 보여야 함
     // 4. 세이브, 로드 기능
 
-    // 일단 여기에 스프라이트 추가하는거 넣어두고, 아틀라스 뷰에서 이미지들 순서 보여주기
+    // 일단 여기에 스프라이트 추가하는거 넣어두고, 스프라이트 뷰에서 이미지들 순서, 플립북...재생 보여주기
 private:
-    vector<Ptr<CSprite>> m_vecSprite;
-protected:
-    vector<Ptr<CSprite>> GetSprites() { return m_vecSprite; }
+    vector<Ptr<CSprite>>    m_vecSprite;
 
 private:
     AE_SpriteView* m_SpriteView;
@@ -29,6 +27,7 @@ private:
 public:
     AE_SpriteView* GetSpriteView() { return m_SpriteView; }
     AE_Detail* GetDetail() { return m_Detail; }
+    //vector<Ptr<CTexture>> GetSpriteTexs() { return m_vecSpriteTex; }
 
 public:
     virtual void Init() override;
