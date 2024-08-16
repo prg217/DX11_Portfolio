@@ -5,6 +5,7 @@ ListUI::ListUI()
 	: m_SelectedIdx(-1)
 	, m_UI(nullptr)
 	, m_MemFunc(nullptr)
+	, m_IntT(0)
 {
 }
 
@@ -47,7 +48,8 @@ void ListUI::Update()
 
 			if (m_UI && m_MemFunc2)
 			{
-				(m_UI->*m_MemFunc2)((DWORD_PTR)this, (DWORD_PTR)this);
+				// int만 되고 있는데, 다른 자료형도 되도록 나눠야 함
+				(m_UI->*m_MemFunc2)((DWORD_PTR)this, (DWORD_PTR)m_IntT);
 			}
 
 			SetActive(false);

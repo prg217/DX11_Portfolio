@@ -95,7 +95,10 @@ void AnimationEditor::Sprite(int _Count)
 	ImGui::Text(nameCount);
 	ImGui::SameLine(120);
 	ImGui::SetNextItemWidth(150.f);
-	ImGui::InputText("##Sprite", (char*)SpriteName.c_str(), ImGuiInputTextFlags_::ImGuiInputTextFlags_ReadOnly);
+
+	string tempID = "##Sprite" + tempCount;
+	const char* nameID_1 = tempID.c_str();
+	ImGui::InputText(nameID_1, (char*)SpriteName.c_str(), ImGuiInputTextFlags_::ImGuiInputTextFlags_ReadOnly);
 
 	if (ImGui::BeginDragDropTarget())
 	{
@@ -115,16 +118,19 @@ void AnimationEditor::Sprite(int _Count)
 		ImGui::EndDragDropTarget();
 	}
 
+	tempID = "##SpriteBtn" + tempCount;
+	const char* nameID_2 = tempID.c_str();
 	ImGui::SameLine();
-	if (ImGui::Button("##SpriteBtn", ImVec2(18.f, 18.f)))
+	if (ImGui::Button(nameID_2, ImVec2(18.f, 18.f)))
 	{
 		ListUI* pListUI = (ListUI*)CEditorMgr::GetInst()->FindEditorUI("List");
 		pListUI->SetName("Sprite");
 		vector<string> vecSpriteNames;
 		CAssetMgr::GetInst()->GetAssetNames(ASSET_TYPE::SPRITE, vecSpriteNames);
 		pListUI->AddList(vecSpriteNames);
-		pListUI->AddDelegate(this, (DELEGATE_2)&AnimationEditor::SelectSprite);
+		pListUI->AddDelegate(this, (DELEGATE_2)&AnimationEditor::SelectSprite, _Count);
 		pListUI->SetActive(true);
+		// 두번째 시도부터 UI가 뒤에 있음...
 	}
 }
 
@@ -150,7 +156,21 @@ void AnimationEditor::SelectSprite(DWORD_PTR _ListUI, DWORD_PTR _Count)
 
 	if (strName == "None")
 	{
-		m_vecSprite[_Count] = nullptr;
+		if (_Count == 0 && m_vecSprite.size() == 0)
+		{
+			return;
+		}
+
+		// 맨 뒤의 경우 아예 없애버림
+		if (_Count == m_vecSprite.size() - 1 && _Count != 0)
+		{
+			m_vecSprite.pop_back();
+		}
+		else if (_Count < m_vecSprite.size())
+		{
+			m_vecSprite[_Count] = nullptr;
+		}
+
 		return;
 	}
 
