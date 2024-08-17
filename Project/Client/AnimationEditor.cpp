@@ -146,7 +146,7 @@ void AnimationEditor::SetSprite(Ptr<CSprite> _Sprite, int _Count)
 	}
 	
 	GetSpriteView()->SetSprites(m_vecSprite);
-	//GetDetail()->SetSprites(m_vecSprite);
+	GetDetail()->SetSprites(m_vecSprite);
 }
 
 void AnimationEditor::SelectSprite(DWORD_PTR _ListUI, DWORD_PTR _Count)

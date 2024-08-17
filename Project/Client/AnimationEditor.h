@@ -27,7 +27,6 @@ private:
 public:
     AE_SpriteView* GetSpriteView() { return m_SpriteView; }
     AE_Detail* GetDetail() { return m_Detail; }
-    //vector<Ptr<CTexture>> GetSpriteTexs() { return m_vecSpriteTex; }
 
 public:
     virtual void Init() override;

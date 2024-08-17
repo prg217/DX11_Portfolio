@@ -4,21 +4,23 @@ class AE_Detail :
     public AE_Sub
 {
 private:
-    Ptr<CTexture>   m_AtlasTex;
+    vector<Ptr<CSprite>>    m_vecSprite;
 
-private:
-    //void Atlas();
-    //void AtlasInfo();
+    float                   m_WidthSize;
+
+    int                     m_CurSpriteIdx;
+    float                   m_FPS;          // 현재 재생중인 FlipBook 의 초당 프레임 진행 수
+    float                   m_AccTime;      // 누적 시간값 체크
 
 public:
-    //void SetAtlasTex(Ptr<CTexture> _Tex);
+    void SetSprites(vector<Ptr<CSprite>>  _Sprites);
 
 public:
     virtual void Init() override;
     virtual void Update() override;
 
 private:
-    //void SelectTexture(DWORD_PTR _ListUI);
+    void AniPreview();
 
 public:
     AE_Detail();

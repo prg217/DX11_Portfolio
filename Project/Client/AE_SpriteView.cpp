@@ -16,6 +16,11 @@ void AE_SpriteView::Init()
 
 void AE_SpriteView::Update()
 {
+	if (m_vecSprite.size() == 0)
+	{
+		return;
+	}
+
 	ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	ImVec4 border_col = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
 
@@ -28,10 +33,20 @@ void AE_SpriteView::Update()
 
 		Vec2 tempSliceUV = i->GetSliceUV();
 		Vec2 tempRightDownUV = tempLeftTopUV + tempSliceUV;
+		tempRightDownUV -= i->GetOffsetUV();
 		ImVec2 rightDownUV = ImVec2(tempRightDownUV.x, tempRightDownUV.y);
 
 		// 실제 해상도 대비 출력 Image 의 비율
 		float ratio = m_WidthSize / tex->Width();
+
+		// _in.vUV : 스프라이를 참조할 위치를 비율로 환산한 값
+		//Vec2 tempBGUV = i->GetBackgroundUV();
+		//Vec2 BackGroundLeftTop = tempLeftTopUV - (tempBGUV - tempSliceUV) / Vec2(2.f, 2.f);
+		//Vec2 vSpriteUV = BackGroundLeftTop + ( 0.7 * i->GetBackgroundUV());
+		//vSpriteUV -= i->GetOffsetUV();
+
+		//ImVec2 BGLeftTop = ImVec2(BackGroundLeftTop.x, BackGroundLeftTop.y);
+		//ImVec2 spriteUV = ImVec2(vSpriteUV.x, vSpriteUV.y);
 
 		ImGui::Image(tex->GetSRV().Get(), ImVec2((m_WidthSize), tex->Height() * ratio), leftTopUV, rightDownUV, tint_col, border_col);
 

@@ -4,7 +4,7 @@ class AE_SpriteView :
     public AE_Sub
 {
 private:
-    vector<Ptr<CSprite>>   m_vecSprite;
+    vector<Ptr<CSprite>>    m_vecSprite;
 
     float                   m_WidthSize;
 
