@@ -13,7 +13,7 @@ private:
     float                   m_AccTime;      // 누적 시간값 체크
 
 public:
-    void SetSprites(vector<Ptr<CSprite>>  _Sprites);
+    void SetSprites(const vector<Ptr<CSprite>>& _Sprites);
 
 public:
     virtual void Init() override;

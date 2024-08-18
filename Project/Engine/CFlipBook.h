@@ -14,6 +14,8 @@ public:
     Ptr<CSprite> GetSprite(int _Idx) { return m_vecSprite[_Idx]; }
     int GetMaxFrameCount() { return (int)m_vecSprite.size(); }
 
+    void SetSprites(vector<Ptr<CSprite>> _Sprite) { m_vecSprite = _Sprite; }
+    vector<Ptr<CSprite>> GetSprites() { return m_vecSprite; }
 
 public:
     void FinalTick();

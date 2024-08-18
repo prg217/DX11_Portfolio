@@ -130,7 +130,7 @@ void AnimationEditor::Sprite(int _Count)
 		pListUI->AddList(vecSpriteNames);
 		pListUI->AddDelegate(this, (DELEGATE_2)&AnimationEditor::SelectSprite, _Count);
 		pListUI->SetActive(true);
-		// 두번째 시도부터 UI가 뒤에 있음 수정 예정
+		// 두번째 시도부터 UI가 뒤에 있음
 	}
 }
 
@@ -149,6 +149,11 @@ void AnimationEditor::SetSprite(Ptr<CSprite> _Sprite, int _Count)
 	GetDetail()->SetSprites(m_vecSprite);
 }
 
+void AnimationEditor::SetSprites(const vector<Ptr<CSprite>>& _Sprites)
+{
+	m_vecSprite = _Sprites;
+}
+
 void AnimationEditor::SelectSprite(DWORD_PTR _ListUI, DWORD_PTR _Count)
 {
 	ListUI* pListUI = (ListUI*)_ListUI;
@@ -160,16 +165,15 @@ void AnimationEditor::SelectSprite(DWORD_PTR _ListUI, DWORD_PTR _Count)
 		{
 			return;
 		}
+		if (_Count == m_vecSprite.size())
+		{
+			return;
+		}
 
-		// 맨 뒤의 경우 아예 없애버림
-		if (_Count == m_vecSprite.size() - 1 && _Count != 0)
-		{
-			m_vecSprite.pop_back();
-		}
-		else if (_Count < m_vecSprite.size())
-		{
-			m_vecSprite[_Count] = nullptr;
-		}
+		m_vecSprite.erase(m_vecSprite.begin() + _Count);
+
+		GetSpriteView()->SetSprites(m_vecSprite);
+		GetDetail()->SetSprites(m_vecSprite);
 
 		return;
 	}

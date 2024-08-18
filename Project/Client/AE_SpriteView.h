@@ -13,7 +13,7 @@ public:
     virtual void Update() override;
 
 public:
-    void SetSprites(vector<Ptr<CSprite>>  _Sprites);
+    void SetSprites(const vector<Ptr<CSprite>>& _Sprites);
 
 public:
     AE_SpriteView();

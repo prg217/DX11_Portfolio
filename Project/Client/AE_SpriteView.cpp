@@ -58,7 +58,7 @@ void AE_SpriteView::Update()
 	}
 }
 
-void AE_SpriteView::SetSprites(vector<Ptr<CSprite>>  _Sprites)
+void AE_SpriteView::SetSprites(const vector<Ptr<CSprite>>& _Sprites)
 {
 	m_vecSprite = _Sprites;
 }

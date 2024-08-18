@@ -39,6 +39,8 @@ private:
     void Sprite(int _Count);
 public:
     void SetSprite(Ptr<CSprite> _Sprite, int _Count);
+    void SetSprites(const vector<Ptr<CSprite>>& _Sprites);
+
 private:
     void SelectSprite(DWORD_PTR _ListUI, DWORD_PTR _Count);
 

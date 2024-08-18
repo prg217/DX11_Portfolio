@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "AE_Detail.h"
 
+#include "AE_SpriteView.h"
+
 #include <Engine/CTimeMgr.h>
+#include <Engine/CFlipBook.h>
 
 AE_Detail::AE_Detail()
 	: m_WidthSize(200)
@@ -13,9 +16,10 @@ AE_Detail::AE_Detail()
 
 AE_Detail::~AE_Detail()
 {
+	// new 해제
 }
 
-void AE_Detail::SetSprites(vector<Ptr<CSprite>> _Sprites)
+void AE_Detail::SetSprites(const vector<Ptr<CSprite>>& _Sprites)
 {
 	m_vecSprite = _Sprites;
 }
@@ -35,7 +39,68 @@ void AE_Detail::Update()
 	AniPreview();
 
 	// 플립북 저장, 불러오기
+	if (ImGui::Button("Save##FlipBook", ImVec2(50.f, 18.f)))
+	{
+		CFlipBook* pFlipBook = new CFlipBook;
+		pFlipBook->SetSprites(m_vecSprite);
 
+		wchar_t szSelect[256] = {};
+
+		OPENFILENAME ofn = {};
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner = nullptr;
+		ofn.lpstrFile = szSelect;
+		ofn.lpstrFile[0] = '\0';
+		ofn.nMaxFile = sizeof(szSelect);
+		ofn.lpstrFilter = L"Animation\0*.flip";
+		ofn.nFilterIndex = 0;
+		ofn.lpstrFileTitle = NULL;
+		ofn.nMaxFileTitle = 0;
+		// 탐색창 초기 위치 지정
+		wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+		strInitPath += L"Animation\\";
+		ofn.lpstrInitialDir = strInitPath.c_str();
+
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+		if (GetSaveFileName(&ofn))
+		{
+			pFlipBook->Save(szSelect);
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Load##FlipBook", ImVec2(50.f, 18.f)))
+	{
+		CFlipBook* pFlipBook = new CFlipBook;
+
+		wchar_t szSelect[256] = {};
+
+		OPENFILENAME ofn = {};
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner = nullptr;
+		ofn.lpstrFile = szSelect;
+		ofn.lpstrFile[0] = '\0';
+		ofn.nMaxFile = sizeof(szSelect);
+		ofn.lpstrFilter = L"Animation\0*.flip";
+		ofn.nFilterIndex = 0;
+		ofn.lpstrFileTitle = NULL;
+		ofn.nMaxFileTitle = 0;
+		// 탐색창 초기 위치 지정
+		wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+		strInitPath += L"Animation\\";
+		ofn.lpstrInitialDir = strInitPath.c_str();
+
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+		if (GetSaveFileName(&ofn))
+		{
+			pFlipBook->Load(szSelect);
+		}
+
+		m_vecSprite = pFlipBook->GetSprites();
+		OwnerSetSprites(m_vecSprite);
+		GetSpriteView()->SetSprites(m_vecSprite);
+	}
 }
 
 void AE_Detail::AniPreview()
@@ -46,6 +111,10 @@ void AE_Detail::AniPreview()
 	if (m_vecSprite.size() == 0)
 	{
 		return;
+	}
+	if (m_CurSpriteIdx >= m_vecSprite.size())
+	{
+		m_CurSpriteIdx = 0;
 	}
 
 	float MaxTime = 1.f / m_FPS;
