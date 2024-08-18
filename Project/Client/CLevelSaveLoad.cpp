@@ -95,13 +95,6 @@ void CLevelSaveLoad::SaveGameObject(FILE* _File, CGameObject* _Object)
 	}
 }
 
-
-
-
-
-
-
-
 CLevel* CLevelSaveLoad::LoadLevel(const wstring& _FilePath)
 {
 	FILE* File = nullptr;
@@ -231,7 +224,7 @@ CComponent* CLevelSaveLoad::GetComponent(COMPONENT_TYPE _Type)
 		break;
 
 	case COMPONENT_TYPE::RIGIDBODY:
-		break;
+		return new CRigidBody;
 
 	case COMPONENT_TYPE::CAMERA:
 		return  new CCamera;
@@ -255,5 +248,60 @@ CComponent* CLevelSaveLoad::GetComponent(COMPONENT_TYPE _Type)
 		break;
 	}
 
+	return nullptr;
+}
+
+void CLevelSaveLoad::SaveLevelExplorer(CLevel* _Level)
+{
+	wchar_t szSelect[256] = {};
+
+	OPENFILENAME ofn = {};
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = nullptr;
+	ofn.lpstrFile = szSelect;
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = sizeof(szSelect);
+	ofn.lpstrFilter = L"level\0*.lv";
+	ofn.nFilterIndex = 0;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	// 탐색창 초기 위치 지정
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"level\\";
+	ofn.lpstrInitialDir = strInitPath.c_str();
+
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	if (GetSaveFileName(&ofn))
+	{
+		SaveLevel(szSelect, _Level);
+	}
+}
+
+CLevel* CLevelSaveLoad::LoadLevelExplorer()
+{
+	wchar_t szSelect[256] = {};
+
+	OPENFILENAME ofn = {};
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = nullptr;
+	ofn.lpstrFile = szSelect;
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = sizeof(szSelect);
+	ofn.lpstrFilter = L"level\0*.lv";
+	ofn.nFilterIndex = 0;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	// 탐색창 초기 위치 지정
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"level\\";
+	ofn.lpstrInitialDir = strInitPath.c_str();
+
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	if (GetOpenFileName(&ofn))
+	{
+		LoadLevel(szSelect);
+	}
 	return nullptr;
 }

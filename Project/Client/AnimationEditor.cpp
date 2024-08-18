@@ -94,7 +94,7 @@ void AnimationEditor::Sprite(int _Count)
 	ImGui::SameLine(60);
 	ImGui::Text(nameCount);
 	ImGui::SameLine(120);
-	ImGui::SetNextItemWidth(150.f);
+	ImGui::SetNextItemWidth(200.f);
 
 	string tempID = "##Sprite" + tempCount;
 	const char* nameID_1 = tempID.c_str();

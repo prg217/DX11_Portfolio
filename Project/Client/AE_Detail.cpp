@@ -92,7 +92,7 @@ void AE_Detail::Update()
 
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
-		if (GetSaveFileName(&ofn))
+		if (GetOpenFileName(&ofn))
 		{
 			pFlipBook->Load(szSelect);
 		}

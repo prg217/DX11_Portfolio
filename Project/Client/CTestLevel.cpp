@@ -196,7 +196,7 @@ void CTestLevel::CreateTestLevel()
 
 	//pLevel->AddObject(0, pGrayFilterObj);
 
-	ChangeLevel(pLevel, LEVEL_STATE::PLAY);
+	ChangeLevel(pLevel, LEVEL_STATE::STOP);
 
 	// 충돌 지정
 	CCollisionMgr::GetInst()->CollisionCheck(3, 4); // Player vs Monster

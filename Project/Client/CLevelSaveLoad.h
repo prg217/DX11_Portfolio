@@ -10,5 +10,8 @@ public:
 	static class CLevel* LoadLevel(const wstring& _FilePath);
 	static class CGameObject* LoadGameObject(FILE* _File);
 	static class CComponent* GetComponent(COMPONENT_TYPE _Type);
+
+	static void SaveLevelExplorer(CLevel* _Level);
+	static class CLevel* LoadLevelExplorer();
 };
 

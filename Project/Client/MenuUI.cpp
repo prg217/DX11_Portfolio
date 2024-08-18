@@ -52,14 +52,16 @@ void MenuUI::File()
 {
 	if (ImGui::BeginMenu("File"))
 	{
+		CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
 		if (ImGui::MenuItem("Level Save"))
 		{
-
+			CLevelSaveLoad::SaveLevelExplorer(pCurLevel);
 		}
 
 		if (ImGui::MenuItem("Level Load"))
 		{
-
+			ChangeLevel(CLevelSaveLoad::LoadLevelExplorer(), LEVEL_STATE::STOP);
 		}
 
 		ImGui::EndMenu();
