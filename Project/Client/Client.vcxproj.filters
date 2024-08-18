@@ -136,6 +136,9 @@
     <Filter Include="EditorUI\09. AnimationEditor\AE_Sub\AE_SpriteView">
       <UniqueIdentifier>{145e6879-a636-4e17-a1f1-78e71a44ee03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EditorUI\10. TileMapEditor">
+      <UniqueIdentifier>{2c002704-2277-4aa4-84af-7eabc6edfc40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -302,6 +305,9 @@
     </ClInclude>
     <ClInclude Include="AE_SpriteView.h">
       <Filter>EditorUI\09. AnimationEditor\AE_Sub\AE_SpriteView</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMapEditor.h">
+      <Filter>EditorUI\10. TileMapEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -470,6 +476,9 @@
     </ClCompile>
     <ClCompile Include="AE_SpriteView.cpp">
       <Filter>EditorUI\09. AnimationEditor\AE_Sub\AE_SpriteView</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMapEditor.cpp">
+      <Filter>EditorUI\10. TileMapEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

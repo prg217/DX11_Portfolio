@@ -301,7 +301,8 @@ CLevel* CLevelSaveLoad::LoadLevelExplorer()
 
 	if (GetOpenFileName(&ofn))
 	{
-		LoadLevel(szSelect);
+		return LoadLevel(szSelect);
 	}
+
 	return nullptr;
 }

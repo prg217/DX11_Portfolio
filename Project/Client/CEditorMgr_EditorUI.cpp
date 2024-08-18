@@ -19,6 +19,7 @@
 #include "AnimationEditor.h"
 #include "AE_Detail.h"
 #include "AE_SpriteView.h"
+#include "TileMapEditor.h"
 
 void CEditorMgr::InitImGui()
 {
@@ -160,6 +161,13 @@ void CEditorMgr::CreateEditorUI()
     pUI = new AnimationEditor;
     pUI->Init();
     pUI->SetName("AnimationEditor");
+    pUI->SetActive(false);
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+    
+    // TileMapEditor
+    pUI = new TileMapEditor;
+    pUI->Init();
+    pUI->SetName("TileMapEditor");
     pUI->SetActive(false);
     m_mapUI.insert(make_pair(pUI->GetName(), pUI));
 }

@@ -209,6 +209,14 @@ void MenuUI::Assets()
 		{
 			CEditorMgr::GetInst()->FindEditorUI("AnimationEditor")->SetActive(IsAnimationActive);
 		}
+
+		EditorUI* pTileMapEditor = CEditorMgr::GetInst()->FindEditorUI("TileMapEditor");
+		bool IsTileMapActive = pTileMapEditor->IsActive();
+
+		if (ImGui::MenuItem("TileMap Editor", nullptr, &IsAnimationActive))
+		{
+			CEditorMgr::GetInst()->FindEditorUI("TileMapEditor")->SetActive(IsTileMapActive);
+		}
 		
 		ImGui::EndMenu();
 	}
