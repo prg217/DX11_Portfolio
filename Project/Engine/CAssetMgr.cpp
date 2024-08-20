@@ -11,7 +11,11 @@ CAssetMgr::CAssetMgr()
 
 CAssetMgr::~CAssetMgr()
 {
-
+	if (nullptr != m_FMODSystem)
+	{
+		m_FMODSystem->release();
+		m_FMODSystem = nullptr;
+	}	
 }
 
 
@@ -19,6 +23,9 @@ void CAssetMgr::Tick()
 {
 	if (m_Changed)
 		m_Changed = false;	
+
+	// FMOD Tick
+	m_FMODSystem->update();
 }
 
 

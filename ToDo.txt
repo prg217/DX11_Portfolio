@@ -19,33 +19,33 @@
  - Outliner
  - Level / Save / Load
 
-
 7. Script 분리
 
 
 8. 복사 생성자
 
 
-9. StructuredBuffer
-  - GetData
-  - UnorderedAccessView 
-
-10. GPGPU
-  - Compute Shader
-  - UAV(UnorderedAccessView)
-
-11. ParticleSystemComponent
-  - GS(GeometryShader)
-
-12. Post Process ( 후 처리 )
+9. Post Process ( 후 처리 )
   - Distortion 효과
   - FOG 
 
+10. Sprite Editor
+  - 
 
+11. StructuredBuffer
+  - GetData
+  - UnorderedAccessView 
 
+12. GPGPU
+  - Compute Shader
+  - UAV(UnorderedAccessView)
 
+13. ParticleSystemComponent
+  - GS (GeometryShader)
 
+14. FMOD
 
+15. Font
 
 
 

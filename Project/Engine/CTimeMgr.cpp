@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CTimeMgr.h"
 
+#include "CKeyMgr.h"
+
 #include "CEngine.h"
 #include "CLevelMgr.h"
 #include "CLevel.h"
@@ -88,4 +90,9 @@ void CTimeMgr::Tick()
 	g_GlobalData.g_EngineDT = m_E_DeltaTime;
 	g_GlobalData.g_Time = m_Time;
 	g_GlobalData.g_EngineTime = m_E_Time;
+
+	if (KEY_PRESSED(KEY::RBTN))
+	{
+		g_GlobalData.g_EngineDT = 0.f;
+	}
 }

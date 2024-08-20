@@ -33,30 +33,9 @@ void CTestLevel::CreateTestLevel()
 
 	CreatePrefab();
 
-
-	// 컴퓨트 쉐이더 테스트용 텍스쳐 생성
-	Ptr<CTexture> pTestTex = CAssetMgr::GetInst()->CreateTexture(L"ComputeShaderTestTex"
-										, 1026, 1026, DXGI_FORMAT_R8G8B8A8_UNORM
-										, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS);
-	
-	CSetColorCS cs;
-	cs.SetTargetTexture(pTestTex);
-	cs.SetClearColor(Vec4(0.f, 1.f, 0.f, 1.f));
-	cs.Execute();
-	pMtrl->SetTexParam(TEX_0, pTestTex);
-	
-	CStructuredBuffer* pBuffer = new CStructuredBuffer;
-	pBuffer->Create(sizeof(tParticle), 1, SB_TYPE::SRV_UAV, true);
-
-	tParticle Particle = {};
-	tParticle Particle2 = {};
-
-	Particle.Active = true;
-	Particle.vColor = Vec4(1.f, 0.f, 0.f, 1.f);
-	pBuffer->SetData(&Particle);
-		
-	pBuffer->GetData(&Particle2);
-	delete pBuffer;
+	// Sound 재생
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\DM.wav");
+	pSound->Play(0, 1.f, false);
 
 
 	// Level 생성
@@ -175,7 +154,7 @@ void CTestLevel::CreateTestLevel()
 	pParticleObj->AddComponent(new CTransform);
 	pParticleObj->AddComponent(new CParticleSystem);
 
-	pParticleObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	pParticleObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 
 	pLevel->AddObject(0, pParticleObj);
 

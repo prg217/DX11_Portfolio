@@ -23,6 +23,7 @@ C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CMaterial.cpp;C:\AssortRoc
 C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CMesh.cpp;C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\x64\Debug\CMesh.obj
 C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CMeshRender.cpp;C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\x64\Debug\CMeshRender.obj
 C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CParticleSystem.cpp;C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\x64\Debug\CParticleSystem.obj
+C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CParticleTickCS.cpp;C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\x64\Debug\CParticleTickCS.obj
 C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CPathMgr.cpp;C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\x64\Debug\CPathMgr.obj
 C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CPrefab.cpp;C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\x64\Debug\CPrefab.obj
 C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CRenderComponent.cpp;C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\x64\Debug\CRenderComponent.obj

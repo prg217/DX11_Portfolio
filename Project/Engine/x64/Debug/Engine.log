@@ -24,6 +24,7 @@
   .\Project\Engine\CMeshRender.h
   .\Project\Engine\components.h
   .\Project\Engine\CParticleSystem.h
+  .\Project\Engine\CParticleTickCS.h
   .\Project\Engine\CPathMgr.h
   .\Project\Engine\CPrefab.h
   .\Project\Engine\CRenderComponent.h
@@ -43,26 +44,27 @@
   .\Project\Engine\enum.h
   .\Project\Engine\func.h
   .\Project\Engine\global.h
-  .\Project\Engine\Ptr.h
-  .\Project\Engine\SimpleMath.h
-  .\Project\Engine\singleton.h
-  .\Project\Engine\struct.h
-  49개 파일이 복사되었습니다.
+  공유 위반입니다.
   .\Project\Engine\SimpleMath.inl
   1개 파일이 복사되었습니다.
   .\Project\Engine\debug.fx
   .\Project\Engine\func.fx
   .\Project\Engine\particle.fx
+  .\Project\Engine\particletick.fx
   .\Project\Engine\postprocess.fx
   .\Project\Engine\setcolor.fx
   .\Project\Engine\std2d.fx
   .\Project\Engine\struct.fx
   .\Project\Engine\tilemap.fx
   .\Project\Engine\value.fx
-  9개 파일이 복사되었습니다.
+  10개 파일이 복사되었습니다.
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
+C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\particle.fx(59,12-88): warning X3206: implicit truncation of vector type
   
   compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\particle.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\particletick.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
   compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\setcolor.cso
@@ -88,11 +90,13 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
   compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\value.cso
   pch.cpp
+C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\define.h(24,9): warning C4005: 'DELETE': 매크로 재정의
+  CFlipBookComponent.cpp
   CAsset.cpp
   CAssetInit.cpp
   CAssetMgr.cpp
-  CCamera.cpp
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\xutility(4672,18): warning C4244: '=': 'const wchar_t'에서 'char'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  CCamera.cpp
   CCollider2D.cpp
   CCollisionMgr.cpp
   CComponent.cpp
@@ -102,7 +106,6 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.3380
   CEngine.cpp
   CEntity.cpp
   CFlipBook.cpp
-  CFlipBookComponent.cpp
   CGameObject.cpp
   CGraphicShader.cpp
   CKeyMgr.cpp
@@ -117,6 +120,7 @@ C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CComputeShader.cpp(48,1): 
   CMesh.cpp
   CMeshRender.cpp
   CParticleSystem.cpp
+  CParticleTickCS.cpp
   CPathMgr.cpp
   CPrefab.cpp
   CRenderComponent.cpp
@@ -131,9 +135,9 @@ C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CComputeShader.cpp(48,1): 
   CTileMap.cpp
   CTimeMgr.cpp
   CTransform.cpp
-  Engine.cpp
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
+  Engine.cpp
   extern.cpp
   func.cpp
   코드를 생성하고 있습니다...

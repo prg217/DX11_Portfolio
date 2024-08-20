@@ -22,7 +22,6 @@ c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\cassetmgr.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\cassetinit.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\casset.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\cflipbookcomponent.obj
-c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\engine.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\ctransform.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\ctimemgr.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\ctilemap.obj
@@ -37,6 +36,7 @@ c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\crendermgr.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\crendercomponent.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\cprefab.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\cpathmgr.obj
+c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\cparticletickcs.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\cparticlesystem.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\cmeshrender.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\cmesh.obj
@@ -44,6 +44,9 @@ c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\cmaterial.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\clight2d.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\func.obj
 c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\extern.obj
+c:\assortrock\lecture\assort51\directx\project\engine\x64\debug\engine.obj
+c:\assortrock\lecture\assort51\directx\external\library\engine\particle.cso
+c:\assortrock\lecture\assort51\directx\external\library\engine\particletick.cso
 c:\assortrock\lecture\assort51\directx\external\library\engine\setcolor.cso
 c:\assortrock\lecture\assort51\directx\external\library\engine\debug.cso
 c:\assortrock\lecture\assort51\directx\external\library\engine\func.cso
