@@ -44,7 +44,11 @@
   .\Project\Engine\enum.h
   .\Project\Engine\func.h
   .\Project\Engine\global.h
-  공유 위반입니다.
+  .\Project\Engine\Ptr.h
+  .\Project\Engine\SimpleMath.h
+  .\Project\Engine\singleton.h
+  .\Project\Engine\struct.h
+  50개 파일이 복사되었습니다.
   .\Project\Engine\SimpleMath.inl
   1개 파일이 복사되었습니다.
   .\Project\Engine\debug.fx
@@ -93,7 +97,6 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\value.cso
   pch.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\define.h(24,9): warning C4005: 'DELETE': 매크로 재정의
-  CFlipBookComponent.cpp
   CAsset.cpp
   CAssetInit.cpp
   CAssetMgr.cpp
@@ -108,6 +111,7 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.3380
   CEngine.cpp
   CEntity.cpp
   CFlipBook.cpp
+  CFlipBookComponent.cpp
   CGameObject.cpp
   CGraphicShader.cpp
   CKeyMgr.cpp

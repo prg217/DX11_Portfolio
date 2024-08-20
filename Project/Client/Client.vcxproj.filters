@@ -139,6 +139,18 @@
     <Filter Include="EditorUI\10. TileMapEditor">
       <UniqueIdentifier>{2c002704-2277-4aa4-84af-7eabc6edfc40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EditorUI\10. TileMapEditor\TME_Sub">
+      <UniqueIdentifier>{b652a7bc-85d5-4061-9207-2f39eedd0f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\10. TileMapEditor\TME_Sub\TME_TileMapView">
+      <UniqueIdentifier>{7ecb79b9-e95e-47f3-8d2d-5f670b2231da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\10. TileMapEditor\TME_Sub\TME_SelectTex">
+      <UniqueIdentifier>{1647d4b0-a9d7-4251-9cae-454ca4a0e8f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI\10. TileMapEditor\TME_Sub\TME_Detail">
+      <UniqueIdentifier>{66c5ed8c-ed95-4e9f-ae84-beddd6f66d3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -306,8 +318,20 @@
     <ClInclude Include="AE_SpriteView.h">
       <Filter>EditorUI\09. AnimationEditor\AE_Sub\AE_SpriteView</Filter>
     </ClInclude>
+    <ClInclude Include="TME_Sub.h">
+      <Filter>EditorUI\10. TileMapEditor\TME_Sub</Filter>
+    </ClInclude>
+    <ClInclude Include="TME_TileMapView.h">
+      <Filter>EditorUI\10. TileMapEditor\TME_Sub\TME_TileMapView</Filter>
+    </ClInclude>
+    <ClInclude Include="TME_SelectTex.h">
+      <Filter>EditorUI\10. TileMapEditor\TME_Sub\TME_SelectTex</Filter>
+    </ClInclude>
     <ClInclude Include="TileMapEditor.h">
       <Filter>EditorUI\10. TileMapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="TME_Detail.h">
+      <Filter>EditorUI\10. TileMapEditor\TME_Sub\TME_Detail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -477,8 +501,20 @@
     <ClCompile Include="AE_SpriteView.cpp">
       <Filter>EditorUI\09. AnimationEditor\AE_Sub\AE_SpriteView</Filter>
     </ClCompile>
+    <ClCompile Include="TME_Sub.cpp">
+      <Filter>EditorUI\10. TileMapEditor\TME_Sub</Filter>
+    </ClCompile>
+    <ClCompile Include="TME_TileMapView.cpp">
+      <Filter>EditorUI\10. TileMapEditor\TME_Sub\TME_TileMapView</Filter>
+    </ClCompile>
+    <ClCompile Include="TME_SelectTex.cpp">
+      <Filter>EditorUI\10. TileMapEditor\TME_Sub\TME_SelectTex</Filter>
+    </ClCompile>
     <ClCompile Include="TileMapEditor.cpp">
       <Filter>EditorUI\10. TileMapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="TME_Detail.cpp">
+      <Filter>EditorUI\10. TileMapEditor\TME_Sub\TME_Detail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
