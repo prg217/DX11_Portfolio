@@ -20,6 +20,9 @@
 #include "AE_Detail.h"
 #include "AE_SpriteView.h"
 #include "TileMapEditor.h"
+#include "TME_Detail.h"
+#include "TME_SelectTex.h"
+#include "TME_TileMapView.h"
 
 void CEditorMgr::InitImGui()
 {
@@ -164,6 +167,24 @@ void CEditorMgr::CreateEditorUI()
     pUI->SetActive(false);
     m_mapUI.insert(make_pair(pUI->GetName(), pUI));
     
+    // TME_Detail
+    pUI = new TME_Detail;
+    pUI->Init();
+    pUI->SetName("TME_Detail");
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
+    // TME_SelectTex
+    pUI = new TME_SelectTex;
+    pUI->Init();
+    pUI->SetName("TME_SelectTex");
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
+    // TME_TileMapView
+    pUI = new TME_TileMapView;
+    pUI->Init();
+    pUI->SetName("TME_TileMapView");
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
     // TileMapEditor
     pUI = new TileMapEditor;
     pUI->Init();

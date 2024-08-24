@@ -8,11 +8,13 @@
 
 CTileMap::CTileMap()
 	: CRenderComponent(COMPONENT_TYPE::TILEMAP)
+	, m_SeveralAtlas(false)
 	, m_Row(1)
 	, m_Col(1)
 	, m_AtlasMaxRow(0)
 	, m_AtlasMaxCol(0)	
 	, m_Buffer(nullptr)
+	, m_TileAtlasCount(0)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileMapMtrl"));	
@@ -22,6 +24,7 @@ CTileMap::CTileMap()
 
 CTileMap::CTileMap(const CTileMap& _Origin)
 	: CRenderComponent(_Origin)
+	, m_SeveralAtlas(_Origin.m_SeveralAtlas)
 	, m_Row(_Origin.m_Row)
 	, m_Col(_Origin.m_Col)
 	, m_TileSize(_Origin.m_TileSize)
@@ -33,6 +36,7 @@ CTileMap::CTileMap(const CTileMap& _Origin)
 	, m_AtlasMaxCol(_Origin.m_AtlasMaxCol)
 	, m_vecTileInfo(_Origin.m_vecTileInfo)
 	, m_Buffer(nullptr)
+	, m_TileAtlasCount(_Origin.m_TileAtlasCount)
 {
 	m_Buffer = new CStructuredBuffer;
 }
@@ -58,7 +62,18 @@ void CTileMap::Render()
 	m_Buffer->SetData(m_vecTileInfo.data(), sizeof(tTileInfo) * m_Row * m_Col);
 	m_Buffer->Binding(15);
 
-	GetMaterial()->SetTexParam(TEX_0, m_TileAtlas);	
+	if (m_TileAtlasCount < m_TileAtlas.size())
+	{
+		GetMaterial()->SetTexParam(TEX_0, m_TileAtlas[m_TileAtlasCount++]);
+	}
+	else
+	{
+		m_TileAtlasCount = 0;
+		if (m_TileAtlasCount < m_TileAtlas.size())
+		{
+			GetMaterial()->SetTexParam(TEX_0, m_TileAtlas[m_TileAtlasCount++]);
+		}
+	}
 	GetMaterial()->SetScalarParam(INT_1, m_AtlasMaxRow);
 	GetMaterial()->SetScalarParam(INT_2, m_AtlasMaxCol);
 	GetMaterial()->SetScalarParam(VEC2_1, Vec2(m_Col, m_Row));
@@ -107,9 +122,17 @@ void CTileMap::ChangeTileMapSize()
 
 void CTileMap::SetAtlasTexture(Ptr<CTexture> _Atlas)
 {
-	m_TileAtlas = _Atlas;
+	if (m_TileAtlas.size() > 0 && !m_SeveralAtlas)
+	{
+		m_TileAtlas[0] = _Atlas;
+	}
+	else
+	{
+		m_TileAtlas.push_back(_Atlas);
+	}
 
-	if (nullptr == m_TileAtlas)
+
+	if (nullptr == m_TileAtlas[m_TileAtlas.size() - 1])
 		m_AtlasResolution = Vec2(0.f, 0.f);
 	else
 		m_AtlasResolution = Vec2((float)_Atlas->Width(), (float)_Atlas->Height());
@@ -121,13 +144,23 @@ void CTileMap::SetAtlasTileSize(Vec2 _TileSize)
 {
 	m_AtlasTileSize = _TileSize;
 
-	if (nullptr != m_TileAtlas)
+	if (m_SeveralAtlas || m_TileAtlas.size() <= 0)
+	{
+		return;
+	}
+
+	if (nullptr != m_TileAtlas[0])
 	{
 		m_AtlasTileSliceUV = m_AtlasTileSize / m_AtlasResolution;
 
 		m_AtlasMaxCol = int(m_AtlasResolution.x / m_AtlasTileSize.x);
 		m_AtlasMaxRow = int(m_AtlasResolution.y / m_AtlasTileSize.y);
 	}
+}
+
+void CTileMap::SetSeveralAtlas(bool _SeveralAtlas)
+{
+	m_SeveralAtlas = _SeveralAtlas;
 }
 
 void CTileMap::SaveToFile(FILE* _File)
@@ -139,16 +172,26 @@ void CTileMap::SaveToFile(FILE* _File)
 
 	fwrite(&m_TileSize, sizeof(Vec2), 1, _File);
 	fwrite(&m_AtlasTileSize, sizeof(Vec2), 1, _File);
-
-	
 	
 	for (size_t i = 0; i < m_vecTileInfo.size(); ++i)
 	{
 		fwrite(&m_vecTileInfo[i], sizeof(tTileInfo), 1, _File);
 	}
 
+	fwrite(&m_SeveralAtlas, sizeof(bool), 1, _File);
+
 	// 아틀라스 텍스쳐
-	SaveAssetRef(m_TileAtlas, _File);
+	if (m_SeveralAtlas)
+	{
+
+	}
+	else
+	{
+		if (m_TileAtlas.size() != 0)
+		{
+			SaveAssetRef(m_TileAtlas[0], _File);
+		}
+	}
 }
 
 void CTileMap::LoadFromFile(FILE* _File)
@@ -170,10 +213,25 @@ void CTileMap::LoadFromFile(FILE* _File)
 		fread(&m_vecTileInfo[i], sizeof(tTileInfo), 1, _File);
 	}
 
+	fread(&m_SeveralAtlas, sizeof(bool), 1, _File);
+
 	// 아틀라스 텍스쳐
-	LoadAssetRef(m_TileAtlas, _File);
-	if (nullptr != m_TileAtlas)
+
+	if (m_SeveralAtlas)
 	{
-		SetAtlasTexture(m_TileAtlas);
-	}	
+
+	}
+	else
+	{
+		if (m_TileAtlas.size() == 0)
+		{
+			m_TileAtlas.push_back(nullptr);
+		}
+
+		LoadAssetRef(m_TileAtlas[0], _File);
+		if (nullptr != m_TileAtlas[0])
+		{
+			SetAtlasTexture(m_TileAtlas[0]);
+		}
+	}
 }

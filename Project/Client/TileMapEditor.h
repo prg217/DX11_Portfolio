@@ -1,8 +1,6 @@
 #pragma once
 #include "EditorUI.h"
 
-class CTileMap;
-
 class TME_TileMapView;
 class TME_SelectTex;
 class TME_Detail;
@@ -19,15 +17,16 @@ class TileMapEditor :
     // 3. 오른쪽 클릭하면 삭제
     // 4. 저장, 불러오기 기능
 
+    // offset만들어서 이동시킬 수 있게 하기
+
+    // 아틀라스 텍스쳐 한 개 : 선택UI에서 한 개의 이미지만을 고르게 함, 그리고 클릭할 때마다 이미지 인덱스 바뀌기
+    // 아틀라스 텍스쳐 여러 개 : 여러 이미지를 고르게 함
+
     // 나중에 못가는 곳 막아두게 콜라이더 에디터도 만들어야 할 듯
-
 private:
-    CTileMap* m_TileMap;
-
-private:
-    TME_TileMapView* m_TileMapView; // 타일맵 직접적으로 보기 및 수정
-    TME_SelectTex* m_SelectTex; // 텍스쳐 선택
-    TME_Detail* m_Detail; // 행렬, 크기 지정, 그리드 보이기, 저장, 불러오기
+    TME_TileMapView* m_TileMapView;     // 타일맵 직접적으로 보기 및 수정
+    TME_SelectTex* m_SelectTex;         // 텍스쳐 선택
+    TME_Detail* m_Detail;               // 행렬, 크기 지정, 그리드 보이기, 저장, 불러오기
 
 public:
     TME_TileMapView* GetTileMapView() { return m_TileMapView; }
@@ -40,15 +39,6 @@ public:
 
     virtual void Activate() override;
     virtual void Deactivate() override;
-
-private:
-    //void Sprite(int _Count);
-public:
-    //void SetSprite(Ptr<CSprite> _Sprite, int _Count);
-    //void SetSprites(const vector<Ptr<CSprite>>& _Sprites);
-
-private:
-    //void SelectSprite(DWORD_PTR _ListUI, DWORD_PTR _Count);
 
 public:
     TileMapEditor();

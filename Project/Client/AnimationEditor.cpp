@@ -90,6 +90,7 @@ void AnimationEditor::Sprite(int _Count)
 	string tempCount = std::to_string(_Count);
 	const char* nameCount = (char*)tempCount.c_str();
 
+	// 스프라이트 순서로 ID
 	ImGui::Text(name);
 	ImGui::SameLine(60);
 	ImGui::Text(nameCount);

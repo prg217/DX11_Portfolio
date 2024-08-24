@@ -153,22 +153,22 @@ void CTestLevel::CreateTestLevel()
 	//pLevel->AddObject(4, pMonster);
 
 	// TileMap Object
-	//CGameObject* pTileMapObj = new CGameObject;
-	//pTileMapObj->SetName(L"TileMap");
+	CGameObject* pTileMapObj = new CGameObject;
+	pTileMapObj->SetName(L"TileMap");
 
-	//pTileMapObj->AddComponent(new CTransform);
-	//pTileMapObj->AddComponent(new CTileMap);
+	pTileMapObj->AddComponent(new CTransform);
+	pTileMapObj->AddComponent(new CTileMap);
 
-	//pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
+	pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
 
-	//pTileMapObj->TileMap()->SetRowCol(20, 20);
-	//pTileMapObj->TileMap()->SetTileSize(Vec2(64.f, 64.f));
+	pTileMapObj->TileMap()->SetRowCol(20, 20);
+	pTileMapObj->TileMap()->SetTileSize(Vec2(64.f, 64.f));
 
-	//Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\TILE.bmp");
-	//pTileMapObj->TileMap()->SetAtlasTexture(pTileAtlas);
-	//pTileMapObj->TileMap()->SetAtlasTileSize(Vec2(64.f, 64.f));
+	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\TILE.bmp");
+	pTileMapObj->TileMap()->SetAtlasTexture(pTileAtlas);
+	pTileMapObj->TileMap()->SetAtlasTileSize(Vec2(64.f, 64.f));
 
-	//pLevel->AddObject(2, pTileMapObj);
+	pLevel->AddObject(2, pTileMapObj);
 
 
 	// Particle Object
