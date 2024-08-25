@@ -168,6 +168,8 @@ void CTestLevel::CreateTestLevel()
 	pTileMapObj->TileMap()->SetAtlasTexture(pTileAtlas);
 	pTileMapObj->TileMap()->SetAtlasTileSize(Vec2(64.f, 64.f));
 
+	//pTileMapObj->TileMap()->SetSeveralAtlas(true);
+
 	pLevel->AddObject(2, pTileMapObj);
 
 

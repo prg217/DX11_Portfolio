@@ -1,12 +1,22 @@
 #include "pch.h"
 #include "TME_TileMapView.h"
 
+#include "TME_SelectTex.h"
+
 TME_TileMapView::TME_TileMapView()
-	: m_SeveralAtlas(nullptr)
+	: m_OneTex(nullptr)
+	, m_SeveralAtlas(nullptr)
 	, m_Row(10)
 	, m_Col(10)
 	, m_TileSize(Vec2(2048, 2048))
+	, m_AtlasTileSize(Vec2(1, 1))
+	, m_AtlasTileSliceUV(Vec2(1, 1))
+	, m_ImgIdxMax(0)
 	, m_WheelScale(1.f)
+	, uv_min(ImVec2(0.0f, 0.0f))
+	, uv_max(ImVec2(1.0f, 1.0f))
+	, tint_col(ImVec4(1.0f, 1.0f, 1.0f, 1.0f))
+	, border_col(ImVec4(0.7f, 0.7f, 0.7f, 1.0f))
 {
 }
 
@@ -37,46 +47,16 @@ void TME_TileMapView::Update()
 		{
 			WheelCheck();
 
-			// 이미지	
-			ImVec2 uv_min = ImVec2(0.0f, 0.0f);
-			ImVec2 uv_max = ImVec2(1.0f, 1.0f);
-
-			ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-			ImVec4 border_col = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
-
-			Ptr<CTexture> tex = nullptr;
-
-			// 실제 해상도 대비 출력 Image 의 비율
-			float ratio = (m_TileSize.x * m_WheelScale) / m_TileSize.y;
-
-			for (int i = 0; i < m_vecTileInfo.size(); ++i)
+			// 여러 개의 아틀라스 텍스쳐를 쓴다면 나타나는 메뉴
+			if (m_SeveralAtlas)
 			{
-				// 여러 개의 아틀라스 텍스쳐를 쓴다면 나타나는 메뉴
-				if (m_SeveralAtlas)
-				{
-					// 빈 이미지면 0행 0열에 있는 이미지 쓰기?
-					tex = m_vecTileInfo[i].tex;
-					//ImVec2((m_WidthSize * m_WheelScale), m_AtlasTex->Height() * m_Ratio)
-					if (ImGui::ImageButton(tex->GetSRV().Get(), ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio), uv_min, uv_max, -1, tint_col, border_col))
-					{
-
-					}
-				}
-				// 한 개의 아틀라스 텍스쳐를 쓴다면 나타나는 메뉴
-				else
-				{
-					int idx = m_vecTileInfo[i].ImgIdx;
-					//tex = ; 
-
-					if (ImGui::ImageButton(nullptr, ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio), uv_min, uv_max, -1, tint_col, border_col))
-					{
-
-					}
-				}
+				SeveralTexView(j, i);
 			}
-
-			// 이미지를 누르면 한 장만 사용하는 경우에는 인덱스가 변경, 여러 장은 선택된 이미지로 변경
-			//ImGui::ImageButton(tex->GetSRV().Get(), ImVec2((m_WidthSize), tex->Height() * ratio), leftTopUV, rightDownUV, tint_col, border_col);
+			// 한 개의 아틀라스 텍스쳐를 쓴다면 나타나는 메뉴
+			else
+			{
+				OneTexView(j, i);
+			}
 
 			if (j != m_Row - 1)
 			{
@@ -90,18 +70,103 @@ void TME_TileMapView::WheelCheck()
 {
 	if (0 < ImGui::GetIO().MouseWheel)
 	{
-		m_WheelScale += 0.05f;
+		m_WheelScale += 0.0005f;
 	}
 
 	if (0 > ImGui::GetIO().MouseWheel)
 	{
-		m_WheelScale -= 0.05f;
+		m_WheelScale -= 0.0005f;
 	}
 
 	if (3.f < m_WheelScale)
 		m_WheelScale = 3.f;
-	if (m_WheelScale < 0.1f)
-		m_WheelScale = 0.1f;
+	if (m_WheelScale < 0.01f)
+		m_WheelScale = 0.01f;
+}
+
+void TME_TileMapView::OneTexView(int _Row, int _Col)
+{
+	int tileMapIdx = m_Col * _Row + _Col; // 현재 타일맵의 인덱스
+	int idx = m_vecTileInfo[tileMapIdx].ImgIdx; // 현재 타일맵의 이미지 인덱스
+
+	// 이미지 인덱스의 이미지를 출력하기 위해 필요한 이미지 행렬 위치
+	int imageRow = idx / m_Col;
+	int imageCol = idx % m_Col;
+
+	// 실제 해상도 대비 출력 Image 의 비율
+	float ratio = (m_TileSize.x * m_WheelScale) / m_TileSize.y;
+
+	if (m_OneTex != nullptr)
+	{
+		ImVec2 leftTopUV = ImVec2(m_AtlasTileSliceUV.x * imageRow, m_AtlasTileSliceUV.y * imageCol);
+		ImVec2 rightBottomUV = ImVec2(m_AtlasTileSliceUV.x * (imageRow + 1), m_AtlasTileSliceUV.y * (imageCol + 1));
+
+		// 개별 아이디 부여
+		ImGui::PushID(tileMapIdx);
+
+		if (ImGui::ImageButton(m_OneTex->GetSRV().Get(), ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio), leftTopUV, rightBottomUV, -1, tint_col, border_col))
+		{
+			// 버튼을 눌렀을 경우 현재 타일맵의 인덱스 구조체의 ImgIdx를 +1한다.
+			// 만약 m_ImgIdxMax가 넘는다면 0으로 회귀
+			if (idx > (m_ImgIdxMax - 1))
+			{
+				m_vecTileInfo[tileMapIdx].ImgIdx = 0;
+			}
+			else
+			{
+				m_vecTileInfo[tileMapIdx].ImgIdx++;
+			}
+		}
+
+		// 아이디 삭제
+		ImGui::PopID();
+	}
+	else
+	{
+		// 텍스쳐가 없으면 빈 이미지를 보여준다.
+		ImGui::ImageButton(nullptr, ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio), uv_min, uv_max, -1, tint_col, border_col);
+	}
+
+}
+
+void TME_TileMapView::SeveralTexView(int _Row, int _Col)
+{
+	int tileMapIdx = m_Col * _Row + _Col; // 현재 타일맵의 인덱스
+	Ptr<CTexture> tex = m_vecTileInfo[tileMapIdx].tex;
+
+	// 실제 해상도 대비 출력 Image 의 비율
+	float ratio = (m_TileSize.x * m_WheelScale) / m_TileSize.y;
+
+	// 개별 아이디 부여
+	ImGui::PushID(tileMapIdx);
+	if (tex != nullptr)
+	{
+		if (ImGui::ImageButton(tex->GetSRV().Get(), ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio), uv_min, uv_max, -1, tint_col, border_col))
+		{
+			m_vecTileInfo[tileMapIdx].tex = GetSelectTex()->GetSelectTexture();
+		}
+	}
+	else
+	{
+		// 텍스쳐가 없으면 빈 이미지를 보여준다.
+		if (ImGui::ImageButton(nullptr, ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio), uv_min, uv_max, -1, tint_col, border_col))
+		{
+			m_vecTileInfo[tileMapIdx].tex = GetSelectTex()->GetSelectTexture();
+		}
+	}
+
+	// 아이디 삭제
+	ImGui::PopID();
+}
+
+void TME_TileMapView::SetTileEditInfo(vector<tTileEditInfo> _TileInfo)
+{
+	m_vecTileInfo = _TileInfo;
+}
+
+void TME_TileMapView::SetOneTex(Ptr<CTexture> _Tex)
+{
+	m_OneTex = _Tex;
 }
 
 void TME_TileMapView::SetSeveralAtlas(bool _SeveralAtlas)
@@ -122,5 +187,22 @@ void TME_TileMapView::SetCol(int _Col)
 void TME_TileMapView::SetTileSize(Vec2 _TileSize)
 {
 	m_TileSize = _TileSize;
+}
+
+void TME_TileMapView::SetAtlasTileSize(Vec2 _AtlasTileSize)
+{
+	m_AtlasTileSize = _AtlasTileSize;
+	// 이미지 인덱스 최대치
+	if (m_OneTex == nullptr)
+	{
+		return;
+	}
+	Vec2 atlasResolution = Vec2((float)m_OneTex->Width(), (float)m_OneTex->Height());
+	
+	m_AtlasTileSliceUV = m_AtlasTileSize / atlasResolution;
+
+	int atlasMaxCol = int(atlasResolution.x / m_AtlasTileSize.x);
+	int atlasMaxRow = int(atlasResolution.y / m_AtlasTileSize.y);
+	m_ImgIdxMax = m_Col * atlasMaxRow + atlasMaxCol;
 }
 

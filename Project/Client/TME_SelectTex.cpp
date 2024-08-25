@@ -3,9 +3,11 @@
 
 #include <Engine/CAssetMgr.h>
 
+#include "TME_TileMapView.h"
+
 TME_SelectTex::TME_SelectTex()
 	: m_SelectTex(nullptr)
-	,m_SeveralAtlas(false)
+	, m_SeveralAtlas(false)
 	, m_WidthSize(80)
 {
 }
@@ -52,6 +54,12 @@ void TME_SelectTex::Update()
 		if (ImGui::ImageButton(pTex->GetSRV().Get(), ImVec2((m_WidthSize), pTex->Height() * ratio), ImVec2(0, 0), ImVec2(1, 1), -1, tint_col, border_col))
 		{
 			m_SelectTex = pTex;
+
+			// 한 개의 텍스쳐만 쓴다면 바로 텍스쳐 적용
+			if (!m_SeveralAtlas)
+			{
+				GetTileMapView()->SetOneTex(m_SelectTex);
+			}
 		}
 
 		if (i % 3 != 0)
@@ -64,4 +72,9 @@ void TME_SelectTex::Update()
 void TME_SelectTex::SetSeveralAtlas(bool _SeveralAtlas)
 {
 	m_SeveralAtlas = _SeveralAtlas;
+}
+
+void TME_SelectTex::SetSelectTexture(Ptr<CTexture> _Tex)
+{
+	m_SelectTex = _Tex;
 }

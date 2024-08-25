@@ -77,7 +77,10 @@ void CTileMap::Render()
 	GetMaterial()->SetScalarParam(INT_1, m_AtlasMaxRow);
 	GetMaterial()->SetScalarParam(INT_2, m_AtlasMaxCol);
 	GetMaterial()->SetScalarParam(VEC2_1, Vec2(m_Col, m_Row));
-	GetMaterial()->SetScalarParam(VEC2_0, m_AtlasTileSliceUV);
+	if (!m_SeveralAtlas)
+	{
+		GetMaterial()->SetScalarParam(VEC2_0, m_AtlasTileSliceUV);
+	}
 	GetMaterial()->Binding();
 	Transform()->Binding();
 	GetMesh()->Render();
@@ -117,7 +120,11 @@ void CTileMap::SetTileSize(Vec2 _Size)
 void CTileMap::ChangeTileMapSize()
 {
 	Vec2 vSize = m_TileSize * Vec2((float)m_Col, (float)m_Row);
-	Transform()->SetRelativeScale(vSize.x, vSize.y, 1.f);
+
+	if (GetOwner() != nullptr)
+	{
+		Transform()->SetRelativeScale(vSize.x, vSize.y, 1.f);
+	}
 }
 
 void CTileMap::SetAtlasTexture(Ptr<CTexture> _Atlas)
@@ -130,7 +137,6 @@ void CTileMap::SetAtlasTexture(Ptr<CTexture> _Atlas)
 	{
 		m_TileAtlas.push_back(_Atlas);
 	}
-
 
 	if (nullptr == m_TileAtlas[m_TileAtlas.size() - 1])
 		m_AtlasResolution = Vec2(0.f, 0.f);
@@ -163,6 +169,23 @@ void CTileMap::SetSeveralAtlas(bool _SeveralAtlas)
 	m_SeveralAtlas = _SeveralAtlas;
 }
 
+void CTileMap::SetTileInfo(int _TileMapIdx, int _ImgIdx, Ptr<CTexture> _Tex)
+{
+	m_vecTileInfo[_TileMapIdx].ImgIdx = _ImgIdx;
+	//m_vecTileInfo[tileMapIdx].tex = _Tex;
+
+	// 현재 타일맵에는 구조체 tex가 아닌 m_TileAtlas벡터로...이미지 하고 있음
+	// 또, nullptr일 때는 어떻게 해야하는지
+	//m_TileAtlas.clear();
+	//m_TileAtlas
+	if (_TileMapIdx >= m_TileAtlas.size())
+	{
+		m_TileAtlas.resize(_TileMapIdx + 1);
+	}
+
+	m_TileAtlas[_TileMapIdx] = _Tex;
+}
+
 void CTileMap::SaveToFile(FILE* _File)
 {
 	SaveDataToFile(_File);
@@ -183,7 +206,13 @@ void CTileMap::SaveToFile(FILE* _File)
 	// 아틀라스 텍스쳐
 	if (m_SeveralAtlas)
 	{
+		m_AtlasVecSize = m_TileAtlas.size();
+		fwrite(&m_AtlasVecSize, sizeof(int), 1, _File);
 
+		for (auto i : m_TileAtlas)
+		{
+			SaveAssetRef(i, _File);
+		}
 	}
 	else
 	{
@@ -216,10 +245,17 @@ void CTileMap::LoadFromFile(FILE* _File)
 	fread(&m_SeveralAtlas, sizeof(bool), 1, _File);
 
 	// 아틀라스 텍스쳐
-
 	if (m_SeveralAtlas)
 	{
+		fread(&m_AtlasVecSize, sizeof(int), 1, _File);
+		m_TileAtlas.clear();
+		m_TileAtlas.resize(m_AtlasVecSize);
 
+		for (int i = 0; i < m_AtlasVecSize; i++)
+		{
+			LoadAssetRef(m_TileAtlas[i], _File);
+			SetAtlasTexture(m_TileAtlas[i]);
+		}
 	}
 	else
 	{

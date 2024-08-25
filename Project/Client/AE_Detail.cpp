@@ -96,6 +96,10 @@ void AE_Detail::Update()
 		{
 			pFlipBook->Load(szSelect);
 		}
+		else
+		{
+			return;
+		}
 
 		m_vecSprite = pFlipBook->GetSprites();
 		OwnerSetSprites(m_vecSprite);

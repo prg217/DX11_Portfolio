@@ -18,6 +18,9 @@ public:
 
 public:
     void SetSeveralAtlas(bool _SeveralAtlas);
+    void SetSelectTexture(Ptr<CTexture> _Tex);
+
+    Ptr<CTexture> GetSelectTexture() { return m_SelectTex; }
 
 public:
     TME_SelectTex();
