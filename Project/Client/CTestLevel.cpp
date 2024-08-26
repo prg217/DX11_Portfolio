@@ -34,8 +34,8 @@ void CTestLevel::CreateTestLevel()
 	CreatePrefab();
 
 	// Sound 재생
-	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\DM.wav");
-	pSound->Play(0, 1.f, false);
+	//Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\DM.wav");
+	//pSound->Play(0, 1.f, false);
 
 
 	// Level 생성
@@ -95,20 +95,20 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->AddComponent(new CPlayerScript);
 	pPlayer->Transform()->SetRelativePos(0.f, 0.f, 100.f);
 	pPlayer->Transform()->SetRelativeScale(200.f, 200.f, 1.f);
-
+	
 	pPlayer->Collider2D()->SetIndependentScale(false);
 	pPlayer->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Collider2D()->SetScale(Vec3(1.f, 1.f, 1.f));
-
+	
 	//pPlayer->RigidBody()->UseGravity(true);
-
+	
 	pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pPlayer->MeshRender()->SetMaterial(pMtrl);
-
+	
 	Ptr<CFlipBook> pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Link_MoveDown.flip");
 	pPlayer->FlipBookComponent()->AddFlipBook(5, pFlipBook);
 	pPlayer->FlipBookComponent()->Play(5, 10, true);
-
+	
 	pLevel->AddObject(3, pPlayer);
 
 
@@ -134,21 +134,21 @@ void CTestLevel::CreateTestLevel()
 	// TileMap Object
 	CGameObject* pTileMapObj = new CGameObject;
 	pTileMapObj->SetName(L"TileMap");
-
+	
 	pTileMapObj->AddComponent(new CTransform);
 	pTileMapObj->AddComponent(new CTileMap);
-
+	
 	pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
-
+	
 	pTileMapObj->TileMap()->SetRowCol(20, 20);
 	pTileMapObj->TileMap()->SetTileSize(Vec2(64.f, 64.f));
-
+	
 	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\TILE.bmp");
 	pTileMapObj->TileMap()->SetAtlasTexture(pTileAtlas);
 	pTileMapObj->TileMap()->SetAtlasTileSize(Vec2(64.f, 64.f));
-
+	
 	//pTileMapObj->TileMap()->SetSeveralAtlas(true);
-
+	
 	pLevel->AddObject(2, pTileMapObj);
 
 

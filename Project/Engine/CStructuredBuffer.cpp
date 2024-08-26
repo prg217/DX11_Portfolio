@@ -140,7 +140,11 @@ void CStructuredBuffer::SetData(void* _pData, UINT _DataSize)
 	if (false == m_SysMemMove)
 	{
 		D3D11_MAPPED_SUBRESOURCE tMapSub = {};
-		CONTEXT->Map(m_SB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tMapSub);
+		HRESULT hr = CONTEXT->Map(m_SB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tMapSub);
+		if (FAILED(hr))
+		{
+			int i = 0;
+		}
 		memcpy(tMapSub.pData, _pData, _DataSize);
 		CONTEXT->Unmap(m_SB.Get(), 0);
 	}
