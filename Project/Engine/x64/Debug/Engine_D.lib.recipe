@@ -3,34 +3,34 @@
   <ProjectOutputs />
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\particle.cso</FullPath>
+      <FullPath>C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\particle.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\particletick.cso</FullPath>
+      <FullPath>C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\particletick.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\debug.cso</FullPath>
+      <FullPath>C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\debug.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\func.cso</FullPath>
+      <FullPath>C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\func.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\postprocess.cso</FullPath>
+      <FullPath>C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\postprocess.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\std2d.cso</FullPath>
+      <FullPath>C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\std2d.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\struct.cso</FullPath>
+      <FullPath>C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\struct.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\tilemap.cso</FullPath>
+      <FullPath>C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\tilemap.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\value.cso</FullPath>
+      <FullPath>C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\value.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\setcolor.cso</FullPath>
+      <FullPath>C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\setcolor.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

@@ -42,17 +42,8 @@ int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount,
 	m_Desc.MiscFlags			= D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 	m_Desc.StructureByteStride	= m_ElementSize;
 
-	if (false == m_SysMemMove)
-	{
-		m_Desc.Usage = D3D11_USAGE_DYNAMIC;
-		m_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	}
-	else
-	{
-		m_Desc.Usage = D3D11_USAGE_DEFAULT;
-		m_Desc.CPUAccessFlags = 0;
-	}
-
+	m_Desc.Usage = D3D11_USAGE_DEFAULT;
+	m_Desc.CPUAccessFlags = 0;
 		
 	HRESULT hr = S_OK;
 	if (nullptr == _InitData)
@@ -146,23 +137,12 @@ void CStructuredBuffer::SetData(void* _pData, UINT _DataSize)
 		_DataSize = m_Desc.ByteWidth;
 	}
 
-	if (false == m_SysMemMove)
-	{
-		D3D11_MAPPED_SUBRESOURCE tMapSub = {};
-		CONTEXT->Map(m_SB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tMapSub);
-		memcpy(tMapSub.pData, _pData, _DataSize);
-		CONTEXT->Unmap(m_SB.Get(), 0);
-	}
+	D3D11_MAPPED_SUBRESOURCE tMapSub = {};
+	CONTEXT->Map(m_SB_Write.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tMapSub);
+	memcpy(tMapSub.pData, _pData, _DataSize);
+	CONTEXT->Unmap(m_SB_Write.Get(), 0);
 
-	else
-	{
-		D3D11_MAPPED_SUBRESOURCE tMapSub = {};
-		CONTEXT->Map(m_SB_Write.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tMapSub);
-		memcpy(tMapSub.pData, _pData, _DataSize);
-		CONTEXT->Unmap(m_SB_Write.Get(), 0);
-
-		CONTEXT->CopyResource(m_SB.Get(), m_SB_Write.Get());
-	}
+	CONTEXT->CopyResource(m_SB.Get(), m_SB_Write.Get());	
 }
 
 void CStructuredBuffer::GetData(void* _pData, UINT _DataSize)

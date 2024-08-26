@@ -13,6 +13,8 @@ private:
 	map<wstring, Ptr<CAsset>>	m_mapAsset[(UINT)ASSET_TYPE::END];
 	bool						m_Changed;	
 
+	
+
 public:
 	template<typename T>
 	Ptr<T> Load(const wstring& _Key, const wstring& _RelativePath);
@@ -37,6 +39,7 @@ public:
 	void GetAssetNames(ASSET_TYPE _Type, vector<string>& _vecOut);
 	const map<wstring, Ptr<CAsset>>& GetAssets(ASSET_TYPE _Type) { return m_mapAsset[(UINT)_Type]; }
 	bool IsChanged() { return m_Changed; }
+	
 
 public:
 	void Init();

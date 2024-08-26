@@ -11,7 +11,7 @@ CAssetMgr::CAssetMgr()
 
 CAssetMgr::~CAssetMgr()
 {
-
+	
 }
 
 
@@ -19,6 +19,8 @@ void CAssetMgr::Tick()
 {
 	if (m_Changed)
 		m_Changed = false;	
+
+
 }
 
 
