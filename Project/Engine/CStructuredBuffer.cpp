@@ -16,7 +16,7 @@ CStructuredBuffer::~CStructuredBuffer()
 }
 
 int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount,
-							  SB_TYPE _Type, bool _SysMemMove, void* _InitData)
+	SB_TYPE _Type, bool _SysMemMove, void* _InitData)
 {
 	assert(0 == (_ElementSize % 16));
 
@@ -26,7 +26,7 @@ int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount,
 	m_SB_Write = nullptr;
 	m_SB_Read = nullptr;
 	m_SRV = nullptr;
-	
+
 	m_ElementSize = _ElementSize;
 	m_ElementCount = _ElementCount;
 
@@ -38,13 +38,22 @@ int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount,
 	else
 		m_Desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 
-	m_Desc.ByteWidth			= m_ElementSize * m_ElementCount;
-	m_Desc.MiscFlags			= D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
-	m_Desc.StructureByteStride	= m_ElementSize;
+	m_Desc.ByteWidth = m_ElementSize * m_ElementCount;
+	m_Desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+	m_Desc.StructureByteStride = m_ElementSize;
 
-	m_Desc.Usage = D3D11_USAGE_DEFAULT;
-	m_Desc.CPUAccessFlags = 0;
-		
+	if (false == m_SysMemMove)
+	{
+		m_Desc.Usage = D3D11_USAGE_DYNAMIC;
+		m_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	}
+	else
+	{
+		m_Desc.Usage = D3D11_USAGE_DEFAULT;
+		m_Desc.CPUAccessFlags = 0;
+	}
+
+
 	HRESULT hr = S_OK;
 	if (nullptr == _InitData)
 	{
@@ -56,7 +65,7 @@ int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount,
 		D3D11_SUBRESOURCE_DATA sub = {};
 		sub.pSysMem = _InitData;
 		hr = DEVICE->CreateBuffer(&m_Desc, &sub, m_SB.GetAddressOf());
-	}	
+	}
 
 	if (FAILED(hr))
 		return E_FAIL;
@@ -140,11 +149,7 @@ void CStructuredBuffer::SetData(void* _pData, UINT _DataSize)
 	if (false == m_SysMemMove)
 	{
 		D3D11_MAPPED_SUBRESOURCE tMapSub = {};
-		HRESULT hr = CONTEXT->Map(m_SB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tMapSub);
-		if (FAILED(hr))
-		{
-			int i = 0;
-		}
+		CONTEXT->Map(m_SB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tMapSub);
 		memcpy(tMapSub.pData, _pData, _DataSize);
 		CONTEXT->Unmap(m_SB.Get(), 0);
 	}
@@ -176,7 +181,7 @@ void CStructuredBuffer::GetData(void* _pData, UINT _DataSize)
 	D3D11_MAPPED_SUBRESOURCE tMapSub = {};
 	CONTEXT->Map(m_SB_Read.Get(), 0, D3D11_MAP::D3D11_MAP_READ, 0, &tMapSub);
 	memcpy(_pData, tMapSub.pData, _DataSize);
-	CONTEXT->Unmap(m_SB_Read.Get(), 0);	
+	CONTEXT->Unmap(m_SB_Read.Get(), 0);
 }
 
 void CStructuredBuffer::Binding(UINT _RegisterNum)
@@ -213,7 +218,7 @@ void CStructuredBuffer::Binding_CS_UAV(UINT _RegisterNum)
 
 void CStructuredBuffer::Clear_CS_SRV()
 {
-	ID3D11ShaderResourceView* pSRV = nullptr;	
+	ID3D11ShaderResourceView* pSRV = nullptr;
 	CONTEXT->CSSetShaderResources(m_RecentRegisterNum, 1, &pSRV);
 }
 
