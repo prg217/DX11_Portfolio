@@ -5,6 +5,8 @@
 #include "CAssetMgr.h"
 
 #include "CStructuredBuffer.h"
+#include "CDevice.h"
+#include "CTexture.h"
 
 CTileMap::CTileMap()
 	: CRenderComponent(COMPONENT_TYPE::TILEMAP)
@@ -62,18 +64,71 @@ void CTileMap::Render()
 	m_Buffer->SetData(m_vecTileInfo.data(), sizeof(tTileInfo) * m_Row * m_Col);
 	m_Buffer->Binding(15);
 
-	if (m_TileAtlasCount < m_TileAtlas.size())
+	//GetMaterial()->SetScalarParam(BOOL_0, m_SeveralAtlas);
+
+	if (m_SeveralAtlas)
 	{
-		GetMaterial()->SetTexParam(TEX_0, m_TileAtlas[m_TileAtlasCount++]);
+		// 텍스처 배열의 크기 정의
+		const UINT textureArraySize = m_TileAtlas.size();
+		const UINT width = m_TileSize.x; // 텍스처의 폭
+		const UINT height = m_TileSize.y; // 텍스처의 높
+		const UINT mipLevels = 1; // Mip 레벨 수
+
+		// 텍스처 배열 생성
+		D3D11_TEXTURE2D_DESC textureDesc = {};
+		textureDesc.Width = width;
+		textureDesc.Height = height;
+		textureDesc.MipLevels = mipLevels;
+		textureDesc.ArraySize = textureArraySize;
+		textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 텍스처 포맷
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		textureDesc.CPUAccessFlags = 0;
+
+		ID3D11Texture2D* textureArray;
+		HRESULT hr = DEVICE->CreateTexture2D(&textureDesc, nullptr, &textureArray);
+
+		for (UINT i = 0; i < textureArraySize; ++i) {
+			// 각 텍스처를 로드하거나 생성
+			ID3D11Texture2D* texture = nullptr;
+			if (m_TileAtlas[i] != nullptr)
+			{
+				texture = m_TileAtlas[i].Get()->GetTex2D().Get();
+				// 텍스처의 서포트가 필요할 때
+				CONTEXT->CopySubresourceRegion(textureArray,
+					i,
+					0, 0, 0,
+					texture,
+					0,
+					nullptr);
+				//texture->Release();
+			}
+		}
+
+		// 셰이더 리소스 뷰 생성
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Format = textureDesc.Format;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+		srvDesc.Texture2DArray.MostDetailedMip = 0;
+		srvDesc.Texture2DArray.MipLevels = mipLevels;
+		srvDesc.Texture2DArray.FirstArraySlice = 0;
+		srvDesc.Texture2DArray.ArraySize = textureArraySize;
+
+		ID3D11ShaderResourceView* textureArrayView;
+		hr = DEVICE->CreateShaderResourceView(textureArray, &srvDesc, &textureArrayView);
+
+		// 셰이더에 바인딩
+		CONTEXT->PSSetShaderResources(8, 1, &textureArrayView);
+
+
+		//GetMaterial()->SetTexParam(TEXARR_0, texture);
 	}
 	else
 	{
-		m_TileAtlasCount = 0;
-		if (m_TileAtlasCount < m_TileAtlas.size())
-		{
-			GetMaterial()->SetTexParam(TEX_0, m_TileAtlas[m_TileAtlasCount++]);
-		}
+		//GetMaterial()->SetTexParam(TEX_0, m_TileAtlas[0]);
 	}
+	GetMaterial()->SetTexParam(TEX_0, m_TileAtlas[0]);
 	GetMaterial()->SetScalarParam(INT_1, m_AtlasMaxRow);
 	GetMaterial()->SetScalarParam(INT_2, m_AtlasMaxCol);
 	GetMaterial()->SetScalarParam(VEC2_1, Vec2(m_Col, m_Row));
@@ -138,12 +193,27 @@ void CTileMap::SetAtlasTexture(Ptr<CTexture> _Atlas)
 		m_TileAtlas.push_back(_Atlas);
 	}
 
-	if (nullptr == m_TileAtlas[m_TileAtlas.size() - 1])
-		m_AtlasResolution = Vec2(0.f, 0.f);
-	else
-		m_AtlasResolution = Vec2((float)_Atlas->Width(), (float)_Atlas->Height());
+	if (m_SeveralAtlas)
+	{
+		for (int i = 0; i < m_Col; i++)
+		{
+			for (int j = 0; j < m_Row; j++)
+			{
+				int tileMapIdx = m_Col * j + i;
 
-	SetAtlasTileSize(m_AtlasTileSize);
+				//m_vecTileInfo[tileMapIdx].tex = m_TileAtlas[tileMapIdx];
+			}
+		}
+	}
+	else
+	{
+		if (nullptr == m_TileAtlas[0])
+			m_AtlasResolution = Vec2(0.f, 0.f);
+		else
+			m_AtlasResolution = Vec2((float)_Atlas->Width(), (float)_Atlas->Height());
+
+		SetAtlasTileSize(m_AtlasTileSize);
+	}
 }
 
 void CTileMap::SetAtlasTileSize(Vec2 _TileSize)
@@ -172,12 +242,7 @@ void CTileMap::SetSeveralAtlas(bool _SeveralAtlas)
 void CTileMap::SetTileInfo(int _TileMapIdx, int _ImgIdx, Ptr<CTexture> _Tex)
 {
 	m_vecTileInfo[_TileMapIdx].ImgIdx = _ImgIdx;
-	//m_vecTileInfo[tileMapIdx].tex = _Tex;
 
-	// 현재 타일맵에는 구조체 tex가 아닌 m_TileAtlas벡터로...이미지 하고 있음
-	// 또, nullptr일 때는 어떻게 해야하는지
-	//m_TileAtlas.clear();
-	//m_TileAtlas
 	if (_TileMapIdx >= m_TileAtlas.size())
 	{
 		m_TileAtlas.resize(_TileMapIdx + 1);

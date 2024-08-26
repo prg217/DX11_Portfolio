@@ -43,6 +43,8 @@ cbuffer MATERIAL : register(b1)
     row_major matrix g_mat_2;
     row_major matrix g_mat_3;
     
+    //bool g_bool_0;
+    
     int g_btex_0;
     int g_btex_1;
     int g_btex_2;
@@ -55,6 +57,7 @@ cbuffer MATERIAL : register(b1)
     int g_btexarr_1;
     
     int2 mtrlpadding;
+
 }
 
 cbuffer SPRITE_INFO : register(b2)
@@ -103,7 +106,6 @@ Texture2D       g_AtlasTex : register(t10);
 
 StructuredBuffer<tLightInfo> g_Light2D : register(t11);
 StructuredBuffer<tLightInfo> g_Light3D : register(t12);
-
 
 #endif
 

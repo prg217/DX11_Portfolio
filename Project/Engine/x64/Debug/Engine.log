@@ -90,9 +90,6 @@ FXC : warning X4717: Effects deprecated for D3DCompiler_47
   compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\std2d.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\struct.cso
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
   compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\tilemap.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
@@ -147,7 +144,13 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.3380
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
   CTileMap.cpp
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(207,35): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(72,49): warning C4267: '초기화 중': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(72,31): warning C4267: '초기화 중': 'size_t'에서 'const UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(73,32): warning C4244: '초기화 중': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(73,20): warning C4244: '초기화 중': 'float'에서 'const UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(74,33): warning C4244: '초기화 중': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(74,21): warning C4244: '초기화 중': 'float'에서 'const UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(272,35): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   CTimeMgr.cpp
   CTransform.cpp
   Engine.cpp

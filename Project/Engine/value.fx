@@ -55,6 +55,7 @@ cbuffer MATERIAL : register(b1)
     int g_btexarr_1;
     
     int2 mtrlpadding;
+
 }
 
 cbuffer SPRITE_INFO : register(b2)
@@ -103,7 +104,6 @@ Texture2D       g_AtlasTex : register(t10);
 
 StructuredBuffer<tLightInfo> g_Light2D : register(t11);
 StructuredBuffer<tLightInfo> g_Light3D : register(t12);
-
 
 #endif
 
