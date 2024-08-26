@@ -6,8 +6,7 @@ class CStructuredBuffer;
 struct tTileInfo
 {
     int ImgIdx;
-    Ptr<CTexture> tex;
-    //int padding[3];
+    int padding[3];
 };
 
 class CTileMap :
@@ -49,7 +48,7 @@ public:
     bool GetSeveralAtlas() { return m_SeveralAtlas; }
     Vec2 GetAtlasTileSize() { return m_AtlasTileSize; }
     int GetImageIdx(int _TileMapIdx) { return m_vecTileInfo[_TileMapIdx].ImgIdx; }
-    Ptr<CTexture> GetTileInfoTex(int _TileMapIdx) { return m_vecTileInfo[_TileMapIdx].tex; }
+    Ptr<CTexture> GetTileAtlas(int _TileMapIdx) { return m_TileAtlas[_TileMapIdx]; }
 
 private:
     void ChangeTileMapSize();

@@ -118,13 +118,13 @@ void TME_Detail::SaveLoad()
 				pTileMap->SetTileInfo(tileMapIdx, m_vecTileInfo[tileMapIdx].ImgIdx, m_vecTileInfo[tileMapIdx].tex);
 			}
 		}
-		pTileMap->SetSeveralAtlas(m_SeveralAtlas);
-
-		// 한 개의 이미지만 사용할 경우 0번 자리에 사용할 이미지를 넣음
 		if (!m_SeveralAtlas)
 		{
+			// 한 개의 이미지만 사용할 경우 0번 자리에 사용할 이미지를 넣음
 			pTileMap->SetTileInfo(0, m_vecTileInfo[0].ImgIdx, GetTileMapView()->GetOneTex());
 		}
+
+		pTileMap->SetSeveralAtlas(m_SeveralAtlas);
 
 		wchar_t szSelect[256] = {};
 
@@ -213,8 +213,13 @@ void TME_Detail::SaveLoad()
 
 				m_vecTileInfo.resize(m_Col * m_Row);
 				m_vecTileInfo[tileMapIdx].ImgIdx = pTileMap->GetImageIdx(tileMapIdx);
-				m_vecTileInfo[tileMapIdx].tex = pTileMap->GetTileInfoTex(tileMapIdx);
+				m_vecTileInfo[tileMapIdx].tex = pTileMap->GetTileAtlas(tileMapIdx);
 			}
+		}
+
+		if (!m_SeveralAtlas)
+		{
+			//m_vecTileInfo[0].tex = pTileMap->GetTe;
 		}
 
 		GetTileMapView()->SetTileEditInfo(m_vecTileInfo);

@@ -204,11 +204,11 @@ void CTileMap::SaveToFile(FILE* _File)
 	fwrite(&m_SeveralAtlas, sizeof(bool), 1, _File);
 
 	// 아틀라스 텍스쳐
+	m_AtlasVecSize = m_TileAtlas.size();
+	fwrite(&m_AtlasVecSize, sizeof(int), 1, _File);
+
 	if (m_SeveralAtlas)
 	{
-		m_AtlasVecSize = m_TileAtlas.size();
-		fwrite(&m_AtlasVecSize, sizeof(int), 1, _File);
-
 		for (auto i : m_TileAtlas)
 		{
 			SaveAssetRef(i, _File);
@@ -245,12 +245,12 @@ void CTileMap::LoadFromFile(FILE* _File)
 	fread(&m_SeveralAtlas, sizeof(bool), 1, _File);
 
 	// 아틀라스 텍스쳐
+	fread(&m_AtlasVecSize, sizeof(int), 1, _File);
+	m_TileAtlas.clear();
+	m_TileAtlas.resize(m_AtlasVecSize);
+
 	if (m_SeveralAtlas)
 	{
-		fread(&m_AtlasVecSize, sizeof(int), 1, _File);
-		m_TileAtlas.clear();
-		m_TileAtlas.resize(m_AtlasVecSize);
-
 		for (int i = 0; i < m_AtlasVecSize; i++)
 		{
 			LoadAssetRef(m_TileAtlas[i], _File);
@@ -265,9 +265,6 @@ void CTileMap::LoadFromFile(FILE* _File)
 		}
 
 		LoadAssetRef(m_TileAtlas[0], _File);
-		if (nullptr != m_TileAtlas[0])
-		{
-			SetAtlasTexture(m_TileAtlas[0]);
-		}
+		SetAtlasTexture(m_TileAtlas[0]);
 	}
 }
