@@ -157,6 +157,9 @@
     <ClInclude Include="CSound.h">
       <Filter>06. Asset\06. Sound</Filter>
     </ClInclude>
+    <ClInclude Include="CFontMgr.h">
+      <Filter>04, Manager\09. Font</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -291,6 +294,9 @@
     </ClCompile>
     <ClCompile Include="CSound.cpp">
       <Filter>06. Asset\06. Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontMgr.cpp">
+      <Filter>04, Manager\09. Font</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -461,6 +467,9 @@
     </Filter>
     <Filter Include="HLSL\03. Compute\02. ParticleTick">
       <UniqueIdentifier>{5669b2b3-b2c9-42eb-baac-bce6d1b399cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04, Manager\09. Font">
+      <UniqueIdentifier>{e77b73ac-01b2-4cf0-9cc6-9fd305e311b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

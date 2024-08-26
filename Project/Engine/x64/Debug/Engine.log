@@ -33,6 +33,7 @@
   .\Project\Engine\CScript.h
   .\Project\Engine\CSetColorCS.h
   .\Project\Engine\CShader.h
+  .\Project\Engine\CSound.h
   .\Project\Engine\CSprite.h
   .\Project\Engine\CStructuredBuffer.h
   .\Project\Engine\CTaskMgr.h
@@ -44,7 +45,11 @@
   .\Project\Engine\enum.h
   .\Project\Engine\func.h
   .\Project\Engine\global.h
-  공유 위반입니다.
+  .\Project\Engine\Ptr.h
+  .\Project\Engine\SimpleMath.h
+  .\Project\Engine\singleton.h
+  .\Project\Engine\struct.h
+  51개 파일이 복사되었습니다.
   .\Project\Engine\SimpleMath.inl
   1개 파일이 복사되었습니다.
   .\Project\Engine\debug.fx
@@ -59,10 +64,10 @@
   .\Project\Engine\value.fx
   10개 파일이 복사되었습니다.
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
-C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\particle.fx(59,12-88): warning X3206: implicit truncation of vector type
   
   compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\particle.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
+C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\particletick.fx(102,17-136): warning X3206: implicit truncation of vector type
   
   compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\particletick.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
@@ -128,15 +133,17 @@ C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CComputeShader.cpp(48,1): 
   CScript.cpp
   CSetColorCS.cpp
   CShader.cpp
+  CSound.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\xutility(4672,18): warning C4244: '=': 'const wchar_t'에서 'char'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   CSprite.cpp
   CStructuredBuffer.cpp
   CTaskMgr.cpp
   CTexture.cpp
   CTileMap.cpp
   CTimeMgr.cpp
-  CTransform.cpp
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
+  CTransform.cpp
   Engine.cpp
   extern.cpp
   func.cpp

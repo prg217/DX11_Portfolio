@@ -10,6 +10,7 @@
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CTaskMgr.h"
+#include "CFontMgr.h"
 #include "CPrefab.h"
 
 CEngine::CEngine()
@@ -20,6 +21,11 @@ CEngine::CEngine()
 
 CEngine::~CEngine()
 {	
+	if (nullptr != m_FMODSystem)
+	{
+		m_FMODSystem->release();
+		m_FMODSystem = nullptr;
+	}
 }
 
 int CEngine::Init(HWND _wnd, POINT _ptResolution, OBJECT_SAVE _SaveFunc, OBJECT_LOAD _Func)
@@ -34,14 +40,22 @@ int CEngine::Init(HWND _wnd, POINT _ptResolution, OBJECT_SAVE _SaveFunc, OBJECT_
 		return E_FAIL;
 	}
 
+	// FMOD 초기화		
+	FMOD::System_Create(&m_FMODSystem);
+	assert(m_FMODSystem);
+
+	// 32개 채널 생성
+	m_FMODSystem->init(32, FMOD_DEFAULT, nullptr);
+
+
 	// Manager 초기화
 	CPathMgr::GetInst()->Init();
 	CKeyMgr::GetInst()->Init();
 	CTimeMgr::GetInst()->Init();
 	CAssetMgr::GetInst()->Init();
-	CRenderMgr::GetInst()->Init();
-	
+	CRenderMgr::GetInst()->Init();	
 	CLevelMgr::GetInst()->Init();
+	CFontMgr::GetInst()->Init();
 	
 
 	// Prefab Function 등록
@@ -55,6 +69,9 @@ int CEngine::Init(HWND _wnd, POINT _ptResolution, OBJECT_SAVE _SaveFunc, OBJECT_
 
 void CEngine::Progress()
 {
+	// FMOD Tick
+	m_FMODSystem->update();
+
 	// Manager
 	CKeyMgr::GetInst()->Tick();
 	CTimeMgr::GetInst()->Tick();
