@@ -12,6 +12,7 @@
   .\Project\Engine\CEntity.h
   .\Project\Engine\CFlipBook.h
   .\Project\Engine\CFlipBookComponent.h
+  .\Project\Engine\CFontMgr.h
   .\Project\Engine\CGameObject.h
   .\Project\Engine\CGraphicShader.h
   .\Project\Engine\CKeyMgr.h
@@ -49,7 +50,7 @@
   .\Project\Engine\SimpleMath.h
   .\Project\Engine\singleton.h
   .\Project\Engine\struct.h
-  51개 파일이 복사되었습니다.
+  52개 파일이 복사되었습니다.
   .\Project\Engine\SimpleMath.inl
   1개 파일이 복사되었습니다.
   .\Project\Engine\debug.fx
@@ -65,37 +66,39 @@
   10개 파일이 복사되었습니다.
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\particle.cso
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\particle.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
-C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\particletick.fx(102,17-136): warning X3206: implicit truncation of vector type
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\particletick.fx(102,17-136): warning X3206: implicit truncation of vector type
   
-  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\particletick.cso
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\setcolor.cso
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\particletick.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\debug.cso
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\setcolor.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\func.cso
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\debug.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\postprocess.cso
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\func.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\postprocess.fx(98,11-130): warning X3206: implicit truncation of vector type
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\postprocess.fx(141,12-31): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\postprocess.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\std2d.cso
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\std2d.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\struct.cso
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\struct.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\tilemap.cso
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\tilemap.cso
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-  compilation object save succeeded; see C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\value.cso
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\value.cso
   pch.cpp
-C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\define.h(24,9): warning C4005: 'DELETE': 매크로 재정의
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\define.h(24,9): warning C4005: 'DELETE': 매크로 재정의
   CFlipBookComponent.cpp
   CAsset.cpp
   CAssetInit.cpp
@@ -111,15 +114,16 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.3380
   CEngine.cpp
   CEntity.cpp
   CFlipBook.cpp
+  CFontMgr.cpp
   CGameObject.cpp
   CGraphicShader.cpp
   CKeyMgr.cpp
   CLayer.cpp
   CLevel.cpp
-  CLevelMgr.cpp
   코드를 생성하고 있습니다...
-C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CComputeShader.cpp(48,1): warning C4715: 'CComputeShader::Execute': 모든 제어 경로에서 값을 반환하지는 않습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CComputeShader.cpp(48,1): warning C4715: 'CComputeShader::Execute': 모든 제어 경로에서 값을 반환하지는 않습니다.
   컴파일하고 있습니다...
+  CLevelMgr.cpp
   CLight2D.cpp
   CMaterial.cpp
   CMesh.cpp
@@ -130,6 +134,7 @@ C:\AssortRock\Lecture\assort51\DirectX\Project\Engine\CComputeShader.cpp(48,1): 
   CPrefab.cpp
   CRenderComponent.cpp
   CRenderMgr.cpp
+  CRigidBody.cpp
   CScript.cpp
   CSetColorCS.cpp
   CShader.cpp
@@ -139,13 +144,14 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.3380
   CStructuredBuffer.cpp
   CTaskMgr.cpp
   CTexture.cpp
-  CTileMap.cpp
-  CTimeMgr.cpp
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
+  CTileMap.cpp
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(207,35): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  CTimeMgr.cpp
   CTransform.cpp
   Engine.cpp
   extern.cpp
   func.cpp
   코드를 생성하고 있습니다...
-  Engine.vcxproj -> C:\AssortRock\Lecture\assort51\DirectX\External\Library\Engine\Engine_D.lib
+  Engine.vcxproj -> C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\Engine_D.lib
