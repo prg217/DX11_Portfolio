@@ -26,6 +26,15 @@ void CPlayerScript::Tick()
 {
 	Vec3 vPos = Transform()->GetRelativePos();
 
+	if (KEY_PRESSED(KEY::LSHIFT))
+	{
+		m_Speed = 550.f;
+	}
+	if (KEY_RELEASED(KEY::LSHIFT))
+	{
+		m_Speed = 400.f;
+	}
+
 	if (KEY_PRESSED(KEY::LEFT))
 		vPos.x -= DT * m_Speed;
 	if (KEY_PRESSED(KEY::RIGHT))

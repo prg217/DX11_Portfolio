@@ -159,10 +159,13 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 		CComponent* pComponent = GetComponent(Type);
 
 		// 생성된 컴포넌트를 오브젝트에 넣어준다.
-		pObject->AddComponent(pComponent);
+		if (pComponent != nullptr)
+		{
+			pObject->AddComponent(pComponent);
 
-		// 저장당시의 정보를 읽어와서 복수한다.
-		pComponent->LoadFromFile(_File);
+			// 저장당시의 정보를 읽어와서 복수한다.
+			pComponent->LoadFromFile(_File);
+		}
 	}
 
 	// Script 정보 로드	
