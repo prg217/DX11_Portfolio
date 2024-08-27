@@ -11,6 +11,11 @@ private:
     Vec2            m_BackGround;
     Vec2            m_Offset;
 
+    bool            m_Passivity;
+
+    Vec2            m_LT;
+    Vec2            m_RB;
+
 private:
     void Atlas();
     void AtlasInfo();

@@ -9,6 +9,7 @@ private:
     Ptr<CTexture>   m_Texture;
     Ptr<CPrefab>    m_MissilePref;
 
+    bool            m_IsRun;
 
 public:
     virtual void Begin() override;

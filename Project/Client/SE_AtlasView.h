@@ -11,8 +11,8 @@ private:
 
     ImVec2          m_MousePos; // 실제 마우스 위치
 
-    ImVec2          m_MouseLT;  // 마우스 위치에 해당하는 Texture 의 픽셀 좌표
-    ImVec2          m_MouseRB; // 마우스 위치에 해당하는 Texture 의 픽셀 좌표
+    ImVec2          m_LT;  // 마우스 위치에 해당하는 Texture 의 픽셀 좌표
+    ImVec2          m_RB; // 마우스 위치에 해당하는 Texture 의 픽셀 좌표
 
     set<Vec2>       m_PixelID;  // 등록된적이 있는 픽셀인지 확인하는 용도
     
@@ -21,12 +21,17 @@ private:
     float           m_WheelScale;
     float           m_Ratio;        // 실제 해상도 대비 출력 이미지의 비율
 
+    bool            m_Passivity;
+
 
 public:
-    ImVec2 GetMouseLT() { return m_MouseLT; }
-    ImVec2 GetMouseRB() { return m_MouseRB; }
-
+    ImVec2 GetLT() { return m_LT; }
+    ImVec2 GetRB() { return m_RB; }
+    
     void SetAtlasTex(Ptr<CTexture> _Tex);
+    void SetPassivity(bool _Passivity);
+    void SetLT(ImVec2 _LT);
+    void SetRB(ImVec2 _RB);
 
 private:
     void WheelCheck();

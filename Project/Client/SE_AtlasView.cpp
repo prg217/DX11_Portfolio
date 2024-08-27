@@ -9,6 +9,7 @@
 SE_AtlasView::SE_AtlasView()
 	: m_WidthSize(200)
 	, m_WheelScale(1.f)
+	, m_Passivity(false)
 {
 }
 
@@ -41,8 +42,11 @@ void SE_AtlasView::Update()
 	ImGui::Image(m_AtlasTex->GetSRV().Get(), ImVec2((m_WidthSize * m_WheelScale), m_AtlasTex->Height() * m_Ratio)
 		       , uv_min, uv_max, tint_col, border_col);
 	
-	// SelectCheck
-	SelectCheck();
+	if (!m_Passivity)
+	{
+		// SelectCheck
+		SelectCheck();
+	}
 
 	// 선택한 영역에 사각형 그리기
 	DrawSelectRect();
@@ -56,6 +60,21 @@ void SE_AtlasView::SetAtlasTex(Ptr<CTexture> _Tex)
 	m_AtlasTex = _Tex;
 
 	m_WidthSize = (float)m_AtlasTex->Width();
+}
+
+void SE_AtlasView::SetPassivity(bool _Passivity)
+{
+	m_Passivity = _Passivity;
+}
+
+void SE_AtlasView::SetLT(ImVec2 _LT)
+{
+	m_LT = _LT;
+}
+
+void SE_AtlasView::SetRB(ImVec2 _RB)
+{
+	m_RB = _RB;
 }
 
 void SE_AtlasView::WheelCheck()
@@ -110,8 +129,8 @@ void SE_AtlasView::SelectCheck()
 		m_MouseRB = ImVec2(vDiff.x / m_Ratio, vDiff.y / m_Ratio);
 	}*/
 
-	// 마우스 왼쪽 클릭 체크
-	if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
+	// 마우스 오른쪽 클릭 체크
+	if (ImGui::IsMouseReleased(ImGuiMouseButton_Right))
 	{
 		Vec2 vPixelPos = Vec2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
 		ImVec2 vDiff = ImVec2(vPixelPos.x - ImageRectMin.x, vPixelPos.y - ImageRectMin.y);
@@ -127,8 +146,8 @@ void SE_AtlasView::SelectCheck()
 
 void SE_AtlasView::DrawSelectRect()
 {
-	ImVec2 MouseLTPos = ImVec2(m_MouseLT.x * m_Ratio + ImageRectMin.x, m_MouseLT.y * m_Ratio + ImageRectMin.y);
-	ImVec2 MouseRBPos = ImVec2(m_MouseRB.x * m_Ratio + ImageRectMin.x, m_MouseRB.y * m_Ratio + ImageRectMin.y);
+	ImVec2 MouseLTPos = ImVec2(m_LT.x * m_Ratio + ImageRectMin.x, m_LT.y * m_Ratio + ImageRectMin.y);
+	ImVec2 MouseRBPos = ImVec2(m_RB.x * m_Ratio + ImageRectMin.x, m_RB.y * m_Ratio + ImageRectMin.y);
 
 	ImGui::GetWindowDrawList()->AddRect(MouseLTPos, MouseRBPos
 		, ImGui::GetColorU32(ImVec4(1.f, 1.f, 0.f, 1.f)), 0.f, 0.f, 1.f);
@@ -195,8 +214,8 @@ void SE_AtlasView::CalcSpriteSize(Vec2 _PixelPos)
 		}
 	}
 
-	m_MouseLT = ImVec2(left, top);
-	m_MouseRB = ImVec2(right, bot);
+	m_LT = ImVec2(left, top);
+	m_RB = ImVec2(right, bot);
 }
 
 bool SE_AtlasView::IsPixelOk(Vec2 _PixelPos)

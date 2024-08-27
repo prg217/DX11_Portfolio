@@ -4,11 +4,11 @@
   .\Project\Scripts\CScriptMgr.h
   4개 파일이 복사되었습니다.
   pch.cpp
-C:\AssortRock\Lecture\assort51\DirectX\External\Include\Engine\define.h(24,9): warning C4005: 'DELETE': 매크로 재정의
+C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(24,9): warning C4005: 'DELETE': 매크로 재정의
   CCameraMoveScript.cpp
   CMissileScript.cpp
   CPlayerScript.cpp
   CScriptMgr.cpp
   Scripts.cpp
   코드를 생성하고 있습니다...
-  Scripts.vcxproj -> C:\AssortRock\Lecture\assort51\DirectX\External\Library\Scripts\Scripts_D.lib
+  Scripts.vcxproj -> C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Scripts\Scripts_D.lib

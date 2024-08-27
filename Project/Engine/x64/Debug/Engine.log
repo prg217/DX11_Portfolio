@@ -46,11 +46,7 @@
   .\Project\Engine\enum.h
   .\Project\Engine\func.h
   .\Project\Engine\global.h
-  .\Project\Engine\Ptr.h
-  .\Project\Engine\SimpleMath.h
-  .\Project\Engine\singleton.h
-  .\Project\Engine\struct.h
-  52개 파일이 복사되었습니다.
+  공유 위반입니다.
   .\Project\Engine\SimpleMath.inl
   1개 파일이 복사되었습니다.
   .\Project\Engine\debug.fx
@@ -64,8 +60,42 @@
   .\Project\Engine\tilemap.fx
   .\Project\Engine\value.fx
   10개 파일이 복사되었습니다.
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\particle.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\particletick.fx(102,17-136): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\particletick.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\setcolor.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\debug.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\func.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\postprocess.fx(98,11-130): warning X3206: implicit truncation of vector type
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\postprocess.fx(141,12-31): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\postprocess.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\std2d.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\struct.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\tilemap.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\value.cso
   pch.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\define.h(24,9): warning C4005: 'DELETE': 매크로 재정의
+  CFlipBookComponent.cpp
   CAsset.cpp
   CAssetInit.cpp
   CAssetMgr.cpp
@@ -80,7 +110,6 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.3380
   CEngine.cpp
   CEntity.cpp
   CFlipBook.cpp
-  CFlipBookComponent.cpp
   CFontMgr.cpp
   CGameObject.cpp
   CGraphicShader.cpp

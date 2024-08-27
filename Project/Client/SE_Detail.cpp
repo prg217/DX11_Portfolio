@@ -13,6 +13,7 @@
 SE_Detail::SE_Detail()
 	: m_BackGround(Vec2(0, 0))
 	, m_Offset(Vec2(0, 0))
+	, m_Passivity(false)
 {
 }
 
@@ -112,6 +113,34 @@ void SE_Detail::AtlasInfo()
 	ImGui::Text("Offset");
 	ImGui::SameLine(100);
 	ImGui::DragFloat2("##Offset", m_Offset);
+
+	ImGui::Separator();
+
+	ImGui::Text("Passivity");
+	ImGui::SameLine(100);
+	if (ImGui::Checkbox("##Passivity", &m_Passivity))
+	{
+		GetAtlasView()->SetPassivity(m_Passivity);
+	}
+
+	if (m_Passivity)
+	{
+		// LT
+		ImGui::Text("Left Top");
+		ImGui::SameLine(100);
+		if (ImGui::DragFloat2("##LT", m_LT))
+		{
+			GetAtlasView()->SetLT(ImVec2(m_LT.x, m_LT.y));
+		}
+
+		// RB
+		ImGui::Text("Right Bottom");
+		ImGui::SameLine(100);
+		if (ImGui::DragFloat2("##RB", m_RB))
+		{
+			GetAtlasView()->SetRB(ImVec2(m_RB.x, m_RB.y));
+		}
+	}
 }
 
 void SE_Detail::Save()
@@ -122,14 +151,18 @@ void SE_Detail::Save()
 
 		pSprite->SetAtlas(m_AtlasTex);
 
-		ImVec2 leftTop = GetAtlasView()->GetMouseLT();
-		ImVec2 rightBotton = GetAtlasView()->GetMouseRB();
-		Vec2 LT = Vec2(leftTop.x, leftTop.y);
-		Vec2 RB = Vec2(rightBotton.x, rightBotton.y);
+		if (!m_Passivity)
+		{
+			ImVec2 leftTop = GetAtlasView()->GetLT();
+			ImVec2 rightBotton = GetAtlasView()->GetRB();
 
-		Vec2 Slice = RB - LT;
+			m_LT = Vec2(leftTop.x, leftTop.y);
+			m_RB = Vec2(rightBotton.x, rightBotton.y);
+		}
 
-		pSprite->SetLeftTop(LT);
+		Vec2 Slice = m_RB - m_LT;
+
+		pSprite->SetLeftTop(m_LT);
 		pSprite->SetSlice(Slice);
 
 		pSprite->SetBackground(m_BackGround);

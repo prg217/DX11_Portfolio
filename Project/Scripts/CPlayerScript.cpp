@@ -1,11 +1,14 @@
 #include "pch.h"
 #include "CPlayerScript.h"
 
+#include <Engine/enum.h>
+
 #include "CMissileScript.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERSCRIPT))
-	, m_Speed(500.f)
+	, m_Speed(400.f)
+	, m_IsRun(false)
 {
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "PlayerSpeed", &m_Speed);
 	AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
@@ -28,22 +31,69 @@ void CPlayerScript::Tick()
 
 	if (KEY_PRESSED(KEY::LSHIFT))
 	{
+		m_IsRun = true;
 		m_Speed = 550.f;
 	}
 	if (KEY_RELEASED(KEY::LSHIFT))
 	{
+		m_IsRun = false;
 		m_Speed = 400.f;
 	}
 
+	if (KEY_TAP(KEY::LEFT))
+	{
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_LEFT, 10, true);
+	}
 	if (KEY_PRESSED(KEY::LEFT))
+	{
 		vPos.x -= DT * m_Speed;
+	}
+	if (KEY_RELEASED(KEY::LEFT))
+	{
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_LEFT, 10, true);
+	}
+
+	if (KEY_TAP(KEY::RIGHT))
+	{
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_RIGHT, 10, true);
+	}
 	if (KEY_PRESSED(KEY::RIGHT))
+	{
 		vPos.x += DT * m_Speed;
+	}
+	if (KEY_RELEASED(KEY::RIGHT))
+	{
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_RIGHT, 10, true);
+	}
+
+	if (KEY_TAP(KEY::UP))
+	{
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_UP, 10, true);
+	}
 	if (KEY_PRESSED(KEY::UP))
+	{
 		vPos.y += DT * m_Speed;
+	}
+	if (KEY_RELEASED(KEY::UP))
+	{
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_BACK, 10, true);
+	}
+
+	if (KEY_TAP(KEY::DOWN))
+	{
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_DOWN, 10, true);
+	}
 	if (KEY_PRESSED(KEY::DOWN))
+	{
 		vPos.y -= DT * m_Speed;
-	
+	}
+	if (KEY_RELEASED(KEY::DOWN))
+	{
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE, 10, true);
+	}
+
+	if (KEY_PRESSED(KEY::Q))
+		//FlipBookComponent()->Play(1, 10, true);
 
 	if (KEY_PRESSED(KEY::Z))
 	{
