@@ -22,7 +22,7 @@ struct tTileInfo
 #define AtlasMaxCol         g_int_2
 #define TileSliceUV         g_vec2_0
 #define TileColRow          g_vec2_1
-//#define IsSeveralAtlas      g_bool_0
+#define IsSeveralAtlas      g_int_3
 
 StructuredBuffer<tTileInfo> g_Buffer : register(t15);
 // ===============================
@@ -70,14 +70,14 @@ float4 PS_TileMap(VS_OUT _in) : SV_Target
         float2 CurColRow = floor(_in.vUV);
         int Idx = TileColRow.x * CurColRow.y + CurColRow.x;
         
-        //if (IsSeveralAtlas)
-        //{
-        //    float2 vLeftTopUV = float2(CurColRow.y, CurColRow.x) * TileSliceUV;
-        //
-        //    float2 vUV = vLeftTopUV + frac(_in.vUV) * TileSliceUV;
-        //    vOutColor = Texs.Sample(g_sam_1, float3(vUV, Idx));
-        //}
-        //else
+        if (IsSeveralAtlas == 1)
+        {
+            float2 vLeftTopUV = float2(CurColRow.y, CurColRow.x) * TileSliceUV;
+        
+            float2 vUV = vLeftTopUV + frac(_in.vUV) * TileSliceUV;
+            vOutColor = Texs.Sample(g_sam_1, float3(vUV, Idx));
+        }
+        else
         {
             // 그 정보로 g_Buffer 에 전달된 각 타일정보중 본인의 정보에 접근해서 ImgIdx 를 알아낸다.
             // 알아낸 ImgIdx 로 LeftTopUV 값을 계산한다.        

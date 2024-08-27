@@ -9,6 +9,7 @@
 #include <Engine/CLevel.h>
 #include <Engine/CLayer.h>
 #include <Engine/CGameObject.h>
+#include <Engine/CPathMgr.h>
 
 
 Outliner::Outliner()
@@ -35,6 +36,8 @@ Outliner::Outliner()
 	m_Tree->AddDropDelegate(this, (DELEGATE_2)&Outliner::DroppedFromOuter);
 	m_Tree->SetDropPayLoadName("ContentTree");
 	
+	// 팝업 메뉴
+	m_Tree->AddPopupDelegate(this, (DELEGATE_1)&Outliner::PopupMenu);
 
 	// Asset 상태를 Content 의 TreeUI 에 반영
 	RenewLevel();
@@ -139,4 +142,64 @@ void Outliner::GameObjectClicked(DWORD_PTR _Param)
 	Inspector* pInspector = (Inspector*)CEditorMgr::GetInst()->FindEditorUI("Inspector");
 	pInspector->SetTargetObject(pObject);
 	//ImGui::SetWindowFocus(nullptr);
+}
+
+void Outliner::PopupMenu(DWORD_PTR _Param)
+{
+	if (ImGui::Button("Add Prefab"))
+	{
+		TreeNode* pNode = (TreeNode*)_Param;
+		CGameObject* pObject = (CGameObject*)pNode->GetData();
+
+		Ptr<CPrefab> pPrefab = new CPrefab;
+		pPrefab->SetProtoObject(pObject);
+
+		wchar_t szSelect[256] = {};
+
+		OPENFILENAME ofn = {};
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner = nullptr;
+		ofn.lpstrFile = szSelect;
+		ofn.lpstrFile[0] = '\0';
+		ofn.nMaxFile = sizeof(szSelect);
+		ofn.lpstrFilter = L"prefab\0*.pref";
+		ofn.nFilterIndex = 0;
+		ofn.lpstrFileTitle = NULL;
+		ofn.nMaxFileTitle = 0;
+		// 탐색창 초기 위치 지정
+		wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+		strInitPath += L"prefab\\";
+		ofn.lpstrInitialDir = strInitPath.c_str();
+
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+		if (GetSaveFileName(&ofn))
+		{
+			pPrefab->Save(szSelect);
+		}
+
+		ImGui::CloseCurrentPopup();
+	}
+
+	/*
+	if (pAsset->GetAssetType() == ASSET_TYPE::PREFAB)
+	{
+		if (ImGui::MenuItem("Instantiate"))
+		{
+			Ptr<CPrefab> pPrefab = (CPrefab*)pAsset.Get();
+
+			CGameObject* CloneObj = pPrefab->Instantiate();
+
+			CreateObject(CloneObj, 0);
+
+			ImGui::CloseCurrentPopup();
+		}
+	}
+	*/
+	if (ImGui::Button("Close"))
+	{
+		ImGui::CloseCurrentPopup();
+	}
+
+	ImGui::EndPopup();
 }

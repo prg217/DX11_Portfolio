@@ -64,10 +64,10 @@ void CTileMap::Render()
 	m_Buffer->SetData(m_vecTileInfo.data(), sizeof(tTileInfo) * m_Row * m_Col);
 	m_Buffer->Binding(15);
 
-	//GetMaterial()->SetScalarParam(BOOL_0, m_SeveralAtlas);
-
 	if (m_SeveralAtlas)
 	{
+		/*
+		GetMaterial()->SetScalarParam(INT_3, 1);
 		// 텍스처 배열의 크기 정의
 		const UINT textureArraySize = m_TileAtlas.size();
 		const UINT width = m_TileSize.x; // 텍스처의 폭
@@ -89,7 +89,8 @@ void CTileMap::Render()
 		ID3D11Texture2D* textureArray;
 		HRESULT hr = DEVICE->CreateTexture2D(&textureDesc, nullptr, &textureArray);
 
-		for (UINT i = 0; i < textureArraySize; ++i) {
+		for (UINT i = 0; i < textureArraySize; ++i)
+		{
 			// 각 텍스처를 로드하거나 생성
 			ID3D11Texture2D* texture = nullptr;
 			if (m_TileAtlas[i] != nullptr)
@@ -118,14 +119,17 @@ void CTileMap::Render()
 		ID3D11ShaderResourceView* textureArrayView;
 		hr = DEVICE->CreateShaderResourceView(textureArray, &srvDesc, &textureArrayView);
 
+		Ptr<CTexture> tex = new CTexture;
+		tex.Get()->Create(textureArray);
+
 		// 셰이더에 바인딩
-		CONTEXT->PSSetShaderResources(8, 1, &textureArrayView);
-
-
-		//GetMaterial()->SetTexParam(TEXARR_0, texture);
+		//CONTEXT->PSSetShaderResources(8, 1, &textureArrayView);
+		GetMaterial()->SetTexParam(TEXARR_0, tex);
+		*/
 	}
 	else
 	{
+		GetMaterial()->SetScalarParam(INT_3, 0);
 		//GetMaterial()->SetTexParam(TEX_0, m_TileAtlas[0]);
 	}
 	GetMaterial()->SetTexParam(TEX_0, m_TileAtlas[0]);

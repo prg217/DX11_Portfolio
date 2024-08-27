@@ -14,8 +14,12 @@ CPrefab::CPrefab()
 
 CPrefab::~CPrefab()
 {
-    if (nullptr != m_ProtoObject)
-        delete m_ProtoObject;
+    // SetProtoObject을 할 때 FinalTick에서 오류남
+    // 여기서 주소를 삭제해서 멀쩡히 살아있는 게임 오브젝트도 주소 삭제가 되는듯...
+    //if (nullptr != m_ProtoObject)
+    //{
+    //    delete m_ProtoObject;
+    //}
 }
 
 CGameObject* CPrefab::Instantiate()

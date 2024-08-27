@@ -68,6 +68,10 @@ void TreeNode::Update()
 		{
 			m_Owner->SetSelectedNode(this);
 		}
+		//if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Right))
+		{
+			//m_Owner->SetSelectedNode(this);
+		}
 
 		// Drag üũ	
 		DragCheck();

@@ -43,8 +43,6 @@ cbuffer MATERIAL : register(b1)
     row_major matrix g_mat_2;
     row_major matrix g_mat_3;
     
-    //bool g_bool_0;
-    
     int g_btex_0;
     int g_btex_1;
     int g_btex_2;

@@ -106,7 +106,6 @@ enum SCALAR_PARAM
 	VEC2_0,		VEC2_1,		VEC2_2,		VEC2_3,
 	VEC4_0,		VEC4_1,		VEC4_2,		VEC4_3,
 	MAT_0,		MAT_1,		MAT_2,		MAT_3,
-	//BOOL_0,
 };
 
 enum TEX_PARAM
