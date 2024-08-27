@@ -10,6 +10,7 @@ private:
     Ptr<CPrefab>    m_MissilePref;
 
     bool            m_IsRun;
+    bool            m_IsCross;
 
 public:
     virtual void Begin() override;

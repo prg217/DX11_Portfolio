@@ -9,6 +9,7 @@ CPlayerScript::CPlayerScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERSCRIPT))
 	, m_Speed(400.f)
 	, m_IsRun(false)
+	, m_IsCross(false)
 {
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "PlayerSpeed", &m_Speed);
 	AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
@@ -29,7 +30,7 @@ void CPlayerScript::Tick()
 {
 	Vec3 vPos = Transform()->GetRelativePos();
 
-	if (KEY_PRESSED(KEY::LSHIFT))
+	if (KEY_TAP(KEY::LSHIFT))
 	{
 		m_IsRun = true;
 		m_Speed = 550.f;
@@ -40,7 +41,32 @@ void CPlayerScript::Tick()
 		m_Speed = 400.f;
 	}
 
-	if (KEY_TAP(KEY::LEFT))
+	if (KEY_PRESSED(KEY::LEFT) && KEY_PRESSED(KEY::UP))
+	{
+		if (!m_IsCross)
+		{
+			if (m_IsRun)
+			{
+				FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_RUN_LEFTUP, 10, true);
+			}
+			else
+			{
+				FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_LEFTUP, 10, true);
+			}
+		}
+		m_IsCross = true;
+	}
+	if (KEY_RELEASED(KEY::LEFT) && KEY_RELEASED(KEY::UP))
+	{
+		m_IsCross = false;
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_LEFTUP, 10, true);
+	}
+	if (KEY_RELEASED(KEY::LEFT) || KEY_RELEASED(KEY::UP))
+	{
+		m_IsCross = false;
+	}
+
+	if (KEY_TAP(KEY::LEFT) && !m_IsCross)
 	{
 		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_LEFT, 10, true);
 	}
