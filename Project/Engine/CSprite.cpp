@@ -37,6 +37,11 @@ void CSprite::SetOffset(Vec2 _Offset)
 	m_OffsetUV = _Offset / AtlasResolution;
 }
 
+void CSprite::SetAtlas(Ptr<CTexture> _Tex)
+{
+	m_Atlas = _Tex;
+}
+
 void CSprite::Create(Ptr<CTexture> _Atlas, Vec2 _LeftTopPixel, Vec2 _SlicePixel)
 {
 	m_Atlas = _Atlas;

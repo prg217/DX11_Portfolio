@@ -19,6 +19,7 @@ public:
     void SetSlice(Vec2 _Slice);
     void SetBackground(Vec2 _Background);
     void SetOffset(Vec2 _Offset);
+    void SetAtlas(Ptr<CTexture> _Tex);
 
     Vec2 GetLeftTopUV() { return m_LeftTopUV; }
     Vec2 GetSliceUV() { return m_SliceUV; }

@@ -11,6 +11,8 @@
 
 
 SE_Detail::SE_Detail()
+	: m_BackGround(Vec2(0, 0))
+	, m_Offset(Vec2(0, 0))
 {
 }
 
@@ -29,6 +31,8 @@ void SE_Detail::Update()
 	Atlas();
 
 	AtlasInfo();
+
+	Save();
 }
 
 
@@ -98,6 +102,63 @@ void SE_Detail::AtlasInfo()
 	ImGui::Text("Height");
 	ImGui::SameLine(100);
 	ImGui::InputText("##TextureHeight", buff, 50, ImGuiInputTextFlags_ReadOnly);
+
+	// Background 설정
+	ImGui::Text("Background");
+	ImGui::SameLine(100);
+	ImGui::DragFloat2("##Background", m_BackGround);
+
+	// Offset 설정
+	ImGui::Text("Offset");
+	ImGui::SameLine(100);
+	ImGui::DragFloat2("##Offset", m_Offset);
+}
+
+void SE_Detail::Save()
+{
+	if (ImGui::Button("Save##TileMap", ImVec2(50.f, 18.f)))
+	{
+		CSprite* pSprite = new CSprite;
+
+		pSprite->SetAtlas(m_AtlasTex);
+
+		ImVec2 leftTop = GetAtlasView()->GetMouseLT();
+		ImVec2 rightBotton = GetAtlasView()->GetMouseRB();
+		Vec2 LT = Vec2(leftTop.x, leftTop.y);
+		Vec2 RB = Vec2(rightBotton.x, rightBotton.y);
+
+		Vec2 Slice = RB - LT;
+
+		pSprite->SetLeftTop(LT);
+		pSprite->SetSlice(Slice);
+
+		pSprite->SetBackground(m_BackGround);
+		pSprite->SetOffset(m_Offset);
+
+		wchar_t szSelect[256] = {};
+
+		OPENFILENAME ofn = {};
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner = nullptr;
+		ofn.lpstrFile = szSelect;
+		ofn.lpstrFile[0] = '\0';
+		ofn.nMaxFile = sizeof(szSelect);
+		ofn.lpstrFilter = L"sprite\0*.sprite";
+		ofn.nFilterIndex = 0;
+		ofn.lpstrFileTitle = NULL;
+		ofn.nMaxFileTitle = 0;
+		// 탐색창 초기 위치 지정
+		wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+		strInitPath += L"sprite\\";
+		ofn.lpstrInitialDir = strInitPath.c_str();
+
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+		if (GetSaveFileName(&ofn))
+		{
+			pSprite->Save(szSelect);
+		}
+	}
 }
 
 void SE_Detail::SetAtlasTex(Ptr<CTexture> _Tex)

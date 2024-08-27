@@ -23,6 +23,9 @@ private:
 
 
 public:
+    ImVec2 GetMouseLT() { return m_MouseLT; }
+    ImVec2 GetMouseRB() { return m_MouseRB; }
+
     void SetAtlasTex(Ptr<CTexture> _Tex);
 
 private:

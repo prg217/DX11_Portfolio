@@ -8,9 +8,14 @@ class SE_Detail :
 private:
     Ptr<CTexture>   m_AtlasTex;
 
+    Vec2            m_BackGround;
+    Vec2            m_Offset;
+
 private:
     void Atlas();
     void AtlasInfo();
+
+    void Save();
 
 public:
     void SetAtlasTex(Ptr<CTexture> _Tex);

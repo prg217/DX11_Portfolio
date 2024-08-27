@@ -111,7 +111,7 @@ void SE_AtlasView::SelectCheck()
 	}*/
 
 	// 마우스 왼쪽 클릭 체크
-	if (KEY_RELEASED(KEY::LBTN))
+	if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
 	{
 		Vec2 vPixelPos = Vec2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
 		ImVec2 vDiff = ImVec2(vPixelPos.x - ImageRectMin.x, vPixelPos.y - ImageRectMin.y);
