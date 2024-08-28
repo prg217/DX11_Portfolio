@@ -34,6 +34,10 @@ private:
 
 public:
     void SetParticleTexture(Ptr<CTexture> _Texture) { m_ParticleTex = _Texture; }
+    void SetParticleModule(tParticleModule _Module) { m_Module = _Module; }
+
+    Ptr<CTexture> GetParticleTexture() { return m_ParticleTex; }
+    tParticleModule GetParticleModule() { return m_Module; }
 
 public:
     virtual void FinalTick() override;

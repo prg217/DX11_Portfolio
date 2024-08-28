@@ -208,11 +208,12 @@ void CTestLevel::CreateTestLevel()
 
 	// Particle Object
 	CGameObject* pParticleObj = new CGameObject;
-	pParticleObj->SetName(L"Particle");
+	pParticleObj->SetName(L"RunParticle");
 
 	pParticleObj->AddComponent(new CTransform);
 	pParticleObj->AddComponent(new CParticleSystem);
 
+	pParticleObj->ParticleSystem()->SetParticleTexture(CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\particle\\Sprite_Dust.png"));
 	pParticleObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 
 	pLevel->AddObject(0, pParticleObj);
