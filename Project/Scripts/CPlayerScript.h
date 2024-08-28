@@ -2,7 +2,7 @@
 #include <Engine/CScript.h>
 #include <Engine/define.h>
 
-enum class MovementState
+enum class OguAniState
 {
 	IDLE,
 	IDLE_BACK,
@@ -30,6 +30,10 @@ enum class MovementState
 	RUN_LEFTUP,
 	RUN_RIGHTDOWN,
 	RUN_RIGHTUP,
+
+	IDLE_DANCE,
+	DANCE,
+	ROLL,
 };
 
 class CPlayerScript :
@@ -37,17 +41,18 @@ class CPlayerScript :
 {
 private:
     Ptr<CTexture>   m_Texture;
-    Ptr<CPrefab>    m_MissilePref;
 
 	// =======이동 관련 변수들=======
 	float           m_Speed;
+	float           m_MinSpeed;
+	float           m_MaxSpeed;
     bool            m_IsRun;
     int             m_MoveCount;
-    float           m_SaveTime;
+    float           m_SaveFinalMoveTime;
     float           m_AllowedTime;
-	MovementState	m_CurMS; // 현재 MovementState
+	OguAniState		m_CurMS; // 현재 MovementState
 	// ==============================
-
+	float			m_IdleDanceTime;
 
 public:
     virtual void Begin() override;
@@ -60,6 +65,7 @@ public:
     
 private:
 	void Move();
+	void AniState();
 
 public:
     CLONE(CPlayerScript);

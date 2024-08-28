@@ -158,6 +158,11 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_RUN_RIGHTDOWN, pFlipBook);
 	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_run_rightup.flip");
 	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_RUN_RIGHTUP, pFlipBook);
+
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_idle_dance.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_IDLE_DANCE, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_dance.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_DANCE, pFlipBook);
 	
 	pLevel->AddObject(3, pPlayer);
 
