@@ -97,6 +97,11 @@ Ptr<CFlipBook> CFlipBookComponent::FindFlipBook(const wstring& _Key)
 
 void CFlipBookComponent::Play(int _FliBookIdx, float _FPS, bool _Repeat)
 {
+	if (m_CurFlipBook == m_vecFlipBook[_FliBookIdx])
+	{
+		return;
+	}
+
 	m_CurFlipBook = m_vecFlipBook[_FliBookIdx];
 
 	if (nullptr == m_CurFlipBook)

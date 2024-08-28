@@ -12,6 +12,7 @@
 
 #define DT CTimeMgr::GetInst()->GetDeltaTime()
 #define EngineDT CTimeMgr::GetInst()->GetEngineDeltaTime()
+#define TIME CTimeMgr::GetInst()->GetTime()
 
 #define KEY_CHECK(KEY, STATE) CKeyMgr::GetInst()->GetKeyState(KEY) == STATE
 #define KEY_TAP(KEY) CKeyMgr::GetInst()->GetKeyState(KEY) == KEY_STATE::TAP

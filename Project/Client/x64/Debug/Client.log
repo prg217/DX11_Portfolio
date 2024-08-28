@@ -1,5 +1,5 @@
 ﻿  pch.cpp
-C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(24,9): warning C4005: 'DELETE': 매크로 재정의
+C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): warning C4005: 'DELETE': 매크로 재정의
   AE_SpriteView.cpp
   AE_Detail.cpp
   AE_Sub.cpp
