@@ -23,7 +23,7 @@ int CParticleTickCS::Binding()
 
 	m_ParticleBuffer->Binding_CS_UAV(0);
 	m_SpawnCountBuffer->Binding_CS_UAV(1);
-	
+
 	m_NoiseTex->Binding_CS_SRV(20);
 	m_ModuleBuffer->Binding_CS_SRV(21);
 

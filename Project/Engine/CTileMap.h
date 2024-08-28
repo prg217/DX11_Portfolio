@@ -6,7 +6,6 @@ class CStructuredBuffer;
 struct tTileInfo
 {
     int ImgIdx;
-    //Ptr<CTexture> tex;
     int padding[3];
 };
 

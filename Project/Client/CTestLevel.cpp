@@ -194,15 +194,6 @@ void CTestLevel::CreateTestLevel()
 	pTileMapObj->AddComponent(new CTileMap);
 	
 	pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
-	
-	//pTileMapObj->TileMap()->SetRowCol(20, 20);
-	//pTileMapObj->TileMap()->SetTileSize(Vec2(64.f, 64.f));
-	//
-	//Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\TILE.bmp");
-	//pTileMapObj->TileMap()->SetAtlasTexture(pTileAtlas);
-	//pTileMapObj->TileMap()->SetAtlasTileSize(Vec2(64.f, 64.f));
-	
-	//pTileMapObj->TileMap()->SetSeveralAtlas(true);
 
 	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
 	strInitPath += L"tile\\test1.tile";
