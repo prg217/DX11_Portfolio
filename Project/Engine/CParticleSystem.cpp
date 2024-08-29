@@ -204,10 +204,17 @@ void CParticleSystem::CaculateSpawnCount()
 
 void CParticleSystem::SaveToFile(FILE* _File)
 {
+	SaveDataToFile(_File);
 
+	// 텍스쳐랑 구조체 저장
+	SaveAssetRef(m_ParticleTex, _File);
+	fwrite(&m_Module, sizeof(tParticleModule), 1, _File);
 }
 
 void CParticleSystem::LoadFromFile(FILE* _File)
 {
+	LoadDataFromFile(_File);
 
+	LoadAssetRef(m_ParticleTex, _File);
+	fread(&m_Module, sizeof(tParticleModule), 1, _File);
 }

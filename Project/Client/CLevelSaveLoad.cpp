@@ -239,6 +239,7 @@ CComponent* CLevelSaveLoad::GetComponent(COMPONENT_TYPE _Type)
 		return  new CTileMap;
 
 	case COMPONENT_TYPE::PARTICLESYSTEM:
+		return  new CParticleSystem;
 		break;
 
 	case COMPONENT_TYPE::DECAl:
