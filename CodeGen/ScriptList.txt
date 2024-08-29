@@ -1,3 +1,5 @@
 CCameraMoveScript
+CCountDownDeleteScript
 CMissileScript
+COguRunParticleScript
 CPlayerScript

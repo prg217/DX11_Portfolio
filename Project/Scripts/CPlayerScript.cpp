@@ -2,10 +2,10 @@
 #include "CPlayerScript.h"
 
 #include <Engine/enum.h>
-#include <Engine/CLevelMgr.h>
-#include <Engine/CLevel.h>
+//#include <Engine/CLevelMgr.h>
+//#include <Engine/CLevel.h>
 
-#include "CMissileScript.h"
+#include "CCountDownDeleteScript.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERSCRIPT))
@@ -15,9 +15,11 @@ CPlayerScript::CPlayerScript()
 	, m_IsRun(false)
 	, m_MoveCount(0)
 	, m_SaveFinalMoveTime(0)
+	, m_SaveFinalDiagonalTime(0)
 	, m_AllowedTime(0.1f)
 	, m_CurMS(OguAniState::IDLE)
 	, m_IdleDanceTime(8.f)
+	, m_IsRunParticle(false)
 {	
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "PlayerSpeed", &m_Speed);
 	AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
@@ -41,10 +43,7 @@ void CPlayerScript::Tick()
 
 	if (TIME - m_SaveFinalMoveTime >= m_IdleDanceTime)
 	{
-		if (m_CurMS != OguAniState::IDLE_DANCE)
-		{
-			m_CurMS = OguAniState::IDLE_DANCE;
-		}
+		m_CurMS = OguAniState::IDLE_DANCE;
 	}
 
 	// Q 버튼을 누르면 춤을 춘다.
@@ -84,39 +83,42 @@ void CPlayerScript::Move()
 {
 	Vec3 vPos = Transform()->GetRelativePos();
 
+	// 마지막으로 움직인 시간
+	if (KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT) || KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN))
+	{
+		m_SaveFinalMoveTime = TIME;
+	}	
+
+	// 달리는 파티클
+	if (KEY_PRESSED(KEY::LSHIFT) && !m_IsRunParticle)
+	{
+		if (KEY_TAP(KEY::LEFT) || KEY_TAP(KEY::RIGHT) || KEY_TAP(KEY::UP) || KEY_TAP(KEY::DOWN))
+		{
+			m_IsRunParticle = true;
+			RunParticle();
+		}
+	}
+
 	// Run
 	if (KEY_TAP(KEY::LSHIFT))
 	{
 		m_IsRun = true;
 		m_Speed = m_MaxSpeed;
 
-		if (KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT) || KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN))
+		// 달리는 파티클
+		if (!m_IsRunParticle)
 		{
-			// 달리는 파티클 소환
-			CGameObject* pParticleObj = new CGameObject;
-			pParticleObj->SetName(L"RunParticle");
-
-			pParticleObj->AddComponent(new CTransform);
-			pParticleObj->AddComponent(new CParticleSystem);
-
-			wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
-			strInitPath += L"particle\\ogu_run.particle";
-
-			FILE* File = nullptr;
-			_wfopen_s(&File, strInitPath.c_str(), L"rb");
-
-			pParticleObj->ParticleSystem()->LoadFromFile(File);
-			fclose(File);
-
-			pParticleObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, 0.f, 0.f));
-			
-			CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-			curLevel->AddObject(0, pParticleObj);
+			if (KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT) || KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN))
+			{
+				m_IsRunParticle = true;
+				RunParticle();
+			}
 		}
 	}
 	if (KEY_RELEASED(KEY::LSHIFT))
 	{
 		m_IsRun = false;
+		m_IsRunParticle = false;
 		m_Speed = m_MinSpeed;
 	}
 
@@ -131,7 +133,7 @@ void CPlayerScript::Move()
 			m_CurMS = OguAniState::WALK_LEFTUP;
 		}
 
-		m_SaveFinalMoveTime = TIME;
+		m_SaveFinalDiagonalTime = TIME;
 	}
 	else if (KEY_PRESSED(KEY::LEFT) && KEY_PRESSED(KEY::DOWN))
 	{
@@ -144,7 +146,7 @@ void CPlayerScript::Move()
 			m_CurMS = OguAniState::WALK_LEFTDOWN;
 		}
 
-		m_SaveFinalMoveTime = TIME;
+		m_SaveFinalDiagonalTime = TIME;
 	}
 	else if (KEY_PRESSED(KEY::RIGHT) && KEY_PRESSED(KEY::UP))
 	{
@@ -157,7 +159,7 @@ void CPlayerScript::Move()
 			m_CurMS = OguAniState::WALK_RIGHTUP;
 		}
 
-		m_SaveFinalMoveTime = TIME;
+		m_SaveFinalDiagonalTime = TIME;
 	}
 	else if (KEY_PRESSED(KEY::RIGHT) && KEY_PRESSED(KEY::DOWN))
 	{
@@ -170,9 +172,9 @@ void CPlayerScript::Move()
 			m_CurMS = OguAniState::WALK_RIGHTDOWN;
 		}
 
-		m_SaveFinalMoveTime = TIME;
+		m_SaveFinalDiagonalTime = TIME;
 	}
-	else if (TIME - m_SaveFinalMoveTime > m_AllowedTime)
+	else if (TIME - m_SaveFinalDiagonalTime > m_AllowedTime)
 	{
 		if (KEY_PRESSED(KEY::LEFT))
 		{
@@ -225,7 +227,7 @@ void CPlayerScript::Move()
 	{
 		if (m_CurMS == OguAniState::WALK_LEFTUP || m_CurMS == OguAniState::RUN_LEFTUP)
 		{
-			if (TIME - m_SaveFinalMoveTime <= m_AllowedTime)
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
 				m_MoveCount++;
 
@@ -244,7 +246,7 @@ void CPlayerScript::Move()
 		}
 		else if (m_CurMS == OguAniState::WALK_LEFTDOWN || m_CurMS == OguAniState::RUN_LEFTDOWN)
 		{
-			if (TIME - m_SaveFinalMoveTime <= m_AllowedTime)
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
 				m_MoveCount++;
 
@@ -270,7 +272,7 @@ void CPlayerScript::Move()
 	{
 		if (m_CurMS == OguAniState::WALK_RIGHTUP || m_CurMS == OguAniState::RUN_RIGHTUP)
 		{
-			if (TIME - m_SaveFinalMoveTime <= m_AllowedTime)
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
 				m_MoveCount++;
 
@@ -288,7 +290,7 @@ void CPlayerScript::Move()
 		}
 		else if (m_CurMS == OguAniState::WALK_RIGHTDOWN || m_CurMS == OguAniState::RUN_RIGHTDOWN)
 		{
-			if (TIME - m_SaveFinalMoveTime <= m_AllowedTime)
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
 				m_MoveCount++;
 
@@ -314,7 +316,7 @@ void CPlayerScript::Move()
 	{
 		if (m_CurMS == OguAniState::WALK_LEFTUP || m_CurMS == OguAniState::RUN_LEFTUP)
 		{
-			if (TIME - m_SaveFinalMoveTime <= m_AllowedTime)
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
 				m_MoveCount++;
 
@@ -332,7 +334,7 @@ void CPlayerScript::Move()
 		}
 		else if (m_CurMS == OguAniState::WALK_RIGHTUP || m_CurMS == OguAniState::RUN_RIGHTUP)
 		{
-			if (TIME - m_SaveFinalMoveTime <= m_AllowedTime)
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
 				m_MoveCount++;
 
@@ -358,7 +360,7 @@ void CPlayerScript::Move()
 	{
 		if (m_CurMS == OguAniState::WALK_LEFTDOWN || m_CurMS == OguAniState::RUN_LEFTDOWN)
 		{
-			if (TIME - m_SaveFinalMoveTime <= m_AllowedTime)
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
 				m_MoveCount++;
 
@@ -376,7 +378,7 @@ void CPlayerScript::Move()
 		}
 		else if (m_CurMS == OguAniState::WALK_RIGHTDOWN || m_CurMS == OguAniState::RUN_RIGHTDOWN)
 		{
-			if (TIME - m_SaveFinalMoveTime <= m_AllowedTime)
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
 				m_MoveCount++;
 
@@ -508,4 +510,66 @@ void CPlayerScript::AniState()
 	default:
 		break;
 	}
+}
+
+void CPlayerScript::RunParticle()
+{
+	// 달리는 파티클 소환
+	CGameObject* pParticleObj = new CGameObject;
+	pParticleObj->SetName(L"RunParticle");
+
+	pParticleObj->AddComponent(new CTransform);
+	pParticleObj->AddComponent(new CParticleSystem);
+
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"particle\\ogu_run.particle";
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	pParticleObj->ParticleSystem()->LoadFromFile(File);
+	fclose(File);
+
+	// 삭제되는 시간을 지정해준다.
+	pParticleObj->AddComponent(new CCountDownDeleteScript);
+	CScript* pScript = pParticleObj->GetScript("CCountDownDeleteScript");
+	CCountDownDeleteScript* pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
+	pCountDown->SetSaveTime(TIME);
+	pCountDown->SetDeadTime(4.f);
+
+	Vec3 spawnPos = Vec3(0.f, 0.f, 0.f);
+
+	switch (m_CurMS)
+	{
+	case OguAniState::RUN_DOWN:
+		spawnPos = Vec3(0.f, 30.f, 0.f);
+		break;
+	case OguAniState::RUN_UP:
+		spawnPos = Vec3(0.f, -30.f, 0.f);
+		break;
+	case OguAniState::RUN_LEFT:
+		spawnPos = Vec3(-60.f, 0.f, 0.f);
+		break;
+	case OguAniState::RUN_RIGHT:
+		spawnPos = Vec3(60.f, 0.f, 0.f);
+		break;
+	case OguAniState::RUN_LEFTDOWN:
+		spawnPos = Vec3(-30.f, 30.f, 0.f);
+		break;
+	case OguAniState::RUN_LEFTUP:
+		spawnPos = Vec3(-30.f, -30.f, 0.f);
+		break;
+	case OguAniState::RUN_RIGHTDOWN:
+		spawnPos = Vec3(30.f, 30.f, 0.f);
+		break;
+	case OguAniState::RUN_RIGHTUP:
+		spawnPos = Vec3(30.f, -30.f, 0.f);
+		break;
+	default:
+		break;
+	}
+
+	pParticleObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + spawnPos);
+
+	CreateObject(pParticleObj, 0);
 }

@@ -49,6 +49,8 @@ void CTaskMgr::ExecuteTask()
 			if (pCurLevel->GetState() != STOP)
 			{
 				pObject->Begin();
+
+				CLevelMgr::GetInst()->m_LevelChanged = true;
 			}
 		}
 		break;
@@ -63,6 +65,8 @@ void CTaskMgr::ExecuteTask()
 			// GC ¿¡ ³Ö±â
 			pObject->m_Dead = true;			
 			m_GC.push_back(pObject);
+
+			CLevelMgr::GetInst()->m_LevelChanged = true;
 		}
 		break;
 

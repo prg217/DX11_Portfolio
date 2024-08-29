@@ -2,12 +2,14 @@
 #include "CScriptMgr.h"
 
 #include "CCameraMoveScript.h"
+#include "CCountDownDeleteScript.h"
 #include "CMissileScript.h"
 #include "CPlayerScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CCameraMoveScript");
+	_vec.push_back(L"CCountDownDeleteScript");
 	_vec.push_back(L"CMissileScript");
 	_vec.push_back(L"CPlayerScript");
 }
@@ -16,6 +18,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
+	if (L"CCountDownDeleteScript" == _strScriptName)
+		return new CCountDownDeleteScript;
 	if (L"CMissileScript" == _strScriptName)
 		return new CMissileScript;
 	if (L"CPlayerScript" == _strScriptName)
@@ -29,6 +33,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	{
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
+		break;
+	case (UINT)SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:
+		return new CCountDownDeleteScript;
 		break;
 	case (UINT)SCRIPT_TYPE::MISSILESCRIPT:
 		return new CMissileScript;
@@ -46,6 +53,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 	{
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return L"CCameraMoveScript";
+		break;
+
+	case SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:
+		return L"CCountDownDeleteScript";
 		break;
 
 	case SCRIPT_TYPE::MISSILESCRIPT:

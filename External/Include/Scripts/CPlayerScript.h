@@ -47,12 +47,15 @@ private:
 	float           m_MinSpeed;
 	float           m_MaxSpeed;
     bool            m_IsRun;
-    int             m_MoveCount;
+    int             m_MoveCount; 
     float           m_SaveFinalMoveTime;
+	float           m_SaveFinalDiagonalTime;
     float           m_AllowedTime;
 	OguAniState		m_CurMS; // ÇöÀç MovementState
 	// ==============================
 	float			m_IdleDanceTime;
+
+	bool			m_IsRunParticle;
 
 public:
     virtual void Begin() override;
@@ -66,6 +69,7 @@ public:
 private:
 	void Move();
 	void AniState();
+	void RunParticle();
 
 public:
     CLONE(CPlayerScript);

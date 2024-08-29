@@ -123,6 +123,21 @@ void CGameObject::AddChild(CGameObject* _ChildObject)
 	CLevelMgr::GetInst()->LevelChanged();
 }
 
+CScript* CGameObject::GetScript(string _Script)
+{
+	// 원하는 스크립트의 문자열을 입력하면 반환
+	string script = "class " + _Script;
+	for (auto i : m_vecScript)
+	{
+		if (typeid(*i).name() == script)
+		{
+			return i;
+		}
+	}
+
+	return nullptr;
+}
+
 bool CGameObject::IsAncestor(CGameObject* _Object)
 {
 	CGameObject* pObject = m_Parent;
