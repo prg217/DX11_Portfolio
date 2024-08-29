@@ -2,6 +2,8 @@
 #include "CPlayerScript.h"
 
 #include <Engine/enum.h>
+#include <Engine/CLevelMgr.h>
+#include <Engine/CLevel.h>
 
 #include "CMissileScript.h"
 
@@ -39,7 +41,10 @@ void CPlayerScript::Tick()
 
 	if (TIME - m_SaveFinalMoveTime >= m_IdleDanceTime)
 	{
-		m_CurMS = OguAniState::IDLE_DANCE;
+		if (m_CurMS != OguAniState::IDLE_DANCE)
+		{
+			m_CurMS = OguAniState::IDLE_DANCE;
+		}
 	}
 
 	// Q 버튼을 누르면 춤을 춘다.
@@ -84,6 +89,30 @@ void CPlayerScript::Move()
 	{
 		m_IsRun = true;
 		m_Speed = m_MaxSpeed;
+
+		if (KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT) || KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN))
+		{
+			// 달리는 파티클 소환
+			CGameObject* pParticleObj = new CGameObject;
+			pParticleObj->SetName(L"RunParticle");
+
+			pParticleObj->AddComponent(new CTransform);
+			pParticleObj->AddComponent(new CParticleSystem);
+
+			wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+			strInitPath += L"particle\\ogu_run.particle";
+
+			FILE* File = nullptr;
+			_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+			pParticleObj->ParticleSystem()->LoadFromFile(File);
+			fclose(File);
+
+			pParticleObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, 0.f, 0.f));
+			
+			CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+			curLevel->AddObject(0, pParticleObj);
+		}
 	}
 	if (KEY_RELEASED(KEY::LSHIFT))
 	{

@@ -31,9 +31,10 @@ CParticleSystem::CParticleSystem()
 	m_SpawnCountBuffer = new CStructuredBuffer;
 	m_SpawnCountBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::SRV_UAV, true, nullptr);
 
+	/*
 	// 파티클 기능(모듈) 정보 세팅
 	// Spawn Module
-	m_Module.Module[(UINT)PARTICLE_MODULE::SPAWN] = true;
+	m_Module.Module[(UINT)PARTICLE_MODULE::SPAWN] = false;
 	m_Module.SpawnRate = 20;
 	m_Module.vSpawnColor = Vec4(0.24f, 0.67f, 0.87f, 1.f);
 	m_Module.MinLife = 1.f;
@@ -50,18 +51,18 @@ CParticleSystem::CParticleSystem()
 	m_Module.SpaceType = 1; // Local Space 
 
 	// Spawn Burst Module
-	m_Module.Module[(UINT)PARTICLE_MODULE::SPAWN_BURST] = true;
+	m_Module.Module[(UINT)PARTICLE_MODULE::SPAWN_BURST] = false;
 	m_Module.SpawnBurstRepeat = true;
 	m_Module.SpawnBurstCount = 100;
 	m_Module.SpawnBurstRepeatTime = 3.f;
 
 	// Scale Module
-	m_Module.Module[(UINT)PARTICLE_MODULE::SCALE] = true;
+	m_Module.Module[(UINT)PARTICLE_MODULE::SCALE] = false;
 	m_Module.StartScale = 1.f;
 	m_Module.EndScale = 1.f;
 
 	// AddVelocity Module
-	m_Module.Module[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = true;
+	m_Module.Module[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = false;
 	m_Module.AddVelocityType = 1;
 	m_Module.AddVelocityFixedDir = Vec3(0.f, 1.f, 0.f);
 	m_Module.AddMinSpeed = 100.f;
@@ -78,14 +79,14 @@ CParticleSystem::CParticleSystem()
 	m_Module.NoiseForceScale = 100.f;
 
 	// Render Module
-	m_Module.Module[(UINT)PARTICLE_MODULE::RENDER] = true;
+	m_Module.Module[(UINT)PARTICLE_MODULE::RENDER] = false;
 	m_Module.EndColor = Vec3(1.f, 0.f, 0.f);
 	m_Module.FadeOut = true;
 	m_Module.FadeOutStartRatio = 0.9f;
 	m_Module.VelocityAlignment = true;
-
+	*/
 	m_ModuleBuffer = new CStructuredBuffer;
-	m_ModuleBuffer->Create(sizeof(tParticleModule), 1, SB_TYPE::SRV_UAV, true, &m_Module);
+	//m_ModuleBuffer->Create(sizeof(tParticleModule), 1, SB_TYPE::SRV_UAV, true, &m_Module);
 }
 
 CParticleSystem::CParticleSystem(const CParticleSystem& _Other)
@@ -139,6 +140,7 @@ void CParticleSystem::Render()
 	m_ParticleBuffer->Binding(20);	// t20
 
 	// 모듈 버퍼 바인딩
+	m_ModuleBuffer->SetData(&m_Module, sizeof(tParticleModule));
 	m_ModuleBuffer->Binding(21);	// t21
 
 	// 재질정보 바인딩
@@ -217,4 +219,6 @@ void CParticleSystem::LoadFromFile(FILE* _File)
 
 	LoadAssetRef(m_ParticleTex, _File);
 	fread(&m_Module, sizeof(tParticleModule), 1, _File);
+
+	m_ModuleBuffer->Create(sizeof(tParticleModule), 1, SB_TYPE::SRV_UAV, true, &m_Module);
 }

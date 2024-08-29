@@ -116,7 +116,11 @@ void ParticleSystemUI::Update()
 
 	ImGui::Text("SpawnColor");
 	ImGui::SameLine(100);
-	ImGui::ColorEdit4("##SpawnColor", m_ParticleModule.vSpawnColor);
+	Vec4 vSpawnColor = m_ParticleModule.vSpawnColor;
+	if (ImGui::ColorEdit4("##SpawnColor", vSpawnColor))
+	{
+		m_ParticleModule.vSpawnColor = vSpawnColor;
+	}
 
 	ImGui::Text("MinLife");
 	ImGui::SameLine(100);
@@ -135,36 +139,48 @@ void ParticleSystemUI::Update()
 	ImGui::DragFloat3("##SpawnMaxScale", m_ParticleModule.vSpawnMaxScale);
 
 	ImGui::Text("SpawnShape");
-	ImGui::SameLine(100);
 	int SpawnShape = m_ParticleModule.SpawnShape;
-	if (ImGui::DragInt("##SpawnShape", &SpawnShape))
+	if (ImGui::RadioButton("Box##SpawnShape", SpawnShape == 0))
 	{
-		m_ParticleModule.SpawnShape = SpawnShape;
+		SpawnShape = 0;
 	}
+	if (ImGui::RadioButton("Sphere##SpawnShape", SpawnShape == 1))
+	{
+		SpawnShape = 1;
+	}
+	m_ParticleModule.SpawnShape = SpawnShape;
 
 	ImGui::Text("SpawnShapeScale X");
 	ImGui::SameLine(100);
 	ImGui::DragFloat("##SpawnShapeScaleX", &m_ParticleModule.SpawnShapeScale.x);
 
 	ImGui::Text("BlockSpawnShape");
-	ImGui::SameLine(100);
 	int BlockSpawnShape = m_ParticleModule.BlockSpawnShape;
-	if (ImGui::DragInt("##BlockSpawnShape", &BlockSpawnShape))
+	if (ImGui::RadioButton("Box##BlockSpawnShape", BlockSpawnShape == 0))
 	{
-		m_ParticleModule.BlockSpawnShape = BlockSpawnShape;
+		BlockSpawnShape = 0;
 	}
+	if (ImGui::RadioButton("Sphere##BlockSpawnShape", BlockSpawnShape == 1))
+	{
+		BlockSpawnShape = 1;
+	}
+	m_ParticleModule.BlockSpawnShape = BlockSpawnShape;
 
 	ImGui::Text("BlockSpawnShapeScale X");
 	ImGui::SameLine(100);
 	ImGui::DragFloat("##BlockSpawnShapeScaleX", &m_ParticleModule.BlockSpawnShapeScale.x);
 
 	ImGui::Text("SpaceType");
-	ImGui::SameLine(100);
 	int SpaceType = m_ParticleModule.SpaceType;
-	if (ImGui::DragInt("##SpaceType", &SpaceType))
+	if (ImGui::RadioButton("LocalSpace", SpaceType == 0))
 	{
-		m_ParticleModule.SpaceType = SpaceType;
+		SpaceType = 0;
 	}
+	if (ImGui::RadioButton("WorldSpace", SpaceType == 1))
+	{
+		SpaceType = 1;
+	}
+	m_ParticleModule.SpaceType = SpaceType;
 
 	ImGui::Text("");
 	ImGui::Separator();
@@ -185,7 +201,7 @@ void ParticleSystemUI::Update()
 	ImGui::Text("SpawnBurstRepeat");
 	ImGui::SameLine(100);
 	bool SpawnBurstRepeat = m_ParticleModule.SpawnBurstRepeat;
-	if (ImGui::Checkbox("##SpawnBurstModuleActive", &SpawnBurstRepeat))
+	if (ImGui::Checkbox("##SpawnBurstRepeat", &SpawnBurstRepeat))
 	{
 		m_ParticleModule.SpawnBurstRepeat = SpawnBurstRepeat;
 	}
@@ -243,12 +259,24 @@ void ParticleSystemUI::Update()
 	}
 
 	ImGui::Text("AddVelocityType");
-	ImGui::SameLine(100);
 	int AddVelocityType = m_ParticleModule.AddVelocityType;
-	if (ImGui::DragInt("##AddVelocityType", &AddVelocityType))
+	if (ImGui::RadioButton("Random", AddVelocityType == 0))
 	{
-		m_ParticleModule.AddVelocityType = AddVelocityType;
+		AddVelocityType = 0;
 	}
+	if (ImGui::RadioButton("FromCenter", AddVelocityType == 1))
+	{
+		AddVelocityType = 1;
+	}
+	if (ImGui::RadioButton("ToCenter", AddVelocityType == 2))
+	{
+		AddVelocityType = 2;
+	}
+	if (ImGui::RadioButton("Fixed", AddVelocityType == 3))
+	{
+		AddVelocityType = 3;
+	}
+	m_ParticleModule.AddVelocityType = AddVelocityType;
 
 	ImGui::Text("AddVelocityFixedDir");
 	ImGui::SameLine(100);
@@ -273,7 +301,7 @@ void ParticleSystemUI::Update()
 	ImGui::Text("Active");
 	ImGui::SameLine(100);
 	bool DragModuleActive = m_ParticleModule.Module[(UINT)PARTICLE_MODULE::DRAG];
-	if (ImGui::Checkbox("##DragModuleActive", &AddVelocityModuleActive))
+	if (ImGui::Checkbox("##DragModuleActive", &DragModuleActive))
 	{
 		m_ParticleModule.Module[(UINT)PARTICLE_MODULE::DRAG] = DragModuleActive;
 	}
@@ -328,12 +356,14 @@ void ParticleSystemUI::Update()
 
 	ImGui::Text("EndColor");
 	ImGui::SameLine(100);
-	ImGui::ColorEdit3("##EndColor", m_ParticleModule.EndColor);
+	Vec3 EndColor = m_ParticleModule.EndColor;
+	ImGui::ColorEdit3("##EndColor", EndColor);
+	m_ParticleModule.EndColor = EndColor;
 
 	ImGui::Text("FadeOut");
 	ImGui::SameLine(100);
-	int FadeOut = m_ParticleModule.FadeOut;
-	if (ImGui::DragInt("##FadeOut", &FadeOut))
+	bool FadeOut = m_ParticleModule.FadeOut;
+	if (ImGui::Checkbox("##FadeOut", &FadeOut))
 	{
 		m_ParticleModule.FadeOut = FadeOut;
 	}
@@ -344,8 +374,8 @@ void ParticleSystemUI::Update()
 
 	ImGui::Text("VelocityAlignment");
 	ImGui::SameLine(100);
-	int VelocityAlignment = m_ParticleModule.VelocityAlignment;
-	if (ImGui::DragInt("##FadeOut", &FadeOut))
+	bool VelocityAlignment = m_ParticleModule.VelocityAlignment;
+	if (ImGui::Checkbox("##VelocityAlignment", &VelocityAlignment))
 	{
 		m_ParticleModule.VelocityAlignment = VelocityAlignment;
 	}
@@ -427,6 +457,9 @@ void ParticleSystemUI::SaveLoad()
 		{
 			return;
 		}
+
+		m_ParticleModule = m_Particle->GetParticleModule();
+		m_ParticleTex = m_Particle->GetParticleTexture();
 	}
 }
 
