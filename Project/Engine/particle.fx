@@ -161,6 +161,7 @@ float4 PS_Particle(GS_OUT _in) : SV_Target
     {
         vParticleColor = g_tex_0.Sample(g_sam_0, _in.vUV);
         vParticleColor *= ParticleBuffer[_in.InstID].vColor;
+
     }
         
     return vParticleColor;

@@ -188,11 +188,12 @@ void CS_ParticleTick(int3 _ID : SV_DispatchThreadID)
         if (Render)
         {
             Particle.vColor.rgb = (Module[0].EndColor - Module[0].vSpawnColor.rgb) * Particle.NormalizedAge + Module[0].vSpawnColor.rgb;
-
+            
             if (Module[0].FadeOut)
             {
                 float fRatio = saturate(1.f - (Particle.NormalizedAge - Module[0].StartRatio) / (1.f - Module[0].StartRatio));
-                Particle.vColor.a = fRatio;
+                // 시작 컬러의 알파값이 적용되게 한다.
+                Particle.vColor.a = Module[0].vSpawnColor.a * fRatio;
             }
         }
         
