@@ -4,6 +4,7 @@
 #include "CCameraMoveScript.h"
 #include "CCountDownDeleteScript.h"
 #include "CMissileScript.h"
+#include "COguDancePointLightScript.h"
 #include "CPlayerScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -22,6 +23,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCountDownDeleteScript;
 	if (L"CMissileScript" == _strScriptName)
 		return new CMissileScript;
+	if (L"COguDancePointLightScript" == _strScriptName)
+		return new COguDancePointLightScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
 	return nullptr;
@@ -39,6 +42,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::MISSILESCRIPT:
 		return new CMissileScript;
+		break;
+	case (UINT)SCRIPT_TYPE::OGUDANCEPOINTLIGHTSCRIPT:
+		return new COguDancePointLightScript;
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
@@ -61,6 +67,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::MISSILESCRIPT:
 		return L"CMissileScript";
+		break;
+
+	case SCRIPT_TYPE::OGUDANCEPOINTLIGHTSCRIPT:
+		return L"COguDancePointLightScript";
+		break;
+
+	case SCRIPT_TYPE::OGURUNPARTICLESCRIPT:
+		return L"COguRunParticleScript";
 		break;
 
 	case SCRIPT_TYPE::PLAYERSCRIPT:

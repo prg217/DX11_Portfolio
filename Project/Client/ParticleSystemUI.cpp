@@ -91,7 +91,7 @@ void ParticleSystemUI::Update()
 		pListUI->SetActive(true);
 	}
 
-	m_Particle->SetParticleTexture(m_ParticleTex);
+	//m_Particle->SetParticleTexture(m_ParticleTex);
 
 	// Spawn Module
 	ImGui::Text("Spawn Module");
@@ -481,6 +481,7 @@ void ParticleSystemUI::SelectTexture(DWORD_PTR _ListUI)
 	assert(pTex.Get());
 
 	SetParticleTex(pTex);
+	m_Particle->SetParticleTexture(m_ParticleTex);
 }
 
 void ParticleSystemUI::SetParticleTex(Ptr<CTexture> _Tex)

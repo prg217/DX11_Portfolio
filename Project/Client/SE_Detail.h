@@ -25,6 +25,9 @@ private:
 public:
     void SetAtlasTex(Ptr<CTexture> _Tex);
 
+    Vec2 GetBackGround() { return m_BackGround; }
+    Vec2 GetOffset() { return m_Offset; }
+
 public:
     virtual void Init() override;
     virtual void Update() override;

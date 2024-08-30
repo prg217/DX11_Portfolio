@@ -151,6 +151,27 @@ void SE_AtlasView::DrawSelectRect()
 
 	ImGui::GetWindowDrawList()->AddRect(MouseLTPos, MouseRBPos
 		, ImGui::GetColorU32(ImVec4(1.f, 1.f, 0.f, 1.f)), 0.f, 0.f, 1.f);
+
+	// 백그라운드 미리보기
+	//
+	//Vec2 vBg = GetDetail()->GetBackGround();
+	//ImVec2 bgLT = ImVec2(center.x - vBg.x, center.y - vBg.y);
+	//ImVec2 bgRB = ImVec2(center.x + vBg.x, center.y + vBg.y);
+	//
+	//ImGui::GetWindowDrawList()->AddRect(bgLT, bgRB
+	//	, ImGui::GetColorU32(ImVec4(0.f, 0.f, 1.f, 1.f)), 0.f, 0.f, 1.f);
+
+	// 오프셋 미리보기
+	ImVec2 center = ImVec2((MouseLTPos.x + MouseRBPos.x) / 2, (MouseLTPos.y + MouseRBPos.y) / 2);
+	ImVec2 centerBT = ImVec2((MouseLTPos.x + MouseRBPos.x) / 2, MouseRBPos.y);
+	Vec2 vOffset = GetDetail()->GetOffset();
+	ImVec2 ImOffset = ImVec2(vOffset.x, vOffset.y);
+	ImVec2 offsetCT = ImVec2(center.x - ImOffset.x, center.y - ImOffset.y);
+	ImVec2 offsetBT = ImVec2(centerBT.x - ImOffset.x, centerBT.y - ImOffset.y);
+	ImGui::GetWindowDrawList()->AddRect(offsetBT, offsetBT
+		, ImGui::GetColorU32(ImVec4(1.f, 0.f, 0.f, 1.f)), 0.f, 0.f, 1.f);
+	ImGui::GetWindowDrawList()->AddRect(offsetCT, offsetCT
+		, ImGui::GetColorU32(ImVec4(1.f, 0.f, 0.f, 1.f)), 0.f, 0.f, 1.f);
 }
 
 void SE_AtlasView::CalcSpriteSize(Vec2 _PixelPos)

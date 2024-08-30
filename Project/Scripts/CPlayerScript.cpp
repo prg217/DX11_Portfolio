@@ -2,10 +2,9 @@
 #include "CPlayerScript.h"
 
 #include <Engine/enum.h>
-//#include <Engine/CLevelMgr.h>
-//#include <Engine/CLevel.h>
 
 #include "CCountDownDeleteScript.h"
+#include "COguDancePointLightScript.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERSCRIPT))
@@ -32,9 +31,6 @@ CPlayerScript::~CPlayerScript()
 void CPlayerScript::Begin()
 {
 	GetRenderComponent()->GetDynamicMaterial();
-	//m_MissilePref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"MissilePref");
-
-
 }
 
 void CPlayerScript::Tick()
@@ -46,10 +42,16 @@ void CPlayerScript::Tick()
 		m_CurMS = OguAniState::IDLE_DANCE;
 	}
 
-	// Q 버튼을 누르면 춤을 춘다.
-	if (KEY_PRESSED(KEY::Q))
+	// A 버튼을 누르면 채를 휘두른다.
+	if (KEY_TAP(KEY::A))
 	{
-		m_CurMS = OguAniState::DANCE;
+		m_CurMS = OguAniState::SWING_DOWN;
+	}
+
+	// Q 버튼을 누르면 춤을 춘다.
+	if (KEY_TAP(KEY::Q))
+	{
+		Dance();
 	}
 
 	AniState();
@@ -507,6 +509,8 @@ void CPlayerScript::AniState()
 	case OguAniState::ROLL:
 		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_ROLL, 10, true);
 		break;
+	case OguAniState::SWING_DOWN:
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_DOWN, 10, false);
 	default:
 		break;
 	}
@@ -570,6 +574,87 @@ void CPlayerScript::RunParticle()
 	}
 
 	pParticleObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + spawnPos);
+
+	CreateObject(pParticleObj, 0);
+}
+
+void CPlayerScript::Dance()
+{
+	m_CurMS = OguAniState::DANCE;
+
+	// 포인트 라이트 추가
+	// 범위가 점점 작아짐
+	CGameObject* pPointLight = new CGameObject;
+	pPointLight->SetName(L"OguDnacePointLight");
+	pPointLight->AddComponent(new CTransform);
+	pPointLight->AddComponent(new CLight2D);
+
+	pPointLight->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+	pPointLight->Light2D()->SetLightColor(Vec3(0.2f, 1.f, 0.2f));
+	pPointLight->Light2D()->SetRadius(80.f);
+	pPointLight->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
+
+	// 삭제되는 시간을 지정해준다.
+	pPointLight->AddComponent(new CCountDownDeleteScript);
+	CScript* pScript = pPointLight->GetScript("CCountDownDeleteScript");
+	CCountDownDeleteScript* pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
+	pCountDown->SetSaveTime(TIME);
+	pCountDown->SetDeadTime(4.f);
+
+	pPointLight->AddComponent(new COguDancePointLightScript);
+
+	//GetOwner()->AddChild(pPointLight);
+	CreateObject(pPointLight, 0);
+
+	CGameObject* pPointLight2 = new CGameObject;
+	pPointLight2->SetName(L"OguDnacePointLight2");
+	pPointLight2->AddComponent(new CTransform);
+	pPointLight2->AddComponent(new CLight2D);
+
+	pPointLight2->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+	pPointLight2->Light2D()->SetLightColor(Vec3(0.8667f, 1.f, 0.8392f));
+	pPointLight2->Light2D()->SetRadius(80.f);
+	pPointLight2->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
+
+	// 삭제되는 시간을 지정해준다.
+	pPointLight2->AddComponent(new CCountDownDeleteScript);
+	pScript = pPointLight2->GetScript("CCountDownDeleteScript");
+	pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
+	pCountDown->SetSaveTime(TIME);
+	pCountDown->SetDeadTime(4.f);
+
+	pPointLight2->AddComponent(new COguDancePointLightScript);
+	pScript = pPointLight2->GetScript("COguDancePointLightScript");
+	COguDancePointLightScript* pDPLS = dynamic_cast<COguDancePointLightScript*>(pScript);
+	pDPLS->SetMaxRadius(50.f);
+	pDPLS->SetMinRadius(30.f);
+
+	//GetOwner()->AddChild(pPointLight);
+	CreateObject(pPointLight2, 0);
+
+	CGameObject* pParticleObj = new CGameObject;
+	pParticleObj->SetName(L"DanceParticle");
+
+	pParticleObj->AddComponent(new CTransform);
+	pParticleObj->AddComponent(new CParticleSystem);
+
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"particle\\ogu_dance.particle";
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	pParticleObj->ParticleSystem()->LoadFromFile(File);
+	fclose(File);
+
+	// 삭제되는 시간을 지정해준다.
+	pParticleObj->AddComponent(new CCountDownDeleteScript);
+	pScript = pParticleObj->GetScript("CCountDownDeleteScript");
+	pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
+	pCountDown->SetSaveTime(TIME);
+	pCountDown->SetDeadTime(4.f);
+
+	pParticleObj->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
 
 	CreateObject(pParticleObj, 0);
 }

@@ -34,6 +34,15 @@ enum class OguAniState
 	IDLE_DANCE,
 	DANCE,
 	ROLL,
+
+	SWING_DOWN,
+	SWING_UP,
+	SWING_LEFT,
+	SWING_RIGHT,
+	SWING_LEFTDOWN,
+	SWING_LEFTUP,
+	SWING_RIGHTDOWN,
+	SWING_RIGHTUP,
 };
 
 class CPlayerScript :
@@ -70,6 +79,7 @@ private:
 	void Move();
 	void AniState();
 	void RunParticle();
+	void Dance();
 
 public:
     CLONE(CPlayerScript);

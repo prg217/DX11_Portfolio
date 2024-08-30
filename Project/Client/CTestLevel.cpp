@@ -55,7 +55,7 @@ void CTestLevel::CreateTestLevel()
 	CamObj->SetName(L"MainCamera");
 	CamObj->AddComponent(new CTransform);
 	CamObj->AddComponent(new CCamera);
-	CamObj->AddComponent(new CCameraMoveScript);
+	//CamObj->AddComponent(new CCameraMoveScript);
 
 	// 우선순위를 0 : MainCamera 로 설정
 	CamObj->Camera()->SetPriority(0);
@@ -90,7 +90,7 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->SetName(L"Player");
 	pPlayer->AddComponent(new CTransform);
 	pPlayer->AddComponent(new CMeshRender);
-	pPlayer->AddComponent(new CRigidBody);
+	//pPlayer->AddComponent(new CRigidBody);
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->AddComponent(new CFlipBookComponent);
 	pPlayer->AddComponent(new CPlayerScript);
@@ -100,7 +100,6 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->Collider2D()->SetIndependentScale(false);
 	pPlayer->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Collider2D()->SetScale(Vec3(1.f, 1.f, 1.f));
-	
 	//pPlayer->RigidBody()->UseGravity(true);
 	
 	pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
@@ -163,6 +162,8 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_IDLE_DANCE, pFlipBook);
 	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_dance.flip");
 	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_DANCE, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_swing_down.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_SWING_DOWN, pFlipBook);
 	
 	pLevel->AddObject(3, pPlayer);
 
