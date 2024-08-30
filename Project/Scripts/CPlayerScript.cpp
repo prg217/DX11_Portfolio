@@ -19,6 +19,10 @@ CPlayerScript::CPlayerScript()
 	, m_CurMS(OguAniState::IDLE)
 	, m_IdleDanceTime(8.f)
 	, m_IsRunParticle(false)
+	, m_PreMS(OguAniState::IDLE)
+	, m_IsSwing(false)
+	, m_SaveDanceTime(0.f)
+	, m_DanceTime(1.5f)
 {	
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "PlayerSpeed", &m_Speed);
 	AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
@@ -35,7 +39,10 @@ void CPlayerScript::Begin()
 
 void CPlayerScript::Tick()
 {
-	Move();
+	if (!m_IsSwing)
+	{
+		Move();
+	}
 
 	if (TIME - m_SaveFinalMoveTime >= m_IdleDanceTime)
 	{
@@ -45,13 +52,27 @@ void CPlayerScript::Tick()
 	// A 버튼을 누르면 채를 휘두른다.
 	if (KEY_TAP(KEY::A))
 	{
-		m_CurMS = OguAniState::SWING_DOWN;
+		Swing();
 	}
+	SwingFinishCheck();
 
 	// Q 버튼을 누르면 춤을 춘다.
 	if (KEY_TAP(KEY::Q))
 	{
-		Dance();
+		m_SaveDanceTime = TIME;
+
+		DanceEffect();
+	}
+	if (KEY_PRESSED(KEY::Q))
+	{
+		if (TIME - m_SaveDanceTime >= m_DanceTime)
+		{
+			m_CurMS = OguAniState::DANCE;
+		}
+	}
+	if (KEY_RELEASED(KEY::Q))
+	{
+		DanceEffectDelete();
 	}
 
 	AniState();
@@ -511,6 +532,28 @@ void CPlayerScript::AniState()
 		break;
 	case OguAniState::SWING_DOWN:
 		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_DOWN, 10, false);
+		break;
+	case OguAniState::SWING_UP:
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_UP, 10, false);
+		break;
+	case OguAniState::SWING_LEFT:
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_LEFT, 10, false);
+		break;
+	case OguAniState::SWING_RIGHT:
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_RIGHT, 10, false);
+		break;
+	case OguAniState::SWING_LEFTDOWN:
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_LEFTDOWN, 10, false);
+		break;
+	case OguAniState::SWING_LEFTUP:
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_LEFTUP, 10, false);
+		break;
+	case OguAniState::SWING_RIGHTDOWN:
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_RIGHTDOWN, 10, false);
+		break;
+	case OguAniState::SWING_RIGHTUP:
+		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_RIGHTUP, 10, false);
+		break;
 	default:
 		break;
 	}
@@ -578,10 +621,8 @@ void CPlayerScript::RunParticle()
 	CreateObject(pParticleObj, 0);
 }
 
-void CPlayerScript::Dance()
+void CPlayerScript::DanceEffect()
 {
-	m_CurMS = OguAniState::DANCE;
-
 	// 포인트 라이트 추가
 	// 범위가 점점 작아짐
 	CGameObject* pPointLight = new CGameObject;
@@ -657,4 +698,93 @@ void CPlayerScript::Dance()
 	pParticleObj->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
 
 	CreateObject(pParticleObj, 0);
+
+	m_vDanceEffects.push_back(pPointLight);
+	m_vDanceEffects.push_back(pPointLight2);
+	m_vDanceEffects.push_back(pParticleObj);
+}
+
+void CPlayerScript::DanceEffectDelete()
+{
+	for (auto i : m_vDanceEffects)
+	{
+		DeleteObject(i);
+	}
+	m_vDanceEffects.clear();
+}
+
+void CPlayerScript::Swing()
+{
+	if (!m_IsSwing)
+	{
+		switch (m_CurMS)
+		{
+		case OguAniState::DANCE:
+		case OguAniState::IDLE_DANCE:
+		case OguAniState::IDLE:
+		case OguAniState::WALK_DOWN:
+		case OguAniState::RUN_DOWN:
+			m_PreMS = OguAniState::IDLE;
+			m_CurMS = OguAniState::SWING_DOWN;
+			break;
+		case OguAniState::IDLE_BACK:
+		case OguAniState::WALK_UP:
+		case OguAniState::RUN_UP:
+			m_PreMS = OguAniState::IDLE_BACK;
+			m_CurMS = OguAniState::SWING_UP;
+			break;
+		case OguAniState::IDLE_LEFT:
+		case OguAniState::WALK_LEFT:
+		case OguAniState::RUN_LEFT:
+			m_PreMS = OguAniState::IDLE_LEFT;
+			m_CurMS = OguAniState::SWING_LEFT;
+			break;
+		case OguAniState::IDLE_RIGHT:
+		case OguAniState::WALK_RIGHT:
+		case OguAniState::RUN_RIGHT:
+			m_PreMS = OguAniState::IDLE_RIGHT;
+			m_CurMS = OguAniState::SWING_RIGHT;
+			break;
+		case OguAniState::IDLE_LEFTDOWN:
+		case OguAniState::WALK_LEFTDOWN:
+		case OguAniState::RUN_LEFTDOWN:
+			m_PreMS = OguAniState::IDLE_LEFTDOWN;
+			m_CurMS = OguAniState::SWING_LEFTDOWN;
+			break;
+		case OguAniState::IDLE_LEFTUP:
+		case OguAniState::WALK_LEFTUP:
+		case OguAniState::RUN_LEFTUP:
+			m_PreMS = OguAniState::IDLE_LEFTUP;
+			m_CurMS = OguAniState::SWING_LEFTUP;
+			break;
+		case OguAniState::IDLE_RIGHTDOWN:
+		case OguAniState::WALK_RIGHTDOWN:
+		case OguAniState::RUN_RIGHTDOWN:
+			m_PreMS = OguAniState::IDLE_RIGHTDOWN;
+			m_CurMS = OguAniState::SWING_RIGHTDOWN;
+			break;
+		case OguAniState::IDLE_RIGHTUP:
+		case OguAniState::WALK_RIGHTUP:
+		case OguAniState::RUN_RIGHTUP:
+			m_PreMS = OguAniState::IDLE_RIGHTUP;
+			m_CurMS = OguAniState::SWING_RIGHTUP;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	m_IsSwing = true;
+}
+
+void CPlayerScript::SwingFinishCheck()
+{
+	if (m_IsSwing)
+	{
+		if (FlipBookComponent()->GetIsFinish())
+		{
+			m_CurMS = m_PreMS;
+			m_IsSwing = false;
+		}
+	}
 }

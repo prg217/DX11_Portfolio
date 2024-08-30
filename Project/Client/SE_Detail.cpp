@@ -114,6 +114,34 @@ void SE_Detail::AtlasInfo()
 	ImGui::SameLine(100);
 	ImGui::DragFloat2("##Offset", m_Offset);
 
+	// 미리보기
+	ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	ImVec4 border_col = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
+	ImGui::Text("Preview");
+	Ptr<CTexture> tex = GetAtlasView()->GetAtlasTex();
+	m_LT = Vec2(GetAtlasView()->GetLT().x, GetAtlasView()->GetLT().y);
+	m_RB = Vec2(GetAtlasView()->GetRB().x, GetAtlasView()->GetRB().y);
+	Vec2 tex_size = Vec2(tex->Width(), tex->Height());
+	Vec2 center = Vec2((m_LT.x + m_RB.x - m_Offset.x) / 2, (m_LT.y + m_RB.y - m_Offset.y) / 2);
+	ImVec2 LT = ImVec2((center.x - m_BackGround.x) / tex_size.x, (center.y - m_BackGround.y) / tex_size.y);
+	ImVec2 RB = ImVec2((center.x + m_BackGround.x) / tex_size.x, (center.y + m_BackGround.y) / tex_size.y);
+	ImGui::Image(tex->GetSRV().Get(), ImVec2(m_BackGround.x, m_BackGround.y), LT, RB, tint_col, border_col);
+	// 현재 윈도우의 드로우 리스트를 가져옵니다.
+	ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+	// 이미지의 화면 위치를 가져옵니다.
+	ImVec2 image_pos = ImGui::GetCursorScreenPos();
+	// 이미지의 중앙 좌표 계산
+	ImVec2 image_center = ImVec2(image_pos.x + m_BackGround.x * 0.5f, image_pos.y - m_BackGround.y * 0.5f); 
+
+	// 십자선의 길이와 색상을 정의합니다.
+	float crosshair_length = 20.0f; // 십자선의 길이
+	ImU32 line_color = IM_COL32(255, 0, 0, 255); // 선의 색상 (빨간색)
+
+	// 이미지 중앙에 십자선을 그립니다.
+	draw_list->AddLine(ImVec2(image_center.x - crosshair_length, image_center.y), ImVec2(image_center.x + crosshair_length, image_center.y), line_color, 2.0f); // 수평선
+	draw_list->AddLine(ImVec2(image_center.x, image_center.y - crosshair_length), ImVec2(image_center.x, image_center.y + crosshair_length), line_color, 2.0f); // 수직선
+
 	ImGui::Separator();
 
 	ImGui::Text("Passivity");

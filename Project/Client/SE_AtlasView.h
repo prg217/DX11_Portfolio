@@ -27,6 +27,7 @@ private:
 public:
     ImVec2 GetLT() { return m_LT; }
     ImVec2 GetRB() { return m_RB; }
+    Ptr<CTexture> GetAtlasTex() { return m_AtlasTex; }
     
     void SetAtlasTex(Ptr<CTexture> _Tex);
     void SetPassivity(bool _Passivity);

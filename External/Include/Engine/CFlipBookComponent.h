@@ -30,6 +30,8 @@ public:
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
 
+    bool GetIsFinish() { return m_Finish; }
+
 public:
     CLONE(CFlipBookComponent);
     CFlipBookComponent();

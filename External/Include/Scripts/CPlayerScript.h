@@ -61,10 +61,20 @@ private:
 	float           m_SaveFinalDiagonalTime;
     float           m_AllowedTime;
 	OguAniState		m_CurMS; // 현재 MovementState
-	// ==============================
-	float			m_IdleDanceTime;
-
 	bool			m_IsRunParticle;
+	// ==============================
+	// =======대기모션=======
+	float			m_IdleDanceTime;
+	// ======================
+	// =======채 휘두르기=======
+	OguAniState		m_PreMS; // 이전 MovementState
+	bool			m_IsSwing;
+	// =========================
+	// =======춤 관련 변수들=======
+	float					m_SaveDanceTime;
+	float					m_DanceTime;
+	vector<CGameObject*>	m_vDanceEffects;
+	// ============================
 
 public:
     virtual void Begin() override;
@@ -79,7 +89,12 @@ private:
 	void Move();
 	void AniState();
 	void RunParticle();
-	void Dance();
+
+	void DanceEffect();
+	void DanceEffectDelete();
+
+	void Swing();
+	void SwingFinishCheck();
 
 public:
     CLONE(CPlayerScript);
