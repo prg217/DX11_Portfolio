@@ -85,6 +85,11 @@ private:
 	// ============================
 	// =======±¸¸£±â=======
 	bool			m_IsRolling;
+	float			m_RollingSpeedMax;
+	float			m_RollingSpeed;
+	float			m_RollingDeceleration;
+	float			m_SaveRollingTime;
+	float			m_RollingDelay;
 	// ====================
 
 public:
@@ -108,7 +113,9 @@ private:
 
 	void Swing();
 
+	void RollingStart();
 	void Rolling();
+	void RollingParticle();
 
 public:
 	OguAniState GetCurAS() { return m_CurAS; }

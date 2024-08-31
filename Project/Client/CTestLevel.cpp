@@ -211,7 +211,7 @@ void CTestLevel::CreateTestLevel()
 
 	pSwingObj->Collider2D()->SetIndependentScale(false);
 	pSwingObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pSwingObj->Collider2D()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+	pSwingObj->Collider2D()->SetScale(Vec3(1.f, 0.3f, 0.3f));
 
 	pSwingObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pSwingObj->MeshRender()->SetMaterial(pMtrl);

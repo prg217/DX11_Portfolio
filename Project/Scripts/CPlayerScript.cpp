@@ -24,6 +24,11 @@ CPlayerScript::CPlayerScript()
 	, m_SaveDanceTime(0.f)
 	, m_DanceTime(1.5f)
 	, m_IsRolling(false)
+	, m_RollingSpeedMax(400.f)
+	, m_RollingSpeed(400.f)
+	, m_RollingDeceleration(5.f)
+	, m_SaveRollingTime(0.f)
+	, m_RollingDelay(2.f)
 {	
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "PlayerSpeed", &m_Speed);
 	AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
@@ -80,8 +85,20 @@ void CPlayerScript::Tick()
 	// D 버튼을 누르면 구른다.
 	if (KEY_TAP(KEY::D) && !m_IsSwing)
 	{
+		// 구르고 난 후 딜레이 시간이 있다.
+		if (TIME - m_SaveRollingTime >= m_RollingDelay)
+		{
+			RollingStart();
+		}
+		else
+		{
+			// 아직 사용할 수 없다는 문구 출력해야 함
+		}
+	}		
+	if (m_IsRolling)
+	{
 		Rolling();
-	}			
+	}
 
 	AniFinishCheck();
 	
@@ -538,28 +555,28 @@ void CPlayerScript::AniState()
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_DANCE, 10, true);
 		break;
 	case OguAniState::ROLL_DOWN:
-		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_DOWN, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_DOWN, 15, false);
 		break;
 	case OguAniState::ROLL_UP:
-		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_UP, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_UP, 15, false);
 		break;
 	case OguAniState::ROLL_LEFT:
-		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFT, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFT, 15, false);
 		break;
 	case OguAniState::ROLL_RIGHT:
-		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHT, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHT, 15, false);
 		break;
 	case OguAniState::ROLL_LEFTDOWN:
-		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFTDOWN, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFTDOWN, 15, false);
 		break;
 	case OguAniState::ROLL_LEFTUP:
-		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFTUP, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFTUP, 15, false);
 		break;
 	case OguAniState::ROLL_RIGHTDOWN:
-		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHTDOWN, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHTDOWN, 15, false);
 		break;
 	case OguAniState::ROLL_RIGHTUP:
-		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHTUP, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHTUP, 15, false);
 		break;
 	case OguAniState::SWING_DOWN:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_SWING_DOWN, 10, false);
@@ -825,11 +842,12 @@ void CPlayerScript::AniFinishCheck()
 		{
 			m_CurAS = m_PreAS;
 			m_IsRolling = false;
+			m_SaveRollingTime = TIME;
 		}
 	}
 }
 
-void CPlayerScript::Rolling()
+void CPlayerScript::RollingStart()
 {
 	if (!m_IsRolling)
 	{
@@ -891,6 +909,121 @@ void CPlayerScript::Rolling()
 	}
 
 	m_IsRolling = true;
+	m_SaveRollingTime = TIME;
 
+	RollingParticle();
+}
+
+void CPlayerScript::Rolling()
+{
 	// 무적상태가 되면서 지금 상태에 해당하는 방향을 향해 앞으로 나아가며 구른다.
+	// 순간적으로 앞으로 나가고, 감속한다.
+	Vec3 vPos = Transform()->GetRelativePos();
+
+	if (TIME - m_SaveRollingTime >= 0.3f)
+	{
+		m_RollingSpeed -= m_RollingDeceleration;
+	}
+	else
+	{
+		m_RollingSpeed = m_RollingSpeedMax;
+	}
+
+	switch (m_CurAS)
+	{
+	case OguAniState::ROLL_DOWN:
+		vPos.y -= DT * m_RollingSpeed;
+		break;
+	case OguAniState::ROLL_UP:
+		vPos.y += DT * m_RollingSpeed;
+		break;
+	case OguAniState::ROLL_LEFT:
+		vPos.x -= DT * m_RollingSpeed;
+		break;
+	case OguAniState::ROLL_RIGHT:
+		vPos.x += DT * m_RollingSpeed;
+		break;
+	case OguAniState::ROLL_LEFTDOWN:
+		vPos.x -= DT * m_RollingSpeed;
+		vPos.y -= DT * m_RollingSpeed;
+		break;
+	case OguAniState::ROLL_LEFTUP:
+		vPos.x -= DT * m_RollingSpeed;
+		vPos.y += DT * m_RollingSpeed;
+		break;
+	case OguAniState::ROLL_RIGHTDOWN:
+		vPos.x += DT * m_RollingSpeed;
+		vPos.y -= DT * m_RollingSpeed;
+		break;
+	case OguAniState::ROLL_RIGHTUP:
+		vPos.x += DT * m_RollingSpeed;
+		vPos.y += DT * m_RollingSpeed;
+		break;
+	default:
+		break;
+	}
+
+	Transform()->SetRelativePos(vPos);
+}
+
+void CPlayerScript::RollingParticle()
+{
+	// 파티클 소환
+	CGameObject* pParticleObj = new CGameObject;
+	pParticleObj->SetName(L"RollingParticle");
+
+	pParticleObj->AddComponent(new CTransform);
+	pParticleObj->AddComponent(new CParticleSystem);
+
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"particle\\ogu_rolling.particle";
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	pParticleObj->ParticleSystem()->LoadFromFile(File);
+	fclose(File);
+
+	// 삭제되는 시간을 지정해준다.
+	pParticleObj->AddComponent(new CCountDownDeleteScript);
+	CScript* pScript = pParticleObj->GetScript("CCountDownDeleteScript");
+	CCountDownDeleteScript* pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
+	pCountDown->SetSaveTime(TIME);
+	pCountDown->SetDeadTime(4.f);
+
+	Vec3 spawnPos = Vec3(0.f, 0.f, 0.f);
+
+	switch (m_CurAS)
+	{
+	case OguAniState::ROLL_DOWN:
+		spawnPos = Vec3(0.f, 30.f, 0.f);
+		break;
+	case OguAniState::ROLL_UP:
+		spawnPos = Vec3(0.f, -30.f, 0.f);
+		break;
+	case OguAniState::ROLL_LEFT:
+		spawnPos = Vec3(60.f, 0.f, 0.f);
+		break;
+	case OguAniState::ROLL_RIGHT:
+		spawnPos = Vec3(-60.f, 0.f, 0.f);
+		break;
+	case OguAniState::ROLL_LEFTDOWN:
+		spawnPos = Vec3(-30.f, 30.f, 0.f);
+		break;
+	case OguAniState::ROLL_LEFTUP:
+		spawnPos = Vec3(-30.f, -30.f, 0.f);
+		break;
+	case OguAniState::ROLL_RIGHTDOWN:
+		spawnPos = Vec3(30.f, 30.f, 0.f);
+		break;
+	case OguAniState::ROLL_RIGHTUP:
+		spawnPos = Vec3(30.f, -30.f, 0.f);
+		break;
+	default:
+		break;
+	}
+
+	pParticleObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + spawnPos);
+
+	CreateObject(pParticleObj, 0);
 }
