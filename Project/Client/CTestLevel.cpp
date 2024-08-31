@@ -16,6 +16,7 @@
 #include <Scripts/CPlayerScript.h>
 #include <Scripts/CMissileScript.h>
 #include <Scripts/CCameraMoveScript.h>
+#include <Scripts/CSwingObjScript.h>
 
 #include <Engine/CSetColorCS.h>
 #include <Engine/CStructuredBuffer.h>
@@ -105,80 +106,120 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pPlayer->MeshRender()->SetMaterial(pMtrl);
 	
-	Ptr<CFlipBook> pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_idle.flip");
+	Ptr<CFlipBook> pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_idle.flip");
 	pPlayer->FlipBookComponent()->AddFlipBook(0, pFlipBook);
-	pPlayer->FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE, 7, true);
+	pPlayer->FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE, 7, true);
 
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_idle_back.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_IDLE_BACK, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_idle_left.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_IDLE_LEFT, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_idle_right.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_IDLE_RIGHT, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_idle_leftdown.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_IDLE_LEFTDOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_idle_leftup.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_IDLE_LEFTUP, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_idle_rightdown.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_IDLE_RIGHTDOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_idle_rightup.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_IDLE_RIGHTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_idle_back.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_IDLE_BACK, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_idle_left.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_IDLE_LEFT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_idle_right.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_IDLE_RIGHT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_idle_leftdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_IDLE_LEFTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_idle_leftup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_IDLE_LEFTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_idle_rightdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_IDLE_RIGHTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_idle_rightup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_IDLE_RIGHTUP, pFlipBook);
 
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_walk_up.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_WALK_UP, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_walk_down.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_WALK_DOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_walk_left.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_WALK_LEFT, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_walk_right.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_WALK_RIGHT, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_walk_leftdown.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_WALK_LEFTDOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_walk_leftup.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_WALK_LEFTUP, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_walk_rightdown.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_WALK_RIGHTDOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_walk_rightup.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_WALK_RIGHTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_walk_up.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_WALK_UP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_walk_down.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_WALK_DOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_walk_left.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_WALK_LEFT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_walk_right.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_WALK_RIGHT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_walk_leftdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_WALK_LEFTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_walk_leftup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_WALK_LEFTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_walk_rightdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_WALK_RIGHTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_walk_rightup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_WALK_RIGHTUP, pFlipBook);
 
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_run_up.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_RUN_UP, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_run_down.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_RUN_DOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_run_left.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_RUN_LEFT, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_run_right.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_RUN_RIGHT, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_run_leftdown.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_RUN_LEFTDOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_run_leftup.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_RUN_LEFTUP, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_run_rightdown.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_RUN_RIGHTDOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_run_rightup.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_RUN_RIGHTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_run_up.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_RUN_UP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_run_down.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_RUN_DOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_run_left.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_RUN_LEFT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_run_right.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_RUN_RIGHT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_run_leftdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_RUN_LEFTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_run_leftup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_RUN_LEFTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_run_rightdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_RUN_RIGHTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_run_rightup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_RUN_RIGHTUP, pFlipBook);
 
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_idle_dance.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_IDLE_DANCE, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_dance.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_DANCE, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_idle_dance.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_IDLE_DANCE, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_dance.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_DANCE, pFlipBook);
 
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_swing_down.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_SWING_DOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_swing_up.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_SWING_UP, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_swing_left.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_SWING_LEFT, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_swing_right.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_SWING_RIGHT, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_swing_leftdown.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_SWING_LEFTDOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_swing_leftup.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_SWING_LEFTUP, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_swing_rightdown.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_SWING_RIGHTDOWN, pFlipBook);
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\ogu_swing_rightup.flip");
-	pPlayer->FlipBookComponent()->AddFlipBook((int)FLIPBOOK_IDX::OGU_SWING_RIGHTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_roll_down.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_ROLL_DOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_roll_up.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_ROLL_UP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_roll_left.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_roll_right.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_roll_leftdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_roll_leftup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_roll_rightdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_roll_rightup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHTUP, pFlipBook);
+
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_swing_down.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_DOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_swing_up.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_UP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_swing_left.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_LEFT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_swing_right.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_RIGHT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_swing_leftdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_LEFTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_swing_leftup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_LEFTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_swing_rightdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_RIGHTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_swing_rightup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_RIGHTUP, pFlipBook);
+
+	CGameObject* pSwingObj = new CGameObject;
+	pSwingObj->SetName(L"PlayerSwingObj");
+	pSwingObj->AddComponent(new CTransform);
+	pSwingObj->AddComponent(new CMeshRender);
+	pSwingObj->AddComponent(new CCollider2D);
+	pSwingObj->AddComponent(new CFlipBookComponent);
+	pSwingObj->AddComponent(new CSwingObjScript);
+
+	pSwingObj->Transform()->SetRelativePos(0.f, 0.5f, 0.f);
+	pSwingObj->Transform()->SetRelativeScale(1.f, 1.f, 0.f);
+
+	pSwingObj->Collider2D()->SetIndependentScale(false);
+	pSwingObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	pSwingObj->Collider2D()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+
+	pSwingObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pSwingObj->MeshRender()->SetMaterial(pMtrl);
+
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\swing_effect.flip");
+	pSwingObj->FlipBookComponent()->AddFlipBook(0, pFlipBook);
+
+	pLevel->AddObject(3, pSwingObj);
 
 	pLevel->AddObject(3, pPlayer);
 

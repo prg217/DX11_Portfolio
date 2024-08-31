@@ -91,7 +91,8 @@ float4 PS_TileMap(VS_OUT _in) : SV_Target
     }
     else
     {
-        vOutColor = float4(1.f, 0.f, 1.f, 1.f);
+        discard;
+        //vOutColor = float4(1.f, 0.f, 1.f, 1.f);
     }
     
     // ±¤¿ø Àû¿ë

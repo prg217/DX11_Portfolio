@@ -4,3 +4,4 @@ CMissileScript
 COguDancePointLightScript
 COguRunParticleScript
 CPlayerScript
+CSwingObjScript

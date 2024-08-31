@@ -15,6 +15,8 @@ private:
     float                   m_AccTime;      // 누적 시간값 체크
     bool                    m_Repeat;
     bool                    m_Finish;       // FlipBook 재생이 끝에 도달했는지 여부
+
+    bool                    m_Stop;
     
 public:
     virtual void FinalTick() override;
@@ -26,6 +28,7 @@ public:
     Ptr<CSprite> GetCurSprite() { return m_CurFrmSprite; }
     void Reset();
     void Binding();
+    void Stop();
     static void Clear();
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;

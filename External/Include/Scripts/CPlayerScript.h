@@ -33,7 +33,15 @@ enum class OguAniState
 
 	IDLE_DANCE,
 	DANCE,
-	ROLL,
+	
+	ROLL_DOWN,
+	ROLL_UP,
+	ROLL_LEFT,
+	ROLL_RIGHT,
+	ROLL_LEFTDOWN,
+	ROLL_LEFTUP,
+	ROLL_RIGHTDOWN,
+	ROLL_RIGHTUP,
 
 	SWING_DOWN,
 	SWING_UP,
@@ -57,17 +65,17 @@ private:
 	float           m_MaxSpeed;
     bool            m_IsRun;
     int             m_MoveCount; 
-    float           m_SaveFinalMoveTime;
 	float           m_SaveFinalDiagonalTime;
     float           m_AllowedTime;
-	OguAniState		m_CurMS; // 현재 MovementState
+	OguAniState		m_CurAS; // 현재 상태
 	bool			m_IsRunParticle;
 	// ==============================
 	// =======대기모션=======
+	float           m_SaveFinalActionTime;
 	float			m_IdleDanceTime;
 	// ======================
 	// =======채 휘두르기=======
-	OguAniState		m_PreMS; // 이전 MovementState
+	OguAniState		m_PreAS; // 이전 상태
 	bool			m_IsSwing;
 	// =========================
 	// =======춤 관련 변수들=======
@@ -75,6 +83,9 @@ private:
 	float					m_DanceTime;
 	vector<CGameObject*>	m_vDanceEffects;
 	// ============================
+	// =======구르기=======
+	bool			m_IsRolling;
+	// ====================
 
 public:
     virtual void Begin() override;
@@ -93,8 +104,14 @@ private:
 	void DanceEffect();
 	void DanceEffectDelete();
 
+	void AniFinishCheck();
+
 	void Swing();
-	void SwingFinishCheck();
+
+	void Rolling();
+
+public:
+	OguAniState GetCurAS() { return m_CurAS; }
 
 public:
     CLONE(CPlayerScript);

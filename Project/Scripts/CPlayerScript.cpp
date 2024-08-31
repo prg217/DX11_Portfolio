@@ -13,19 +13,21 @@ CPlayerScript::CPlayerScript()
 	, m_MaxSpeed(300.f)
 	, m_IsRun(false)
 	, m_MoveCount(0)
-	, m_SaveFinalMoveTime(0)
+	, m_SaveFinalActionTime(0)
 	, m_SaveFinalDiagonalTime(0)
 	, m_AllowedTime(0.1f)
-	, m_CurMS(OguAniState::IDLE)
+	, m_CurAS(OguAniState::IDLE)
 	, m_IdleDanceTime(8.f)
 	, m_IsRunParticle(false)
-	, m_PreMS(OguAniState::IDLE)
+	, m_PreAS(OguAniState::IDLE)
 	, m_IsSwing(false)
 	, m_SaveDanceTime(0.f)
 	, m_DanceTime(1.5f)
+	, m_IsRolling(false)
 {	
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "PlayerSpeed", &m_Speed);
 	AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
+	//AddScriptParam(SCRIPT_PARAM::BOOL1, "Swing", &m_IsSwing);
 }
 
 CPlayerScript::~CPlayerScript()
@@ -39,42 +41,50 @@ void CPlayerScript::Begin()
 
 void CPlayerScript::Tick()
 {
-	if (!m_IsSwing)
+	if (!m_IsSwing && !m_IsRolling)
 	{
 		Move();
+
+		// Q 버튼을 누르면 춤을 춘다.
+		if (KEY_TAP(KEY::Q))
+		{
+			m_SaveDanceTime = TIME;
+
+			DanceEffect();
+		}
+		if (KEY_PRESSED(KEY::Q))
+		{
+			if (TIME - m_SaveDanceTime >= m_DanceTime)
+			{
+				m_CurAS = OguAniState::DANCE;
+			}
+		}
+		if (KEY_RELEASED(KEY::Q))
+		{
+			DanceEffectDelete();
+		}
 	}
 
-	if (TIME - m_SaveFinalMoveTime >= m_IdleDanceTime)
+	if (TIME - m_SaveFinalActionTime >= m_IdleDanceTime)
 	{
-		m_CurMS = OguAniState::IDLE_DANCE;
+		m_CurAS = OguAniState::IDLE_DANCE;
 	}
 
 	// A 버튼을 누르면 채를 휘두른다.
-	if (KEY_TAP(KEY::A))
+	if (KEY_TAP(KEY::A) && !m_IsRolling)
 	{
 		Swing();
 	}
-	SwingFinishCheck();
 
-	// Q 버튼을 누르면 춤을 춘다.
-	if (KEY_TAP(KEY::Q))
-	{
-		m_SaveDanceTime = TIME;
 
-		DanceEffect();
-	}
-	if (KEY_PRESSED(KEY::Q))
+	// D 버튼을 누르면 구른다.
+	if (KEY_TAP(KEY::D) && !m_IsSwing)
 	{
-		if (TIME - m_SaveDanceTime >= m_DanceTime)
-		{
-			m_CurMS = OguAniState::DANCE;
-		}
-	}
-	if (KEY_RELEASED(KEY::Q))
-	{
-		DanceEffectDelete();
-	}
+		Rolling();
+	}			
 
+	AniFinishCheck();
+	
 	AniState();
 }
 
@@ -109,7 +119,7 @@ void CPlayerScript::Move()
 	// 마지막으로 움직인 시간
 	if (KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT) || KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN))
 	{
-		m_SaveFinalMoveTime = TIME;
+		m_SaveFinalActionTime = TIME;
 	}	
 
 	// 달리는 파티클
@@ -149,11 +159,11 @@ void CPlayerScript::Move()
 	{
 		if (m_IsRun)
 		{
-			m_CurMS = OguAniState::RUN_LEFTUP;
+			m_CurAS = OguAniState::RUN_LEFTUP;
 		}
 		else
 		{
-			m_CurMS = OguAniState::WALK_LEFTUP;
+			m_CurAS = OguAniState::WALK_LEFTUP;
 		}
 
 		m_SaveFinalDiagonalTime = TIME;
@@ -162,11 +172,11 @@ void CPlayerScript::Move()
 	{
 		if (m_IsRun)
 		{
-			m_CurMS = OguAniState::RUN_LEFTDOWN;
+			m_CurAS = OguAniState::RUN_LEFTDOWN;
 		}
 		else
 		{
-			m_CurMS = OguAniState::WALK_LEFTDOWN;
+			m_CurAS = OguAniState::WALK_LEFTDOWN;
 		}
 
 		m_SaveFinalDiagonalTime = TIME;
@@ -175,11 +185,11 @@ void CPlayerScript::Move()
 	{
 		if (m_IsRun)
 		{
-			m_CurMS = OguAniState::RUN_RIGHTUP;
+			m_CurAS = OguAniState::RUN_RIGHTUP;
 		}
 		else
 		{
-			m_CurMS = OguAniState::WALK_RIGHTUP;
+			m_CurAS = OguAniState::WALK_RIGHTUP;
 		}
 
 		m_SaveFinalDiagonalTime = TIME;
@@ -188,11 +198,11 @@ void CPlayerScript::Move()
 	{
 		if (m_IsRun)
 		{
-			m_CurMS = OguAniState::RUN_RIGHTDOWN;
+			m_CurAS = OguAniState::RUN_RIGHTDOWN;
 		}
 		else
 		{
-			m_CurMS = OguAniState::WALK_RIGHTDOWN;
+			m_CurAS = OguAniState::WALK_RIGHTDOWN;
 		}
 
 		m_SaveFinalDiagonalTime = TIME;
@@ -203,44 +213,44 @@ void CPlayerScript::Move()
 		{
 			if (m_IsRun)
 			{
-				m_CurMS = OguAniState::RUN_LEFT;
+				m_CurAS = OguAniState::RUN_LEFT;
 			}
 			else
 			{
-				m_CurMS = OguAniState::WALK_LEFT;
+				m_CurAS = OguAniState::WALK_LEFT;
 			}
 		}
 		else if (KEY_PRESSED(KEY::RIGHT))
 		{
 			if (m_IsRun)
 			{
-				m_CurMS = OguAniState::RUN_RIGHT;
+				m_CurAS = OguAniState::RUN_RIGHT;
 			}
 			else
 			{
-				m_CurMS = OguAniState::WALK_RIGHT;
+				m_CurAS = OguAniState::WALK_RIGHT;
 			}
 		}
 		else if (KEY_PRESSED(KEY::UP))
 		{
 			if (m_IsRun)
 			{
-				m_CurMS = OguAniState::RUN_UP;
+				m_CurAS = OguAniState::RUN_UP;
 			}
 			else
 			{
-				m_CurMS = OguAniState::WALK_UP;
+				m_CurAS = OguAniState::WALK_UP;
 			}
 		}
 		else if (KEY_PRESSED(KEY::DOWN))
 		{
 			if (m_IsRun)
 			{
-				m_CurMS = OguAniState::RUN_DOWN;
+				m_CurAS = OguAniState::RUN_DOWN;
 			}
 			else
 			{
-				m_CurMS = OguAniState::WALK_DOWN;
+				m_CurAS = OguAniState::WALK_DOWN;
 			}
 		}
 
@@ -248,7 +258,7 @@ void CPlayerScript::Move()
 
 	if (KEY_RELEASED(KEY::LEFT))
 	{
-		if (m_CurMS == OguAniState::WALK_LEFTUP || m_CurMS == OguAniState::RUN_LEFTUP)
+		if (m_CurAS == OguAniState::WALK_LEFTUP || m_CurAS == OguAniState::RUN_LEFTUP)
 		{
 			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
@@ -256,18 +266,18 @@ void CPlayerScript::Move()
 
 				if (m_MoveCount >= 2)
 				{
-					m_CurMS = OguAniState::IDLE_LEFTUP;
+					m_CurAS = OguAniState::IDLE_LEFTUP;
 				}
 			}
 			else
 			{
 				m_MoveCount = 0;
 
-				m_CurMS = OguAniState::IDLE_LEFT;
+				m_CurAS = OguAniState::IDLE_LEFT;
 			}
 
 		}
-		else if (m_CurMS == OguAniState::WALK_LEFTDOWN || m_CurMS == OguAniState::RUN_LEFTDOWN)
+		else if (m_CurAS == OguAniState::WALK_LEFTDOWN || m_CurAS == OguAniState::RUN_LEFTDOWN)
 		{
 			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
@@ -275,25 +285,25 @@ void CPlayerScript::Move()
 
 				if (m_MoveCount >= 2)
 				{
-					m_CurMS = OguAniState::IDLE_LEFTDOWN;
+					m_CurAS = OguAniState::IDLE_LEFTDOWN;
 				}
 			}
 			else
 			{
 				m_MoveCount = 0;
 
-				m_CurMS = OguAniState::IDLE_LEFT;
+				m_CurAS = OguAniState::IDLE_LEFT;
 			}
 		}
-		else if (m_CurMS == OguAniState::WALK_LEFT || m_CurMS == OguAniState::RUN_LEFT)
+		else if (m_CurAS == OguAniState::WALK_LEFT || m_CurAS == OguAniState::RUN_LEFT)
 		{
-			m_CurMS = OguAniState::IDLE_LEFT;
+			m_CurAS = OguAniState::IDLE_LEFT;
 		}
 	}
 
 	if (KEY_RELEASED(KEY::RIGHT))
 	{
-		if (m_CurMS == OguAniState::WALK_RIGHTUP || m_CurMS == OguAniState::RUN_RIGHTUP)
+		if (m_CurAS == OguAniState::WALK_RIGHTUP || m_CurAS == OguAniState::RUN_RIGHTUP)
 		{
 			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
@@ -301,17 +311,17 @@ void CPlayerScript::Move()
 
 				if (m_MoveCount >= 2)
 				{
-					m_CurMS = OguAniState::IDLE_RIGHTUP;
+					m_CurAS = OguAniState::IDLE_RIGHTUP;
 				}
 			}
 			else
 			{
 				m_MoveCount = 0;
 
-				m_CurMS = OguAniState::IDLE_RIGHT;
+				m_CurAS = OguAniState::IDLE_RIGHT;
 			}
 		}
-		else if (m_CurMS == OguAniState::WALK_RIGHTDOWN || m_CurMS == OguAniState::RUN_RIGHTDOWN)
+		else if (m_CurAS == OguAniState::WALK_RIGHTDOWN || m_CurAS == OguAniState::RUN_RIGHTDOWN)
 		{
 			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
@@ -319,25 +329,25 @@ void CPlayerScript::Move()
 
 				if (m_MoveCount >= 2)
 				{
-					m_CurMS = OguAniState::IDLE_RIGHTDOWN;
+					m_CurAS = OguAniState::IDLE_RIGHTDOWN;
 				}
 			}
 			else
 			{
 				m_MoveCount = 0;
 
-				m_CurMS = OguAniState::IDLE_RIGHT;
+				m_CurAS = OguAniState::IDLE_RIGHT;
 			}
 		}
-		else if (m_CurMS == OguAniState::WALK_RIGHT || m_CurMS == OguAniState::RUN_RIGHT)
+		else if (m_CurAS == OguAniState::WALK_RIGHT || m_CurAS == OguAniState::RUN_RIGHT)
 		{
-			m_CurMS = OguAniState::IDLE_RIGHT;
+			m_CurAS = OguAniState::IDLE_RIGHT;
 		}
 	}
 
 	if (KEY_RELEASED(KEY::UP))
 	{
-		if (m_CurMS == OguAniState::WALK_LEFTUP || m_CurMS == OguAniState::RUN_LEFTUP)
+		if (m_CurAS == OguAniState::WALK_LEFTUP || m_CurAS == OguAniState::RUN_LEFTUP)
 		{
 			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
@@ -345,17 +355,17 @@ void CPlayerScript::Move()
 
 				if (m_MoveCount >= 2)
 				{
-					m_CurMS = OguAniState::IDLE_LEFTUP;
+					m_CurAS = OguAniState::IDLE_LEFTUP;
 				}
 			}
 			else
 			{
 				m_MoveCount = 0;
 
-				m_CurMS = OguAniState::IDLE_BACK;
+				m_CurAS = OguAniState::IDLE_BACK;
 			}
 		}
-		else if (m_CurMS == OguAniState::WALK_RIGHTUP || m_CurMS == OguAniState::RUN_RIGHTUP)
+		else if (m_CurAS == OguAniState::WALK_RIGHTUP || m_CurAS == OguAniState::RUN_RIGHTUP)
 		{
 			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
@@ -363,25 +373,25 @@ void CPlayerScript::Move()
 
 				if (m_MoveCount >= 2)
 				{
-					m_CurMS = OguAniState::IDLE_RIGHTUP;
+					m_CurAS = OguAniState::IDLE_RIGHTUP;
 				}
 			}
 			else
 			{
 				m_MoveCount = 0;
 
-				m_CurMS = OguAniState::IDLE_RIGHT;
+				m_CurAS = OguAniState::IDLE_RIGHT;
 			}
 		}
-		else if (m_CurMS == OguAniState::WALK_UP || m_CurMS == OguAniState::RUN_UP)
+		else if (m_CurAS == OguAniState::WALK_UP || m_CurAS == OguAniState::RUN_UP)
 		{
-			m_CurMS = OguAniState::IDLE_BACK;
+			m_CurAS = OguAniState::IDLE_BACK;
 		}
 	}
 
 	if (KEY_RELEASED(KEY::DOWN))
 	{
-		if (m_CurMS == OguAniState::WALK_LEFTDOWN || m_CurMS == OguAniState::RUN_LEFTDOWN)
+		if (m_CurAS == OguAniState::WALK_LEFTDOWN || m_CurAS == OguAniState::RUN_LEFTDOWN)
 		{
 			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
@@ -389,17 +399,17 @@ void CPlayerScript::Move()
 
 				if (m_MoveCount >= 2)
 				{
-					m_CurMS = OguAniState::IDLE_LEFTDOWN;
+					m_CurAS = OguAniState::IDLE_LEFTDOWN;
 				}
 			}
 			else
 			{
 				m_MoveCount = 0;
 
-				m_CurMS = OguAniState::IDLE;
+				m_CurAS = OguAniState::IDLE;
 			}
 		}
-		else if (m_CurMS == OguAniState::WALK_RIGHTDOWN || m_CurMS == OguAniState::RUN_RIGHTDOWN)
+		else if (m_CurAS == OguAniState::WALK_RIGHTDOWN || m_CurAS == OguAniState::RUN_RIGHTDOWN)
 		{
 			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
 			{
@@ -407,19 +417,19 @@ void CPlayerScript::Move()
 
 				if (m_MoveCount >= 2)
 				{
-					m_CurMS = OguAniState::IDLE_RIGHTDOWN;
+					m_CurAS = OguAniState::IDLE_RIGHTDOWN;
 				}
 			}
 			else
 			{
 				m_MoveCount = 0;
 
-				m_CurMS = OguAniState::IDLE;
+				m_CurAS = OguAniState::IDLE;
 			}
 		}
-		else if (m_CurMS == OguAniState::WALK_DOWN || m_CurMS == OguAniState::RUN_DOWN)
+		else if (m_CurAS == OguAniState::WALK_DOWN || m_CurAS == OguAniState::RUN_DOWN)
 		{
-			m_CurMS = OguAniState::IDLE;
+			m_CurAS = OguAniState::IDLE;
 		}
 	}
 
@@ -447,112 +457,133 @@ void CPlayerScript::Move()
 void CPlayerScript::AniState()
 {
 	// Animation
-	switch (m_CurMS)
+	switch (m_CurAS)
 	{
 	case OguAniState::IDLE:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE, 10, true);
 		break;
 	case OguAniState::IDLE_BACK:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_BACK, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE_BACK, 10, true);
 		break;
 	case OguAniState::IDLE_LEFT:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_LEFT, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE_LEFT, 10, true);
 		break;
 	case OguAniState::IDLE_RIGHT:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_RIGHT, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE_RIGHT, 10, true);
 		break;
 	case OguAniState::IDLE_LEFTDOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_LEFTDOWN, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE_LEFTDOWN, 10, true);
 		break;
 	case OguAniState::IDLE_LEFTUP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_LEFTUP, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE_LEFTUP, 10, true);
 		break;
 	case OguAniState::IDLE_RIGHTDOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_RIGHTDOWN, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE_RIGHTDOWN, 10, true);
 		break;
 	case OguAniState::IDLE_RIGHTUP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_RIGHTUP, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE_RIGHTUP, 10, true);
 		break;
 	case OguAniState::WALK_DOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_DOWN, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_DOWN, 10, true);
 		break;
 	case OguAniState::WALK_UP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_UP, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_UP, 10, true);
 		break;
 	case OguAniState::WALK_LEFT:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_LEFT, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_LEFT, 10, true);
 		break;
 	case OguAniState::WALK_RIGHT:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_RIGHT, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_RIGHT, 10, true);
 		break;
 	case OguAniState::WALK_LEFTDOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_LEFTDOWN, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_LEFTDOWN, 10, true);
 		break;
 	case OguAniState::WALK_LEFTUP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_LEFTUP, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_LEFTUP, 10, true);
 		break;
 	case OguAniState::WALK_RIGHTDOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_RIGHTDOWN, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_RIGHTDOWN, 10, true);
 		break;
 	case OguAniState::WALK_RIGHTUP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_WALK_RIGHTUP, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_RIGHTUP, 10, true);
 		break;
 	case OguAniState::RUN_DOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_RUN_DOWN, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_DOWN, 10, true);
 		break;
 	case OguAniState::RUN_UP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_RUN_UP, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_UP, 10, true);
 		break;
 	case OguAniState::RUN_LEFT:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_RUN_LEFT, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_LEFT, 10, true);
 		break;
 	case OguAniState::RUN_RIGHT:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_RUN_RIGHT, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_RIGHT, 10, true);
 		break;
 	case OguAniState::RUN_LEFTDOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_RUN_LEFTDOWN, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_LEFTDOWN, 10, true);
 		break;
 	case OguAniState::RUN_LEFTUP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_RUN_LEFTUP, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_LEFTUP, 10, true);
 		break;
 	case OguAniState::RUN_RIGHTDOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_RUN_RIGHTDOWN, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_RIGHTDOWN, 10, true);
 		break;
 	case OguAniState::RUN_RIGHTUP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_RUN_RIGHTUP, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_RIGHTUP, 10, true);
 		break;
 	case OguAniState::IDLE_DANCE:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_IDLE_DANCE, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE_DANCE, 10, true);
 		break;
 	case OguAniState::DANCE:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_DANCE, 10, true);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_DANCE, 10, true);
 		break;
-	case OguAniState::ROLL:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_ROLL, 10, true);
+	case OguAniState::ROLL_DOWN:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_DOWN, 10, false);
+		break;
+	case OguAniState::ROLL_UP:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_UP, 10, false);
+		break;
+	case OguAniState::ROLL_LEFT:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFT, 10, false);
+		break;
+	case OguAniState::ROLL_RIGHT:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHT, 10, false);
+		break;
+	case OguAniState::ROLL_LEFTDOWN:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFTDOWN, 10, false);
+		break;
+	case OguAniState::ROLL_LEFTUP:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_LEFTUP, 10, false);
+		break;
+	case OguAniState::ROLL_RIGHTDOWN:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHTDOWN, 10, false);
+		break;
+	case OguAniState::ROLL_RIGHTUP:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_ROLL_RIGHTUP, 10, false);
 		break;
 	case OguAniState::SWING_DOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_DOWN, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_SWING_DOWN, 10, false);
 		break;
 	case OguAniState::SWING_UP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_UP, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_SWING_UP, 10, false);
 		break;
 	case OguAniState::SWING_LEFT:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_LEFT, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_SWING_LEFT, 10, false);
 		break;
 	case OguAniState::SWING_RIGHT:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_RIGHT, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_SWING_RIGHT, 10, false);
 		break;
 	case OguAniState::SWING_LEFTDOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_LEFTDOWN, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_SWING_LEFTDOWN, 10, false);
 		break;
 	case OguAniState::SWING_LEFTUP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_LEFTUP, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_SWING_LEFTUP, 10, false);
 		break;
 	case OguAniState::SWING_RIGHTDOWN:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_RIGHTDOWN, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_SWING_RIGHTDOWN, 10, false);
 		break;
 	case OguAniState::SWING_RIGHTUP:
-		FlipBookComponent()->Play((int)FLIPBOOK_IDX::OGU_SWING_RIGHTUP, 10, false);
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_SWING_RIGHTUP, 10, false);
 		break;
 	default:
 		break;
@@ -586,7 +617,7 @@ void CPlayerScript::RunParticle()
 
 	Vec3 spawnPos = Vec3(0.f, 0.f, 0.f);
 
-	switch (m_CurMS)
+	switch (m_CurAS)
 	{
 	case OguAniState::RUN_DOWN:
 		spawnPos = Vec3(0.f, 30.f, 0.f);
@@ -717,57 +748,57 @@ void CPlayerScript::Swing()
 {
 	if (!m_IsSwing)
 	{
-		switch (m_CurMS)
+		switch (m_CurAS)
 		{
 		case OguAniState::DANCE:
 		case OguAniState::IDLE_DANCE:
 		case OguAniState::IDLE:
 		case OguAniState::WALK_DOWN:
 		case OguAniState::RUN_DOWN:
-			m_PreMS = OguAniState::IDLE;
-			m_CurMS = OguAniState::SWING_DOWN;
+			m_PreAS = OguAniState::IDLE;
+			m_CurAS = OguAniState::SWING_DOWN;
 			break;
 		case OguAniState::IDLE_BACK:
 		case OguAniState::WALK_UP:
 		case OguAniState::RUN_UP:
-			m_PreMS = OguAniState::IDLE_BACK;
-			m_CurMS = OguAniState::SWING_UP;
+			m_PreAS = OguAniState::IDLE_BACK;
+			m_CurAS = OguAniState::SWING_UP;
 			break;
 		case OguAniState::IDLE_LEFT:
 		case OguAniState::WALK_LEFT:
 		case OguAniState::RUN_LEFT:
-			m_PreMS = OguAniState::IDLE_LEFT;
-			m_CurMS = OguAniState::SWING_LEFT;
+			m_PreAS = OguAniState::IDLE_LEFT;
+			m_CurAS = OguAniState::SWING_LEFT;
 			break;
 		case OguAniState::IDLE_RIGHT:
 		case OguAniState::WALK_RIGHT:
 		case OguAniState::RUN_RIGHT:
-			m_PreMS = OguAniState::IDLE_RIGHT;
-			m_CurMS = OguAniState::SWING_RIGHT;
+			m_PreAS = OguAniState::IDLE_RIGHT;
+			m_CurAS = OguAniState::SWING_RIGHT;
 			break;
 		case OguAniState::IDLE_LEFTDOWN:
 		case OguAniState::WALK_LEFTDOWN:
 		case OguAniState::RUN_LEFTDOWN:
-			m_PreMS = OguAniState::IDLE_LEFTDOWN;
-			m_CurMS = OguAniState::SWING_LEFTDOWN;
+			m_PreAS = OguAniState::IDLE_LEFTDOWN;
+			m_CurAS = OguAniState::SWING_LEFTDOWN;
 			break;
 		case OguAniState::IDLE_LEFTUP:
 		case OguAniState::WALK_LEFTUP:
 		case OguAniState::RUN_LEFTUP:
-			m_PreMS = OguAniState::IDLE_LEFTUP;
-			m_CurMS = OguAniState::SWING_LEFTUP;
+			m_PreAS = OguAniState::IDLE_LEFTUP;
+			m_CurAS = OguAniState::SWING_LEFTUP;
 			break;
 		case OguAniState::IDLE_RIGHTDOWN:
 		case OguAniState::WALK_RIGHTDOWN:
 		case OguAniState::RUN_RIGHTDOWN:
-			m_PreMS = OguAniState::IDLE_RIGHTDOWN;
-			m_CurMS = OguAniState::SWING_RIGHTDOWN;
+			m_PreAS = OguAniState::IDLE_RIGHTDOWN;
+			m_CurAS = OguAniState::SWING_RIGHTDOWN;
 			break;
 		case OguAniState::IDLE_RIGHTUP:
 		case OguAniState::WALK_RIGHTUP:
 		case OguAniState::RUN_RIGHTUP:
-			m_PreMS = OguAniState::IDLE_RIGHTUP;
-			m_CurMS = OguAniState::SWING_RIGHTUP;
+			m_PreAS = OguAniState::IDLE_RIGHTUP;
+			m_CurAS = OguAniState::SWING_RIGHTUP;
 			break;
 		default:
 			break;
@@ -777,14 +808,89 @@ void CPlayerScript::Swing()
 	m_IsSwing = true;
 }
 
-void CPlayerScript::SwingFinishCheck()
+void CPlayerScript::AniFinishCheck()
 {
 	if (m_IsSwing)
 	{
 		if (FlipBookComponent()->GetIsFinish())
 		{
-			m_CurMS = m_PreMS;
+			m_CurAS = m_PreAS;
 			m_IsSwing = false;
 		}
 	}
+
+	if (m_IsRolling)
+	{
+		if (FlipBookComponent()->GetIsFinish())
+		{
+			m_CurAS = m_PreAS;
+			m_IsRolling = false;
+		}
+	}
+}
+
+void CPlayerScript::Rolling()
+{
+	if (!m_IsRolling)
+	{
+		switch (m_CurAS)
+		{
+		case OguAniState::DANCE:
+		case OguAniState::IDLE_DANCE:
+		case OguAniState::IDLE:
+		case OguAniState::WALK_DOWN:
+		case OguAniState::RUN_DOWN:
+			m_PreAS = OguAniState::IDLE;
+			m_CurAS = OguAniState::ROLL_DOWN;
+			break;
+		case OguAniState::IDLE_BACK:
+		case OguAniState::WALK_UP:
+		case OguAniState::RUN_UP:
+			m_PreAS = OguAniState::IDLE_BACK;
+			m_CurAS = OguAniState::ROLL_UP;
+			break;
+		case OguAniState::IDLE_LEFT:
+		case OguAniState::WALK_LEFT:
+		case OguAniState::RUN_LEFT:
+			m_PreAS = OguAniState::IDLE_LEFT;
+			m_CurAS = OguAniState::ROLL_LEFT;
+			break;
+		case OguAniState::IDLE_RIGHT:
+		case OguAniState::WALK_RIGHT:
+		case OguAniState::RUN_RIGHT:
+			m_PreAS = OguAniState::IDLE_RIGHT;
+			m_CurAS = OguAniState::ROLL_RIGHT;
+			break;
+		case OguAniState::IDLE_LEFTDOWN:
+		case OguAniState::WALK_LEFTDOWN:
+		case OguAniState::RUN_LEFTDOWN:
+			m_PreAS = OguAniState::IDLE_LEFTDOWN;
+			m_CurAS = OguAniState::ROLL_LEFTDOWN;
+			break;
+		case OguAniState::IDLE_LEFTUP:
+		case OguAniState::WALK_LEFTUP:
+		case OguAniState::RUN_LEFTUP:
+			m_PreAS = OguAniState::IDLE_LEFTUP;
+			m_CurAS = OguAniState::ROLL_LEFTUP;
+			break;
+		case OguAniState::IDLE_RIGHTDOWN:
+		case OguAniState::WALK_RIGHTDOWN:
+		case OguAniState::RUN_RIGHTDOWN:
+			m_PreAS = OguAniState::IDLE_RIGHTDOWN;
+			m_CurAS = OguAniState::ROLL_RIGHTDOWN;
+			break;
+		case OguAniState::IDLE_RIGHTUP:
+		case OguAniState::WALK_RIGHTUP:
+		case OguAniState::RUN_RIGHTUP:
+			m_PreAS = OguAniState::IDLE_RIGHTUP;
+			m_CurAS = OguAniState::ROLL_RIGHTUP;
+			break;
+		default:
+			break;
+		}
+	}
+
+	m_IsRolling = true;
+
+	// 무적상태가 되면서 지금 상태에 해당하는 방향을 향해 앞으로 나아가며 구른다.
 }

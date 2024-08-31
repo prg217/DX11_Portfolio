@@ -12,6 +12,7 @@ CFlipBookComponent::CFlipBookComponent()
 	: CComponent(COMPONENT_TYPE::FLIPBOOKCOMPONENT)
 	, m_CurFlipBook(nullptr)
 	, m_CurFrmIdx(0)
+	, m_Stop(false)
 {
 }
 
@@ -24,6 +25,7 @@ CFlipBookComponent::CFlipBookComponent(CFlipBookComponent& _Origin)
 	, m_AccTime(0.f)
 	, m_Repeat(_Origin.m_Repeat)
 	, m_Finish(false)
+	, m_Stop(_Origin.m_Stop)
 {
 	if (nullptr != m_CurFlipBook)
 	{
@@ -44,6 +46,11 @@ CFlipBookComponent::~CFlipBookComponent()
 
 void CFlipBookComponent::FinalTick()
 {
+	if (m_Stop)
+	{
+		return;
+	}
+
 	if (m_Finish)
 	{
 		if(false == m_Repeat)
@@ -97,6 +104,8 @@ Ptr<CFlipBook> CFlipBookComponent::FindFlipBook(const wstring& _Key)
 
 void CFlipBookComponent::Play(int _FliBookIdx, float _FPS, bool _Repeat)
 {
+	m_Stop = false;
+
 	if (m_CurFlipBook == m_vecFlipBook[_FliBookIdx])
 	{
 		return;
@@ -120,6 +129,7 @@ void CFlipBookComponent::Reset()
 	m_CurFrmIdx = 0;
 	m_AccTime = 0.f;
 	m_Finish = false;
+	m_Stop = false;
 }
 
 void CFlipBookComponent::Binding()
@@ -148,6 +158,11 @@ void CFlipBookComponent::Binding()
 	{
 		Clear();
 	}
+}
+
+void CFlipBookComponent::Stop()
+{
+	m_Stop = true;
 }
 
 void CFlipBookComponent::Clear()

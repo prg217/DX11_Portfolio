@@ -36,6 +36,9 @@
     <ClInclude Include="COguDancePointLightScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CSwingObjScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -60,6 +63,9 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="COguDancePointLightScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CSwingObjScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
