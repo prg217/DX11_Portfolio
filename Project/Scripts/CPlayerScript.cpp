@@ -23,6 +23,7 @@ CPlayerScript::CPlayerScript()
 	, m_IsSwing(false)
 	, m_SaveDanceTime(0.f)
 	, m_DanceTime(1.5f)
+	, m_IsDance(false)
 	, m_IsRolling(false)
 	, m_RollingSpeedMax(400.f)
 	, m_RollingSpeed(400.f)
@@ -51,10 +52,10 @@ void CPlayerScript::Tick()
 		Move();
 
 		// Q ¹öÆ°À» ´©¸£¸é ÃãÀ» Ãá´Ù.
-		if (KEY_TAP(KEY::Q))
+		if (KEY_TAP(KEY::Q) && !m_IsDance)
 		{
 			m_SaveDanceTime = TIME;
-
+			m_IsDance = true;
 			DanceEffect();
 		}
 		if (KEY_PRESSED(KEY::Q))
@@ -67,6 +68,7 @@ void CPlayerScript::Tick()
 		if (KEY_RELEASED(KEY::Q))
 		{
 			DanceEffectDelete();
+			m_IsDance = false;
 		}
 	}
 
@@ -681,7 +683,7 @@ void CPlayerScript::DanceEffect()
 	CScript* pScript = pPointLight->GetScript("CCountDownDeleteScript");
 	CCountDownDeleteScript* pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
 	pCountDown->SetSaveTime(TIME);
-	pCountDown->SetDeadTime(4.f);
+	pCountDown->SetDeadTime(1.5f);
 
 	pPointLight->AddComponent(new COguDancePointLightScript);
 
@@ -703,7 +705,7 @@ void CPlayerScript::DanceEffect()
 	pScript = pPointLight2->GetScript("CCountDownDeleteScript");
 	pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
 	pCountDown->SetSaveTime(TIME);
-	pCountDown->SetDeadTime(4.f);
+	pCountDown->SetDeadTime(1.5f);
 
 	pPointLight2->AddComponent(new COguDancePointLightScript);
 	pScript = pPointLight2->GetScript("COguDancePointLightScript");
@@ -734,7 +736,7 @@ void CPlayerScript::DanceEffect()
 	pScript = pParticleObj->GetScript("CCountDownDeleteScript");
 	pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
 	pCountDown->SetSaveTime(TIME);
-	pCountDown->SetDeadTime(4.f);
+	pCountDown->SetDeadTime(1.5f);
 
 	pParticleObj->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
 

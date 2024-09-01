@@ -81,6 +81,7 @@ private:
 	// =======춤 관련 변수들=======
 	float					m_SaveDanceTime;
 	float					m_DanceTime;
+	bool					m_IsDance;
 	vector<CGameObject*>	m_vDanceEffects;
 	// ============================
 	// =======구르기=======
