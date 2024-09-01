@@ -30,8 +30,6 @@ void CSwingObjScript::Begin()
 
 	CScript* script = m_pPlayer->GetScript("CPlayerScript");
 	m_pPlayerScript = dynamic_cast<CPlayerScript*>(script);
-
-
 }
 
 void CSwingObjScript::Tick()

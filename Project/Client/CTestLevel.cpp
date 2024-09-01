@@ -17,6 +17,8 @@
 #include <Scripts/CMissileScript.h>
 #include <Scripts/CCameraMoveScript.h>
 #include <Scripts/CSwingObjScript.h>
+#include <Scripts/CPlayerInteractionScript.h>
+#include <Scripts/CInteractionScript.h>
 
 #include <Engine/CSetColorCS.h>
 #include <Engine/CStructuredBuffer.h>
@@ -48,8 +50,9 @@ void CTestLevel::CreateTestLevel()
 	pLevel->GetLayer(2)->SetName(L"Tile");
 	pLevel->GetLayer(3)->SetName(L"Player");
 	pLevel->GetLayer(4)->SetName(L"Monster");
-	pLevel->GetLayer(5)->SetName(L"PlayerProjectile");
-	pLevel->GetLayer(6)->SetName(L"MonsterProjectile");
+	pLevel->GetLayer(5)->SetName(L"PlayerInteraction");
+	pLevel->GetLayer(6)->SetName(L"Interaction");
+	//pLevel->GetLayer(6)->SetName(L"MonsterProjectile");
 
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;
@@ -86,7 +89,7 @@ void CTestLevel::CreateTestLevel()
 	pLevel->AddObject(0, pObject);
 		
 
-	// 플레이어 오브젝트
+	// ===플레이어 오브젝트===
 	CGameObject* pPlayer = new CGameObject;
 	pPlayer->SetName(L"Player");
 	pPlayer->AddComponent(new CTransform);
@@ -100,12 +103,190 @@ void CTestLevel::CreateTestLevel()
 	
 	pPlayer->Collider2D()->SetIndependentScale(false);
 	pPlayer->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pPlayer->Collider2D()->SetScale(Vec3(1.f, 1.f, 1.f));
+	pPlayer->Collider2D()->SetScale(Vec3(0.5f, 0.5f, 1.f));
 	//pPlayer->RigidBody()->UseGravity(true);
 	
 	pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pPlayer->MeshRender()->SetMaterial(pMtrl);
 	
+	// 플레이어 애니메이션 등록
+	PlayerAni(pPlayer);
+
+	// 플레이어가 채 휘두르기를 쓸 때 판정 오브젝트
+	CGameObject* pSwingObj = new CGameObject;
+	pSwingObj->SetName(L"PlayerSwingObj");
+	pSwingObj->AddComponent(new CTransform);
+	pSwingObj->AddComponent(new CMeshRender);
+	pSwingObj->AddComponent(new CCollider2D);
+	pSwingObj->AddComponent(new CFlipBookComponent);
+	pSwingObj->AddComponent(new CSwingObjScript);
+
+	pSwingObj->Transform()->SetRelativePos(0.f, 0.5f, 0.f);
+	pSwingObj->Transform()->SetRelativeScale(1.f, 1.f, 0.f);
+
+	pSwingObj->Collider2D()->SetIndependentScale(false);
+	pSwingObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	pSwingObj->Collider2D()->SetScale(Vec3(1.f, 0.3f, 0.3f));
+
+	pSwingObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pSwingObj->MeshRender()->SetMaterial(pMtrl);
+
+	Ptr<CFlipBook> pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\swing_effect.flip");
+	pSwingObj->FlipBookComponent()->AddFlipBook(0, pFlipBook);
+
+	// 플레이어가 상호작용을 할 때 판정 오브젝트
+	CGameObject* pInteractionObj = new CGameObject;
+	pInteractionObj->SetName(L"PlayerInteractionObj");
+	pInteractionObj->AddComponent(new CTransform);
+	pInteractionObj->AddComponent(new CMeshRender); 
+	pInteractionObj->AddComponent(new CCollider2D);
+	pInteractionObj->AddComponent(new CPlayerInteractionScript);
+
+	pInteractionObj->Transform()->SetRelativePos(0.f, 0.2f, 0.f);
+	pInteractionObj->Transform()->SetRelativeScale(1.f, 1.f, 0.f);
+
+	pInteractionObj->Collider2D()->SetIndependentScale(false);
+	pInteractionObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	pInteractionObj->Collider2D()->SetScale(Vec3(0.5f, 0.3f, 0.5f));
+
+	pInteractionObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pInteractionObj->MeshRender()->SetMaterial(pMtrl);
+
+	// 스폰
+	pLevel->AddObject(3, pSwingObj);
+	pLevel->AddObject(5, pInteractionObj);
+	pLevel->AddObject(3, pPlayer);
+	// =======================
+
+	// 들어올릴 수 있는 돌
+	CGameObject* pLiftStone = new CGameObject;
+	pLiftStone->SetName(L"LiftStone");
+	pLiftStone->AddComponent(new CTransform);
+	pLiftStone->AddComponent(new CMeshRender);
+	pLiftStone->AddComponent(new CCollider2D);
+	pLiftStone->AddComponent(new CFlipBookComponent);
+	pLiftStone->AddComponent(new CInteractionScript);
+
+	pLiftStone->Transform()->SetRelativePos(100.f, 0.f, 0.f);
+	pLiftStone->Transform()->SetRelativeScale(150.f, 150.f, 0.f);
+
+	pLiftStone->Collider2D()->SetIndependentScale(false);
+	pLiftStone->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	pLiftStone->Collider2D()->SetScale(Vec3(0.5f, 0.5f, 1.f));
+
+	pLiftStone->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pLiftStone->MeshRender()->SetMaterial(pMtrl);
+
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Obj\\obj_liftStone.flip");
+	pLiftStone->FlipBookComponent()->AddFlipBook(0, pFlipBook);
+	pLiftStone->FlipBookComponent()->Play(0, 0, false);
+
+	pLevel->AddObject(6, pLiftStone);
+
+	// Monster Object
+	//CGameObject* pMonster = new CGameObject;
+	//pMonster->SetName(L"Monster");
+
+	//pMonster->AddComponent(new CTransform);
+	//pMonster->AddComponent(new CMeshRender);
+	//pMonster->AddComponent(new CCollider2D);
+
+	//pMonster->Transform()->SetRelativePos(-400.f, 0.f, 100.f);
+	//pMonster->Transform()->SetRelativeScale(150.f, 150.f, 1.f);	
+
+	//pMonster->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	//pMonster->Collider2D()->SetScale(Vec3(1.2f, 1.2f, 1.f));
+
+	//pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pMonster->MeshRender()->SetMaterial(pMtrl);
+
+	//pLevel->AddObject(4, pMonster);
+
+	// TileMap Object
+	CGameObject* pTileMapObj = new CGameObject;
+	pTileMapObj->SetName(L"TileMap");
+	
+	pTileMapObj->AddComponent(new CTransform);
+	pTileMapObj->AddComponent(new CTileMap);
+	
+	pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
+
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"tile\\test1.tile";
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+		
+	pTileMapObj->TileMap()->LoadFromFile(File);
+	fclose(File);
+	pLevel->AddObject(2, pTileMapObj);
+
+
+	// Particle Object
+	CGameObject* pParticleObj = new CGameObject;
+	pParticleObj->SetName(L"RunParticle");
+	
+	pParticleObj->AddComponent(new CTransform);
+	pParticleObj->AddComponent(new CParticleSystem);
+	
+	strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"particle\\ogu_run.particle";
+	
+	File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+	
+	pParticleObj->ParticleSystem()->LoadFromFile(File);
+	fclose(File);
+	
+	pLevel->AddObject(0, pParticleObj);
+
+
+	// PostProcess Object
+	//CGameObject* pGrayFilterObj = new CGameObject;
+	//pGrayFilterObj->SetName(L"GrayFilter");
+	//pGrayFilterObj->AddComponent(new CTransform);
+	//pGrayFilterObj->AddComponent(new CMeshRender);
+
+	//pGrayFilterObj->Transform()->SetRelativeScale(150.f, 150.f, 1.f);
+
+	//pGrayFilterObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pGrayFilterObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DistortionMtrl"));
+
+	//pLevel->AddObject(0, pGrayFilterObj);
+
+	ChangeLevel(pLevel, LEVEL_STATE::STOP);
+
+	// 충돌 지정
+	CCollisionMgr::GetInst()->CollisionCheck(3, 4); // 플레이어, 몬스터
+	CCollisionMgr::GetInst()->CollisionCheck(3, 6); // 플레이어, 상호작용
+	CCollisionMgr::GetInst()->CollisionCheck(5, 6); // 플레이어 상호작용 감지, 상호작용
+}
+
+void CTestLevel::CreatePrefab()
+{
+	/*CGameObject* pProto = new CGameObject;
+	pProto->SetName("Missile");
+	pProto->AddComponent(new CTransform);
+	pProto->AddComponent(new CMeshRender);
+	pProto->AddComponent(new CMissileScript);
+
+	pProto->Transform()->SetRelativeScale(100.f, 100.f, 1.f);
+
+	pProto->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pProto->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+
+	Ptr<CPrefab> pPrefab = new CPrefab;
+	pPrefab->SetProtoObject(pProto);
+
+	CAssetMgr::GetInst()->AddAsset<CPrefab>(L"MissilePref", pPrefab);
+
+	wstring FilePath = CPathMgr::GetInst()->GetContentPath();
+	FilePath += L"prefab\\Missile.pref";
+	pPrefab->Save(FilePath);*/
+}
+
+void CTestLevel::PlayerAni(CGameObject* pPlayer)
+{
 	Ptr<CFlipBook> pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_idle.flip");
 	pPlayer->FlipBookComponent()->AddFlipBook(0, pFlipBook);
 	pPlayer->FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE, 7, true);
@@ -197,130 +378,4 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_RIGHTDOWN, pFlipBook);
 	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_swing_rightup.flip");
 	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_RIGHTUP, pFlipBook);
-
-	CGameObject* pSwingObj = new CGameObject;
-	pSwingObj->SetName(L"PlayerSwingObj");
-	pSwingObj->AddComponent(new CTransform);
-	pSwingObj->AddComponent(new CMeshRender);
-	pSwingObj->AddComponent(new CCollider2D);
-	pSwingObj->AddComponent(new CFlipBookComponent);
-	pSwingObj->AddComponent(new CSwingObjScript);
-
-	pSwingObj->Transform()->SetRelativePos(0.f, 0.5f, 0.f);
-	pSwingObj->Transform()->SetRelativeScale(1.f, 1.f, 0.f);
-
-	pSwingObj->Collider2D()->SetIndependentScale(false);
-	pSwingObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pSwingObj->Collider2D()->SetScale(Vec3(1.f, 0.3f, 0.3f));
-
-	pSwingObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pSwingObj->MeshRender()->SetMaterial(pMtrl);
-
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\swing_effect.flip");
-	pSwingObj->FlipBookComponent()->AddFlipBook(0, pFlipBook);
-
-	pLevel->AddObject(3, pSwingObj);
-
-	pLevel->AddObject(3, pPlayer);
-
-
-	// Monster Object
-	//CGameObject* pMonster = new CGameObject;
-	//pMonster->SetName(L"Monster");
-
-	//pMonster->AddComponent(new CTransform);
-	//pMonster->AddComponent(new CMeshRender);
-	//pMonster->AddComponent(new CCollider2D);
-
-	//pMonster->Transform()->SetRelativePos(-400.f, 0.f, 100.f);
-	//pMonster->Transform()->SetRelativeScale(150.f, 150.f, 1.f);	
-
-	//pMonster->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	//pMonster->Collider2D()->SetScale(Vec3(1.2f, 1.2f, 1.f));
-
-	//pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	//pMonster->MeshRender()->SetMaterial(pMtrl);
-
-	//pLevel->AddObject(4, pMonster);
-
-	// TileMap Object
-	CGameObject* pTileMapObj = new CGameObject;
-	pTileMapObj->SetName(L"TileMap");
-	
-	pTileMapObj->AddComponent(new CTransform);
-	pTileMapObj->AddComponent(new CTileMap);
-	
-	pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
-
-	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
-	strInitPath += L"tile\\test1.tile";
-
-	FILE* File = nullptr;
-	_wfopen_s(&File, strInitPath.c_str(), L"rb");
-		
-	pTileMapObj->TileMap()->LoadFromFile(File);
-	fclose(File);
-	pLevel->AddObject(2, pTileMapObj);
-
-
-	// Particle Object
-	CGameObject* pParticleObj = new CGameObject;
-	pParticleObj->SetName(L"RunParticle");
-	
-	pParticleObj->AddComponent(new CTransform);
-	pParticleObj->AddComponent(new CParticleSystem);
-	
-	strInitPath = CPathMgr::GetInst()->GetContentPath();
-	strInitPath += L"particle\\ogu_run.particle";
-	
-	File = nullptr;
-	_wfopen_s(&File, strInitPath.c_str(), L"rb");
-	
-	pParticleObj->ParticleSystem()->LoadFromFile(File);
-	fclose(File);
-	
-	pLevel->AddObject(0, pParticleObj);
-
-
-	// PostProcess Object
-	//CGameObject* pGrayFilterObj = new CGameObject;
-	//pGrayFilterObj->SetName(L"GrayFilter");
-	//pGrayFilterObj->AddComponent(new CTransform);
-	//pGrayFilterObj->AddComponent(new CMeshRender);
-
-	//pGrayFilterObj->Transform()->SetRelativeScale(150.f, 150.f, 1.f);
-
-	//pGrayFilterObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	//pGrayFilterObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DistortionMtrl"));
-
-	//pLevel->AddObject(0, pGrayFilterObj);
-
-	ChangeLevel(pLevel, LEVEL_STATE::STOP);
-
-	// 충돌 지정
-	CCollisionMgr::GetInst()->CollisionCheck(3, 4); // Player vs Monster
-	CCollisionMgr::GetInst()->CollisionCheck(5, 4); // Player Projectile vs Monster	
-}
-
-void CTestLevel::CreatePrefab()
-{
-	/*CGameObject* pProto = new CGameObject;
-	pProto->SetName("Missile");
-	pProto->AddComponent(new CTransform);
-	pProto->AddComponent(new CMeshRender);
-	pProto->AddComponent(new CMissileScript);
-
-	pProto->Transform()->SetRelativeScale(100.f, 100.f, 1.f);
-
-	pProto->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pProto->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
-
-	Ptr<CPrefab> pPrefab = new CPrefab;
-	pPrefab->SetProtoObject(pProto);
-
-	CAssetMgr::GetInst()->AddAsset<CPrefab>(L"MissilePref", pPrefab);
-
-	wstring FilePath = CPathMgr::GetInst()->GetContentPath();
-	FilePath += L"prefab\\Missile.pref";
-	pPrefab->Save(FilePath);*/
 }

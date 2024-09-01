@@ -17,6 +17,8 @@ private:
     bool                    m_Finish;       // FlipBook 재생이 끝에 도달했는지 여부
 
     bool                    m_Stop;
+
+    bool                    m_outline;      // 외곽선 유무
     
 public:
     virtual void FinalTick() override;
@@ -34,6 +36,7 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
 
     bool GetIsFinish() { return m_Finish; }
+    void SetOutline(bool _Outline) { m_outline = _Outline; }
 
 public:
     CLONE(CFlipBookComponent);

@@ -25,6 +25,7 @@ public:
     Vec2 GetSliceUV() { return m_SliceUV; }
     Vec2 GetBackgroundUV() { return m_BackgroundUV; }
     Vec2 GetOffsetUV() { return m_OffsetUV; }
+    Vec2 GetTexSize() { return Vec2(m_Atlas->Width(), m_Atlas->Height()); }
 
 
 public:

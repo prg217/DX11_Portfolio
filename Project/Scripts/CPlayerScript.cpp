@@ -107,14 +107,7 @@ void CPlayerScript::Tick()
 
 void CPlayerScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
-	DeleteObject(_OtherObject);
-
-	Vec3 vScale = Transform()->GetRelativeScale();
-
-	vScale += Vec3(10.f, 10.f, 0.f);
-	Collider2D()->SetScale(Collider2D()->GetScale() + Vec3(10.f, 10.f, 0.f));
-
-	Transform()->SetRelativeScale(vScale);
+	// 기본적으로 만나는 것들은 뚫고 못 지나가게 해야함
 }
 
 void CPlayerScript::SaveToFile(FILE* _File)

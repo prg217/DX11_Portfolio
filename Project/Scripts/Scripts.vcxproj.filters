@@ -10,6 +10,12 @@
     <Filter Include="ScriptMgr">
       <UniqueIdentifier>{c2e071c7-0169-44c5-9189-b2695f5876fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Player">
+      <UniqueIdentifier>{0d0d6e2e-1d86-4765-bc4f-b52f3eef1356}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Interaction">
+      <UniqueIdentifier>{d51dde9a-51f4-4494-8b2b-1988ffc7bedf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -24,9 +30,6 @@
     <ClInclude Include="CMissileScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CScriptMgr.h">
       <Filter>ScriptMgr</Filter>
     </ClInclude>
@@ -34,10 +37,19 @@
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="COguDancePointLightScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerInteractionScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>Scripts\Player</Filter>
     </ClInclude>
     <ClInclude Include="CSwingObjScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CInteractionScript.h">
+      <Filter>Scripts\Interaction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,9 +65,6 @@
     <ClCompile Include="CMissileScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CScriptMgr.cpp">
       <Filter>ScriptMgr</Filter>
     </ClCompile>
@@ -63,10 +72,19 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="COguDancePointLightScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerInteractionScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>Scripts\Player</Filter>
     </ClCompile>
     <ClCompile Include="CSwingObjScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CInteractionScript.cpp">
+      <Filter>Scripts\Interaction</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

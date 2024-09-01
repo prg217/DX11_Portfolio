@@ -5,7 +5,6 @@
 class CMeshRender :
     public CRenderComponent
 {
-
 public:
     virtual void FinalTick() override;
     virtual void Render() override;   

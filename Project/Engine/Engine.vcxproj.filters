@@ -160,6 +160,9 @@
     <ClInclude Include="CFontMgr.h">
       <Filter>04, Manager\09. Font</Filter>
     </ClInclude>
+    <ClInclude Include="CRigidBody.h">
+      <Filter>08. Component\06. RigidBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -297,6 +300,9 @@
     </ClCompile>
     <ClCompile Include="CFontMgr.cpp">
       <Filter>04, Manager\09. Font</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>08. Component\06. RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@ CFlipBookComponent::CFlipBookComponent()
 	, m_CurFlipBook(nullptr)
 	, m_CurFrmIdx(0)
 	, m_Stop(false)
+	, m_outline(false)
 {
 }
 
@@ -26,6 +27,7 @@ CFlipBookComponent::CFlipBookComponent(CFlipBookComponent& _Origin)
 	, m_Repeat(_Origin.m_Repeat)
 	, m_Finish(false)
 	, m_Stop(_Origin.m_Stop)
+	, m_outline(_Origin.m_outline)
 {
 	if (nullptr != m_CurFlipBook)
 	{
@@ -143,7 +145,9 @@ void CFlipBookComponent::Binding()
 		tInfo.SliceUV = m_CurFrmSprite->GetSliceUV();
 		tInfo.BackGroundUV = m_CurFrmSprite->GetBackgroundUV();
 		tInfo.OffsetUV = m_CurFrmSprite->GetOffsetUV();
+		tInfo.TexSize = m_CurFrmSprite->GetTexSize();
 		tInfo.UseFlipbook = 1;
+		tInfo.UseOutline = m_outline;
 
 		static CConstBuffer* CB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::SPRITE);
 

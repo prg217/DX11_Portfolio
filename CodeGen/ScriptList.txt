@@ -1,7 +1,8 @@
 CCameraMoveScript
 CCountDownDeleteScript
+CInteractionScript
 CMissileScript
 COguDancePointLightScript
-COguRunParticleScript
+CPlayerInteractionScript
 CPlayerScript
 CSwingObjScript

@@ -3,8 +3,10 @@
 
 #include "CCameraMoveScript.h"
 #include "CCountDownDeleteScript.h"
+#include "CInteractionScript.h"
 #include "CMissileScript.h"
 #include "COguDancePointLightScript.h"
+#include "CPlayerInteractionScript.h"
 #include "CPlayerScript.h"
 #include "CSwingObjScript.h"
 
@@ -12,9 +14,10 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CCountDownDeleteScript");
+	_vec.push_back(L"CInteractionScript");
 	_vec.push_back(L"CMissileScript");
 	_vec.push_back(L"COguDancePointLightScript");
-	_vec.push_back(L"COguRunParticleScript");
+	_vec.push_back(L"CPlayerInteractionScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CSwingObjScript");
 }
@@ -25,10 +28,14 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CCountDownDeleteScript" == _strScriptName)
 		return new CCountDownDeleteScript;
+	if (L"CInteractionScript" == _strScriptName)
+		return new CInteractionScript;
 	if (L"CMissileScript" == _strScriptName)
 		return new CMissileScript;
 	if (L"COguDancePointLightScript" == _strScriptName)
 		return new COguDancePointLightScript;
+	if (L"CPlayerInteractionScript" == _strScriptName)
+		return new CPlayerInteractionScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
 	if (L"CSwingObjScript" == _strScriptName)
@@ -46,11 +53,17 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:
 		return new CCountDownDeleteScript;
 		break;
+	case (UINT)SCRIPT_TYPE::INTERACTIONSCRIPT:
+		return new CInteractionScript;
+		break;
 	case (UINT)SCRIPT_TYPE::MISSILESCRIPT:
 		return new CMissileScript;
 		break;
 	case (UINT)SCRIPT_TYPE::OGUDANCEPOINTLIGHTSCRIPT:
 		return new COguDancePointLightScript;
+		break;
+	case (UINT)SCRIPT_TYPE::PLAYERINTERACTIONSCRIPT:
+		return new CPlayerInteractionScript;
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
@@ -74,12 +87,20 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CCountDownDeleteScript";
 		break;
 
+	case SCRIPT_TYPE::INTERACTIONSCRIPT:
+		return L"CInteractionScript";
+		break;
+
 	case SCRIPT_TYPE::MISSILESCRIPT:
 		return L"CMissileScript";
 		break;
 
 	case SCRIPT_TYPE::OGUDANCEPOINTLIGHTSCRIPT:
 		return L"COguDancePointLightScript";
+		break;
+
+	case SCRIPT_TYPE::PLAYERINTERACTIONSCRIPT:
+		return L"CPlayerInteractionScript";
 		break;
 
 	case SCRIPT_TYPE::PLAYERSCRIPT:
