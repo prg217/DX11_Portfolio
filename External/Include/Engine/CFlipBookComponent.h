@@ -26,8 +26,10 @@ public:
 public:
     void AddFlipBook(int _Idx, Ptr<CFlipBook> _Flipbook);
     Ptr<CFlipBook> FindFlipBook(const wstring& _Key);
-    void Play(int _FliBookIdx, float _FPS, bool _Repeat);
+    void Play(int _FliBookIdx, float _FPS, bool _Repeat, int _StartFrmIdx = 0);
+    bool GetIsFinish() { return m_Finish; }
     Ptr<CSprite> GetCurSprite() { return m_CurFrmSprite; }
+    int GetCurIdx() { return m_CurFrmIdx; }
     void Reset();
     void Binding();
     void Stop();
@@ -35,7 +37,6 @@ public:
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
 
-    bool GetIsFinish() { return m_Finish; }
     void SetOutline(bool _Outline) { m_outline = _Outline; }
 
 public:

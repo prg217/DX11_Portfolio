@@ -4,15 +4,29 @@
 
 class CPlayerScript;
 enum class OguAniState;
+class CLiftScript;
+
+enum class InteractionState
+{
+    NONE,
+
+    LIFT_START,
+};
 
 class CPlayerInteractionScript :
     public CScript
 {
 private:
-    CGameObject*    m_pPlayer;
-    CPlayerScript*  m_pPlayerScript;
+    CGameObject*        m_pPlayer;
+    CPlayerScript*      m_pPlayerScript;
 
-    OguAniState     m_PlayerCurAS;
+    OguAniState         m_PlayerCurAS;
+
+    CGameObject*        m_pInteractionObj;
+    InteractionState    m_InteractionState;
+
+    CLiftScript*        m_LiftScript;
+    bool                m_LiftOK;
 
 public:
     virtual void Begin() override;
@@ -23,6 +37,9 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+
+private:
+    void Move();
 
 public:
     CLONE(CPlayerInteractionScript);

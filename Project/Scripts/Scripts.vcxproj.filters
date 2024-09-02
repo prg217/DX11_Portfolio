@@ -51,6 +51,9 @@
     <ClInclude Include="CInteractionScript.h">
       <Filter>Scripts\Interaction</Filter>
     </ClInclude>
+    <ClInclude Include="CLiftScript.h">
+      <Filter>Scripts\Interaction</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -84,6 +87,9 @@
       <Filter>Scripts\Player</Filter>
     </ClCompile>
     <ClCompile Include="CInteractionScript.cpp">
+      <Filter>Scripts\Interaction</Filter>
+    </ClCompile>
+    <ClCompile Include="CLiftScript.cpp">
       <Filter>Scripts\Interaction</Filter>
     </ClCompile>
   </ItemGroup>

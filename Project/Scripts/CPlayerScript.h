@@ -2,6 +2,16 @@
 #include <Engine/CScript.h>
 #include <Engine/define.h>
 
+enum class PlayerState
+{
+	NONE,
+
+	SWING,
+	ROLLING,
+	LIFT_START,
+	LIFT_END,
+};
+
 enum class OguAniState
 {
 	IDLE,
@@ -51,6 +61,32 @@ enum class OguAniState
 	SWING_LEFTUP,
 	SWING_RIGHTDOWN,
 	SWING_RIGHTUP,
+
+	LIFT_IDLE1_DOWN,
+	LIFT_IDLE1_UP,
+	LIFT_IDLE1_LEFT,
+	LIFT_IDLE1_RIGHT,
+	LIFT_IDLE1_LEFTDOWN,
+	LIFT_IDLE1_LEFTUP,
+	LIFT_IDLE1_RIGHTDOWN,
+	LIFT_IDLE1_RIGHTUP,
+	LIFT_IDLE2_DOWN,
+	LIFT_IDLE2_UP,
+	LIFT_IDLE2_LEFT,
+	LIFT_IDLE2_RIGHT,
+	LIFT_IDLE2_LEFTDOWN,
+	LIFT_IDLE2_LEFTUP,
+	LIFT_IDLE2_RIGHTDOWN,
+	LIFT_IDLE2_RIGHTUP,
+
+	LIFT_WALK_DOWN,
+	LIFT_WALK_UP,
+	LIFT_WALK_LEFT,
+	LIFT_WALK_RIGHT,
+	LIFT_WALK_LEFTDOWN,
+	LIFT_WALK_LEFTUP,
+	LIFT_WALK_RIGHTDOWN,
+	LIFT_WALK_RIGHTUP,
 };
 
 class CPlayerScript :
@@ -58,6 +94,12 @@ class CPlayerScript :
 {
 private:
     Ptr<CTexture>   m_Texture;
+	PlayerState		m_CurPS; // 현재 상태
+
+	OguAniState		m_CurAS; // 현재 애니메이션
+	OguAniState		m_PreAS; // 이전 애니메이션
+
+	int				m_StartFrmIdx; // 애니메이션 시작 인덱스
 
 	// =======이동 관련 변수들=======
 	float           m_Speed;
@@ -67,17 +109,12 @@ private:
     int             m_MoveCount; 
 	float           m_SaveFinalDiagonalTime;
     float           m_AllowedTime;
-	OguAniState		m_CurAS; // 현재 상태
 	bool			m_IsRunParticle;
 	// ==============================
 	// =======대기모션=======
 	float           m_SaveFinalActionTime;
 	float			m_IdleDanceTime;
 	// ======================
-	// =======채 휘두르기=======
-	OguAniState		m_PreAS; // 이전 상태
-	bool			m_IsSwing;
-	// =========================
 	// =======춤 관련 변수들=======
 	float					m_SaveDanceTime;
 	float					m_DanceTime;
@@ -85,13 +122,15 @@ private:
 	vector<CGameObject*>	m_vDanceEffects;
 	// ============================
 	// =======구르기=======
-	bool			m_IsRolling;
 	float			m_RollingSpeedMax;
 	float			m_RollingSpeed;
 	float			m_RollingDeceleration;
 	float			m_SaveRollingTime;
 	float			m_RollingDelay;
 	// ====================
+	// =======상호작용=======
+	bool			m_Interaction;
+	// ======================
 
 public:
     virtual void Begin() override;
@@ -118,8 +157,13 @@ private:
 	void Rolling();
 	void RollingParticle();
 
+	void LiftMove();
+
 public:
 	OguAniState GetCurAS() { return m_CurAS; }
+
+	void LiftStart();
+	void LiftEnd();
 
 public:
     CLONE(CPlayerScript);

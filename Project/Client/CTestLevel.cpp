@@ -19,6 +19,7 @@
 #include <Scripts/CSwingObjScript.h>
 #include <Scripts/CPlayerInteractionScript.h>
 #include <Scripts/CInteractionScript.h>
+#include <Scripts/CLiftScript.h>
 
 #include <Engine/CSetColorCS.h>
 #include <Engine/CStructuredBuffer.h>
@@ -166,9 +167,11 @@ void CTestLevel::CreateTestLevel()
 	pLiftStone->AddComponent(new CCollider2D);
 	pLiftStone->AddComponent(new CFlipBookComponent);
 	pLiftStone->AddComponent(new CInteractionScript);
+	pLiftStone->AddComponent(new CLiftScript);
 
-	pLiftStone->Transform()->SetRelativePos(100.f, 0.f, 0.f);
+	pLiftStone->Transform()->SetRelativePos(100.f, 0.f, -50.f);
 	pLiftStone->Transform()->SetRelativeScale(150.f, 150.f, 0.f);
+	pLiftStone->Transform()->SetIndependentScale(true);
 
 	pLiftStone->Collider2D()->SetIndependentScale(false);
 	pLiftStone->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
@@ -378,4 +381,54 @@ void CTestLevel::PlayerAni(CGameObject* pPlayer)
 	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_RIGHTDOWN, pFlipBook);
 	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Ogu\\ogu_swing_rightup.flip");
 	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_SWING_RIGHTUP, pFlipBook);
+
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle1_down.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE1_DOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle1_up.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE1_UP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle1_left.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE1_LEFT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle1_right.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE1_RIGHT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle1_leftdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE1_LEFTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle1_leftup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE1_LEFTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle1_rightdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE1_RIGHTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle1_rightup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE1_RIGHTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle2_down.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE2_DOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle2_up.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE2_UP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle2_left.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE2_LEFT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle2_right.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE2_RIGHT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle2_leftdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE2_LEFTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle2_leftup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE2_LEFTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle2_rightdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE2_RIGHTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_idle2_rightup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_IDLE2_RIGHTUP, pFlipBook);
+
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_walk_down.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_DOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_walk_up.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_UP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_walk_left.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_LEFT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_walk_right.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_RIGHT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_walk_leftdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_LEFTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_walk_leftup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_LEFTUP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_walk_rightdown.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_RIGHTDOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_walk_rightup.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_RIGHTUP, pFlipBook);
 }

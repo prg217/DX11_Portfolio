@@ -6,6 +6,11 @@ CInteractionScript::CInteractionScript()
 {
 }
 
+CInteractionScript::CInteractionScript(const CInteractionScript& _Origin)
+	: CScript(_Origin)
+{
+}
+
 CInteractionScript::~CInteractionScript()
 {
 }

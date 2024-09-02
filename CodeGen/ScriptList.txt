@@ -1,6 +1,7 @@
 CCameraMoveScript
 CCountDownDeleteScript
 CInteractionScript
+CLiftScript
 CMissileScript
 COguDancePointLightScript
 CPlayerInteractionScript

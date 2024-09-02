@@ -104,7 +104,7 @@ Ptr<CFlipBook> CFlipBookComponent::FindFlipBook(const wstring& _Key)
 	return nullptr;
 }
 
-void CFlipBookComponent::Play(int _FliBookIdx, float _FPS, bool _Repeat)
+void CFlipBookComponent::Play(int _FliBookIdx, float _FPS, bool _Repeat, int _StartFrmIdx)
 {
 	m_Stop = false;
 
@@ -120,7 +120,7 @@ void CFlipBookComponent::Play(int _FliBookIdx, float _FPS, bool _Repeat)
 		return;
 	}
 	
-	m_CurFrmIdx = 0;
+	m_CurFrmIdx = _StartFrmIdx;
 	m_AccTime = 0.f;
 	m_FPS = _FPS;
 	m_Repeat = _Repeat;

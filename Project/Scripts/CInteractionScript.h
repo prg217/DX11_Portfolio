@@ -18,7 +18,7 @@ public:
 public:
     CLONE(CInteractionScript);
     CInteractionScript();
-    //CInteractionScript(const CInteractionScript& _Origin);
+    CInteractionScript(const CInteractionScript& _Origin);
     ~CInteractionScript();
 };
 
