@@ -87,6 +87,11 @@ enum class OguAniState
 	LIFT_WALK_LEFTUP,
 	LIFT_WALK_RIGHTDOWN,
 	LIFT_WALK_RIGHTUP,
+
+	PUSH_DOWN,
+	PUSH_UP,
+	PUSH_LEFT,
+	PUSH_RIGHT,
 };
 
 class CPlayerScript :
@@ -130,6 +135,8 @@ private:
 	// ====================
 	// =======상호작용=======
 	bool			m_Interaction;
+
+	bool			m_IsPush;
 	// ======================
 
 public:
@@ -138,6 +145,7 @@ public:
 
     virtual void BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider) override;
 	virtual void Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider) override;
+	virtual void EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider) override;
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
@@ -159,12 +167,16 @@ private:
 	void RollingParticle();
 
 	void LiftMove();
+	void PushMove();
 
 public:
 	OguAniState GetCurAS() { return m_CurAS; }
+	float GetSpeed() { return m_Speed; }
 
 	void LiftStart();
 	void LiftEnd();
+
+	void SetIsPush(bool _IsPush) { m_IsPush = _IsPush; }
 
 public:
     CLONE(CPlayerScript);

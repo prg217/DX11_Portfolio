@@ -6,4 +6,5 @@ CMissileScript
 COguDancePointLightScript
 CPlayerInteractionScript
 CPlayerScript
+CPushScript
 CSwingObjScript

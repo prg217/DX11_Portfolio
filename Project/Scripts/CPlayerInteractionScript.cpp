@@ -78,6 +78,15 @@ void CPlayerInteractionScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObje
 
 void CPlayerInteractionScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	// 상호작용 오브젝트 레이어
+	if (_OtherObject->GetLayerIdx() == 6)
+	{
+		// CPushScript 스크립트를 가지고 있다면
+		if (_OtherObject->GetScript("CPushScript") != nullptr)
+		{
+			m_pPlayerScript->SetIsPush(false);
+		}
+	}
 }
 
 void CPlayerInteractionScript::SaveToFile(FILE* _File)

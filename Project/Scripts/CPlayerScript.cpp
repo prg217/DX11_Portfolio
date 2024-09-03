@@ -5,6 +5,7 @@
 
 #include "CCountDownDeleteScript.h"
 #include "COguDancePointLightScript.h"
+#include "CPushScript.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERSCRIPT))
@@ -31,6 +32,7 @@ CPlayerScript::CPlayerScript()
 	, m_SaveRollingTime(0.f)
 	, m_RollingDelay(2.f)
 	, m_Interaction(false)
+	, m_IsPush(false)
 {	
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "PlayerSpeed", &m_Speed);
 	AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
@@ -57,7 +59,14 @@ void CPlayerScript::Tick()
 	if (m_CurPS == PlayerState::NONE)
 	{
 		m_StartFrmIdx = 0;
-		Move();
+		if (m_IsPush)
+		{
+			PushMove();
+		}
+		else
+		{
+			Move();
+		}
 
 		// Q 버튼을 누르면 춤을 춘다.
 		if (KEY_TAP(KEY::Q) && !m_IsDance)
@@ -116,7 +125,16 @@ void CPlayerScript::Tick()
 
 void CPlayerScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
-	
+	// 상호작용 오브젝트 레이어
+	if (_OtherObject->GetLayerIdx() == 6)
+	{
+		// CPushScript 스크립트를 가지고 있다면
+		if (_OtherObject->GetScript("CPushScript") != nullptr)
+		{
+			// 해제는 CPlayerInteractionScript의 EndOverlap에서 해줌
+			m_IsPush = true;
+		}
+	}
 }
 
 void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
@@ -203,6 +221,11 @@ void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 	}
 
 	GetOwner()->RigidBody()->SetForce(force);
+}
+
+void CPlayerScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
+
 }
 
 void CPlayerScript::SaveToFile(FILE* _File)
@@ -761,6 +784,18 @@ void CPlayerScript::AniState()
 		break;
 	case OguAniState::LIFT_WALK_RIGHTUP:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_RIGHTUP, 10, true);
+		break;
+	case OguAniState::PUSH_DOWN:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_PUSH_DOWN, 10, true);
+		break;
+	case OguAniState::PUSH_UP:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_PUSH_UP, 10, true);
+		break;
+	case OguAniState::PUSH_LEFT:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_PUSH_LEFT, 10, true);
+		break;
+	case OguAniState::PUSH_RIGHT:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_PUSH_RIGHT, 10, true);
 		break;
 	default:
 		break;
@@ -1544,6 +1579,347 @@ void CPlayerScript::LiftMove()
 		{
 			m_CurAS = OguAniState::LIFT_IDLE1_DOWN;
 			m_StartFrmIdx = 8;
+		}
+	}
+
+	// Move
+	if (KEY_PRESSED(KEY::LEFT))
+	{
+		vPos.x -= DT * m_Speed;
+	}
+	if (KEY_PRESSED(KEY::RIGHT))
+	{
+		vPos.x += DT * m_Speed;
+	}
+	if (KEY_PRESSED(KEY::UP))
+	{
+		vPos.y += DT * m_Speed;
+	}
+	if (KEY_PRESSED(KEY::DOWN))
+	{
+		vPos.y -= DT * m_Speed;
+	}
+
+	Transform()->SetRelativePos(vPos);
+}
+
+void CPlayerScript::PushMove()
+{
+	Vec3 vPos = Transform()->GetRelativePos();
+
+	// 마지막으로 움직인 시간
+	if (KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT) || KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN))
+	{
+		m_SaveFinalActionTime = TIME;
+	}
+
+	// 달리는 파티클
+	if (KEY_PRESSED(KEY::LSHIFT) && !m_IsRunParticle)
+	{
+		if (KEY_TAP(KEY::LEFT) || KEY_TAP(KEY::RIGHT) || KEY_TAP(KEY::UP) || KEY_TAP(KEY::DOWN))
+		{
+			m_IsRunParticle = true;
+			RunParticle();
+		}
+	}
+
+	// Run
+	if (KEY_TAP(KEY::LSHIFT)) // (대각선일 때만...)
+	{
+		m_IsRun = true;
+		m_Speed = m_MaxSpeed;
+	}
+	if (KEY_RELEASED(KEY::LSHIFT))
+	{
+		m_IsRun = false;
+		m_IsRunParticle = false;
+		m_Speed = m_MinSpeed;
+	}
+
+	if (KEY_PRESSED(KEY::LEFT) && KEY_PRESSED(KEY::UP))
+	{
+		if (m_IsRun)
+		{
+			m_CurAS = OguAniState::RUN_LEFTUP;
+
+			if (!m_IsRunParticle)
+			{
+				if (KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT) || KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN))
+				{
+					m_IsRunParticle = true;
+					RunParticle();
+				}
+			}
+		}
+		else
+		{
+			m_CurAS = OguAniState::WALK_LEFTUP;
+		}
+
+		m_SaveFinalDiagonalTime = TIME;
+	}
+	else if (KEY_PRESSED(KEY::LEFT) && KEY_PRESSED(KEY::DOWN))
+	{
+		if (m_IsRun)
+		{
+			m_CurAS = OguAniState::RUN_LEFTDOWN;
+			if (!m_IsRunParticle)
+			{
+				if (KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT) || KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN))
+				{
+					m_IsRunParticle = true;
+					RunParticle();
+				}
+			}
+		}
+		else
+		{
+			m_CurAS = OguAniState::WALK_LEFTDOWN;
+		}
+
+		m_SaveFinalDiagonalTime = TIME;
+	}
+	else if (KEY_PRESSED(KEY::RIGHT) && KEY_PRESSED(KEY::UP))
+	{
+		if (m_IsRun)
+		{
+			m_CurAS = OguAniState::RUN_RIGHTUP;
+			if (!m_IsRunParticle)
+			{
+				if (KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT) || KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN))
+				{
+					m_IsRunParticle = true;
+					RunParticle();
+				}
+			}
+		}
+		else
+		{
+			m_CurAS = OguAniState::WALK_RIGHTUP;
+		}
+
+		m_SaveFinalDiagonalTime = TIME;
+	}
+	else if (KEY_PRESSED(KEY::RIGHT) && KEY_PRESSED(KEY::DOWN))
+	{
+		if (m_IsRun)
+		{
+			m_CurAS = OguAniState::RUN_RIGHTDOWN;
+			if (!m_IsRunParticle)
+			{
+				if (KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT) || KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN))
+				{
+					m_IsRunParticle = true;
+					RunParticle();
+				}
+			}
+		}
+		else
+		{
+			m_CurAS = OguAniState::WALK_RIGHTDOWN;
+		}
+
+		m_SaveFinalDiagonalTime = TIME;
+	}
+	else if (TIME - m_SaveFinalDiagonalTime > m_AllowedTime)
+	{
+		if (KEY_PRESSED(KEY::LEFT))
+		{
+			m_Speed = m_MinSpeed;
+			m_CurAS = OguAniState::PUSH_LEFT;
+		}
+		else if (KEY_PRESSED(KEY::RIGHT))
+		{
+			m_Speed = m_MinSpeed;
+			m_CurAS = OguAniState::PUSH_RIGHT;
+		}
+		else if (KEY_PRESSED(KEY::UP))
+		{
+			m_Speed = m_MinSpeed;
+			m_CurAS = OguAniState::PUSH_UP;
+		}
+		else if (KEY_PRESSED(KEY::DOWN))
+		{
+			m_Speed = m_MinSpeed;
+			m_CurAS = OguAniState::PUSH_DOWN;
+		}
+
+	}
+
+	if (KEY_RELEASED(KEY::LEFT))
+	{
+		if (m_CurAS == OguAniState::WALK_LEFTUP || m_CurAS == OguAniState::RUN_LEFTUP)
+		{
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
+			{
+				m_MoveCount++;
+
+				if (m_MoveCount >= 2)
+				{
+					m_CurAS = OguAniState::IDLE_LEFTUP;
+				}
+			}
+			else
+			{
+				m_MoveCount = 0;
+
+				m_CurAS = OguAniState::IDLE_LEFT;
+			}
+
+		}
+		else if (m_CurAS == OguAniState::WALK_LEFTDOWN || m_CurAS == OguAniState::RUN_LEFTDOWN)
+		{
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
+			{
+				m_MoveCount++;
+
+				if (m_MoveCount >= 2)
+				{
+					m_CurAS = OguAniState::IDLE_LEFTDOWN;
+				}
+			}
+			else
+			{
+				m_MoveCount = 0;
+
+				m_CurAS = OguAniState::IDLE_LEFT;
+			}
+		}
+		else if (m_CurAS == OguAniState::PUSH_LEFT)
+		{
+			m_CurAS = OguAniState::IDLE_LEFT;
+		}
+	}
+
+	if (KEY_RELEASED(KEY::RIGHT))
+	{
+		if (m_CurAS == OguAniState::WALK_RIGHTUP || m_CurAS == OguAniState::RUN_RIGHTUP)
+		{
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
+			{
+				m_MoveCount++;
+
+				if (m_MoveCount >= 2)
+				{
+					m_CurAS = OguAniState::IDLE_RIGHTUP;
+				}
+			}
+			else
+			{
+				m_MoveCount = 0;
+
+				m_CurAS = OguAniState::IDLE_RIGHT;
+			}
+		}
+		else if (m_CurAS == OguAniState::WALK_RIGHTDOWN || m_CurAS == OguAniState::RUN_RIGHTDOWN)
+		{
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
+			{
+				m_MoveCount++;
+
+				if (m_MoveCount >= 2)
+				{
+					m_CurAS = OguAniState::IDLE_RIGHTDOWN;
+				}
+			}
+			else
+			{
+				m_MoveCount = 0;
+
+				m_CurAS = OguAniState::IDLE_RIGHT;
+			}
+		}
+		else if (m_CurAS == OguAniState::PUSH_RIGHT)
+		{
+			m_CurAS = OguAniState::IDLE_RIGHT;
+		}
+	}
+
+	if (KEY_RELEASED(KEY::UP))
+	{
+		if (m_CurAS == OguAniState::WALK_LEFTUP || m_CurAS == OguAniState::RUN_LEFTUP)
+		{
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
+			{
+				m_MoveCount++;
+
+				if (m_MoveCount >= 2)
+				{
+					m_CurAS = OguAniState::IDLE_LEFTUP;
+				}
+			}
+			else
+			{
+				m_MoveCount = 0;
+
+				m_CurAS = OguAniState::IDLE_BACK;
+			}
+		}
+		else if (m_CurAS == OguAniState::WALK_RIGHTUP || m_CurAS == OguAniState::RUN_RIGHTUP)
+		{
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
+			{
+				m_MoveCount++;
+
+				if (m_MoveCount >= 2)
+				{
+					m_CurAS = OguAniState::IDLE_RIGHTUP;
+				}
+			}
+			else
+			{
+				m_MoveCount = 0;
+
+				m_CurAS = OguAniState::IDLE_RIGHT;
+			}
+		}
+		else if (m_CurAS == OguAniState::PUSH_UP)
+		{
+			m_CurAS = OguAniState::IDLE_BACK;
+		}
+	}
+
+	if (KEY_RELEASED(KEY::DOWN))
+	{
+		if (m_CurAS == OguAniState::WALK_LEFTDOWN || m_CurAS == OguAniState::RUN_LEFTDOWN)
+		{
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
+			{
+				m_MoveCount++;
+
+				if (m_MoveCount >= 2)
+				{
+					m_CurAS = OguAniState::IDLE_LEFTDOWN;
+				}
+			}
+			else
+			{
+				m_MoveCount = 0;
+
+				m_CurAS = OguAniState::IDLE;
+			}
+		}
+		else if (m_CurAS == OguAniState::WALK_RIGHTDOWN || m_CurAS == OguAniState::RUN_RIGHTDOWN)
+		{
+			if (TIME - m_SaveFinalDiagonalTime <= m_AllowedTime)
+			{
+				m_MoveCount++;
+
+				if (m_MoveCount >= 2)
+				{
+					m_CurAS = OguAniState::IDLE_RIGHTDOWN;
+				}
+			}
+			else
+			{
+				m_MoveCount = 0;
+
+				m_CurAS = OguAniState::IDLE;
+			}
+		}
+		else if (m_CurAS == OguAniState::PUSH_DOWN)
+		{
+			m_CurAS = OguAniState::IDLE;
 		}
 	}
 

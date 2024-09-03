@@ -9,6 +9,7 @@
 #include "COguDancePointLightScript.h"
 #include "CPlayerInteractionScript.h"
 #include "CPlayerScript.h"
+#include "CPushScript.h"
 #include "CSwingObjScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -21,6 +22,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"COguDancePointLightScript");
 	_vec.push_back(L"CPlayerInteractionScript");
 	_vec.push_back(L"CPlayerScript");
+	_vec.push_back(L"CPushScript");
 	_vec.push_back(L"CSwingObjScript");
 }
 
@@ -42,6 +44,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerInteractionScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
+	if (L"CPushScript" == _strScriptName)
+		return new CPushScript;
 	if (L"CSwingObjScript" == _strScriptName)
 		return new CSwingObjScript;
 	return nullptr;
@@ -74,6 +78,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
+		break;
+	case (UINT)SCRIPT_TYPE::PUSHSCRIPT:
+		return new CPushScript;
 		break;
 	case (UINT)SCRIPT_TYPE::SWINGOBJSCRIPT:
 		return new CSwingObjScript;
@@ -116,6 +123,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PLAYERSCRIPT:
 		return L"CPlayerScript";
+		break;
+
+	case SCRIPT_TYPE::PUSHSCRIPT:
+		return L"CPushScript";
 		break;
 
 	case SCRIPT_TYPE::SWINGOBJSCRIPT:

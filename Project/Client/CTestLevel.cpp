@@ -20,6 +20,7 @@
 #include <Scripts/CPlayerInteractionScript.h>
 #include <Scripts/CInteractionScript.h>
 #include <Scripts/CLiftScript.h>
+#include <Scripts/CPushScript.h>
 
 #include <Engine/CSetColorCS.h>
 #include <Engine/CStructuredBuffer.h>
@@ -186,6 +187,34 @@ void CTestLevel::CreateTestLevel()
 	pLiftStone->FlipBookComponent()->Play(0, 0, false);
 
 	pLevel->AddObject(6, pLiftStone);
+
+	// 밀 수 있는 돌
+	CGameObject* pPushStone = new CGameObject;
+	pPushStone->SetName(L"PushStone");
+	pPushStone->AddComponent(new CTransform);
+	pPushStone->AddComponent(new CMeshRender);
+	pPushStone->AddComponent(new CCollider2D);
+	pPushStone->AddComponent(new CRigidBody);
+	pPushStone->AddComponent(new CFlipBookComponent);
+	pPushStone->AddComponent(new CInteractionScript);
+	pPushStone->AddComponent(new CPushScript);
+
+	pPushStone->Transform()->SetRelativePos(-100.f, 0.f, -50.f);
+	pPushStone->Transform()->SetRelativeScale(150.f, 150.f, 0.f);
+	pPushStone->Transform()->SetIndependentScale(true);
+
+	pPushStone->Collider2D()->SetIndependentScale(false);
+	pPushStone->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	pPushStone->Collider2D()->SetScale(Vec3(0.5f, 0.5f, 1.f));
+
+	pPushStone->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pPushStone->MeshRender()->SetMaterial(pMtrl);
+
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Obj\\obj_pushStone.flip");
+	pPushStone->FlipBookComponent()->AddFlipBook(0, pFlipBook);
+	pPushStone->FlipBookComponent()->Play(0, 0, false);
+
+	pLevel->AddObject(6, pPushStone);
 
 	// Monster Object
 	//CGameObject* pMonster = new CGameObject;
@@ -432,4 +461,13 @@ void CTestLevel::PlayerAni(CGameObject* pPlayer)
 	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_RIGHTDOWN, pFlipBook);
 	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguLift\\ogu_lift_walk_rightup.flip");
 	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_LIFT_WALK_RIGHTUP, pFlipBook);
+
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguPush\\ogu_push_down.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_PUSH_DOWN, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguPush\\ogu_push_up.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_PUSH_UP, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguPush\\ogu_push_left.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_PUSH_LEFT, pFlipBook);
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\OguPush\\ogu_push_right.flip");
+	pPlayer->FlipBookComponent()->AddFlipBook((int)OGU_FLIPBOOK_IDX::OGU_PUSH_RIGHT, pFlipBook);
 }
