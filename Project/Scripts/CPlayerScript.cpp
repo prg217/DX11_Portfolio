@@ -116,7 +116,93 @@ void CPlayerScript::Tick()
 
 void CPlayerScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
-	// 기본적으로 만나는 것들은 뚫고 못 지나가게 해야함
+	
+}
+
+void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
+	// 자신의 자식이면 return
+	if (_OtherObject->GetParent() == GetOwner())
+	{
+		return;
+	}
+
+	// 물리적으로 충돌되게 하기
+	Vec3 force = Vec3(0.f, 0.f, 0.f);
+	float speed = m_Speed;
+	float rollSpeed = m_RollingSpeed;
+
+	switch (m_CurAS)
+	{
+	case OguAniState::WALK_DOWN:
+	case OguAniState::RUN_DOWN:
+	case OguAniState::LIFT_WALK_DOWN:
+		force = Vec3(0.f, -speed, 0.f);
+		break;
+	case OguAniState::WALK_UP:
+	case OguAniState::RUN_UP:
+	case OguAniState::LIFT_WALK_UP:
+		force = Vec3(0.f, speed, 0.f);
+		break;
+	case OguAniState::WALK_LEFT:
+	case OguAniState::RUN_LEFT:
+	case OguAniState::LIFT_WALK_LEFT:
+		force = Vec3(-speed, 0.f, 0.f);
+		break;
+	case OguAniState::WALK_RIGHT:
+	case OguAniState::RUN_RIGHT:
+	case OguAniState::LIFT_WALK_RIGHT:
+		force = Vec3(speed, 0.f, 0.f);
+		break;
+	case OguAniState::WALK_LEFTDOWN:
+	case OguAniState::RUN_LEFTDOWN:
+	case OguAniState::LIFT_WALK_LEFTDOWN:
+		force = Vec3(-speed, -speed, 0.f);
+		break;
+	case OguAniState::WALK_LEFTUP:
+	case OguAniState::RUN_LEFTUP:
+	case OguAniState::LIFT_WALK_LEFTUP:
+		force = Vec3(-speed, speed, 0.f);
+		break;
+	case OguAniState::WALK_RIGHTDOWN:
+	case OguAniState::RUN_RIGHTDOWN:
+	case OguAniState::LIFT_WALK_RIGHTDOWN:
+		force = Vec3(speed, -speed, 0.f);
+		break;
+	case OguAniState::WALK_RIGHTUP:
+	case OguAniState::RUN_RIGHTUP:
+	case OguAniState::LIFT_WALK_RIGHTUP:
+		force = Vec3(speed, speed, 0.f);
+		break;
+	case OguAniState::ROLL_DOWN:
+		force = Vec3(0.f, -rollSpeed, 0.f);
+		break;
+	case OguAniState::ROLL_UP:
+		force = Vec3(0.f, rollSpeed, 0.f);
+		break;
+	case OguAniState::ROLL_LEFT:
+		force = Vec3(-rollSpeed, 0.f, 0.f);
+		break;
+	case OguAniState::ROLL_RIGHT:
+		force = Vec3(rollSpeed, 0.f, 0.f);
+		break;
+	case OguAniState::ROLL_LEFTDOWN:
+		force = Vec3(-rollSpeed, -rollSpeed, 0.f);
+		break;
+	case OguAniState::ROLL_LEFTUP:
+		force = Vec3(-rollSpeed, rollSpeed, 0.f);
+		break;
+	case OguAniState::ROLL_RIGHTDOWN:
+		force = Vec3(rollSpeed, -rollSpeed, 0.f);
+		break;
+	case OguAniState::ROLL_RIGHTUP:
+		force = Vec3(rollSpeed, rollSpeed, 0.f);
+		break;
+	default:
+		break;
+	}
+
+	GetOwner()->RigidBody()->SetForce(force);
 }
 
 void CPlayerScript::SaveToFile(FILE* _File)

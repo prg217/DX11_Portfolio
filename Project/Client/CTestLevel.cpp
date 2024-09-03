@@ -95,7 +95,7 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->SetName(L"Player");
 	pPlayer->AddComponent(new CTransform);
 	pPlayer->AddComponent(new CMeshRender);
-	//pPlayer->AddComponent(new CRigidBody);
+	pPlayer->AddComponent(new CRigidBody);
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->AddComponent(new CFlipBookComponent);
 	pPlayer->AddComponent(new CPlayerScript);
@@ -165,6 +165,7 @@ void CTestLevel::CreateTestLevel()
 	pLiftStone->AddComponent(new CTransform);
 	pLiftStone->AddComponent(new CMeshRender);
 	pLiftStone->AddComponent(new CCollider2D);
+	//pLiftStone->AddComponent(new CRigidBody);
 	pLiftStone->AddComponent(new CFlipBookComponent);
 	pLiftStone->AddComponent(new CInteractionScript);
 	pLiftStone->AddComponent(new CLiftScript);

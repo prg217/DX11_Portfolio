@@ -38,6 +38,7 @@ private:
     */
 public:
     void AddForce(Vec3 _vForce) { m_Force += _vForce; }
+    void SetForce(Vec3 _vForce) { m_Force = _vForce; }
 
     void SetMass(float _Mass) { m_Mass = _Mass; }
     void SetInitialWalkSpeed(float _Speed) { m_InitWalkSpeed = _Speed; }

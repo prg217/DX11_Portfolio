@@ -1,10 +1,9 @@
-#include "CRigidBody.h"
-#include "CRigidBody.h"
 #include "pch.h"
 #include "CRigidBody.h"
 
 #include "CTimeMgr.h"
 #include "CTransform.h"
+#include "CCollider2D.h"
 
 CRigidBody::CRigidBody()
 	: CComponent(COMPONENT_TYPE::RIGIDBODY)
@@ -60,7 +59,7 @@ void CRigidBody::Jump()
 */
 void CRigidBody::FinalTick()
 {
-	CTransform* pTransform = (CTransform*)GetOwner()->GetComponent(COMPONENT_TYPE::TRANSFORM);
+	CTransform* pTransform = GetOwner()->Transform();
 	assert(pTransform);
 
 	Vec3 vObjPos = pTransform->GetRelativePos();
@@ -137,12 +136,25 @@ void CRigidBody::FinalTick()
 	}
 
 	// 최종 속도
-	Vec3 vFinalVelocity = m_Velocity + m_VelocityByGravity;
+	Vec3 vFinalVelocity = m_Velocity;// +m_VelocityByGravity;
 
-
+	// 다른 콜라이더에 부딪쳤을 때
+	//CCollider2D* pCol = GetOwner()->Collider2D();
+	//if (pCol != nullptr)
+	//{
+	//	// 여기서 만약... 오버랩 중이면... 좌표를 멈추던가 해야
+	//	if (pCol->GetOverlapCount() > 0)
+	//	{
+	//		vObjPos -= vFinalVelocity * DT;
+	//		pTransform->SetRelativePos(vObjPos);
+	//		return;
+	//	}
+	//}
+	// 리지디바디가 있는 것들에만 반응하게 해야하나?
+	
 	// 현재 속도에 따른 이동
 	// 속도 = 거리 / 시간	
-	vObjPos -= vFinalVelocity * DT;
+	vObjPos -= vFinalVelocity;// *DT;
 	pTransform->SetRelativePos(vObjPos);
 
 	// 이번 프레임 힘 초기화
