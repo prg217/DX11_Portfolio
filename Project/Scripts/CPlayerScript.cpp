@@ -144,6 +144,11 @@ void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 	{
 		return;
 	}
+	// 충돌 예외
+	if (_OtherObject->GetScript("CGrassScript") != nullptr)
+	{
+		return;
+	}
 
 	// 물리적으로 충돌되게 하기
 	Vec3 force = Vec3(0.f, 0.f, 0.f);

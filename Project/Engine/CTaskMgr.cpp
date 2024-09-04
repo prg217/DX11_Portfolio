@@ -107,6 +107,15 @@ void CTaskMgr::ExecuteTask()
 			CAssetMgr::GetInst()->DeleteAsset(Type, pAsset->GetKey());
 		}
 		break;
+		case TASK_TYPE::ADD_CHILD:
+		{
+			CGameObject* pParent = (CGameObject*)task.Param_0;
+			CGameObject* pChild = (CGameObject*)task.Param_1;
+			pParent->AddChild(pChild);
+
+			CLevelMgr::GetInst()->m_LevelChanged = true;
+		}
+			break;
 		}
 	}
 

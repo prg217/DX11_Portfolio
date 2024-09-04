@@ -1,5 +1,7 @@
 CCameraMoveScript
 CCountDownDeleteScript
+CGlowingPlantsScript
+CGrassScript
 CInteractionScript
 CLiftScript
 CMissileScript

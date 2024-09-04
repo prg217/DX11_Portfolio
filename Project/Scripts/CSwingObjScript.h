@@ -21,6 +21,8 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+public:
+    bool GetIsSwing() { return m_IsSwing; }
 
 public:
     CLONE(CSwingObjScript);

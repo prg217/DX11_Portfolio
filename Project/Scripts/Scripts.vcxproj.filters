@@ -16,6 +16,9 @@
     <Filter Include="Scripts\Interaction">
       <UniqueIdentifier>{d51dde9a-51f4-4494-8b2b-1988ffc7bedf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Interaction\Grass">
+      <UniqueIdentifier>{e5a63d2c-a049-470d-9079-8bac23c38f05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -57,6 +60,12 @@
     <ClInclude Include="CPushScript.h">
       <Filter>Scripts\Interaction</Filter>
     </ClInclude>
+    <ClInclude Include="CGlowingPlantsScript.h">
+      <Filter>Scripts\Interaction\Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="CGrassScript.h">
+      <Filter>Scripts\Interaction\Grass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -97,6 +106,12 @@
     </ClCompile>
     <ClCompile Include="CPushScript.cpp">
       <Filter>Scripts\Interaction</Filter>
+    </ClCompile>
+    <ClCompile Include="CGlowingPlantsScript.cpp">
+      <Filter>Scripts\Interaction\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="CGrassScript.cpp">
+      <Filter>Scripts\Interaction\Grass</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

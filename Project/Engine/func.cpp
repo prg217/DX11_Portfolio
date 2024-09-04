@@ -25,6 +25,16 @@ void DeleteObject(CGameObject* _DeleteObject)
 	CTaskMgr::GetInst()->AddTask(task);
 }
 
+void AddChildObject(CGameObject* _Parent, CGameObject* _Child)
+{
+	tTask task = {};
+	task.Type = TASK_TYPE::ADD_CHILD;
+	task.Param_0 = (DWORD_PTR)_Parent;
+	task.Param_1 = (DWORD_PTR)_Child;
+
+	CTaskMgr::GetInst()->AddTask(task);
+}
+
 void ChangeLevelState(LEVEL_STATE _NextState)
 {
 	tTask task = {};

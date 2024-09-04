@@ -38,7 +38,7 @@ public:
     Vec3 GetRelativeScale() { return m_RelativeScale; }
     Vec3 GetWorldScale();
 
-    Vec3 GetRelativeRoatation() { return m_RelativeRotation; }
+    Vec3 GetRelativeRotation() { return m_RelativeRotation; }
     Vec3 GetRelativeDir(DIR _Type) { return m_RelativeDir[_Type]; }
     Vec3 GetWorldDir(DIR _Type) { return m_WorldDir[_Type]; }
 

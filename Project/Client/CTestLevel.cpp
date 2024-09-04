@@ -21,6 +21,7 @@
 #include <Scripts/CInteractionScript.h>
 #include <Scripts/CLiftScript.h>
 #include <Scripts/CPushScript.h>
+#include <Scripts/CGrassScript.h>
 
 #include <Engine/CSetColorCS.h>
 #include <Engine/CStructuredBuffer.h>
@@ -54,6 +55,7 @@ void CTestLevel::CreateTestLevel()
 	pLevel->GetLayer(4)->SetName(L"Monster");
 	pLevel->GetLayer(5)->SetName(L"PlayerInteraction");
 	pLevel->GetLayer(6)->SetName(L"Interaction");
+	pLevel->GetLayer(7)->SetName(L"PlayerSwing");
 	//pLevel->GetLayer(6)->SetName(L"MonsterProjectile");
 
 	// 카메라 오브젝트
@@ -155,7 +157,7 @@ void CTestLevel::CreateTestLevel()
 	pInteractionObj->MeshRender()->SetMaterial(pMtrl);
 
 	// 스폰
-	pLevel->AddObject(3, pSwingObj);
+	pLevel->AddObject(7, pSwingObj);
 	pLevel->AddObject(5, pInteractionObj);
 	pLevel->AddObject(3, pPlayer);
 	// =======================
@@ -215,6 +217,26 @@ void CTestLevel::CreateTestLevel()
 	pPushStone->FlipBookComponent()->Play(0, 0, false);
 
 	pLevel->AddObject(6, pPushStone);
+
+	// 빛나는 풀
+	CGameObject* pGrass = new CGameObject;
+	pGrass->SetName(L"Grass");
+	pGrass->AddComponent(new CTransform);
+	pGrass->AddComponent(new CMeshRender);
+	pGrass->AddComponent(new CCollider2D);
+	pGrass->AddComponent(new CGrassScript);
+
+	pGrass->Transform()->SetRelativePos(-100.f, -100.f, -50.f);
+	pGrass->Transform()->SetRelativeScale(150.f, 150.f, 0.f);
+
+	pGrass->Collider2D()->SetIndependentScale(false);
+	pGrass->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	pGrass->Collider2D()->SetScale(Vec3(0.5f, 0.5f, 1.f));
+
+	pGrass->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pGrass->MeshRender()->SetMaterial(pMtrl);
+
+	pLevel->AddObject(6, pGrass);
 
 	// Monster Object
 	//CGameObject* pMonster = new CGameObject;
@@ -293,6 +315,7 @@ void CTestLevel::CreateTestLevel()
 	CCollisionMgr::GetInst()->CollisionCheck(3, 4); // 플레이어, 몬스터
 	CCollisionMgr::GetInst()->CollisionCheck(3, 6); // 플레이어, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(5, 6); // 플레이어 상호작용 감지, 상호작용
+	CCollisionMgr::GetInst()->CollisionCheck(7, 6); // 플레이어 채 휘두르기, 상호작용
 }
 
 void CTestLevel::CreatePrefab()

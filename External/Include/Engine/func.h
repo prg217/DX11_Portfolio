@@ -1,8 +1,8 @@
 #pragma once
 
-
 void CreateObject(class CGameObject* _NewObject, int _LayerIndex);
 void DeleteObject(CGameObject* _DeleteObject);
+void AddChildObject(CGameObject* _Parent, CGameObject* _Child);
 void ChangeLevelState(LEVEL_STATE _NextState);
 void ChangeLevel(class CLevel* _Level, LEVEL_STATE _NextLevelState);
 

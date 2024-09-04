@@ -3,6 +3,8 @@
 
 #include "CCameraMoveScript.h"
 #include "CCountDownDeleteScript.h"
+#include "CGlowingPlantsScript.h"
+#include "CGrassScript.h"
 #include "CInteractionScript.h"
 #include "CLiftScript.h"
 #include "CMissileScript.h"
@@ -16,6 +18,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CCountDownDeleteScript");
+	_vec.push_back(L"CGlowingPlantsScript");
+	_vec.push_back(L"CGrassScript");
 	_vec.push_back(L"CInteractionScript");
 	_vec.push_back(L"CLiftScript");
 	_vec.push_back(L"CMissileScript");
@@ -32,6 +36,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CCountDownDeleteScript" == _strScriptName)
 		return new CCountDownDeleteScript;
+	if (L"CGlowingPlantsScript" == _strScriptName)
+		return new CGlowingPlantsScript;
+	if (L"CGrassScript" == _strScriptName)
+		return new CGrassScript;
 	if (L"CInteractionScript" == _strScriptName)
 		return new CInteractionScript;
 	if (L"CLiftScript" == _strScriptName)
@@ -60,6 +68,12 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:
 		return new CCountDownDeleteScript;
+		break;
+	case (UINT)SCRIPT_TYPE::GLOWINGPLANTSSCRIPT:
+		return new CGlowingPlantsScript;
+		break;
+	case (UINT)SCRIPT_TYPE::GRASSSCRIPT:
+		return new CGrassScript;
 		break;
 	case (UINT)SCRIPT_TYPE::INTERACTIONSCRIPT:
 		return new CInteractionScript;
@@ -99,6 +113,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:
 		return L"CCountDownDeleteScript";
+		break;
+
+	case SCRIPT_TYPE::GLOWINGPLANTSSCRIPT:
+		return L"CGlowingPlantsScript";
+		break;
+
+	case SCRIPT_TYPE::GRASSSCRIPT:
+		return L"CGrassScript";
 		break;
 
 	case SCRIPT_TYPE::INTERACTIONSCRIPT:
