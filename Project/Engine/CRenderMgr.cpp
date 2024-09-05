@@ -66,6 +66,11 @@ void CRenderMgr::Tick()
 				continue;
 
 			m_vecCam[i]->Render();
+			// 메인 카메라에만 디버그 렌더
+			if (i == 0)
+			{
+				RenderDebugShape();
+			}
 		}
 	}
 
@@ -75,11 +80,13 @@ void CRenderMgr::Tick()
 		if (nullptr != m_EditorCamera)
 		{
 			m_EditorCamera->Render();
+
+			RenderDebugShape();
 		}		
 	}	
 
 	// Debug Render
-	RenderDebugShape();
+	//RenderDebugShape();
 
 	// Time 정보 출력
 	CTimeMgr::GetInst()->Render();

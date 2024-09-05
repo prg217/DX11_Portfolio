@@ -52,6 +52,7 @@ public:
     virtual void Begin() override {}
     virtual void Tick() = 0;
     virtual void FinalTick() final override {}
+    virtual void Render() {} // Text관련 UI한정
     virtual void SaveToFile(FILE* _File) = 0;
     virtual void LoadFromFile(FILE* _File) = 0;
 

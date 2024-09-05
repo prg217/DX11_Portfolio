@@ -25,6 +25,8 @@ public:
     void DeregisterObjectAsParent(CGameObject* _Object);
     void DeregisterObject(CGameObject* _Object);
 
+    void UIActive(bool _UI);
+
 public:
     void Begin();
     void Tick();

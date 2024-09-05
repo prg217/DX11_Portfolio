@@ -171,3 +171,11 @@ void CLayer::DeregisterObject(CGameObject* _Object)
 		assert(nullptr);
 	}	
 }
+
+void CLayer::UIActive(bool _UI)
+{
+	for (size_t i = 0; i < m_Parents.size(); ++i)
+	{
+		m_Parents[i]->UIActive(_UI);
+	}
+}

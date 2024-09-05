@@ -9,6 +9,7 @@ private:
     float   m_CamSpeed;
 
 public:
+    virtual void Begin() override;
     virtual void Tick() override;
 
     virtual void SaveToFile(FILE* _File) override;

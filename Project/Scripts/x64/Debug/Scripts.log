@@ -1,32 +1,41 @@
 ﻿  .\Project\Scripts\CCameraMoveScript.h
+  .\Project\Scripts\CCameraPlayerTrackingScript.h
   .\Project\Scripts\CCountDownDeleteScript.h
   .\Project\Scripts\CGlowingPlantsScript.h
   .\Project\Scripts\CGrassScript.h
   .\Project\Scripts\CInteractionScript.h
   .\Project\Scripts\CLiftScript.h
   .\Project\Scripts\CMissileScript.h
+  .\Project\Scripts\CNPCScript.h
   .\Project\Scripts\COguDancePointLightScript.h
   .\Project\Scripts\CPlayerInteractionScript.h
   .\Project\Scripts\CPlayerScript.h
   .\Project\Scripts\CPushScript.h
   .\Project\Scripts\CScriptMgr.h
   .\Project\Scripts\CSwingObjScript.h
-  13개 파일이 복사되었습니다.
+  .\Project\Scripts\CTextBoxScript.h
+  .\Project\Scripts\CUIScript.h
+  17개 파일이 복사되었습니다.
   pch.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): warning C4005: 'DELETE': 매크로 재정의
   CCameraMoveScript.cpp
+  CCameraPlayerTrackingScript.cpp
   CCountDownDeleteScript.cpp
   CGlowingPlantsScript.cpp
   CGrassScript.cpp
   CInteractionScript.cpp
   CLiftScript.cpp
   CMissileScript.cpp
+  CNPCScript.cpp
   COguDancePointLightScript.cpp
   CPlayerInteractionScript.cpp
   CPlayerScript.cpp
   CPushScript.cpp
   CScriptMgr.cpp
   CSwingObjScript.cpp
+  CTextBoxScript.cpp
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CTextBoxScript.cpp(54,14): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  CUIScript.cpp
   Scripts.cpp
   코드를 생성하고 있습니다...
   Scripts.vcxproj -> C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Scripts\Scripts_D.lib

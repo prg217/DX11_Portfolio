@@ -19,6 +19,12 @@
     <Filter Include="Scripts\Interaction\Grass">
       <UniqueIdentifier>{e5a63d2c-a049-470d-9079-8bac23c38f05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\UI">
+      <UniqueIdentifier>{417b39fa-86a8-4ecf-995c-05cd23568d79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Interaction\NPC">
+      <UniqueIdentifier>{54ad96e4-87b3-438a-8f52-9e3cce7fefa2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -66,6 +72,18 @@
     <ClInclude Include="CGrassScript.h">
       <Filter>Scripts\Interaction\Grass</Filter>
     </ClInclude>
+    <ClInclude Include="CCameraPlayerTrackingScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextBoxScript.h">
+      <Filter>Scripts\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CNPCScript.h">
+      <Filter>Scripts\Interaction\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIScript.h">
+      <Filter>Scripts\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -112,6 +130,18 @@
     </ClCompile>
     <ClCompile Include="CGrassScript.cpp">
       <Filter>Scripts\Interaction\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraPlayerTrackingScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextBoxScript.cpp">
+      <Filter>Scripts\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CNPCScript.cpp">
+      <Filter>Scripts\Interaction\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIScript.cpp">
+      <Filter>Scripts\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

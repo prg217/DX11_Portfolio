@@ -22,6 +22,8 @@ private:
     int                     m_LayerIdx; // 소속 레이어의 인덱스 번호
     bool                    m_Dead;
 
+    bool                    m_UI; // UI가 켜진 도중에는 스크립트의 Tick호출을 멈춘다.
+
 public:
     void AddComponent(CComponent* _Comopnent);
     CComponent* GetComponent(COMPONENT_TYPE _Type){return m_arrCom[(UINT)_Type];}
@@ -42,6 +44,10 @@ public:
     // Unregister : 등록을 취소하다, 등록하는 행위를 취소하다
     // Deregister : 등록된것을 취소하다
     void DeregisterChild();
+
+    void SetUIActive(bool _UI);
+    bool GetUIActive() { return m_UI; }
+    void UIActive(bool _UI);
 
     GET_COMPONENT(Transform, TRANSFORM);
     GET_COMPONENT(MeshRender, MESHRENDER);

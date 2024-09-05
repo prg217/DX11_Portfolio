@@ -1,12 +1,16 @@
 CCameraMoveScript
+CCameraPlayerTrackingScript
 CCountDownDeleteScript
 CGlowingPlantsScript
 CGrassScript
 CInteractionScript
 CLiftScript
 CMissileScript
+CNPCScript
 COguDancePointLightScript
 CPlayerInteractionScript
 CPlayerScript
 CPushScript
 CSwingObjScript
+CTextBoxScript
+CUIScript

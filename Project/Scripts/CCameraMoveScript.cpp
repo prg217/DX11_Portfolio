@@ -11,6 +11,11 @@ CCameraMoveScript::~CCameraMoveScript()
 {
 }
 
+void CCameraMoveScript::Begin()
+{
+
+}
+
 void CCameraMoveScript::Tick()
 {
 	if (PROJ_TYPE::ORTHOGRAPHIC == Camera()->GetProjType())

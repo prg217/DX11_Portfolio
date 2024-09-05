@@ -16,12 +16,14 @@
 #include <Scripts/CPlayerScript.h>
 #include <Scripts/CMissileScript.h>
 #include <Scripts/CCameraMoveScript.h>
+#include <Scripts/CCameraPlayerTrackingScript.h>
 #include <Scripts/CSwingObjScript.h>
 #include <Scripts/CPlayerInteractionScript.h>
 #include <Scripts/CInteractionScript.h>
 #include <Scripts/CLiftScript.h>
 #include <Scripts/CPushScript.h>
 #include <Scripts/CGrassScript.h>
+#include <Scripts/CNPCScript.h>
 
 #include <Engine/CSetColorCS.h>
 #include <Engine/CStructuredBuffer.h>
@@ -57,20 +59,37 @@ void CTestLevel::CreateTestLevel()
 	pLevel->GetLayer(6)->SetName(L"Interaction");
 	pLevel->GetLayer(7)->SetName(L"PlayerSwing");
 	//pLevel->GetLayer(6)->SetName(L"MonsterProjectile");
+	pLevel->GetLayer(31)->SetName(L"UI");
 
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;
 	CamObj->SetName(L"MainCamera");
 	CamObj->AddComponent(new CTransform);
 	CamObj->AddComponent(new CCamera);
-	//CamObj->AddComponent(new CCameraMoveScript);
+	CamObj->AddComponent(new CCameraPlayerTrackingScript);
 
 	// 우선순위를 0 : MainCamera 로 설정
 	CamObj->Camera()->SetPriority(0);
 
-	// 카메라 레이어 설정 (31번 레이어 제외 모든 레이어를 촬영)
+	// 카메라 레이어 설정 (8, 31번 레이어 제외 모든 레이어를 촬영)
 	CamObj->Camera()->SetLayerAll();
 	CamObj->Camera()->SetLayer(31, false);
+	CamObj->Camera()->SetFar(100000.f);
+	CamObj->Camera()->SetProjType(ORTHOGRAPHIC);
+
+	pLevel->AddObject(0, CamObj);
+
+	// UI 카메라 오브젝트
+	CamObj = new CGameObject;
+	CamObj->SetName(L"UICamera");
+	CamObj->AddComponent(new CTransform);
+	CamObj->AddComponent(new CCamera);
+
+	// 우선순위를 1
+	CamObj->Camera()->SetPriority(1);
+
+	// 카메라 레이어 설정 (31번 레이어를 촬영)
+	CamObj->Camera()->SetLayer(31, true);
 	CamObj->Camera()->SetFar(100000.f);
 	CamObj->Camera()->SetProjType(ORTHOGRAPHIC);
 
@@ -236,6 +255,32 @@ void CTestLevel::CreateTestLevel()
 	pGrass->MeshRender()->SetMaterial(pMtrl);
 
 	pLevel->AddObject(6, pGrass);
+
+	// npc
+	CGameObject* pNPC = new CGameObject;
+	pNPC->SetName(L"PantyBug_Red");
+	pNPC->AddComponent(new CTransform);
+	pNPC->AddComponent(new CMeshRender);
+	pNPC->AddComponent(new CCollider2D);
+	pNPC->AddComponent(new CFlipBookComponent);
+	pNPC->AddComponent(new CInteractionScript); 
+	pNPC->AddComponent(new CNPCScript);
+
+	pNPC->Transform()->SetRelativePos(-150.f, -200.f, -200.f);
+	pNPC->Transform()->SetRelativeScale(300.f, 300.f, 0.f);
+
+	pNPC->Collider2D()->SetIndependentScale(false);
+	pNPC->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	pNPC->Collider2D()->SetScale(Vec3(0.1f, 0.1f, 1.f));
+
+	pNPC->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pNPC->MeshRender()->SetMaterial(pMtrl);
+
+	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\NPC\\PantyBug\\npc_pantyBug_dizzy.flip");
+	pNPC->FlipBookComponent()->AddFlipBook(0, pFlipBook);
+	pNPC->FlipBookComponent()->Play(0, 10, true);
+
+	pLevel->AddObject(6, pNPC);
 
 	// Monster Object
 	//CGameObject* pMonster = new CGameObject;

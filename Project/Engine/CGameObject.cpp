@@ -11,13 +11,13 @@
 #include "components.h"
 #include "CScript.h"
 
-
 CGameObject::CGameObject()
 	: m_arrCom{}
 	, m_RenderCom(nullptr)
 	, m_Parent(nullptr)
 	, m_LayerIdx(-1) // 어느 레이어 소속도 아니다(레벨안에 있지 않은 상태)
 	, m_Dead(false)
+	, m_UI(false)
 {
 }
 
@@ -28,6 +28,7 @@ CGameObject::CGameObject(const CGameObject& _Origin)
 	, m_Parent(nullptr)
 	, m_LayerIdx(-1)
 	, m_Dead(false)
+	, m_UI(_Origin.m_UI)
 {
 	// 컴포넌트 복사
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
@@ -184,6 +185,31 @@ void CGameObject::DeregisterChild()
 	assert(nullptr);
 }
 
+void CGameObject::SetUIActive(bool _UI)
+{
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	if (nullptr != pCurLevel)
+	{
+		// UI 레이어를 제외하고 스크립트 활동 중지
+		for (int i = 0; i< MAX_LAYER - 1; i++)
+		{
+			CLayer* pLayer = pCurLevel->GetLayer(i);
+			pLayer->UIActive(_UI);
+		}
+	}
+}
+
+void CGameObject::UIActive(bool _UI)
+{
+	m_UI = _UI;
+
+	// 자식 오브젝트
+	for (size_t i = 0; i < m_vecChildren.size(); ++i)
+	{
+		m_vecChildren[i]->UIActive(_UI);
+	}
+}
+
 void CGameObject::Begin()
 {
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
@@ -211,12 +237,17 @@ void CGameObject::Tick()
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
 	{
 		if (nullptr != m_arrCom[i])
+		{
 			m_arrCom[i]->Tick();
+		}
 	}
 
-	for (size_t i = 0; i < m_vecScript.size(); ++i)
+	if (!m_UI)
 	{
-		m_vecScript[i]->Tick();
+		for (size_t i = 0; i < m_vecScript.size(); ++i)
+		{
+			m_vecScript[i]->Tick();
+		}
 	}
 
 	// 자식 오브젝트
@@ -257,4 +288,9 @@ void CGameObject::Render()
 {
 	if(m_RenderCom)
 		m_RenderCom->Render();
+
+	if (GetScript("CTextBoxScript") != nullptr)
+	{
+		GetScript("CTextBoxScript")->Render();
+	}
 }

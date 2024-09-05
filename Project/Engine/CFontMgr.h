@@ -25,5 +25,6 @@ private:
 public:
     void Init();
     void DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color);
+    void DrawCenterFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color);
 };
 
