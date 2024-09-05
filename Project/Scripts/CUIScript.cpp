@@ -13,6 +13,7 @@ CUIScript::CUIScript(const CUIScript& _Origin)
 
 CUIScript::~CUIScript()
 {
+	GetOwner()->SetUIActive(false);
 }
 
 void CUIScript::Begin()

@@ -7,8 +7,10 @@ CTextBoxScript::CTextBoxScript()
 	: CScript(UINT(SCRIPT_TYPE::TEXTBOXSCRIPT))
 	, m_IsName(false)
 	, m_SaveTime(0.f)
-	, m_NextTime(0.2f)
+	, m_NextTime(0.1f)
 	, m_TextCount(1)
+	, m_TextPosY(600.f)
+	, m_TextIdx(0)
 {
 }
 
@@ -18,6 +20,8 @@ CTextBoxScript::CTextBoxScript(const CTextBoxScript& _Origin)
 	, m_SaveTime(0.f)
 	, m_NextTime(_Origin.m_NextTime)
 	, m_TextCount(1)
+	, m_TextPosY(600.f)
+	, m_TextIdx(0)
 {
 }
 
@@ -40,19 +44,41 @@ void CTextBoxScript::Render()
 {
 	if (m_vText.size() > 0)
 	{
-		wstring text = m_vText[0].substr(0, m_TextCount);
+		wstring text = m_vText[m_TextIdx].substr(0, m_TextCount);
 		if (TIME - m_SaveTime >= m_NextTime)
 		{
-			m_TextCount++;
-			if (m_TextCount > m_vText[0].length())
+			// 줄바꿈마다 y축을 바꿔준다.
+			if (text.back() == L'\n')
 			{
-				m_TextCount = 1;
+				m_TextPosY -= 30.f;
+			}
+
+			if (m_TextCount >= m_vText[m_TextIdx].length())
+			{
+				if (KEY_PRESSED(KEY::S) || KEY_PRESSED(KEY::A)) // 또는 마우스 클릭
+				{
+					m_TextIdx++;
+					m_TextCount = 1;
+					m_TextPosY = 600.f;
+					
+					if (m_TextIdx >= m_vText.size())
+					{
+						m_TextIdx = 0;
+						m_TextCount = 1;
+						// 대화창 삭제
+						DeleteObject(GetOwner()->GetChildren()[0]);
+						DeleteObject(GetOwner());
+					}
+				}
+			}
+			else
+			{
+				m_TextCount++;
 			}
 			m_SaveTime = TIME;
 		}
-		float posX = 500;
-		float posY = 100 - ((m_TextLine[0] * 25) / 2);
-		CFontMgr::GetInst()->DrawCenterFont(text.c_str(), posX, posY, 25, FONT_RGBA(255, 255, 255, 255));
+
+		CFontMgr::GetInst()->DrawCenterFont(text.c_str(), 650, m_TextPosY, 30, FONT_RGBA(236, 230, 206, 255));
 	}
 }
 
@@ -65,10 +91,8 @@ void CTextBoxScript::LoadFromFile(FILE* _File)
 {
 }
 
-void CTextBoxScript::SetText(int _Idx, int _Line, wstring _Text)
+void CTextBoxScript::SetText(wstring _Text)
 {
-	m_TextIdx.push_back(_Idx);
-	m_TextLine.push_back(_Line);
 	m_vText.push_back(_Text);
 }
 

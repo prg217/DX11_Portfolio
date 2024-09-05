@@ -8,13 +8,13 @@ class CTextBoxScript :
 private:
     bool m_IsName;
     vector<wstring> m_vText;
-    vector<int> m_TextIdx;
-    vector<int> m_TextLine;
 
     float m_SaveTime;
     float m_NextTime;
 
     int m_TextCount;
+    float m_TextPosY;
+    int m_TextIdx;
 
 public:
     virtual void Begin() override;
@@ -26,7 +26,7 @@ public:
 
 public:
     void IsName() { m_IsName = true; }
-    void SetText(int _Idx, int _Line, wstring _Text); // 몇 번째 대화인지, 몇 번째 줄인지, 텍스트
+    void SetText(wstring _Text); 
 
 public:
     CLONE(CTextBoxScript);
