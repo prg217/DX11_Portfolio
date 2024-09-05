@@ -55,35 +55,35 @@ void CLiftScript::Tick()
 			{
 			case OguAniState::LIFT_IDLE1_DOWN:
 			case OguAniState::LIFT_WALK_DOWN:
-				GetOwner()->Transform()->SetRelativePos(Vec3(0.f, -addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(0.f, -addPos, -addPos));
 				break;
 			case OguAniState::LIFT_IDLE1_UP:
 			case OguAniState::LIFT_WALK_UP:
-				GetOwner()->Transform()->SetRelativePos(Vec3(0.f, addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(0.f, addPos, addPos));
 				break;
 			case OguAniState::LIFT_IDLE1_LEFT:
 			case OguAniState::LIFT_WALK_LEFT:
-				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, 0.f, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, 0.f, 0.f));
 				break;
 			case OguAniState::LIFT_IDLE1_RIGHT:
 			case OguAniState::LIFT_WALK_RIGHT:
-				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, 0.f, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, 0.f, 0.f));
 				break;
 			case OguAniState::LIFT_IDLE1_LEFTDOWN:
 			case OguAniState::LIFT_WALK_LEFTDOWN:
-				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, -addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, -addPos, -addPos));
 				break;
 			case OguAniState::LIFT_IDLE1_LEFTUP:
 			case OguAniState::LIFT_WALK_LEFTUP:
-				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, addPos, addPos));
 				break;
 			case OguAniState::LIFT_IDLE1_RIGHTDOWN:
 			case OguAniState::LIFT_WALK_RIGHTDOWN:
-				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, -addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, -addPos, -addPos));
 				break;
 			case OguAniState::LIFT_IDLE1_RIGHTUP:
 			case OguAniState::LIFT_WALK_RIGHTUP:
-				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, addPos, addPos));
 				break;
 			default:
 				break;
@@ -108,28 +108,28 @@ void CLiftScript::Tick()
 			switch (m_PlayerCurAS)
 			{
 			case OguAniState::LIFT_IDLE2_DOWN:
-				GetOwner()->Transform()->SetRelativePos(Vec3(0.f, -addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(0.f, -addPos, -addPos));
 				break;
 			case OguAniState::LIFT_IDLE2_UP:
-				GetOwner()->Transform()->SetRelativePos(Vec3(0.f, addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(0.f, addPos, addPos));
 				break;
 			case OguAniState::LIFT_IDLE2_LEFT:
-				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, 0.f, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, 0.f, 0.f));
 				break;
 			case OguAniState::LIFT_IDLE2_RIGHT:
-				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, 0.f, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, 0.f, 0.f));
 				break;
 			case OguAniState::LIFT_IDLE2_LEFTDOWN:
-				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, -addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, -addPos, -addPos));
 				break;
 			case OguAniState::LIFT_IDLE2_LEFTUP:
-				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(-addPos, addPos, addPos));
 				break;
 			case OguAniState::LIFT_IDLE2_RIGHTDOWN:
-				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, -addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, -addPos, -addPos));
 				break;
 			case OguAniState::LIFT_IDLE2_RIGHTUP:
-				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(Vec3(addPos, addPos, addPos));
 				break;
 			default:
 				break;
@@ -151,35 +151,35 @@ void CLiftScript::Tick()
 			{
 			case OguAniState::LIFT_IDLE2_DOWN:
 			case OguAniState::IDLE:
-				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(0.f, -addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(0.f, -addPos, -addPos));
 				break;
 			case OguAniState::LIFT_IDLE2_UP:
 			case OguAniState::IDLE_BACK:
-				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(0.f, addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(0.f, addPos, addPos));
 				break;
 			case OguAniState::LIFT_IDLE2_LEFT:
 			case OguAniState::IDLE_LEFT:
-				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(-addPos, 0.f, -50.f));
+				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(-addPos, 0.f, 0.f));
 				break;
 			case OguAniState::LIFT_IDLE2_RIGHT:
 			case OguAniState::IDLE_RIGHT:
-				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(addPos, 0.f, -50.f));
+				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(addPos, 0.f, 0.f));
 				break;
 			case OguAniState::LIFT_IDLE2_LEFTDOWN:
 			case OguAniState::IDLE_LEFTDOWN:
-				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(-addPos, -addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(-addPos, -addPos, -addPos));
 				break;
 			case OguAniState::LIFT_IDLE2_LEFTUP:
 			case OguAniState::IDLE_LEFTUP:
-				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(-addPos, addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(-addPos, addPos, addPos));
 				break;
 			case OguAniState::LIFT_IDLE2_RIGHTDOWN:
 			case OguAniState::IDLE_RIGHTDOWN:
-				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(addPos, -addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(addPos, -addPos, -addPos));
 				break;
 			case OguAniState::LIFT_IDLE2_RIGHTUP:
 			case OguAniState::IDLE_RIGHTUP:
-				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(addPos, addPos, -50.f));
+				GetOwner()->Transform()->SetRelativePos(playerPos + Vec3(addPos, addPos, addPos));
 				break;
 			default:
 				break;

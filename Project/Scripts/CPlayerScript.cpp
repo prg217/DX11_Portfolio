@@ -160,12 +160,12 @@ void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 	case OguAniState::WALK_DOWN:
 	case OguAniState::RUN_DOWN:
 	case OguAniState::LIFT_WALK_DOWN:
-		force = Vec3(0.f, -speed, 0.f);
+		force = Vec3(0.f, -speed, -speed);
 		break;
 	case OguAniState::WALK_UP:
 	case OguAniState::RUN_UP:
 	case OguAniState::LIFT_WALK_UP:
-		force = Vec3(0.f, speed, 0.f);
+		force = Vec3(0.f, speed, speed);
 		break;
 	case OguAniState::WALK_LEFT:
 	case OguAniState::RUN_LEFT:
@@ -180,28 +180,28 @@ void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 	case OguAniState::WALK_LEFTDOWN:
 	case OguAniState::RUN_LEFTDOWN:
 	case OguAniState::LIFT_WALK_LEFTDOWN:
-		force = Vec3(-speed, -speed, 0.f);
+		force = Vec3(-speed, -speed, -speed);
 		break;
 	case OguAniState::WALK_LEFTUP:
 	case OguAniState::RUN_LEFTUP:
 	case OguAniState::LIFT_WALK_LEFTUP:
-		force = Vec3(-speed, speed, 0.f);
+		force = Vec3(-speed, speed, speed);
 		break;
 	case OguAniState::WALK_RIGHTDOWN:
 	case OguAniState::RUN_RIGHTDOWN:
 	case OguAniState::LIFT_WALK_RIGHTDOWN:
-		force = Vec3(speed, -speed, 0.f);
+		force = Vec3(speed, -speed, -speed);
 		break;
 	case OguAniState::WALK_RIGHTUP:
 	case OguAniState::RUN_RIGHTUP:
 	case OguAniState::LIFT_WALK_RIGHTUP:
-		force = Vec3(speed, speed, 0.f);
+		force = Vec3(speed, speed, speed);
 		break;
 	case OguAniState::ROLL_DOWN:
-		force = Vec3(0.f, -rollSpeed, 0.f);
+		force = Vec3(0.f, -rollSpeed, -rollSpeed);
 		break;
 	case OguAniState::ROLL_UP:
-		force = Vec3(0.f, rollSpeed, 0.f);
+		force = Vec3(0.f, rollSpeed, rollSpeed);
 		break;
 	case OguAniState::ROLL_LEFT:
 		force = Vec3(-rollSpeed, 0.f, 0.f);
@@ -210,16 +210,16 @@ void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 		force = Vec3(rollSpeed, 0.f, 0.f);
 		break;
 	case OguAniState::ROLL_LEFTDOWN:
-		force = Vec3(-rollSpeed, -rollSpeed, 0.f);
+		force = Vec3(-rollSpeed, -rollSpeed, -rollSpeed);
 		break;
 	case OguAniState::ROLL_LEFTUP:
-		force = Vec3(-rollSpeed, rollSpeed, 0.f);
+		force = Vec3(-rollSpeed, rollSpeed, rollSpeed);
 		break;
 	case OguAniState::ROLL_RIGHTDOWN:
-		force = Vec3(rollSpeed, -rollSpeed, 0.f);
+		force = Vec3(rollSpeed, -rollSpeed, -rollSpeed);
 		break;
 	case OguAniState::ROLL_RIGHTUP:
-		force = Vec3(rollSpeed, rollSpeed, 0.f);
+		force = Vec3(rollSpeed, rollSpeed, rollSpeed);
 		break;
 	default:
 		break;
@@ -578,10 +578,12 @@ void CPlayerScript::Move()
 	if (KEY_PRESSED(KEY::UP))
 	{
 		vPos.y += DT * m_Speed;
+		vPos.z += DT * m_Speed;
 	}
 	if (KEY_PRESSED(KEY::DOWN))
 	{
 		vPos.y -= DT * m_Speed;
+		vPos.z -= DT * m_Speed;
 	}
 
 	Transform()->SetRelativePos(vPos);
@@ -1187,9 +1189,11 @@ void CPlayerScript::Rolling()
 	{
 	case OguAniState::ROLL_DOWN:
 		vPos.y -= DT * m_RollingSpeed;
+		vPos.z -= DT * m_RollingSpeed;
 		break;
 	case OguAniState::ROLL_UP:
 		vPos.y += DT * m_RollingSpeed;
+		vPos.z += DT * m_RollingSpeed;
 		break;
 	case OguAniState::ROLL_LEFT:
 		vPos.x -= DT * m_RollingSpeed;
@@ -1200,18 +1204,22 @@ void CPlayerScript::Rolling()
 	case OguAniState::ROLL_LEFTDOWN:
 		vPos.x -= DT * m_RollingSpeed;
 		vPos.y -= DT * m_RollingSpeed;
+		vPos.z -= DT * m_RollingSpeed;
 		break;
 	case OguAniState::ROLL_LEFTUP:
 		vPos.x -= DT * m_RollingSpeed;
 		vPos.y += DT * m_RollingSpeed;
+		vPos.z += DT * m_RollingSpeed;
 		break;
 	case OguAniState::ROLL_RIGHTDOWN:
 		vPos.x += DT * m_RollingSpeed;
 		vPos.y -= DT * m_RollingSpeed;
+		vPos.z -= DT * m_RollingSpeed;
 		break;
 	case OguAniState::ROLL_RIGHTUP:
 		vPos.x += DT * m_RollingSpeed;
 		vPos.y += DT * m_RollingSpeed;
+		vPos.z += DT * m_RollingSpeed;
 		break;
 	default:
 		break;
@@ -1599,10 +1607,12 @@ void CPlayerScript::LiftMove()
 	if (KEY_PRESSED(KEY::UP))
 	{
 		vPos.y += DT * m_Speed;
+		vPos.z += DT * m_Speed;
 	}
 	if (KEY_PRESSED(KEY::DOWN))
 	{
 		vPos.y -= DT * m_Speed;
+		vPos.z -= DT * m_Speed;
 	}
 
 	Transform()->SetRelativePos(vPos);
@@ -1940,10 +1950,12 @@ void CPlayerScript::PushMove()
 	if (KEY_PRESSED(KEY::UP))
 	{
 		vPos.y += DT * m_Speed;
+		vPos.z += DT * m_Speed;
 	}
 	if (KEY_PRESSED(KEY::DOWN))
 	{
 		vPos.y -= DT * m_Speed;
+		vPos.z -= DT * m_Speed;
 	}
 
 	Transform()->SetRelativePos(vPos);

@@ -61,10 +61,10 @@ void CPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, 
 		switch (m_PlayerCurAS)
 		{
 		case OguAniState::PUSH_DOWN:
-			force = Vec3(0.f, m_PlayerSpeed, 0.f);
+			force = Vec3(0.f, m_PlayerSpeed, m_PlayerSpeed);
 			break;
 		case OguAniState::PUSH_UP:
-			force = Vec3(0.f, -m_PlayerSpeed, 0.f);
+			force = Vec3(0.f, -m_PlayerSpeed, -m_PlayerSpeed);
 			break;
 		case OguAniState::PUSH_LEFT:
 			force = Vec3(m_PlayerSpeed, 0.f, 0.f);

@@ -102,14 +102,13 @@ void CTestLevel::CreateTestLevel()
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->AddComponent(new CFlipBookComponent);
 	pPlayer->AddComponent(new CPlayerScript);
-	pPlayer->Transform()->SetRelativePos(0.f, 0.f, 100.f);
+	pPlayer->Transform()->SetRelativePos(0.f, 0.f, 0.f);
 	pPlayer->Transform()->SetRelativeScale(150.f, 150.f, 1.f);
 	
 	pPlayer->Collider2D()->SetIndependentScale(false);
 	pPlayer->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pPlayer->Collider2D()->SetScale(Vec3(0.5f, 0.5f, 1.f));
-	//pPlayer->RigidBody()->UseGravity(true);
-	
+	pPlayer->Collider2D()->SetScale(Vec3(0.3f, 0.3f, 1.f));
+
 	pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pPlayer->MeshRender()->SetMaterial(pMtrl);
 	
@@ -173,13 +172,13 @@ void CTestLevel::CreateTestLevel()
 	pLiftStone->AddComponent(new CInteractionScript);
 	pLiftStone->AddComponent(new CLiftScript);
 
-	pLiftStone->Transform()->SetRelativePos(100.f, 0.f, -50.f);
+	pLiftStone->Transform()->SetRelativePos(100.f, 0.f, 0.f);
 	pLiftStone->Transform()->SetRelativeScale(150.f, 150.f, 0.f);
 	pLiftStone->Transform()->SetIndependentScale(true);
 
 	pLiftStone->Collider2D()->SetIndependentScale(false);
 	pLiftStone->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pLiftStone->Collider2D()->SetScale(Vec3(0.5f, 0.5f, 1.f));
+	pLiftStone->Collider2D()->SetScale(Vec3(0.4f, 0.2f, 1.f));
 
 	pLiftStone->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pLiftStone->MeshRender()->SetMaterial(pMtrl);
@@ -201,13 +200,13 @@ void CTestLevel::CreateTestLevel()
 	pPushStone->AddComponent(new CInteractionScript);
 	pPushStone->AddComponent(new CPushScript);
 
-	pPushStone->Transform()->SetRelativePos(-100.f, 0.f, -50.f);
+	pPushStone->Transform()->SetRelativePos(-100.f, 0.f, 0.f);
 	pPushStone->Transform()->SetRelativeScale(150.f, 150.f, 0.f);
 	pPushStone->Transform()->SetIndependentScale(true);
 
 	pPushStone->Collider2D()->SetIndependentScale(false);
 	pPushStone->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pPushStone->Collider2D()->SetScale(Vec3(0.5f, 0.5f, 1.f));
+	pPushStone->Collider2D()->SetScale(Vec3(0.4f, 0.2f, 1.f));
 
 	pPushStone->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pPushStone->MeshRender()->SetMaterial(pMtrl);
@@ -226,12 +225,12 @@ void CTestLevel::CreateTestLevel()
 	pGrass->AddComponent(new CCollider2D);
 	pGrass->AddComponent(new CGrassScript);
 
-	pGrass->Transform()->SetRelativePos(-100.f, -100.f, -50.f);
+	pGrass->Transform()->SetRelativePos(-100.f, -100.f, -100.f);
 	pGrass->Transform()->SetRelativeScale(150.f, 150.f, 0.f);
 
 	pGrass->Collider2D()->SetIndependentScale(false);
 	pGrass->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pGrass->Collider2D()->SetScale(Vec3(0.5f, 0.5f, 1.f));
+	pGrass->Collider2D()->SetScale(Vec3(0.45f, 0.5f, 1.f));
 
 	pGrass->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pGrass->MeshRender()->SetMaterial(pMtrl);
