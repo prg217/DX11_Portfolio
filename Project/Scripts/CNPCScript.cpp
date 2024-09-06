@@ -89,6 +89,11 @@ void CNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, C
 			pTextBoxName->FlipBookComponent()->AddFlipBook(0, pFlipBook);
 			pTextBoxName->FlipBookComponent()->Play(0, 0, false);
 
+			script = pTextBoxName->GetScript("CTextBoxScript");
+			texScript = dynamic_cast<CTextBoxScript*>(script);
+			texScript->IsName();
+			texScript->SetText(L"¹ú·¹ ÁÖ¹Î");
+
 			CreateObject(pTextBoxName, 31);
 			AddChildObject(pTextBox, pTextBoxName);
 		}

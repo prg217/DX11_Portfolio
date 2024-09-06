@@ -15,6 +15,8 @@ private:
     int m_TextCount;
     float m_TextPosY;
     int m_TextIdx;
+    
+    CGameObject* m_NextObj;
 
 public:
     virtual void Begin() override;

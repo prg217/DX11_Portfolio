@@ -115,7 +115,7 @@ void CTaskMgr::ExecuteTask()
 
 			CLevelMgr::GetInst()->m_LevelChanged = true;
 		}
-			break;
+		break;
 		}
 	}
 
