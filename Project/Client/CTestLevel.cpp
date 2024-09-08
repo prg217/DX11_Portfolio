@@ -226,7 +226,7 @@ void CTestLevel::CreateTestLevel()
 	pPushStone->AddComponent(new CMeshRender);
 	pPushStone->AddComponent(new CCollider2D);
 	pPushStone->AddComponent(new CRigidBody);
-	pPushStone->AddComponent(new CFlipBookComponent);
+	pPushStone->AddComponent(new CSpriteComponent);
 	pPushStone->AddComponent(new CInteractionScript);
 	pPushStone->AddComponent(new CPushScript);
 
@@ -241,9 +241,8 @@ void CTestLevel::CreateTestLevel()
 	pPushStone->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pPushStone->MeshRender()->SetMaterial(pMtrl);
 
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Obj\\obj_pushStone.flip");
-	pPushStone->FlipBookComponent()->AddFlipBook(0, pFlipBook);
-	pPushStone->FlipBookComponent()->Play(0, 0, false);
+	pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\Obj\\obj_pushStone.sprite");
+	pPushStone->SpriteComponent()->AddSprite(pSprite);
 
 	pLevel->AddObject(6, pPushStone);
 

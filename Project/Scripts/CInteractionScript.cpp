@@ -25,12 +25,34 @@ void CInteractionScript::Tick()
 
 void CInteractionScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
-
+	if (_OtherObject->GetLayerIdx() == 5)
+	{
+		// ¿Ü°û¼± Àû¿ë
+		if (GetOwner()->GetComponent(COMPONENT_TYPE::SPRITECOMPONENT) != nullptr)
+		{
+			GetOwner()->SpriteComponent()->SetOutline(true);
+		}
+		else if (GetOwner()->GetComponent(COMPONENT_TYPE::FLIPBOOKCOMPONENT) != nullptr)
+		{
+			GetOwner()->FlipBookComponent()->SetOutline(true);
+		}
+	}
 }
 
 void CInteractionScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
-
+	if (_OtherObject->GetLayerIdx() == 5)
+	{
+		// ¿Ü°û¼± Àû¿ë
+		if (GetOwner()->GetComponent(COMPONENT_TYPE::SPRITECOMPONENT) != nullptr)
+		{
+			GetOwner()->SpriteComponent()->SetOutline(false);
+		}
+		else if (GetOwner()->GetComponent(COMPONENT_TYPE::FLIPBOOKCOMPONENT) != nullptr)
+		{
+			GetOwner()->FlipBookComponent()->SetOutline(false);
+		}
+	}
 }
 
 void CInteractionScript::SaveToFile(FILE* _File)

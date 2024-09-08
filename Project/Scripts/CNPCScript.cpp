@@ -42,14 +42,14 @@ void CNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, C
 	{
 		if (KEY_TAP(KEY::S))
 		{
-			Ptr<CFlipBook> pFlipBook;
+			Ptr<CSprite> pSprite;
 			Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl");
 
 			CGameObject* pTextBox = new CGameObject;
 			pTextBox->SetName(L"TextBox");
 			pTextBox->AddComponent(new CTransform);
 			pTextBox->AddComponent(new CMeshRender);
-			pTextBox->AddComponent(new CFlipBookComponent);
+			pTextBox->AddComponent(new CSpriteComponent);
 			pTextBox->AddComponent(new CUIScript);
 			pTextBox->AddComponent(new CTextBoxScript);
 
@@ -59,11 +59,10 @@ void CNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, C
 			pTextBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 			pTextBox->MeshRender()->SetMaterial(pMtrl);
 
-			pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\UI\\textBox_main.flip");
-			pTextBox->FlipBookComponent()->AddFlipBook(0, pFlipBook);
-			pTextBox->FlipBookComponent()->Play(0, 0, false);
-			pTextBox->FlipBookComponent()->AddColor(true, Vec3(0.45f, 0.38f, 0.32f));
-			pTextBox->FlipBookComponent()->SetUseLight(false);
+			pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\ui\\textBox_main.sprite");
+			pTextBox->SpriteComponent()->AddSprite(pSprite);
+			pTextBox->SpriteComponent()->AddColor(true, Vec3(0.45f, 0.38f, 0.32f));
+			pTextBox->SpriteComponent()->SetUseLight(false);
 
 			CScript* script = pTextBox->GetScript("CTextBoxScript");
 			CTextBoxScript* texScript = dynamic_cast<CTextBoxScript*>(script);
@@ -77,7 +76,7 @@ void CNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, C
 			pTextBoxName->SetName(L"TextBoxName");
 			pTextBoxName->AddComponent(new CTransform);
 			pTextBoxName->AddComponent(new CMeshRender);
-			pTextBoxName->AddComponent(new CFlipBookComponent);
+			pTextBoxName->AddComponent(new CSpriteComponent);
 			pTextBoxName->AddComponent(new CUIScript);
 			pTextBoxName->AddComponent(new CTextBoxScript);
 
@@ -87,11 +86,10 @@ void CNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, C
 			pTextBoxName->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 			pTextBoxName->MeshRender()->SetMaterial(pMtrl);
 
-			pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\UI\\textBox_name.flip");
-			pTextBoxName->FlipBookComponent()->AddFlipBook(0, pFlipBook);
-			pTextBoxName->FlipBookComponent()->Play(0, 0, false);
-			pTextBoxName->FlipBookComponent()->AddColor(true, Vec3(0.45f, 0.38f, 0.32f));
-			pTextBoxName->FlipBookComponent()->SetUseLight(false);
+			pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\ui\\textBox_name.sprite");
+			pTextBoxName->SpriteComponent()->AddSprite(pSprite);
+			pTextBoxName->SpriteComponent()->AddColor(true, Vec3(0.45f, 0.38f, 0.32f));
+			pTextBoxName->SpriteComponent()->SetUseLight(false);
 
 			script = pTextBoxName->GetScript("CTextBoxScript");
 			texScript = dynamic_cast<CTextBoxScript*>(script);
