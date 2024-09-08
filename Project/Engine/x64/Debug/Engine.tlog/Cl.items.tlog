@@ -35,6 +35,7 @@ C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CSetColorCS.cpp;C:\AssortR
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CShader.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CShader.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CSound.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CSound.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CSprite.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CSprite.obj
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CSpriteComponent.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CSpriteComponent.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CStructuredBuffer.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CStructuredBuffer.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTaskMgr.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CTaskMgr.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTexture.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\x64\Debug\CTexture.obj

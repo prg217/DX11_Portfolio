@@ -221,11 +221,20 @@ void CLiftScript::Tick()
 
 void CLiftScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
-	
+	if (_OtherObject->GetLayerIdx() == 5)
+	{
+		// ¿Ü°û¼± Àû¿ë
+		GetOwner()->SpriteComponent()->SetOutline(true);
+	}
 }
 
 void CLiftScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	if (_OtherObject->GetLayerIdx() == 5)
+	{
+		// ¿Ü°û¼± Àû¿ë
+		GetOwner()->SpriteComponent()->SetOutline(false);
+	}
 }
 
 void CLiftScript::SaveToFile(FILE* _File)
@@ -239,7 +248,7 @@ void CLiftScript::LoadFromFile(FILE* _File)
 void CLiftScript::Start()
 {
 	m_Start = true;
-	GetOwner()->FlipBookComponent()->SetOutline(false);
+	GetOwner()->SpriteComponent()->SetOutline(false);
 }
 
 void CLiftScript::End()

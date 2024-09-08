@@ -3,6 +3,7 @@
 
 #include "CTransform.h"
 #include "CFlipBookComponent.h"
+#include "CSpriteComponent.h"
 #include "CSprite.h"
 
 CMeshRender::CMeshRender()
@@ -28,6 +29,9 @@ void CMeshRender::Render()
 		FlipBookComponent()->Binding();	
 	else
 		CFlipBookComponent::Clear();	
+
+	if (SpriteComponent())
+		SpriteComponent()->Binding();
 
 	// 위치, 크기, 회전 상태정보 바인딩
 	Transform()->Binding();

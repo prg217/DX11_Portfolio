@@ -41,8 +41,6 @@ void CTestLevel::CreateTestLevel()
 	Ptr<CTexture> pTexture = CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture//Character.png");
 	pAlphaBlendMtrl->SetTexParam(TEX_0, pTexture);
 
-	CreatePrefab();
-
 	// Sound 재생
 	//Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\DM.wav");
 	//pSound->Play(0, 1.f, false);
@@ -163,8 +161,7 @@ void CTestLevel::CreateTestLevel()
 	// 플레이어가 상호작용을 할 때 판정 오브젝트
 	CGameObject* pInteractionObj = new CGameObject;
 	pInteractionObj->SetName(L"PlayerInteractionObj");
-	pInteractionObj->AddComponent(new CTransform);
-	pInteractionObj->AddComponent(new CMeshRender); 
+	pInteractionObj->AddComponent(new CTransform); 
 	pInteractionObj->AddComponent(new CCollider2D);
 	pInteractionObj->AddComponent(new CPlayerInteractionScript);
 
@@ -175,9 +172,7 @@ void CTestLevel::CreateTestLevel()
 	pInteractionObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	pInteractionObj->Collider2D()->SetScale(Vec3(0.5f, 0.3f, 0.5f));
 
-	pInteractionObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pInteractionObj->MeshRender()->SetMaterial(pMtrl);
-
+	// 플레이어 카메라 판정 오브젝트
 	CGameObject* pPlayerCamera = new CGameObject;
 	pPlayerCamera->SetName(L"PlayerCamera");
 	pPlayerCamera->AddComponent(new CTransform);
@@ -204,8 +199,7 @@ void CTestLevel::CreateTestLevel()
 	pLiftStone->AddComponent(new CTransform);
 	pLiftStone->AddComponent(new CMeshRender);
 	pLiftStone->AddComponent(new CCollider2D);
-	//pLiftStone->AddComponent(new CRigidBody);
-	pLiftStone->AddComponent(new CFlipBookComponent);
+	pLiftStone->AddComponent(new CSpriteComponent);
 	pLiftStone->AddComponent(new CInteractionScript);
 	pLiftStone->AddComponent(new CLiftScript);
 
@@ -220,9 +214,8 @@ void CTestLevel::CreateTestLevel()
 	pLiftStone->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pLiftStone->MeshRender()->SetMaterial(pMtrl);
 
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Obj\\obj_liftStone.flip");
-	pLiftStone->FlipBookComponent()->AddFlipBook(0, pFlipBook);
-	pLiftStone->FlipBookComponent()->Play(0, 0, false);
+	Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\Obj\\obj_liftStone.sprite");
+	pLiftStone->SpriteComponent()->AddSprite(pSprite);
 
 	pLevel->AddObject(6, pLiftStone);
 

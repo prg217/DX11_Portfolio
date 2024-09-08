@@ -67,6 +67,11 @@ void CGameObject::AddComponent(CComponent* _Comopnent)
 {
 	COMPONENT_TYPE Type = _Comopnent->GetComponentType();
 
+	if (COMPONENT_TYPE::SPRITECOMPONENT == Type)
+	{
+		int i = 0;
+	}
+
 	if (COMPONENT_TYPE::SCRIPT == Type)
 	{
 		m_vecScript.push_back((CScript*)_Comopnent);

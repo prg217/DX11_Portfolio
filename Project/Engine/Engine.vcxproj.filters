@@ -94,9 +94,6 @@
     <ClInclude Include="CMeshRender.h">
       <Filter>08. Component\RenderComponent\01. MeshRender</Filter>
     </ClInclude>
-    <ClInclude Include="CRenderComponent.h">
-      <Filter>08. Component\RenderComponent</Filter>
-    </ClInclude>
     <ClInclude Include="components.h">
       <Filter>01. Header</Filter>
     </ClInclude>
@@ -162,6 +159,12 @@
     </ClInclude>
     <ClInclude Include="CRigidBody.h">
       <Filter>08. Component\06. RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderComponent.h">
+      <Filter>08. Component\RenderComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpriteComponent.h">
+      <Filter>08. Component\09. SpriteComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -234,9 +237,6 @@
     <ClCompile Include="CMeshRender.cpp">
       <Filter>08. Component\RenderComponent\01. MeshRender</Filter>
     </ClCompile>
-    <ClCompile Include="CRenderComponent.cpp">
-      <Filter>08. Component\RenderComponent</Filter>
-    </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>08. Component\07. Camera</Filter>
     </ClCompile>
@@ -303,6 +303,12 @@
     </ClCompile>
     <ClCompile Include="CRigidBody.cpp">
       <Filter>08. Component\06. RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderComponent.cpp">
+      <Filter>08. Component\RenderComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpriteComponent.cpp">
+      <Filter>08. Component\09. SpriteComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -476,6 +482,9 @@
     </Filter>
     <Filter Include="04, Manager\09. Font">
       <UniqueIdentifier>{e77b73ac-01b2-4cf0-9cc6-9fd305e311b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\09. SpriteComponent">
+      <UniqueIdentifier>{e23f07ad-68ca-472d-acd6-059a9e037736}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

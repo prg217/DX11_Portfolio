@@ -229,6 +229,9 @@ CComponent* CLevelSaveLoad::GetComponent(COMPONENT_TYPE _Type)
 	case COMPONENT_TYPE::RIGIDBODY:
 		return new CRigidBody;
 
+	case COMPONENT_TYPE::SPRITECOMPONENT:
+		return new CSpriteComponent;
+
 	case COMPONENT_TYPE::CAMERA:
 		return  new CCamera;
 

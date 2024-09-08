@@ -58,6 +58,7 @@ public:
     GET_COMPONENT(TileMap, TILEMAP);
     GET_COMPONENT(Light2D, LIGHT2D);
     GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
+    GET_COMPONENT(SpriteComponent, SPRITECOMPONENT);
 
 
 public:

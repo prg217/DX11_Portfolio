@@ -209,12 +209,12 @@ void CFlipBookComponent::SaveToFile(FILE* _File)
 	fwrite(&m_Repeat, sizeof(bool), 1, _File);
 
 	// 아웃라이너 유무
-	//fwrite(&m_Outline, sizeof(bool), 1, _File);
+	fwrite(&m_Outline, sizeof(bool), 1, _File);
 	// 색 추가 유무 및 색
-	//fwrite(&m_AddColor, sizeof(bool), 1, _File);
-	//fwrite(&m_Color, sizeof(Vec3), 1, _File);
+	fwrite(&m_AddColor, sizeof(bool), 1, _File);
+	fwrite(&m_Color, sizeof(Vec3), 1, _File);
 	// 빛 유무
-	//fwrite(&m_UseLight, sizeof(bool), 1, _File);
+	fwrite(&m_UseLight, sizeof(bool), 1, _File);
 }
 
 void CFlipBookComponent::LoadFromFile(FILE* _File)
@@ -242,12 +242,12 @@ void CFlipBookComponent::LoadFromFile(FILE* _File)
 	fread(&m_Repeat, sizeof(bool), 1, _File);
 
 	// 아웃라이너 유무
-	//fread(&m_Outline, sizeof(bool), 1, _File);
+	fread(&m_Outline, sizeof(bool), 1, _File);
 	// 색 추가 유무 및 색
-	//fread(&m_AddColor, sizeof(bool), 1, _File);
-	//fread(&m_Color, sizeof(Vec3), 1, _File);
+	fread(&m_AddColor, sizeof(bool), 1, _File);
+	fread(&m_Color, sizeof(Vec3), 1, _File);
 	// 빛 유무
-	//fread(&m_UseLight, sizeof(bool), 1, _File);
+	fread(&m_UseLight, sizeof(bool), 1, _File);
 }
 
 void CFlipBookComponent::AddColor(bool _AddColor, Vec3 Color)

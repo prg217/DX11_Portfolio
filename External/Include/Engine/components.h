@@ -9,6 +9,7 @@
 //#include "CLight3D.h"
 //#include "CAnimator3D.h"
 #include "CRigidBody.h"
+#include "CSpriteComponent.h"
 
 //#include "CStateMachine.h"
 

@@ -23,8 +23,6 @@ CPlayerInteractionScript::~CPlayerInteractionScript()
 
 void CPlayerInteractionScript::Begin()
 {
-	GetRenderComponent()->GetDynamicMaterial();
-
 	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 	m_pPlayer = curLevel->FindObjectByName(L"Player");
 	m_pPlayer->AddChild(GetOwner());
