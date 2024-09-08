@@ -6,8 +6,8 @@
 TME_TileMapView::TME_TileMapView()
 	: m_OneTex(nullptr)
 	, m_SeveralAtlas(nullptr)
-	, m_Row(10)
 	, m_Col(10)
+	, m_Row(10)
 	, m_TileSize(Vec2(2048, 2048))
 	, m_AtlasTileSize(Vec2(1, 1))
 	, m_AtlasTileSliceUV(Vec2(1, 1))
@@ -31,7 +31,7 @@ void TME_TileMapView::Init()
 void TME_TileMapView::Update()
 {
 	// 타일 개수
-	UINT TileCount = m_Row * m_Col;
+	UINT TileCount = m_Col * m_Row;
 
 	// 타일 정보를 저장하는 벡터의 데이터 개수가 타일개수랑 다르면 리사이즈
 	if (m_vecTileInfo.size() != TileCount)
@@ -41,9 +41,9 @@ void TME_TileMapView::Update()
 	}
 
 	// 타일맵 보여주기
-	for (int i = 0; i < m_Col; i++)
+	for (int i = 0; i < m_Row; i++)
 	{
-		for (int j = 0; j < m_Row; j++)
+		for (int j = 0; j < m_Col; j++)
 		{
 			WheelCheck();
 
@@ -58,7 +58,7 @@ void TME_TileMapView::Update()
 				OneTexView(j, i);
 			}
 
-			if (j != m_Row - 1)
+			if (j != m_Col - 1)
 			{
 				ImGui::SameLine();
 			}
@@ -70,12 +70,12 @@ void TME_TileMapView::WheelCheck()
 {
 	if (0 < ImGui::GetIO().MouseWheel)
 	{
-		m_WheelScale += 0.0005f;
+		m_WheelScale += 0.005f;
 	}
 
 	if (0 > ImGui::GetIO().MouseWheel)
 	{
-		m_WheelScale -= 0.0005f;
+		m_WheelScale -= 0.005f;
 	}
 
 	if (3.f < m_WheelScale)
@@ -86,12 +86,12 @@ void TME_TileMapView::WheelCheck()
 
 void TME_TileMapView::OneTexView(int _Row, int _Col)
 {
-	int tileMapIdx = m_Col * _Row + _Col; // 현재 타일맵의 인덱스
+	int tileMapIdx = m_Row * _Row + _Col; // 현재 타일맵의 인덱스
 	int idx = m_vecTileInfo[tileMapIdx].ImgIdx; // 현재 타일맵의 이미지 인덱스
 
 	// 이미지 인덱스의 이미지를 출력하기 위해 필요한 이미지 행렬 위치
-	int imageRow = idx / m_Col;
-	int imageCol = idx % m_Col;
+	int imageRow = idx / m_Row;
+	int imageCol = idx % m_Row;
 
 	// 실제 해상도 대비 출력 Image 의 비율
 	float ratio = (m_TileSize.x * m_WheelScale) / m_TileSize.y;
@@ -131,7 +131,7 @@ void TME_TileMapView::OneTexView(int _Row, int _Col)
 
 void TME_TileMapView::SeveralTexView(int _Row, int _Col)
 {
-	int tileMapIdx = m_Col * _Row + _Col; // 현재 타일맵의 인덱스
+	int tileMapIdx = m_Row * _Row + _Col; // 현재 타일맵의 인덱스
 	Ptr<CTexture> tex = m_vecTileInfo[tileMapIdx].tex;
 
 	// 실제 해상도 대비 출력 Image 의 비율
@@ -203,6 +203,6 @@ void TME_TileMapView::SetAtlasTileSize(Vec2 _AtlasTileSize)
 
 	int atlasMaxCol = int(atlasResolution.x / m_AtlasTileSize.x);
 	int atlasMaxRow = int(atlasResolution.y / m_AtlasTileSize.y);
-	m_ImgIdxMax = m_Col * atlasMaxRow + atlasMaxCol;
+	m_ImgIdxMax = m_Row * atlasMaxRow + atlasMaxCol;
 }
 

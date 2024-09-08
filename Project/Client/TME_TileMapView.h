@@ -9,8 +9,8 @@ private:
 
     bool                        m_SeveralAtlas;
 
-    int                         m_Row;
     int                         m_Col;
+    int                         m_Row;
     Vec2                        m_TileSize;
     Vec2                        m_AtlasTileSize;
     // =======================

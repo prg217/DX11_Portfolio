@@ -100,12 +100,12 @@ void CTestLevel::CreateTestLevel()
 
 	// 광원 오브젝트 추가
 	pObject = new CGameObject;
-	pObject->SetName(L"PointLight 1");
+	pObject->SetName(L"DirectionalLight");
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CLight2D);
 
-	pObject->Light2D()->SetLightType(LIGHT_TYPE::POINT);
-	pObject->Light2D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
+	pObject->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+	pObject->Light2D()->SetLightColor(Vec3(0.67f, 0.67f, 0.76f));
 	pObject->Light2D()->SetRadius(1000.f);
 	pObject->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
 
@@ -311,7 +311,7 @@ void CTestLevel::CreateTestLevel()
 	pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
 
 	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
-	strInitPath += L"tile\\test1.tile";
+	strInitPath += L"tile\\JellyStope.tile";
 
 	FILE* File = nullptr;
 	_wfopen_s(&File, strInitPath.c_str(), L"rb");
