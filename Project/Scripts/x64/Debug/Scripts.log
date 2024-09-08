@@ -8,6 +8,7 @@
   .\Project\Scripts\CMissileScript.h
   .\Project\Scripts\CNPCScript.h
   .\Project\Scripts\COguDancePointLightScript.h
+  .\Project\Scripts\CPlayerCameraScript.h
   .\Project\Scripts\CPlayerInteractionScript.h
   .\Project\Scripts\CPlayerScript.h
   .\Project\Scripts\CPushScript.h
@@ -15,7 +16,7 @@
   .\Project\Scripts\CSwingObjScript.h
   .\Project\Scripts\CTextBoxScript.h
   .\Project\Scripts\CUIScript.h
-  17개 파일이 복사되었습니다.
+  18개 파일이 복사되었습니다.
   pch.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): warning C4005: 'DELETE': 매크로 재정의
   CCameraMoveScript.cpp
@@ -28,6 +29,7 @@ C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): w
   CMissileScript.cpp
   CNPCScript.cpp
   COguDancePointLightScript.cpp
+  CPlayerCameraScript.cpp
   CPlayerInteractionScript.cpp
   CPlayerScript.cpp
   CPushScript.cpp

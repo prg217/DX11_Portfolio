@@ -8,9 +8,8 @@
 
 CCameraPlayerTrackingScript::CCameraPlayerTrackingScript()
 	: CScript(UINT(SCRIPT_TYPE::CAMERAPLAYERTRACKINGSCRIPT))
-	, m_CamSpeed(500.f)
+	, m_IsMove(true)
 	, m_pPlayer(nullptr)
-	, m_pPlayerScript(nullptr)
 {
 }
 
@@ -22,9 +21,6 @@ void CCameraPlayerTrackingScript::Begin()
 {
 	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 	m_pPlayer = curLevel->FindObjectByName(L"Player");
-
-	CScript* script = m_pPlayer->GetScript("CPlayerScript");
-	m_pPlayerScript = dynamic_cast<CPlayerScript*>(script);
 }
 
 void CCameraPlayerTrackingScript::Tick()
@@ -55,6 +51,7 @@ void CCameraPlayerTrackingScript::BeginOverlap(CCollider2D* _OwnCollider, CGameO
 
 void CCameraPlayerTrackingScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+
 }
 
 void CCameraPlayerTrackingScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
@@ -72,15 +69,12 @@ void CCameraPlayerTrackingScript::LoadFromFile(FILE* _File)
 void CCameraPlayerTrackingScript::OrthoGraphicMove()
 {
 	// 플레이어를 따라오되, 이제 맵 바깥으로 나가려하면 거기 막고 있는 콜라이더가 더 이상 카메라 이동을 막음
-	Vec3 playerPos = m_pPlayer->Transform()->GetRelativePos();
-	Vec3 pos = Vec3(playerPos.x, playerPos.y, 0.f);
-	GetOwner()->Transform()->SetRelativePos(pos);
-	//switch (m_pPlayerScript->GetCurAS())
-	//{
-	//	case 
-	//default:
-	//	break;
-	//} 
+	if (m_IsMove)
+	{
+		Vec3 playerPos = m_pPlayer->Transform()->GetRelativePos();
+		Vec3 pos = Vec3(playerPos.x, playerPos.y, 0.f);
+		GetOwner()->Transform()->SetRelativePos(pos);
+	}
 }
 
 void CCameraPlayerTrackingScript::PerspectiveMove()

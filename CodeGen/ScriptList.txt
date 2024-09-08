@@ -8,6 +8,7 @@ CLiftScript
 CMissileScript
 CNPCScript
 COguDancePointLightScript
+CPlayerCameraScript
 CPlayerInteractionScript
 CPlayerScript
 CPushScript

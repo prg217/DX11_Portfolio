@@ -11,6 +11,7 @@
 #include "CMissileScript.h"
 #include "CNPCScript.h"
 #include "COguDancePointLightScript.h"
+#include "CPlayerCameraScript.h"
 #include "CPlayerInteractionScript.h"
 #include "CPlayerScript.h"
 #include "CPushScript.h"
@@ -30,6 +31,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMissileScript");
 	_vec.push_back(L"CNPCScript");
 	_vec.push_back(L"COguDancePointLightScript");
+	_vec.push_back(L"CPlayerCameraScript");
 	_vec.push_back(L"CPlayerInteractionScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CPushScript");
@@ -60,6 +62,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CNPCScript;
 	if (L"COguDancePointLightScript" == _strScriptName)
 		return new COguDancePointLightScript;
+	if (L"CPlayerCameraScript" == _strScriptName)
+		return new CPlayerCameraScript;
 	if (L"CPlayerInteractionScript" == _strScriptName)
 		return new CPlayerInteractionScript;
 	if (L"CPlayerScript" == _strScriptName)
@@ -108,6 +112,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::OGUDANCEPOINTLIGHTSCRIPT:
 		return new COguDancePointLightScript;
+		break;
+	case (UINT)SCRIPT_TYPE::PLAYERCAMERASCRIPT:
+		return new CPlayerCameraScript;
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERINTERACTIONSCRIPT:
 		return new CPlayerInteractionScript;
@@ -173,6 +180,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::OGUDANCEPOINTLIGHTSCRIPT:
 		return L"COguDancePointLightScript";
+		break;
+
+	case SCRIPT_TYPE::PLAYERCAMERASCRIPT:
+		return L"CPlayerCameraScript";
 		break;
 
 	case SCRIPT_TYPE::PLAYERINTERACTIONSCRIPT:

@@ -128,13 +128,42 @@ void MenuUI::GameObject()
 	{
 		if (ImGui::MenuItem("Create Empty Object"))
 		{
+			CGameObject* pObj = new CGameObject;
+			pObj->SetName(L"new Obj");
+			pObj->AddComponent(new CTransform);
+			pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+			pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 0.f));
 
+			CreateObject(pObj, 0);
 		}
 
 		if (ImGui::BeginMenu("Add Component"))
 		{
-			ImGui::MenuItem("MeshRender");
-			ImGui::MenuItem("Collider2D");
+			if (ImGui::MenuItem("MeshRender"))
+			{
+				// ÀÎ½ºÆåÅÍ
+				Inspector* pInspector = (Inspector*)CEditorMgr::GetInst()->FindEditorUI("Inspector");
+
+				// Å¸°Ù ¿ÀºêÁ§Æ® ¾Ë¾Æ³¿
+				CGameObject* pObject = pInspector->GetTargetObject();
+				if (nullptr != pObject)
+				{
+					pObject->AddComponent(new CMeshRender);
+				}
+			}
+			if (ImGui::MenuItem("Collider2D"))
+			{
+				// ÀÎ½ºÆåÅÍ
+				Inspector* pInspector = (Inspector*)CEditorMgr::GetInst()->FindEditorUI("Inspector");
+
+				// Å¸°Ù ¿ÀºêÁ§Æ® ¾Ë¾Æ³¿
+				CGameObject* pObject = pInspector->GetTargetObject();
+				if (nullptr != pObject)
+				{
+					pObject->AddComponent(new CCollider2D);
+					pObject->Collider2D()->SetScale(Vec3(1.f, 1.f, 0.f));
+				}
+			}
 			ImGui::MenuItem("Camera");
 
 			ImGui::EndMenu();

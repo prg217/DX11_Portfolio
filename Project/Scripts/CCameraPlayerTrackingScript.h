@@ -7,10 +7,9 @@ class CCameraPlayerTrackingScript :
     public CScript
 {
 private:
-    float   m_CamSpeed;
+    bool   m_IsMove;
 
     CGameObject* m_pPlayer;
-    CPlayerScript* m_pPlayerScript;
 
 public:
     virtual void Begin() override;
@@ -27,6 +26,9 @@ private:
     void OrthoGraphicMove();
     void PerspectiveMove();
 
+public:
+    void Stop() { m_IsMove = false; }
+    void Move() { m_IsMove = true; }
 
 public:
     CLONE(CCameraPlayerTrackingScript);

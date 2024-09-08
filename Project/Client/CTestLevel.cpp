@@ -24,6 +24,7 @@
 #include <Scripts/CPushScript.h>
 #include <Scripts/CGrassScript.h>
 #include <Scripts/CNPCScript.h>
+#include <Scripts/CPlayerCameraScript.h>
 
 #include <Engine/CSetColorCS.h>
 #include <Engine/CStructuredBuffer.h>
@@ -59,6 +60,8 @@ void CTestLevel::CreateTestLevel()
 	pLevel->GetLayer(6)->SetName(L"Interaction");
 	pLevel->GetLayer(7)->SetName(L"PlayerSwing");
 	//pLevel->GetLayer(6)->SetName(L"MonsterProjectile");
+	pLevel->GetLayer(29)->SetName(L"Block");
+	pLevel->GetLayer(30)->SetName(L"Camera");
 	pLevel->GetLayer(31)->SetName(L"UI");
 
 	// 카메라 오브젝트
@@ -67,6 +70,7 @@ void CTestLevel::CreateTestLevel()
 	CamObj->AddComponent(new CTransform);
 	CamObj->AddComponent(new CCamera);
 	CamObj->AddComponent(new CCameraPlayerTrackingScript);
+	// 플레이어에게 카메라 레이어를 가진 오브젝트(콜라이더 있음)을 가지고 있다가 걔가 비긴오버랩 되면 신호 보내서 카메라 특정 축... 멈추고...
 
 	// 우선순위를 0 : MainCamera 로 설정
 	CamObj->Camera()->SetPriority(0);
@@ -77,7 +81,7 @@ void CTestLevel::CreateTestLevel()
 	CamObj->Camera()->SetFar(100000.f);
 	CamObj->Camera()->SetProjType(ORTHOGRAPHIC);
 
-	pLevel->AddObject(0, CamObj);
+	pLevel->AddObject(30, CamObj);
 
 	// UI 카메라 오브젝트
 	CamObj = new CGameObject;
@@ -174,7 +178,21 @@ void CTestLevel::CreateTestLevel()
 	pInteractionObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pInteractionObj->MeshRender()->SetMaterial(pMtrl);
 
+	CGameObject* pPlayerCamera = new CGameObject;
+	pPlayerCamera->SetName(L"PlayerCamera");
+	pPlayerCamera->AddComponent(new CTransform);
+	pPlayerCamera->AddComponent(new CCollider2D);
+	pPlayerCamera->AddComponent(new CPlayerCameraScript);
+
+	pPlayerCamera->Transform()->SetRelativePos(0.f, 0.f, 0.f);
+	pPlayerCamera->Transform()->SetRelativeScale(1.f, 1.f, 0.f);
+	pPlayerCamera->Transform()->SetIndependentScale(true);
+
+	pPlayerCamera->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	pPlayerCamera->Collider2D()->SetScale(Vec3(200.f, 200.f, 0.0f));
+
 	// 스폰
+	pLevel->AddObject(30, pPlayerCamera);
 	pLevel->AddObject(7, pSwingObj);
 	pLevel->AddObject(5, pInteractionObj);
 	pLevel->AddObject(3, pPlayer);
@@ -360,6 +378,11 @@ void CTestLevel::CreateTestLevel()
 	CCollisionMgr::GetInst()->CollisionCheck(3, 6); // 플레이어, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(5, 6); // 플레이어 상호작용 감지, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(7, 6); // 플레이어 채 휘두르기, 상호작용
+	CCollisionMgr::GetInst()->CollisionCheck(3, 29); // 플레이어, 블록
+	CCollisionMgr::GetInst()->CollisionCheck(4, 28); // 몬스터, 블록
+	CCollisionMgr::GetInst()->CollisionCheck(6, 28); // 상호작용, 블록
+
+	CCollisionMgr::GetInst()->CollisionCheck(29, 30); // 블록, 카메라
 }
 
 void CTestLevel::CreatePrefab()

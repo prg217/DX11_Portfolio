@@ -176,6 +176,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMissileScript.h" />
     <ClInclude Include="CNPCScript.h" />
     <ClInclude Include="COguDancePointLightScript.h" />
+    <ClInclude Include="CPlayerCameraScript.h" />
     <ClInclude Include="CPlayerInteractionScript.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPushScript.h" />
@@ -197,6 +198,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMissileScript.cpp" />
     <ClCompile Include="CNPCScript.cpp" />
     <ClCompile Include="COguDancePointLightScript.cpp" />
+    <ClCompile Include="CPlayerCameraScript.cpp" />
     <ClCompile Include="CPlayerInteractionScript.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPushScript.cpp" />
