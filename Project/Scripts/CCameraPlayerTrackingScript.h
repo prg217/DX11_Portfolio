@@ -1,6 +1,14 @@
 #pragma once
 #include <Engine/CScript.h>
 
+enum class CameraDontMove
+{
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN
+};
+
 class CPlayerScript;
 
 class CCameraPlayerTrackingScript :
@@ -10,6 +18,7 @@ private:
     bool   m_IsMove;
 
     CGameObject* m_pPlayer;
+    CameraDontMove m_Dir;
 
 public:
     virtual void Begin() override;
@@ -27,7 +36,7 @@ private:
     void PerspectiveMove();
 
 public:
-    void Stop() { m_IsMove = false; }
+    void Stop(CameraDontMove _Dir) { m_IsMove = false; m_Dir = _Dir; }
     void Move() { m_IsMove = true; }
 
 public:

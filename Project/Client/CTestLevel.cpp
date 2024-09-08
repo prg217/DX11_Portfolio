@@ -33,6 +33,16 @@
 
 void CTestLevel::CreateTestLevel()
 {
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"level\\test.lv";
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(strInitPath);
+	fclose(File);
+	ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
+	
 	// Material
 	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl");
 	Ptr<CMaterial> pAlphaBlendMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl");
@@ -61,7 +71,7 @@ void CTestLevel::CreateTestLevel()
 	pLevel->GetLayer(29)->SetName(L"Block");
 	pLevel->GetLayer(30)->SetName(L"Camera");
 	pLevel->GetLayer(31)->SetName(L"UI");
-
+/*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;
 	CamObj->SetName(L"MainCamera");
@@ -364,7 +374,7 @@ void CTestLevel::CreateTestLevel()
 	//pLevel->AddObject(0, pGrayFilterObj);
 
 	ChangeLevel(pLevel, LEVEL_STATE::STOP);
-
+	*/
 	// 충돌 지정
 	CCollisionMgr::GetInst()->CollisionCheck(3, 4); // 플레이어, 몬스터
 	CCollisionMgr::GetInst()->CollisionCheck(3, 6); // 플레이어, 상호작용

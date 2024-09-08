@@ -35,7 +35,38 @@ void CPlayerCameraScript::Tick()
 
 void CPlayerCameraScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
-	m_pCameraScript->Stop();
+	// 상하좌우 중 어디가 제일 가까운지
+	Vec3 otherPos = _OtherObject->Transform()->GetRelativePos();
+	Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+	Vec3 subPos = otherPos - pos;
+	// 좌우가 값이 더 크다면 좌우 중 하나
+	if (std::abs(subPos.x) > std::abs(subPos.y))
+	{
+		// 오른쪽
+		if (subPos.x > 0)
+		{
+			m_pCameraScript->Stop(CameraDontMove::RIGHT);
+		}
+		// 왼쪽
+		else
+		{
+			m_pCameraScript->Stop(CameraDontMove::LEFT);
+		}
+	}
+	// 상하
+	else
+	{
+		// 위
+		if (subPos.y > 0)
+		{
+			m_pCameraScript->Stop(CameraDontMove::UP);
+		}
+		// 아래
+		else
+		{
+			m_pCameraScript->Stop(CameraDontMove::DOWN);
+		}
+	}
 }
 
 void CPlayerCameraScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)

@@ -58,7 +58,7 @@ void CGrassScript::Begin()
 
 void CGrassScript::Tick()
 {
-	if ((TIME - m_SaveTime >= m_SaveTime) && m_GlowingActive)
+	if ((TIME - m_SaveTime >= m_SaveTime))
 	{
 		m_GlowingActive = false;
 		m_GlowingLight->Light2D()->SetRadius(0.f);

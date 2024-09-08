@@ -20,6 +20,7 @@ CNPCScript::~CNPCScript()
 
 void CNPCScript::Begin()
 {
+
 }
 
 void CNPCScript::Tick()
