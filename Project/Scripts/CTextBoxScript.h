@@ -15,8 +15,11 @@ private:
     int m_TextCount;
     float m_TextPosY;
     int m_TextIdx;
-    
+
     CGameObject* m_NextObj;
+
+    bool m_IsNext; // 다음으로 넘어갈 때 누르는 결정키라고 표시
+    bool m_IsSkip; // 스킵할 때 누르는 결정키라고 표시
 
 public:
     virtual void Begin() override;

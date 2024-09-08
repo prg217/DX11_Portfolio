@@ -129,8 +129,8 @@ void CEditorCameraScript::PerspectiveMove()
 		Vec2 vDir = CKeyMgr::GetInst()->GetDragDir();
 
 		Vec3 vRot = Transform()->GetRelativeRotation();
-		vRot.y += vDir.x * XM_PI * EngineDT * 10.f;
-		vRot.x += vDir.y * XM_PI * EngineDT * 10.f;
+		vRot.y += vDir.x * XM_PI * EngineDT * 5.f;
+		vRot.x += vDir.y * XM_PI * EngineDT * 5.f;
 		Transform()->SetRelativeRotation(vRot);
 	}
 	else if (KEY_RELEASED(KEY::RBTN))

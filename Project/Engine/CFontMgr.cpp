@@ -25,7 +25,7 @@ void CFontMgr::Init()
 		assert(nullptr);
 	}
 
-	if (FAILED(m_FW1Factory->CreateFontWrapper(DEVICE, L"Liberation Sans", &m_FontWrapper)))
+	if (FAILED(m_FW1Factory->CreateFontWrapper(DEVICE, L"카페24 써라운드 에어", &m_FontWrapper)))
 	{
 		assert(nullptr);
 	}

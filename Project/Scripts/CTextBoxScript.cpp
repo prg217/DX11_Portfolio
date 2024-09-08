@@ -12,6 +12,8 @@ CTextBoxScript::CTextBoxScript()
 	, m_TextPosY(600.f)
 	, m_TextIdx(0)
 	, m_NextObj(nullptr)
+	, m_IsNext(false)
+	, m_IsSkip(false)
 {
 }
 
@@ -24,6 +26,8 @@ CTextBoxScript::CTextBoxScript(const CTextBoxScript& _Origin)
 	, m_TextPosY(600.f)
 	, m_TextIdx(0)
 	, m_NextObj(nullptr)
+	, m_IsNext(false)
+	, m_IsSkip(false)
 {
 }
 
@@ -49,7 +53,7 @@ void CTextBoxScript::Tick()
 		{
 			// next 아이콘
 			Ptr<CFlipBook> pFlipBook;
-			Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl");
+			Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl");
 
 			m_NextObj = new CGameObject;
 			m_NextObj->SetName(L"TextBoxNext");
@@ -57,18 +61,17 @@ void CTextBoxScript::Tick()
 			m_NextObj->AddComponent(new CMeshRender);
 			m_NextObj->AddComponent(new CFlipBookComponent);
 
-			m_NextObj->Transform()->SetRelativePos(0.f, -0.4f, 0.f);
-			m_NextObj->Transform()->SetRelativeScale(0.3f, 0.3f, 0.f);
+			m_NextObj->Transform()->SetRelativePos(0.f, -330.f, -100.f);
+			m_NextObj->Transform()->SetRelativeScale(50.f, 50.f, 0.f);
 
 			m_NextObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 			m_NextObj->MeshRender()->SetMaterial(pMtrl);
 
 			pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\UI\\textBox_next.flip");
 			m_NextObj->FlipBookComponent()->AddFlipBook(0, pFlipBook);
-			m_NextObj->FlipBookComponent()->Play(0, 3, true);
+			m_NextObj->FlipBookComponent()->Play(0, 8, true);
 
 			CreateObject(m_NextObj, 31);
-			AddChildObject(GetOwner(), m_NextObj);
 		}
 	}
 
@@ -108,13 +111,18 @@ void CTextBoxScript::Render()
 
 		if (m_TextCount >= m_vText[m_TextIdx].length())
 		{
-			if (KEY_TAP(KEY::S) || KEY_TAP(KEY::A)) // 또는 마우스 클릭
+			if ((KEY_TAP(KEY::S) || KEY_TAP(KEY::A)) && !m_IsSkip) // 또는 마우스 클릭
 			{
 				m_TextIdx++;
 				m_TextCount = 1;
 				m_TextPosY = 600.f;
-				DeleteObject(m_NextObj);
+				if (m_NextObj != nullptr)
+				{
+					DeleteObject(m_NextObj);
+				}
 				m_NextObj = nullptr;
+
+				m_IsNext = true;
 
 				if (m_TextIdx >= m_vText.size())
 				{
@@ -130,12 +138,16 @@ void CTextBoxScript::Render()
 			}
 		}
 
+		m_IsSkip = false;
 		// 대화를 한 번에 보게 한다.
-		if ((KEY_TAP(KEY::S) || KEY_TAP(KEY::A)) && m_TextIdx != -1) // 또는 마우스 클릭
+		if ((KEY_TAP(KEY::S) || KEY_TAP(KEY::A)) && m_TextIdx != -1 && !m_IsNext) // 또는 마우스 클릭
 		{
 			m_TextCount = m_vText[m_TextIdx].length();
-			m_TextPosY = 600.f - (30.f - m_TextCount);
+			int lineCount = std::count(m_vText[m_TextIdx].begin(), m_vText[m_TextIdx].end(), L'\n');
+			m_TextPosY = 600.f - (30.f * lineCount);
+			m_IsSkip = true;
 		}
+		m_IsNext = false;
 
 		CFontMgr::GetInst()->DrawCenterFont(text.c_str(), 650, m_TextPosY, 30, FONT_RGBA(236, 230, 206, 255));
 	}

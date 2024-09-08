@@ -94,7 +94,7 @@ void CCamera::FinalTick()
 	else
 	{
 		// 2. 원근투영 (Perspective)		
-		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, -100000.f, m_Far);
+		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, 1.f, m_Far);
 	}
 }
 

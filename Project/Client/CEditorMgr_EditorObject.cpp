@@ -17,7 +17,7 @@ void CEditorMgr::CreateEditorObject()
 	pEditorCamera->AddComponent(new CEditorCameraScript);
 
 	pEditorCamera->Camera()->SetLayerAll();
-	pEditorCamera->Camera()->SetLayer(31, false);
+	//pEditorCamera->Camera()->SetLayer(31, false);
 	pEditorCamera->Camera()->SetFar(100000.f);
 	pEditorCamera->Camera()->SetProjType(ORTHOGRAPHIC);
 
