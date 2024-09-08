@@ -88,13 +88,13 @@ void CCamera::FinalTick()
 		// 1. 직교투영 (Orthographic)
 		// 투영을 일직선으로
 		// 시야 범위를 NDC 로 압축
-		m_matProj = XMMatrixOrthographicLH(m_Width * m_ProjectionScale, m_Height * m_ProjectionScale, 1.f, m_Far);
+		m_matProj = XMMatrixOrthographicLH(m_Width * m_ProjectionScale, m_Height * m_ProjectionScale, -100000.f, m_Far);
 	}
 
 	else
 	{
 		// 2. 원근투영 (Perspective)		
-		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, 1.f, m_Far);
+		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, -100000.f, m_Far);
 	}
 }
 
