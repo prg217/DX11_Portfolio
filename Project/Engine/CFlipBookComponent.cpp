@@ -13,7 +13,10 @@ CFlipBookComponent::CFlipBookComponent()
 	, m_CurFlipBook(nullptr)
 	, m_CurFrmIdx(0)
 	, m_Stop(false)
-	, m_outline(false)
+	, m_Outline(false)
+	, m_AddColor(false)
+	, m_Color(Vec3(0.f, 0.f, 0.f))
+	, m_UseLight(true)
 {
 }
 
@@ -27,7 +30,10 @@ CFlipBookComponent::CFlipBookComponent(CFlipBookComponent& _Origin)
 	, m_Repeat(_Origin.m_Repeat)
 	, m_Finish(false)
 	, m_Stop(_Origin.m_Stop)
-	, m_outline(_Origin.m_outline)
+	, m_Outline(_Origin.m_Outline)
+	, m_AddColor(_Origin.m_AddColor)
+	, m_Color(_Origin.m_Color)
+	, m_UseLight(_Origin.m_UseLight)
 {
 	if (nullptr != m_CurFlipBook)
 	{
@@ -147,7 +153,10 @@ void CFlipBookComponent::Binding()
 		tInfo.OffsetUV = m_CurFrmSprite->GetOffsetUV();
 		tInfo.TexSize = m_CurFrmSprite->GetTexSize();
 		tInfo.UseFlipbook = 1;
-		tInfo.UseOutline = m_outline;
+		tInfo.UseOutline = m_Outline;
+		tInfo.UseAddColor = m_AddColor;
+		tInfo.AddColor = m_Color;
+		tInfo.UseLight = m_UseLight;
 
 		static CConstBuffer* CB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::SPRITE);
 
@@ -198,6 +207,14 @@ void CFlipBookComponent::SaveToFile(FILE* _File)
 	fwrite(&m_FPS, sizeof(float), 1, _File);
 	fwrite(&m_AccTime, sizeof(float), 1, _File);
 	fwrite(&m_Repeat, sizeof(bool), 1, _File);
+
+	// 아웃라이너 유무
+	//fwrite(&m_Outline, sizeof(bool), 1, _File);
+	// 색 추가 유무 및 색
+	//fwrite(&m_AddColor, sizeof(bool), 1, _File);
+	//fwrite(&m_Color, sizeof(Vec3), 1, _File);
+	// 빛 유무
+	//fwrite(&m_UseLight, sizeof(bool), 1, _File);
 }
 
 void CFlipBookComponent::LoadFromFile(FILE* _File)
@@ -223,4 +240,18 @@ void CFlipBookComponent::LoadFromFile(FILE* _File)
 	fread(&m_FPS, sizeof(float), 1, _File);
 	fread(&m_AccTime, sizeof(float), 1, _File);
 	fread(&m_Repeat, sizeof(bool), 1, _File);
+
+	// 아웃라이너 유무
+	//fread(&m_Outline, sizeof(bool), 1, _File);
+	// 색 추가 유무 및 색
+	//fread(&m_AddColor, sizeof(bool), 1, _File);
+	//fread(&m_Color, sizeof(Vec3), 1, _File);
+	// 빛 유무
+	//fread(&m_UseLight, sizeof(bool), 1, _File);
+}
+
+void CFlipBookComponent::AddColor(bool _AddColor, Vec3 Color)
+{
+	m_AddColor = _AddColor;
+	m_Color = Color;
 }

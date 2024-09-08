@@ -173,7 +173,10 @@ struct tSpriteInfo
 	Vec2 TexSize;
 	int	 UseFlipbook;
 	int	 UseOutline;
-	//int  Padding;
+	int  UseAddColor;
+	Vec3 AddColor;
+	int  UseLight;
+	int  Padding[3];
 };
 
 struct tGlobalData

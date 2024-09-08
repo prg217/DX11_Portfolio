@@ -163,7 +163,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 		{
 			pObject->AddComponent(pComponent);
 
-			// 저장당시의 정보를 읽어와서 복수한다.
+			// 저장당시의 정보를 읽어와서 복사한다.
 			pComponent->LoadFromFile(_File);
 		}
 	}

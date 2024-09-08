@@ -67,7 +67,10 @@ cbuffer SPRITE_INFO : register(b2)
     float2  TexSize;
     int     UseFlipbook;    
     int     UseOutline;
-    //int     SpriteInfoPadding;
+    int     UseAddColor;
+    float3  AddColor;
+    int     UseLight;
+    int3    SpriteInfoPadding;
 }
 
 cbuffer GLOBAL_DATA : register(b3)

@@ -62,6 +62,8 @@ void CNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, C
 			pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\UI\\textBox_main.flip");
 			pTextBox->FlipBookComponent()->AddFlipBook(0, pFlipBook);
 			pTextBox->FlipBookComponent()->Play(0, 0, false);
+			pTextBox->FlipBookComponent()->AddColor(true, Vec3(0.45f, 0.38f, 0.32f));
+			pTextBox->FlipBookComponent()->SetUseLight(false);
 
 			CScript* script = pTextBox->GetScript("CTextBoxScript");
 			CTextBoxScript* texScript = dynamic_cast<CTextBoxScript*>(script);
@@ -88,6 +90,8 @@ void CNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, C
 			pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\UI\\textBox_name.flip");
 			pTextBoxName->FlipBookComponent()->AddFlipBook(0, pFlipBook);
 			pTextBoxName->FlipBookComponent()->Play(0, 0, false);
+			pTextBoxName->FlipBookComponent()->AddColor(true, Vec3(0.45f, 0.38f, 0.32f));
+			pTextBoxName->FlipBookComponent()->SetUseLight(false);
 
 			script = pTextBoxName->GetScript("CTextBoxScript");
 			texScript = dynamic_cast<CTextBoxScript*>(script);
