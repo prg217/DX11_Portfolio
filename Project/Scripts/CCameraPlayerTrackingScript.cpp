@@ -9,7 +9,7 @@
 CCameraPlayerTrackingScript::CCameraPlayerTrackingScript()
 	: CScript(UINT(SCRIPT_TYPE::CAMERAPLAYERTRACKINGSCRIPT))
 	, m_IsMove(true)
-	, m_Speed(5.f)
+	, m_Speed(20.f)
 	, m_pPlayer(nullptr)
 {
 }
@@ -34,15 +34,6 @@ void CCameraPlayerTrackingScript::Tick()
 	else if (PROJ_TYPE::PERSPECTIVE == Camera()->GetProjType())
 	{
 		PerspectiveMove();
-	}
-
-
-	if (KEY_TAP(KEY::P))
-	{
-		if (PROJ_TYPE::ORTHOGRAPHIC == Camera()->GetProjType())
-			Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
-		else
-			Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 	}
 }
 
@@ -78,7 +69,7 @@ void CCameraPlayerTrackingScript::OrthoGraphicMove()
 		// 방향 벡터 계산
 		Vec3 direction = playerPos - myPos;
 		pos = myPos;
-		if ((direction.x <= -3.f || direction.x >= 3.f))
+		if ((direction.x <= -1.f || direction.x >= 1.f))
 		{
 			// 방향 벡터를 정규화
 			direction.Normalize();
@@ -87,7 +78,8 @@ void CCameraPlayerTrackingScript::OrthoGraphicMove()
 			myPos.x = myPos.x + (direction.x * m_Speed);
 			pos = myPos;
 		}
-		if ((direction.y <= -3.f || direction.y >= 3.f))
+
+		if ((direction.y <= -1.f || direction.y >= 1.f))
 		{
 			// 방향 벡터를 정규화
 			direction.Normalize();
