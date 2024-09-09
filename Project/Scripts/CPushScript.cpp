@@ -46,7 +46,7 @@ void CPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObj
 {	
 	if (m_pPlayer == _OtherObject)
 	{
-		m_PlayerSpeed = m_pPlayerScript->GetSpeed() - 100.f;
+		m_PlayerSpeed = m_pPlayerScript->GetSpeed() + 100.f;
 	}
 
 }

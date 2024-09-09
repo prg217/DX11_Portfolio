@@ -80,19 +80,19 @@ void CRigidBody::FinalTick()
 
 
 	// 최대 속도 제한
-	if (0.f != m_MaxWalkSpeed && m_MaxWalkSpeed < m_Velocity.Length())
-	{
-		m_Velocity.Normalize();
-		m_Velocity *= m_MaxWalkSpeed;
-	}
+	//if (0.f != m_MaxWalkSpeed && m_MaxWalkSpeed < m_Velocity.Length())
+	//{
+	//	m_Velocity.Normalize();
+	//	m_Velocity *= m_MaxWalkSpeed;
+	//}
 
 	// 최소 속도 보정
-	if (m_InitWalkSpeed != 0.f && m_Velocity.Length() < 10.f && !(vAccel.x == 0.f && vAccel.y == 0.f))
-	{
-		Vec3 vForceDir = m_Force;
-		vForceDir.Normalize();
-		m_Velocity = vForceDir * m_InitWalkSpeed;
-	}
+	//if (m_InitWalkSpeed != 0.f && m_Velocity.Length() < 10.f && !(vAccel.x == 0.f && vAccel.y == 0.f))
+	//{
+	//	Vec3 vForceDir = m_Force;
+	//	vForceDir.Normalize();
+	//	m_Velocity = vForceDir * m_InitWalkSpeed;
+	//}
 
 	// 만약 RigidBody 에 적용된 힘이 없으면서, 속도는 있는경우
 	// 마찰에 의해서 현재 속도를 줄인다
