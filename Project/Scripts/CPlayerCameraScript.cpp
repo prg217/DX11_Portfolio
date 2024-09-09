@@ -35,6 +35,12 @@ void CPlayerCameraScript::Tick()
 
 void CPlayerCameraScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	if (curLevel->GetState() == LEVEL_STATE::STOP)
+	{
+		return;
+	}
+
 	// 상하좌우 중 어디가 제일 가까운지
 	Vec3 otherPos = _OtherObject->Transform()->GetRelativePos();
 	Vec3 pos = GetOwner()->Transform()->GetRelativePos();
@@ -75,6 +81,11 @@ void CPlayerCameraScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _Other
 
 void CPlayerCameraScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	if (curLevel->GetState() == LEVEL_STATE::STOP)
+	{
+		return;
+	}
 	m_pCameraScript->Move();
 }
 

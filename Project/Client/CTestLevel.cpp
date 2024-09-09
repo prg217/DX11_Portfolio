@@ -57,20 +57,21 @@ void CTestLevel::CreateTestLevel()
 
 
 	// Level 생성
-	CLevel* pLevel = new CLevel;
+	//CLevel* pLevel = new CLevel;
 	
-	pLevel->GetLayer(0)->SetName(L"Default");
-	pLevel->GetLayer(1)->SetName(L"Background");
-	pLevel->GetLayer(2)->SetName(L"Tile");
-	pLevel->GetLayer(3)->SetName(L"Player");
-	pLevel->GetLayer(4)->SetName(L"Monster");
-	pLevel->GetLayer(5)->SetName(L"PlayerInteraction");
-	pLevel->GetLayer(6)->SetName(L"Interaction");
-	pLevel->GetLayer(7)->SetName(L"PlayerSwing");
+	pLoadedLevel->GetLayer(0)->SetName(L"Default");
+	pLoadedLevel->GetLayer(1)->SetName(L"Background");
+	pLoadedLevel->GetLayer(2)->SetName(L"Tile");
+	pLoadedLevel->GetLayer(3)->SetName(L"Player");
+	pLoadedLevel->GetLayer(4)->SetName(L"Monster");
+	pLoadedLevel->GetLayer(5)->SetName(L"PlayerInteraction");
+	pLoadedLevel->GetLayer(6)->SetName(L"Interaction");
+	pLoadedLevel->GetLayer(7)->SetName(L"PlayerSwing");
 	//pLevel->GetLayer(6)->SetName(L"MonsterProjectile");
-	pLevel->GetLayer(29)->SetName(L"Block");
-	pLevel->GetLayer(30)->SetName(L"Camera");
-	pLevel->GetLayer(31)->SetName(L"UI");
+	pLoadedLevel->GetLayer(28)->SetName(L"Block");
+	pLoadedLevel->GetLayer(29)->SetName(L"CameraBlock");
+	pLoadedLevel->GetLayer(30)->SetName(L"Camera");
+	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;
@@ -380,11 +381,12 @@ void CTestLevel::CreateTestLevel()
 	CCollisionMgr::GetInst()->CollisionCheck(3, 6); // 플레이어, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(5, 6); // 플레이어 상호작용 감지, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(7, 6); // 플레이어 채 휘두르기, 상호작용
-	CCollisionMgr::GetInst()->CollisionCheck(3, 29); // 플레이어, 블록
+	CCollisionMgr::GetInst()->CollisionCheck(3, 28); // 플레이어, 블록
 	CCollisionMgr::GetInst()->CollisionCheck(4, 28); // 몬스터, 블록
 	CCollisionMgr::GetInst()->CollisionCheck(6, 28); // 상호작용, 블록
 
-	CCollisionMgr::GetInst()->CollisionCheck(29, 30); // 블록, 카메라
+	CCollisionMgr::GetInst()->CollisionCheck(3, 29); // 플레이어, 카메라 블록
+	CCollisionMgr::GetInst()->CollisionCheck(29, 30); // 카메라 블록, 카메라
 }
 
 void CTestLevel::CreatePrefab()
