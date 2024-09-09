@@ -9,7 +9,8 @@
 CCameraPlayerTrackingScript::CCameraPlayerTrackingScript()
 	: CScript(UINT(SCRIPT_TYPE::CAMERAPLAYERTRACKINGSCRIPT))
 	, m_IsMove(true)
-	, m_Speed(20.f)
+	, m_XSpeed(20.f)
+	, m_YSpeed(50.f)
 	, m_pPlayer(nullptr)
 {
 }
@@ -75,17 +76,17 @@ void CCameraPlayerTrackingScript::OrthoGraphicMove()
 			direction.Normalize();
 
 			// 속도를 곱하여 위치 업데이트
-			myPos.x = myPos.x + (direction.x * m_Speed);
+			myPos.x = myPos.x + (direction.x * m_XSpeed);
 			pos = myPos;
 		}
 
-		if ((direction.y <= -1.f || direction.y >= 1.f))
+		if ((direction.y <= -0.2f || direction.y >= 0.2f))
 		{
 			// 방향 벡터를 정규화
 			direction.Normalize();
 
 			// 속도를 곱하여 위치 업데이트
-			myPos.y = myPos.y + (direction.y * m_Speed);
+			myPos.y = myPos.y + (direction.y * m_YSpeed);
 			pos = myPos;
 		}
 	}
@@ -98,49 +99,28 @@ void CCameraPlayerTrackingScript::OrthoGraphicMove()
 			switch (m_Dir)
 			{
 			case CameraDontMove::LEFT:
-				// 기존 좌표보다 오른쪽으로 가면 이동 가능
-				if ((playerPos.x - myPos.x > 0))
-				{
-					float posY = myPos.y + (direction.y * m_Speed);
-					pos = Vec3(posY, playerPos.y, 0.f);
-				}
-				else
-				{
-					pos = myPos;
-				}
+			{
+				float posY = myPos.y + (direction.y * m_YSpeed);
+				pos = Vec3(myPos.x, posY, 0.f);
+			}
 				break;
 			case CameraDontMove::RIGHT:
-				if (playerPos.x - myPos.x < 0)
-				{
-					float posY = myPos.y + (direction.y * m_Speed);
-					pos = Vec3(posY, playerPos.y, 0.f);
-				}
-				else
-				{
-					pos = myPos;
-				}
+			{
+				float posY = myPos.y + (direction.y * m_YSpeed);
+				pos = Vec3(myPos.x, posY, 0.f);
+			}
 				break;
 			case CameraDontMove::UP:
-				if (playerPos.y - myPos.y > 0)
-				{
-					float posX = myPos.x + (direction.x * m_Speed);
-					pos = Vec3(posX, myPos.y, 0.f);
-				}
-				else
-				{
-					pos = myPos;
-				}
+			{
+				float posX = myPos.x + (direction.x * m_XSpeed);
+				pos = Vec3(posX, myPos.y, 0.f);
+			}
 				break;
 			case CameraDontMove::DOWN:
-				if (playerPos.y - myPos.y < 0)
-				{
-					float posX = myPos.x + (direction.x * m_Speed);
-					pos = Vec3(posX, myPos.y, 0.f);
-				}
-				else
-				{
-					pos = myPos;
-				}
+			{
+				float posX = myPos.x + (direction.x * m_XSpeed);
+				pos = Vec3(posX, myPos.y, 0.f);
+			}
 				break;
 			default:
 				break;

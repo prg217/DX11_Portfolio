@@ -57,7 +57,7 @@ void CTestLevel::CreateTestLevel()
 
 
 	// Level »ý¼º
-	//CLevel* pLevel = new CLevel;
+	CLevel* pLevel = new CLevel;
 	
 	pLoadedLevel->GetLayer(0)->SetName(L"Default");
 	pLoadedLevel->GetLayer(1)->SetName(L"Background");

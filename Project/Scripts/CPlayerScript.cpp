@@ -41,6 +41,7 @@ CPlayerScript::CPlayerScript()
 
 CPlayerScript::~CPlayerScript()
 {
+	Delete_Vec(m_vDanceEffects);
 }
 
 void CPlayerScript::Begin()

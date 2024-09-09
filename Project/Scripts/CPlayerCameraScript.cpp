@@ -41,19 +41,19 @@ void CPlayerCameraScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _
 		return;
 	}
 
-	if (_OtherObject->GetName() == L"Lblock")
+	if (_OtherObject->GetName().compare(L"Lblock"))
 	{
 		m_pCameraScript->Stop(CameraDontMove::LEFT);
 	}
-	else if (_OtherObject->GetName() == L"Rblock")
+	else if (_OtherObject->GetName().compare(L"Rblock"))
 	{
 		m_pCameraScript->Stop(CameraDontMove::RIGHT);
 	}
-	else if (_OtherObject->GetName() == L"Ublock")
+	else if (_OtherObject->GetName().compare(L"Ublock"))
 	{
 		m_pCameraScript->Stop(CameraDontMove::UP);
 	}
-	else if (_OtherObject->GetName() == L"Dblock")
+	else if (_OtherObject->GetName().compare(L"Dblock"))
 	{
 		m_pCameraScript->Stop(CameraDontMove::DOWN);
 	}
