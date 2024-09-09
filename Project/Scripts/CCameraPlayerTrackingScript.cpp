@@ -9,6 +9,7 @@
 CCameraPlayerTrackingScript::CCameraPlayerTrackingScript()
 	: CScript(UINT(SCRIPT_TYPE::CAMERAPLAYERTRACKINGSCRIPT))
 	, m_IsMove(true)
+	, m_Speed(5.f)
 	, m_pPlayer(nullptr)
 {
 }
@@ -70,61 +71,95 @@ void CCameraPlayerTrackingScript::OrthoGraphicMove()
 {
 	// 플레이어를 따라오되, 이제 맵 바깥으로 나가려하면 거기 막고 있는 콜라이더가 더 이상 카메라 이동을 막음
 	Vec3 playerPos = m_pPlayer->Transform()->GetRelativePos();
+	Vec3 myPos = GetOwner()->Transform()->GetRelativePos();
 	Vec3 pos;
 	if (m_IsMove)
 	{
-		pos = Vec3(playerPos.x, playerPos.y, 0.f);
+		// 방향 벡터 계산
+		Vec3 direction = playerPos - myPos;
+		pos = myPos;
+		if ((direction.x <= -3.f || direction.x >= 3.f))
+		{
+			// 방향 벡터를 정규화
+			direction.Normalize();
+
+			// 속도를 곱하여 위치 업데이트
+			myPos.x = myPos.x + (direction.x * m_Speed);
+			pos = myPos;
+		}
+		if ((direction.y <= -3.f || direction.y >= 3.f))
+		{
+			// 방향 벡터를 정규화
+			direction.Normalize();
+
+			// 속도를 곱하여 위치 업데이트
+			myPos.y = myPos.y + (direction.y * m_Speed);
+			pos = myPos;
+		}
 	}
 	else
 	{
-		Vec3 myPos = GetOwner()->Transform()->GetRelativePos();
-		switch (m_Dir)
+		Vec3 direction = playerPos - myPos;
+		if ((direction.x <= -3.f || direction.x >= 3.f) || (direction.y <= -3.f || direction.y >= 3.f))
 		{
-		case CameraDontMove::LEFT:
-			// 기존 좌표보다 오른쪽으로 가면 이동 가능
-			if (playerPos.x - myPos.x > 0)
+			direction.Normalize();
+			switch (m_Dir)
 			{
-				pos = Vec3(playerPos.x, myPos.y, 0.f);
+			case CameraDontMove::LEFT:
+				// 기존 좌표보다 오른쪽으로 가면 이동 가능
+				if ((playerPos.x - myPos.x > 0))
+				{
+					float posY = myPos.y + (direction.y * m_Speed);
+					pos = Vec3(posY, playerPos.y, 0.f);
+				}
+				else
+				{
+					pos = myPos;
+				}
+				break;
+			case CameraDontMove::RIGHT:
+				if (playerPos.x - myPos.x < 0)
+				{
+					float posY = myPos.y + (direction.y * m_Speed);
+					pos = Vec3(posY, playerPos.y, 0.f);
+				}
+				else
+				{
+					pos = myPos;
+				}
+				break;
+			case CameraDontMove::UP:
+				if (playerPos.y - myPos.y > 0)
+				{
+					float posX = myPos.x + (direction.x * m_Speed);
+					pos = Vec3(posX, myPos.y, 0.f);
+				}
+				else
+				{
+					pos = myPos;
+				}
+				break;
+			case CameraDontMove::DOWN:
+				if (playerPos.y - myPos.y < 0)
+				{
+					float posX = myPos.x + (direction.x * m_Speed);
+					pos = Vec3(posX, myPos.y, 0.f);
+				}
+				else
+				{
+					pos = myPos;
+				}
+				break;
+			default:
+				break;
 			}
-			else
-			{
-				pos = myPos;
-			}
-			break;
-		case CameraDontMove::RIGHT:
-			if (playerPos.x - myPos.x < 0)
-			{
-				pos = Vec3(playerPos.x, myPos.y, 0.f);
-			}
-			else
-			{
-				pos = myPos;
-			}
-			break;
-		case CameraDontMove::UP:
-			if (playerPos.y - myPos.y > 0)
-			{
-				pos = Vec3(myPos.x, playerPos.y, 0.f);
-			}
-			else
-			{
-				pos = myPos;
-			}
-			break;
-		case CameraDontMove::DOWN:
-			if (playerPos.y - myPos.y < 0)
-			{
-				pos = Vec3(myPos.x, playerPos.y, 0.f);
-			}
-			else
-			{
-				pos = myPos;
-			}
-			break;
-		default:
-			break;
+		}
+		else
+		{
+			pos = myPos;
 		}
 	}
+		
 	GetOwner()->Transform()->SetRelativePos(pos);
 }
 

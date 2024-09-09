@@ -35,6 +35,11 @@ void CPlayerCameraScript::Tick()
 
 void CPlayerCameraScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	
+}
+
+void CPlayerCameraScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
 	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 	if (curLevel->GetState() == LEVEL_STATE::STOP)
 	{
@@ -75,10 +80,6 @@ void CPlayerCameraScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _
 	}
 }
 
-void CPlayerCameraScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
-{
-}
-
 void CPlayerCameraScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
 	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -86,7 +87,10 @@ void CPlayerCameraScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _Ot
 	{
 		return;
 	}
-	m_pCameraScript->Move();
+	if (GetOwner()->Collider2D()->GetOverlapCount() == 0)
+	{
+		m_pCameraScript->Move();
+	}
 }
 
 void CPlayerCameraScript::SaveToFile(FILE* _File)
