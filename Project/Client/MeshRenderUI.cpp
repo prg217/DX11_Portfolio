@@ -24,6 +24,11 @@ void MeshRenderUI::Update()
 {
 	Title();
 
+	if (GetTargetObject()->IsDead())
+	{
+		return;
+	}
+
 	CMeshRender* pMeshRender = GetTargetObject()->MeshRender();
 
 	// 메쉬 정보

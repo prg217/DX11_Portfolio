@@ -17,6 +17,11 @@ void TransformUI::Update()
 {	
 	Title();
 
+	if (GetTargetObject()->IsDead())
+	{
+		return;
+	}
+
 	CTransform* pTrans = GetTargetObject()->Transform();
 
 	Vec3 vPos = pTrans->GetRelativePos();

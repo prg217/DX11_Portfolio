@@ -96,6 +96,11 @@ void Inspector::Update()
 	if (nullptr == m_TargetObject)
 		return;
 
+	if (m_TargetObject->IsDead())
+	{
+		return;
+	}
+
 	SetTargetObject(m_TargetObject);
 
 	// ===========

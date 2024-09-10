@@ -4,6 +4,7 @@
 #include <Engine/CKeyMgr.h>
 #include <Engine/CRenderMgr.h>
 #include <Engine/CPathMgr.h>
+#include <Engine/CLevelMgr.h>
 
 #include "CGameObjectEx.h"
 #include <Engine/components.h>
@@ -59,6 +60,28 @@ void CEditorMgr::Tick()
     ImGuiProgress();
 
     ObserveContent();
+
+    // 오브젝트 삭제 
+    ClearGC();
+}
+
+void CEditorMgr::EditorDeleteObject(CGameObject* _Obj)
+{
+    if (_Obj->m_Dead)
+    {
+        return;
+    }
+
+    // GC 에 넣기
+    _Obj->m_Dead = true;
+    m_GC.push_back(_Obj);
+
+    CLevelMgr::GetInst()->m_LevelChanged = true;
+}
+
+void CEditorMgr::ClearGC()
+{
+    Delete_Vec(m_GC);
 }
 
 void CEditorMgr::ShortCut()

@@ -17,6 +17,11 @@ void Collider2DUI::Update()
 {
 	Title();
 
+	if (GetTargetObject()->IsDead())
+	{
+		return;
+	}
+
 	CCollider2D* pColider2D = GetTargetObject()->Collider2D();
 
 	Vec3 vOffsetPos = pColider2D->GetOffset();

@@ -76,5 +76,6 @@ public:
     friend class CLevel;
     friend class CLayer;
     friend class CTaskMgr;
+    friend class CEditorMgr;
 };
 

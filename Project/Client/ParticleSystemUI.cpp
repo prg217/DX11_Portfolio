@@ -26,6 +26,11 @@ void ParticleSystemUI::Update()
 {
 	Title();
 
+	if (GetTargetObject()->IsDead())
+	{
+		return;
+	}
+
 	m_Particle = GetTargetObject()->ParticleSystem();
 	m_ParticleModule = m_Particle->GetParticleModule();
 

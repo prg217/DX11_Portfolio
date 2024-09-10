@@ -73,6 +73,11 @@ void Outliner::RenewLevel()
 
 		for (size_t i = 0; i < vecObjects.size(); ++i)
 		{
+			if (vecObjects[i]->IsDead())
+			{
+				continue;
+			}
+
 			AddGameObject(pRootNode, vecObjects[i]);
 		}
 	}	
@@ -186,8 +191,10 @@ void Outliner::PopupMenu(DWORD_PTR _Param)
 		TreeNode* pNode = (TreeNode*)_Param;
 		CGameObject* pObject = (CGameObject*)pNode->GetData();
 
+		//CEditorMgr::GetInst()->EditorDeleteObject(pObject);
 		DeleteObject(pObject);
-		
+		RenewLevel();
+
 		ImGui::CloseCurrentPopup();
 	}
 

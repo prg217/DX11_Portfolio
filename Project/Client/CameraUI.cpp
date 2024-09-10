@@ -22,7 +22,11 @@ void CameraUI::Update()
 {
 	Title();
 
-    
+    if (GetTargetObject()->IsDead())
+    {
+        return;
+    }
+
 
     CCamera* pCam = GetTargetObject()->Camera();
     

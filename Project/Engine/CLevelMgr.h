@@ -26,5 +26,6 @@ public:
 	void Progress();
 
 	friend class CTaskMgr;
+	friend class CEditorMgr;
 };
 

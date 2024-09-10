@@ -15,6 +15,7 @@ private:
 
     HANDLE                      m_hNotifyHandle;
     
+    vector<CGameObject*>	    m_GC; // Garbage Collector;
 
 public:
     EditorUI* FindEditorUI(const string& Name);
@@ -23,6 +24,12 @@ public:
 public:
     void Init();
     void Tick();
+
+public:
+    void EditorDeleteObject(CGameObject* _Obj);
+
+private:
+    void ClearGC();
 
 private:
     void ShortCut();

@@ -193,7 +193,6 @@ void CEditorMgr::CreateEditorUI()
     m_mapUI.insert(make_pair(pUI->GetName(), pUI));
 }
 
-
 void CEditorMgr::ImGuiProgress()
 {
     // Start ImGui
