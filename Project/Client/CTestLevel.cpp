@@ -57,7 +57,7 @@ void CTestLevel::CreateTestLevel()
 
 
 	// Level 생성
-	CLevel* pLevel = new CLevel;
+	//CLevel* pLevel = new CLevel;
 	
 	pLoadedLevel->GetLayer(0)->SetName(L"Default");
 	pLoadedLevel->GetLayer(1)->SetName(L"Background");
@@ -72,6 +72,31 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(29)->SetName(L"CameraBlock");
 	pLoadedLevel->GetLayer(30)->SetName(L"Camera");
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
+
+	//CGameObject* pObj = new CGameObject;
+	//pObj->SetName(L"JellyPush_Yellow");
+	//pObj->AddComponent(new CTransform);
+	//pObj->AddComponent(new CCollider2D);
+	//pObj->AddComponent(new CMeshRender);
+	//pObj->AddComponent(new CRigidBody);
+	//pObj->AddComponent(new CSpriteComponent);
+	//pObj->AddComponent(new CInteractionScript);
+	//pObj->AddComponent(new CPushScript);
+	//
+	//pObj->Transform()->SetRelativePos(Vec3(100, 0, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(100, 100, 100));
+	//
+	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pObj->MeshRender()->SetMaterial(pMtrl);
+	//
+	//pObj->Collider2D()->SetIndependentScale(false);
+	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	//pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
+	//
+	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_yellow.sprite");
+	//pObj->SpriteComponent()->AddSprite(pSprite);
+	//
+	//pLoadedLevel->AddObject(6, pObj);
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;

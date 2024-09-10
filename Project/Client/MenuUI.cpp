@@ -136,7 +136,6 @@ void MenuUI::GameObject()
 
 			CreateObject(pObj, 0);
 		}
-
 		if (ImGui::BeginMenu("Add Component"))
 		{
 			if (ImGui::MenuItem("MeshRender"))

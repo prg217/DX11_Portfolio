@@ -181,21 +181,16 @@ void Outliner::PopupMenu(DWORD_PTR _Param)
 		ImGui::CloseCurrentPopup();
 	}
 
-	/*
-	if (pAsset->GetAssetType() == ASSET_TYPE::PREFAB)
+	if (ImGui::Button("Delete"))
 	{
-		if (ImGui::MenuItem("Instantiate"))
-		{
-			Ptr<CPrefab> pPrefab = (CPrefab*)pAsset.Get();
+		TreeNode* pNode = (TreeNode*)_Param;
+		CGameObject* pObject = (CGameObject*)pNode->GetData();
 
-			CGameObject* CloneObj = pPrefab->Instantiate();
-
-			CreateObject(CloneObj, 0);
-
-			ImGui::CloseCurrentPopup();
-		}
+		DeleteObject(pObject);
+		
+		ImGui::CloseCurrentPopup();
 	}
-	*/
+
 	if (ImGui::Button("Close"))
 	{
 		ImGui::CloseCurrentPopup();

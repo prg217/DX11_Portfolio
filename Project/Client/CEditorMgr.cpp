@@ -61,7 +61,6 @@ void CEditorMgr::Tick()
     ObserveContent();
 }
 
-
 void CEditorMgr::ShortCut()
 {
     if (KEY_TAP(KEY::I))

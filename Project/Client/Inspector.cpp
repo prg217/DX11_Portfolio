@@ -105,7 +105,6 @@ void Inspector::Update()
 	string saveObjName = strObjectName;
 	ImGui::Text("Object Name");
 	ImGui::SameLine(108);		
-	//ImGui::InputText("##ObjectName", (char*)strObjectName.c_str(), strObjectName.length(), ImGuiInputTextFlags_ReadOnly);
 	ImGui::InputText("##ObjectName", (char*)strObjectName.c_str(), strObjectName.length());
 
 	// 오브젝트 이름 바꾸기

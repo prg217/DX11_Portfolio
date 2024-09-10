@@ -14,6 +14,7 @@ CGrassScript::CGrassScript()
 	, m_SaveTime(0.f)
 	, m_GlowingActive(false)
 {
+	AddScriptParam(SCRIPT_PARAM::INT, "GrassType", &m_GrassType);
 }
 
 CGrassScript::CGrassScript(const CGrassScript& _Origin)

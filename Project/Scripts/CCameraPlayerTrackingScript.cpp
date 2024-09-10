@@ -9,8 +9,7 @@
 CCameraPlayerTrackingScript::CCameraPlayerTrackingScript()
 	: CScript(UINT(SCRIPT_TYPE::CAMERAPLAYERTRACKINGSCRIPT))
 	, m_IsMove(true)
-	, m_XSpeed(20.f)
-	, m_YSpeed(50.f)
+	, m_Speed(2000.f)
 	, m_pPlayer(nullptr)
 {
 }
@@ -69,26 +68,12 @@ void CCameraPlayerTrackingScript::OrthoGraphicMove()
 	{
 		// 방향 벡터 계산
 		Vec3 direction = playerPos - myPos;
+		// 방향 벡터를 정규화
+		direction.Normalize();
+
+		myPos.x += direction.x * m_Speed * DT;
+		myPos.y += direction.y * m_Speed * DT;
 		pos = myPos;
-		if ((direction.x <= -1.f || direction.x >= 1.f))
-		{
-			// 방향 벡터를 정규화
-			direction.Normalize();
-
-			// 속도를 곱하여 위치 업데이트
-			myPos.x = myPos.x + (direction.x * m_XSpeed);
-			pos = myPos;
-		}
-
-		if ((direction.y <= -0.2f || direction.y >= 0.2f))
-		{
-			// 방향 벡터를 정규화
-			direction.Normalize();
-
-			// 속도를 곱하여 위치 업데이트
-			myPos.y = myPos.y + (direction.y * m_YSpeed);
-			pos = myPos;
-		}
 	}
 	else
 	{
@@ -100,25 +85,25 @@ void CCameraPlayerTrackingScript::OrthoGraphicMove()
 			{
 			case CameraDontMove::LEFT:
 			{
-				float posY = myPos.y + (direction.y * m_YSpeed);
+				float posY = myPos.y + (direction.y * m_Speed * DT);
 				pos = Vec3(myPos.x, posY, 0.f);
 			}
 				break;
 			case CameraDontMove::RIGHT:
 			{
-				float posY = myPos.y + (direction.y * m_YSpeed);
+				float posY = myPos.y + (direction.y * m_Speed * DT);
 				pos = Vec3(myPos.x, posY, 0.f);
 			}
 				break;
 			case CameraDontMove::UP:
 			{
-				float posX = myPos.x + (direction.x * m_XSpeed);
+				float posX = myPos.x + (direction.x * m_Speed * DT);
 				pos = Vec3(posX, myPos.y, 0.f);
 			}
 				break;
 			case CameraDontMove::DOWN:
 			{
-				float posX = myPos.x + (direction.x * m_XSpeed);
+				float posX = myPos.x + (direction.x * m_Speed * DT);
 				pos = Vec3(posX, myPos.y, 0.f);
 			}
 				break;

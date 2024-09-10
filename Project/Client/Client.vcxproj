@@ -178,6 +178,7 @@
     <ClInclude Include="SE_Detail.h" />
     <ClInclude Include="SE_Sub.h" />
     <ClInclude Include="SoundUI.h" />
+    <ClInclude Include="SpriteComUI.h" />
     <ClInclude Include="SpriteEditor.h" />
     <ClInclude Include="SpriteUI.h" />
     <ClInclude Include="TextureUI.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="SE_Detail.cpp" />
     <ClCompile Include="SE_Sub.cpp" />
     <ClCompile Include="SoundUI.cpp" />
+    <ClCompile Include="SpriteComUI.cpp" />
     <ClCompile Include="SpriteEditor.cpp" />
     <ClCompile Include="SpriteUI.cpp" />
     <ClCompile Include="TextureUI.cpp" />

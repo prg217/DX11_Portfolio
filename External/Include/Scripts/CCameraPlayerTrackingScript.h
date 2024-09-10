@@ -16,8 +16,7 @@ class CCameraPlayerTrackingScript :
 {
 private:
     bool   m_IsMove;
-    float  m_XSpeed;
-    float  m_YSpeed;
+    float  m_Speed;
 
     CGameObject* m_pPlayer;
     CameraDontMove m_Dir;

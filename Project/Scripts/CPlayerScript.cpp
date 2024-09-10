@@ -35,8 +35,7 @@ CPlayerScript::CPlayerScript()
 	, m_IsPush(false)
 {	
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "PlayerSpeed", &m_Speed);
-	AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
-	//AddScriptParam(SCRIPT_PARAM::BOOL1, "Swing", &m_IsSwing);
+	//AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
 }
 
 CPlayerScript::~CPlayerScript()
