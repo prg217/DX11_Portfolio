@@ -74,17 +74,14 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"JellyPush_Yellow");
+	//pObj->SetName(L"RedJelly_Frame");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
-	//pObj->AddComponent(new CRigidBody);
 	//pObj->AddComponent(new CSpriteComponent);
-	//pObj->AddComponent(new CInteractionScript);
-	//pObj->AddComponent(new CPushScript);
 	//
 	//pObj->Transform()->SetRelativePos(Vec3(100, 0, 0));
-	//pObj->Transform()->SetRelativeScale(Vec3(100, 100, 100));
+	//pObj->Transform()->SetRelativeScale(Vec3(100, 100, 0));
 	//
 	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	//pObj->MeshRender()->SetMaterial(pMtrl);
@@ -93,7 +90,7 @@ void CTestLevel::CreateTestLevel()
 	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	//pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
 	//
-	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_yellow.sprite");
+	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\stonePushableFrame.sprite");
 	//pObj->SpriteComponent()->AddSprite(pSprite);
 	//
 	//pLoadedLevel->AddObject(6, pObj);

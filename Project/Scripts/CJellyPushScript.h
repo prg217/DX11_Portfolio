@@ -40,7 +40,7 @@ public:
 private:
     void SetDestinationMove(CGameObject* _Destination); // 목적지까지 이동 셋팅
     void DestinationMove();
-    void CreateBlue();
+    void CreateBigJellyPush(JellyPushType _Type);
 
 public:
     JellyPushType GetJellyPushType() { return m_Type; }

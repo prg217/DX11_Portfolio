@@ -46,9 +46,10 @@ void CJellyPushScript::Tick()
 			switch (m_Type)
 			{
 			case JellyPushType::MAGENTA:
-				CreateBlue();
+				CreateBigJellyPush(JellyPushType::BLUE);
 				break;
 			case JellyPushType::YELLOW:
+				CreateBigJellyPush(JellyPushType::GREEN);
 				break;
 			default:
 				break;
@@ -58,9 +59,10 @@ void CJellyPushScript::Tick()
 			switch (m_Type)
 			{
 			case JellyPushType::CYAN:
-				CreateBlue();
+				CreateBigJellyPush(JellyPushType::BLUE);
 				break;
 			case JellyPushType::YELLOW:
+				CreateBigJellyPush(JellyPushType::RED);
 				break;
 			default:
 				break;
@@ -70,8 +72,10 @@ void CJellyPushScript::Tick()
 			switch (m_Type)
 			{
 			case JellyPushType::CYAN:
+				CreateBigJellyPush(JellyPushType::GREEN);
 				break;
 			case JellyPushType::MAGENTA:
+				CreateBigJellyPush(JellyPushType::RED);
 				break;
 			default:
 				break;
@@ -168,10 +172,10 @@ void CJellyPushScript::DestinationMove()
 	GetOwner()->Transform()->SetRelativePos(pos);
 }
 
-void CJellyPushScript::CreateBlue()
+void CJellyPushScript::CreateBigJellyPush(JellyPushType _Type)
 {
 	CGameObject* jelly = new CGameObject;
-	jelly->SetName(L"JellyPush_Blue");
+
 	jelly->AddComponent(new CTransform);
 	jelly->AddComponent(new CCollider2D);
 	jelly->AddComponent(new CMeshRender);
@@ -182,7 +186,7 @@ void CJellyPushScript::CreateBlue()
 
 	jelly->Transform()->SetIndependentScale(true);
 	jelly->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
-	jelly->Transform()->SetRelativeScale(Vec3(120.f, 120.f, 0.f));
+	jelly->Transform()->SetRelativeScale(Vec3(150.f, 150.f, 0.f));
 
 	jelly->Collider2D()->SetIndependentScale(false);
 	jelly->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
@@ -191,7 +195,25 @@ void CJellyPushScript::CreateBlue()
 	jelly->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	jelly->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 
-	Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_blue.sprite");
+	Ptr<CSprite> pSprite;
+	switch (_Type)
+	{
+	case JellyPushType::BLUE:
+		jelly->SetName(L"JellyPush_Blue");
+		pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_blue.sprite");
+		break;
+	case JellyPushType::GREEN:
+		jelly->SetName(L"JellyPush_Green");
+		pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_green.sprite");
+		break;
+	case JellyPushType::RED:
+		jelly->SetName(L"JellyPush_Red");
+		pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_red.sprite");
+		break;
+	default:
+		break;
+	}
+
 	jelly->SpriteComponent()->AddSprite(pSprite);
 
 	CreateObject(jelly, 6);
