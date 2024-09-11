@@ -91,7 +91,7 @@ void CLiftScript::Tick()
 		}
 		if (m_pPlayer->FlipBookComponent()->GetIsFinish())
 		{
-			GetOwner()->Transform()->SetRelativePos(Vec3(0.f, 50.f, 50.f));
+			GetOwner()->Transform()->SetRelativePos(Vec3(0.f, 50.f, -50.f));
 			m_Start = false;
 		}
 	}
@@ -206,7 +206,7 @@ void CLiftScript::Tick()
 			CScript* pScript = pParticleObj->GetScript("CCountDownDeleteScript");
 			CCountDownDeleteScript* pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
 			pCountDown->SetSaveTime(TIME);
-			pCountDown->SetDeadTime(4.f);
+			pCountDown->SetDeadTime(3.f);
 
 			Vec3 spawnPos = GetOwner()->Transform()->GetRelativePos();
 

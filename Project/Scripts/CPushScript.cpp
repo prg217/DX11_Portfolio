@@ -80,6 +80,11 @@ void CPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, 
 	{
 		return;
 	}
+	// 플레이어의 자식이면 return
+	if (_OtherObject->GetParent() == m_pPlayer)
+	{
+		return;
+	}
 
 	if (m_pPlayer == _OtherObject)
 	{

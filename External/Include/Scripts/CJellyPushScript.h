@@ -3,7 +3,6 @@
 
 enum class JellyPushType
 {
-    // 
     CYAN,
     MAGENTA,
     YELLOW,
@@ -19,6 +18,8 @@ class CJellyPushScript :
 private:
     JellyPushType m_Type;
 
+    bool m_IsOverlap;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -29,6 +30,13 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+
+private:
+    void CreateBlue();
+
+public:
+    JellyPushType GetJellyPushType() { return m_Type; }
+    bool IsOverlap() { return m_IsOverlap; }
 
 public:
     CLONE(CJellyPushScript);
