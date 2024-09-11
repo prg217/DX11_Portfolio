@@ -81,7 +81,7 @@ void CTestLevel::CreateTestLevel()
 	//pObj->AddComponent(new CSpriteComponent);
 	//
 	//pObj->Transform()->SetRelativePos(Vec3(100, 0, 0));
-	//pObj->Transform()->SetRelativeScale(Vec3(100, 100, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 0));
 	//
 	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	//pObj->MeshRender()->SetMaterial(pMtrl);
