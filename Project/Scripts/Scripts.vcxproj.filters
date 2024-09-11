@@ -25,6 +25,9 @@
     <Filter Include="Scripts\Interaction\NPC">
       <UniqueIdentifier>{54ad96e4-87b3-438a-8f52-9e3cce7fefa2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Obstacle">
+      <UniqueIdentifier>{08ff55ef-4673-47f6-8a7e-db27314cc058}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -87,6 +90,9 @@
     <ClInclude Include="CPlayerCameraScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
+    <ClInclude Include="CJellyPushScript.h">
+      <Filter>Scripts\Obstacle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -148,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="CPlayerCameraScript.cpp">
       <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CJellyPushScript.cpp">
+      <Filter>Scripts\Obstacle</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -81,6 +81,8 @@ void CCollisionMgr::CollisionBtwLayer(UINT _Left, UINT _Right)
 			CCollider2D* pRightCol = vecRight[j]->Collider2D();
 			if (nullptr == pRightCol)
 				continue;
+			if (pLeftCol == pRightCol)
+				continue;
 
 			COLLIDER_ID id = {};
 

@@ -405,12 +405,14 @@ void CTestLevel::CreateTestLevel()
 	CCollisionMgr::GetInst()->CollisionCheck(3, 4); // 플레이어, 몬스터
 	CCollisionMgr::GetInst()->CollisionCheck(3, 6); // 플레이어, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(5, 6); // 플레이어 상호작용 감지, 상호작용
+	CCollisionMgr::GetInst()->CollisionCheck(6, 6); // 상호작용, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(7, 6); // 플레이어 채 휘두르기, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(3, 28); // 플레이어, 블록
 	CCollisionMgr::GetInst()->CollisionCheck(4, 28); // 몬스터, 블록
 	CCollisionMgr::GetInst()->CollisionCheck(6, 28); // 상호작용, 블록
 
 	CCollisionMgr::GetInst()->CollisionCheck(3, 29); // 플레이어, 카메라 블록
+	CCollisionMgr::GetInst()->CollisionCheck(6, 29); // 상호작용, 카메라 블록
 	CCollisionMgr::GetInst()->CollisionCheck(29, 30); // 카메라 블록, 카메라
 }
 

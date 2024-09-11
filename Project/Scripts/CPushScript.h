@@ -12,8 +12,10 @@ private:
     CGameObject* m_pPlayer;
     CPlayerScript* m_pPlayerScript;
 
-    float m_PlayerSpeed;
+    float m_Speed;
     OguAniState m_PlayerCurAS;
+
+    bool m_IsPush;
 
 public:
     virtual void Begin() override;
@@ -25,6 +27,10 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+
+public:
+    void SetIsPush(bool _Push) { m_IsPush = _Push; }
+    void SetSpeed(float _Speed) { m_Speed = _Speed; }
 
 public:
     CLONE(CPushScript);
