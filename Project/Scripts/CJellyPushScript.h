@@ -3,6 +3,8 @@
 
 enum class JellyPushType
 {
+    NONE,
+
     CYAN,
     MAGENTA,
     YELLOW,
@@ -17,8 +19,12 @@ class CJellyPushScript :
 {
 private:
     JellyPushType m_Type;
+    JellyPushType m_OtherObjType;
 
     bool m_IsOverlap;
+    CGameObject* m_Destination;
+    float m_Speed;
+    Vec3 m_OtherPos;
 
 public:
     virtual void Begin() override;
@@ -32,6 +38,8 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
 
 private:
+    void SetDestinationMove(CGameObject* _Destination); // 목적지까지 이동 셋팅
+    void DestinationMove();
     void CreateBlue();
 
 public:

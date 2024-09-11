@@ -3,17 +3,26 @@
 
 #include "CInteractionScript.h"
 #include "CPushScript.h"
+#include "CCountDownDeleteScript.h"
 
 CJellyPushScript::CJellyPushScript()
 	: CScript(UINT(SCRIPT_TYPE::JELLYPUSHSCRIPT))
+	, m_Type(JellyPushType::NONE)
+	, m_OtherObjType(JellyPushType::NONE)
 	, m_IsOverlap(false)
+	, m_Destination(nullptr)
+	, m_Speed(100.f)
 {
 	AddScriptParam(SCRIPT_PARAM::INT, "JellyPushType", &m_Type);
 }
 
 CJellyPushScript::CJellyPushScript(const CJellyPushScript& _Origin)
 	: CScript(_Origin)
+	, m_Type(JellyPushType::NONE)
+	, m_OtherObjType(JellyPushType::NONE)
 	, m_IsOverlap(false)
+	, m_Destination(nullptr)
+	, m_Speed(100.f)
 {
 }
 
@@ -27,41 +36,17 @@ void CJellyPushScript::Begin()
 
 void CJellyPushScript::Tick()
 {
-}
+	DestinationMove();
 
-void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
-{
-	// 넣는 구멍에 닿았으면 자동으로 가운데에 안착
-
-	// 미니 젤리 일 경우
-	// 같은 색이면 같이 밀려짐
-	// 다른 색이면 그 색에 따라 합성됨(서로 위치 가운데 지점으로 가다가 합쳐짐)
-	CScript* script = _OtherObject->GetScript("CJellyPushScript");
-	CJellyPushScript* jellyPushScript = dynamic_cast<CJellyPushScript*>(script);
-
-	if (jellyPushScript != nullptr)
+	if (GetOwner()->IsDead())
 	{
-		// 자신이 이미 오버랩을 수행했다면 return
-		if (m_IsOverlap)
-		{
-			return;
-		}
-		// 상대방이 이미 오버랩 코드를 실행하고 있으면 return
-		if (jellyPushScript->IsOverlap())
-		{
-			// 이제 부딪친 곳으로 가다가 사라지는 함수는 넣어줘야 함
-			return;
-		}
-
-		m_IsOverlap = true;
-		switch (jellyPushScript->GetJellyPushType())
+		switch (m_OtherObjType)
 		{
 		case JellyPushType::CYAN:
 			switch (m_Type)
 			{
 			case JellyPushType::MAGENTA:
 				CreateBlue();
-				DeleteObject(GetOwner());
 				break;
 			case JellyPushType::YELLOW:
 				break;
@@ -74,7 +59,6 @@ void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 			{
 			case JellyPushType::CYAN:
 				CreateBlue();
-				DeleteObject(GetOwner());
 				break;
 			case JellyPushType::YELLOW:
 				break;
@@ -97,6 +81,39 @@ void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 			break;
 		}
 	}
+}
+
+void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
+	// 넣는 구멍에 닿았으면 자동으로 가운데에 안착
+
+	// 미니 젤리 일 경우
+	// 같은 색이면 같이 밀려짐
+	// 다른 색이면 그 색에 따라 합성됨(서로 위치 가운데 지점으로 가다가 합쳐짐)
+	CScript* script = _OtherObject->GetScript("CJellyPushScript");
+	CJellyPushScript* jellyPushScript = dynamic_cast<CJellyPushScript*>(script);
+
+	if (jellyPushScript != nullptr)
+	{
+		// 자신이 이미 오버랩을 수행했다면 return
+		if (m_IsOverlap)
+		{
+			return;
+		}
+
+		// _OtherObject를 향해 이동
+		SetDestinationMove(_OtherObject);
+
+		// 상대방이 이미 오버랩 코드를 실행하고 있으면 return
+		if (jellyPushScript->IsOverlap())
+		{
+			// 이제 부딪친 곳으로 가다가 사라지는 함수는 넣어줘야 함
+			return;
+		}
+
+		m_IsOverlap = true;
+		m_OtherObjType = jellyPushScript->GetJellyPushType();
+	}
 
 	// 큰 젤리 일 경우
 	// 들면 분리되어 랜덤 1개를 플레이어가 들게 됨
@@ -118,6 +135,37 @@ void CJellyPushScript::SaveToFile(FILE* _File)
 void CJellyPushScript::LoadFromFile(FILE* _File)
 {
 	fread(&m_Type, sizeof(JellyPushType), 1, _File);
+}
+
+void CJellyPushScript::SetDestinationMove(CGameObject* _Destination)
+{
+	m_Destination = _Destination;
+	m_OtherPos = m_Destination->Transform()->GetRelativePos();
+	GetOwner()->AddComponent(new CCountDownDeleteScript);
+	CScript* script = GetOwner()->GetScript("CCountDownDeleteScript");
+	CCountDownDeleteScript* countDown = dynamic_cast<CCountDownDeleteScript*>(script);
+	//countDown->SetSaveTime(TIME);
+	countDown->SetDeadTime(0.3f);
+}
+
+void CJellyPushScript::DestinationMove()
+{
+	if (m_Destination == nullptr)
+	{
+		return;
+	}
+
+	Vec3 myPos = GetOwner()->Transform()->GetRelativePos();
+	Vec3 pos;
+	// 방향 벡터 계산
+	Vec3 direction = m_OtherPos - myPos;
+	// 방향 벡터를 정규화
+	direction.Normalize();
+
+	myPos.x += direction.x * m_Speed * DT;
+	myPos.y += direction.y * m_Speed * DT;
+	pos = myPos;
+	GetOwner()->Transform()->SetRelativePos(pos);
 }
 
 void CJellyPushScript::CreateBlue()

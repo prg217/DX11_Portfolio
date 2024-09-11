@@ -3,14 +3,14 @@
 
 CCountDownDeleteScript::CCountDownDeleteScript()
 	: CScript(UINT(SCRIPT_TYPE::COUNTDOWNDELETESCRIPT))
-	, m_SaveTime(0.f)
+	, m_SaveTime(TIME)
 	, m_DeadTime(5.f)
 {
 }
 
 CCountDownDeleteScript::CCountDownDeleteScript(const CCountDownDeleteScript& _Origin)
 	: CScript(_Origin)
-	, m_SaveTime(0.f)
+	, m_SaveTime(TIME)
 	, m_DeadTime(5.f)
 {
 }
@@ -22,7 +22,7 @@ CCountDownDeleteScript::~CCountDownDeleteScript()
 
 void CCountDownDeleteScript::Begin()
 {
-	m_SaveTime = TIME;
+	//m_SaveTime = TIME;
 }
 
 void CCountDownDeleteScript::Tick()
