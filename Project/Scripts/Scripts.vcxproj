@@ -172,6 +172,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CGlowingPlantsScript.h" />
     <ClInclude Include="CGrassScript.h" />
     <ClInclude Include="CInteractionScript.h" />
+    <ClInclude Include="CJellyPushFrameScript.h" />
     <ClInclude Include="CJellyPushScript.h" />
     <ClInclude Include="CLiftScript.h" />
     <ClInclude Include="CMissileScript.h" />
@@ -195,6 +196,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CGlowingPlantsScript.cpp" />
     <ClCompile Include="CGrassScript.cpp" />
     <ClCompile Include="CInteractionScript.cpp" />
+    <ClCompile Include="CJellyPushFrameScript.cpp" />
     <ClCompile Include="CJellyPushScript.cpp" />
     <ClCompile Include="CLiftScript.cpp" />
     <ClCompile Include="CMissileScript.cpp" />

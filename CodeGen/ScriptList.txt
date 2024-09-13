@@ -4,6 +4,7 @@ CCountDownDeleteScript
 CGlowingPlantsScript
 CGrassScript
 CInteractionScript
+CJellyPushFrameScript
 CJellyPushScript
 CLiftScript
 CMissileScript

@@ -93,6 +93,9 @@
     <ClInclude Include="CJellyPushScript.h">
       <Filter>Scripts\Obstacle</Filter>
     </ClInclude>
+    <ClInclude Include="CJellyPushFrameScript.h">
+      <Filter>Scripts\Obstacle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -156,6 +159,9 @@
       <Filter>Scripts\Player</Filter>
     </ClCompile>
     <ClCompile Include="CJellyPushScript.cpp">
+      <Filter>Scripts\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="CJellyPushFrameScript.cpp">
       <Filter>Scripts\Obstacle</Filter>
     </ClCompile>
   </ItemGroup>

@@ -28,6 +28,9 @@ private:
 
     float m_SaveSpawnTime;
 
+    bool m_Shaking;
+    float m_SaveShakingTime;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -45,6 +48,7 @@ private:
     void CreateBigJellyPush(JellyPushType _Type);
     CGameObject* CreateMiniJellyPush(JellyPushType _Type);
     void CreateParticle();
+    void Shaking(); // Èçµé¸²
 
 public:
     JellyPushType GetJellyPushType() { return m_Type; }

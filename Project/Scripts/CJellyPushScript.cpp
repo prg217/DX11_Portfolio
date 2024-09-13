@@ -14,6 +14,8 @@ CJellyPushScript::CJellyPushScript()
 	, m_Destination(nullptr)
 	, m_Speed(100.f)
 	, m_SaveSpawnTime(TIME)
+	, m_Shaking(false)
+	, m_SaveShakingTime(0)
 {
 	AddScriptParam(SCRIPT_PARAM::INT, "JellyPushType", &m_Type);
 }
@@ -26,6 +28,8 @@ CJellyPushScript::CJellyPushScript(const CJellyPushScript& _Origin)
 	, m_Destination(nullptr)
 	, m_Speed(100.f)
 	, m_SaveSpawnTime(TIME)
+	, m_Shaking(false)
+	, m_SaveShakingTime(0)
 {
 }
 
@@ -39,6 +43,11 @@ void CJellyPushScript::Begin()
 
 void CJellyPushScript::Tick()
 {
+	if (m_Shaking)
+	{
+		Shaking();
+	}
+
 	DestinationMove();
 
 	if (GetOwner()->IsDead())
@@ -92,6 +101,12 @@ void CJellyPushScript::Tick()
 
 void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	// 플레이어와 닿았으면 흔들린다.
+	if (_OtherObject->GetLayerIdx() == 3)
+	{
+		m_Shaking = true;
+	}
+
 	// 부모가 있으면 return
 	if (GetOwner()->GetParent() != nullptr)
 	{
@@ -113,29 +128,51 @@ void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 	// 미니 젤리 일 경우
 	// 같은 색이면 같이 밀려짐
 	// 다른 색이면 그 색에 따라 합성됨(서로 위치 가운데 지점으로 가다가 합쳐짐)
-	CScript* script = _OtherObject->GetScript("CJellyPushScript");
-	CJellyPushScript* jellyPushScript = dynamic_cast<CJellyPushScript*>(script);
-
-	if (jellyPushScript != nullptr)
+	switch (m_Type)
 	{
-		// 자신이 이미 오버랩을 수행했다면 return
-		if (m_IsOverlap)
+	case JellyPushType::CYAN:
+	case JellyPushType::MAGENTA:
+	case JellyPushType::YELLOW:
+	{
+		CScript* script = _OtherObject->GetScript("CJellyPushScript");
+		CJellyPushScript* jellyPushScript = dynamic_cast<CJellyPushScript*>(script);
+
+		if (jellyPushScript != nullptr)
 		{
-			return;
+			// 자신이 이미 오버랩을 수행했다면 return
+			if (m_IsOverlap)
+			{
+				return;
+			}
+
+			switch (jellyPushScript->GetJellyPushType())
+			{
+			case JellyPushType::CYAN:
+			case JellyPushType::MAGENTA:
+			case JellyPushType::YELLOW:
+			{
+				// _OtherObject를 향해 이동
+				SetDestinationMove(_OtherObject);
+
+				// 상대방이 이미 오버랩 코드를 실행하고 있으면 return
+				if (jellyPushScript->IsOverlap())
+				{
+					// 이제 부딪친 곳으로 가다가 사라지는 함수는 넣어줘야 함
+					return;
+				}
+
+				m_IsOverlap = true;
+				m_OtherObjType = jellyPushScript->GetJellyPushType();
+			}
+				break;
+			default:
+				break;
+			}
 		}
-
-		// _OtherObject를 향해 이동
-		SetDestinationMove(_OtherObject);
-
-		// 상대방이 이미 오버랩 코드를 실행하고 있으면 return
-		if (jellyPushScript->IsOverlap())
-		{
-			// 이제 부딪친 곳으로 가다가 사라지는 함수는 넣어줘야 함
-			return;
-		}
-
-		m_IsOverlap = true;
-		m_OtherObjType = jellyPushScript->GetJellyPushType();
+	}
+		break;
+	default:
+		break;
 	}
 
 	// 큰 젤리 일 경우
@@ -384,6 +421,27 @@ void CJellyPushScript::CreateParticle()
 	pParticleObj->Transform()->SetRelativePos(Transform()->GetRelativePos());
 
 	CreateObject(pParticleObj, 0);
+}
+
+void CJellyPushScript::Shaking()
+{
+	if (m_SaveShakingTime == 0.f)
+	{
+		m_SaveShakingTime = TIME;
+	}
+	Vec3 scale = GetOwner()->Transform()->GetRelativeScale();
+
+	float shaking = 3.f;
+	float amplitude = 5.f; // 범위
+	float x = 150.f + amplitude * sin(shaking * 2.0f * 3.14159f * TIME);
+	float y = 150.f + amplitude * sin(-shaking * 2.0f * 3.14159f * TIME);
+	GetOwner()->Transform()->SetRelativeScale(Vec3(x, y, 0));
+
+	if (TIME - m_SaveShakingTime >= 0.6f)
+	{
+		m_Shaking = false;
+		m_SaveShakingTime = 0.f;
+	}
 }
 
 CGameObject* CJellyPushScript::Speparation()
