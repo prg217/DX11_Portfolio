@@ -43,7 +43,7 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
 
 private:
-    void SetDestinationMove(CGameObject* _Destination); // 목적지까지 이동 셋팅
+    void SetDestinationMove(CGameObject* _Destination, bool _Dead); // 목적지까지 이동 셋팅
     void DestinationMove();
     void CreateBigJellyPush(JellyPushType _Type);
     CGameObject* CreateMiniJellyPush(JellyPushType _Type);

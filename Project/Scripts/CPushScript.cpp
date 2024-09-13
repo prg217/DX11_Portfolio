@@ -85,6 +85,11 @@ void CPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, 
 	{
 		return;
 	}
+	// 그 외 예외 처리
+	if (_OtherObject->GetScript("CJellyPushFrameScript") != nullptr || _OtherObject->GetScript("CGrassScript") != nullptr)
+	{
+		return;
+	}
 
 	if (m_pPlayer == _OtherObject)
 	{

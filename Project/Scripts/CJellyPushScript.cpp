@@ -18,6 +18,7 @@ CJellyPushScript::CJellyPushScript()
 	, m_SaveShakingTime(0)
 {
 	AddScriptParam(SCRIPT_PARAM::INT, "JellyPushType", &m_Type);
+	AddScriptParam(SCRIPT_PARAM::INT, "Speed", &m_Speed);
 }
 
 CJellyPushScript::CJellyPushScript(const CJellyPushScript& _Origin)
@@ -123,7 +124,13 @@ void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 		return;
 	}
 
-	// 넣는 구멍에 닿았으면 자동으로 가운데에 안착
+	// JellyPushFrame에 닿았으면 자동으로 가운데에 안착
+	if (_OtherObject->GetScript("CJellyPushFrameScript") != nullptr)
+	{
+		// _OtherObject를 향해 이동
+		m_Speed = 3000.f;
+		SetDestinationMove(_OtherObject, false);
+	}
 
 	// 미니 젤리 일 경우
 	// 같은 색이면 같이 밀려짐
@@ -152,7 +159,8 @@ void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 			case JellyPushType::YELLOW:
 			{
 				// _OtherObject를 향해 이동
-				SetDestinationMove(_OtherObject);
+				m_Speed = 100.f;
+				SetDestinationMove(_OtherObject, true);
 
 				// 상대방이 이미 오버랩 코드를 실행하고 있으면 return
 				if (jellyPushScript->IsOverlap())
@@ -185,6 +193,13 @@ void CJellyPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObj
 
 void CJellyPushScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	// JellyPushFrame에서 벗어나면
+	if (_OtherObject->GetScript("CJellyPushFrameScript") != nullptr)
+	{
+		// 이동 해제
+		m_Speed = 100.f;
+		m_Destination = nullptr;
+	}
 }
 
 void CJellyPushScript::SaveToFile(FILE* _File)
@@ -197,15 +212,18 @@ void CJellyPushScript::LoadFromFile(FILE* _File)
 	fread(&m_Type, sizeof(JellyPushType), 1, _File);
 }
 
-void CJellyPushScript::SetDestinationMove(CGameObject* _Destination)
+void CJellyPushScript::SetDestinationMove(CGameObject* _Destination, bool _Dead)
 {
 	m_Destination = _Destination;
 	m_OtherPos = m_Destination->Transform()->GetRelativePos();
-	GetOwner()->AddComponent(new CCountDownDeleteScript);
-	CScript* script = GetOwner()->GetScript("CCountDownDeleteScript");
-	CCountDownDeleteScript* countDown = dynamic_cast<CCountDownDeleteScript*>(script);
-	//countDown->SetSaveTime(TIME);
-	countDown->SetDeadTime(0.3f);
+	if (_Dead)
+	{
+		GetOwner()->AddComponent(new CCountDownDeleteScript);
+		CScript* script = GetOwner()->GetScript("CCountDownDeleteScript");
+		CCountDownDeleteScript* countDown = dynamic_cast<CCountDownDeleteScript*>(script);
+
+		countDown->SetDeadTime(0.3f);
+	}
 }
 
 void CJellyPushScript::DestinationMove()
