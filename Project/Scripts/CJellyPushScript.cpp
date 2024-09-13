@@ -89,6 +89,16 @@ void CJellyPushScript::Tick()
 
 void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	// 부모가 있으면 return
+	if (GetOwner()->GetParent() != nullptr)
+	{
+		return;
+	}
+	if (_OtherObject->GetParent() != nullptr)
+	{
+		return;
+	}
+
 	// 넣는 구멍에 닿았으면 자동으로 가운데에 안착
 
 	// 미니 젤리 일 경우

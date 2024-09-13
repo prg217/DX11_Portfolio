@@ -3,6 +3,7 @@
 #include <Engine/define.h>
 
 class CPlayerScript;
+class CInteractionScript;
 enum class OguAniState;
 
 class CLiftScript :
@@ -17,6 +18,8 @@ private:
     bool            m_Start;
     bool            m_End;
 
+    CInteractionScript* m_pInteractionScript;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -30,6 +33,10 @@ public:
 public:
     void Start();
     void End();
+
+    void Starting();
+    void Moving();
+    void Ending();
 
 public:
     CLONE(CLiftScript);

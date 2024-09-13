@@ -5,6 +5,9 @@
 class CInteractionScript :
     public CScript
 {
+private:
+    bool m_OutlineCheck;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -14,6 +17,9 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+
+public:
+    void SetOutlineCheck(bool _Check);
 
 public:
     CLONE(CInteractionScript);

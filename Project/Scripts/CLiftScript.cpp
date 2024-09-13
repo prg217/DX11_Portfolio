@@ -3,6 +3,7 @@
 
 #include "CPlayerScript.h"
 #include "CCountDownDeleteScript.h"
+#include "CInteractionScript.h"
 
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
@@ -14,6 +15,7 @@ CLiftScript::CLiftScript()
 	, m_pPlayerScript(nullptr)
 	, m_Start(false)
 	, m_End(false)
+	, m_pInteractionScript(nullptr)
 {
 }
 
@@ -23,6 +25,7 @@ CLiftScript::CLiftScript(const CLiftScript& _Origin)
 	, m_pPlayerScript(_Origin.m_pPlayerScript)
 	, m_Start(false)
 	, m_End(false)
+	, m_pInteractionScript(nullptr)
 {
 }
 
@@ -37,12 +40,59 @@ void CLiftScript::Begin()
 
 	CScript* script = m_pPlayer->GetScript("CPlayerScript");
 	m_pPlayerScript = dynamic_cast<CPlayerScript*>(script);
+
+	script = GetOwner()->GetScript("CInteractionScript");
+	m_pInteractionScript = dynamic_cast<CInteractionScript*>(script);
 }
 
 void CLiftScript::Tick()
 {
+	Starting();
+
+	Moving();
+
+	Ending();
+	
+
+	
+}
+
+void CLiftScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
+
+}
+
+void CLiftScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
+
+}
+
+void CLiftScript::SaveToFile(FILE* _File)
+{
+}
+
+void CLiftScript::LoadFromFile(FILE* _File)
+{
+}
+
+void CLiftScript::Start()
+{
+	m_Start = true;
+	GetOwner()->SpriteComponent()->SetOutline(false);
+}
+
+void CLiftScript::End()
+{
+	m_End = true;
+}
+
+void CLiftScript::Starting()
+{
 	if (m_Start)
 	{
+		// 상호작용 쪽에 외곽선 판정 예외 요청
+		m_pInteractionScript->SetOutlineCheck(false);
+
 		if (m_pPlayer->FlipBookComponent()->GetCurIdx() == 4)
 		{
 			// 중간 위치
@@ -95,9 +145,45 @@ void CLiftScript::Tick()
 			m_Start = false;
 		}
 	}
+}
 
+void CLiftScript::Moving()
+{
+	// m_Start와 m_End가 false고, 플레이어 자식이고, 움직이고 있다면
+	// 위 아래로 흔들리게 하기
+	if (!m_Start && !m_End
+		&& (GetOwner()->GetParent() == m_pPlayer))
+	{
+		m_PlayerCurAS = m_pPlayerScript->GetCurAS();
+
+		switch (m_PlayerCurAS)
+		{
+		case OguAniState::LIFT_WALK_DOWN:
+		case OguAniState::LIFT_WALK_UP:
+		case OguAniState::LIFT_WALK_LEFT:
+		case OguAniState::LIFT_WALK_RIGHT:
+		case OguAniState::LIFT_WALK_LEFTDOWN:
+		case OguAniState::LIFT_WALK_LEFTUP:
+		case OguAniState::LIFT_WALK_RIGHTDOWN:
+		case OguAniState::LIFT_WALK_RIGHTUP:
+			Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+
+			float shaking = 3.f;
+			float amplitude = 3.f; // 범위
+			float yPos = 50.f + amplitude * sin(shaking * 2.0f * 3.14159f * TIME);
+			GetOwner()->Transform()->SetRelativePos(Vec3(pos.x, yPos, pos.z));
+			break;
+		}
+	}
+}
+
+void CLiftScript::Ending()
+{
 	if (m_End)
 	{
+		// 다시 외곽선 활성화
+		m_pInteractionScript->SetOutlineCheck(true);
+
 		// 내려놓기
 		if (m_pPlayer->FlipBookComponent()->GetCurIdx() == 1)
 		{
@@ -217,33 +303,4 @@ void CLiftScript::Tick()
 			m_End = false;
 		}
 	}
-}
-
-void CLiftScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
-{
-
-}
-
-void CLiftScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
-{
-
-}
-
-void CLiftScript::SaveToFile(FILE* _File)
-{
-}
-
-void CLiftScript::LoadFromFile(FILE* _File)
-{
-}
-
-void CLiftScript::Start()
-{
-	m_Start = true;
-	GetOwner()->SpriteComponent()->SetOutline(false);
-}
-
-void CLiftScript::End()
-{
-	m_End = true;
 }
