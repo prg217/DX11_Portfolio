@@ -4,6 +4,7 @@
 #include "CInteractionScript.h"
 #include "CPushScript.h"
 #include "CCountDownDeleteScript.h"
+#include "CLiftScript.h"
 
 CJellyPushScript::CJellyPushScript()
 	: CScript(UINT(SCRIPT_TYPE::JELLYPUSHSCRIPT))
@@ -12,6 +13,7 @@ CJellyPushScript::CJellyPushScript()
 	, m_IsOverlap(false)
 	, m_Destination(nullptr)
 	, m_Speed(100.f)
+	, m_SaveSpawnTime(TIME)
 {
 	AddScriptParam(SCRIPT_PARAM::INT, "JellyPushType", &m_Type);
 }
@@ -23,6 +25,7 @@ CJellyPushScript::CJellyPushScript(const CJellyPushScript& _Origin)
 	, m_IsOverlap(false)
 	, m_Destination(nullptr)
 	, m_Speed(100.f)
+	, m_SaveSpawnTime(TIME)
 {
 }
 
@@ -95,6 +98,12 @@ void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 		return;
 	}
 	if (_OtherObject->GetParent() != nullptr)
+	{
+		return;
+	}
+
+	// 스폰한지 얼마 안 됐으면 return
+	if (TIME - m_SaveSpawnTime < 1.f)
 	{
 		return;
 	}
@@ -184,6 +193,9 @@ void CJellyPushScript::DestinationMove()
 
 void CJellyPushScript::CreateBigJellyPush(JellyPushType _Type)
 {
+	// 합성 될 때 파티클 3개
+	CreateParticle();
+
 	CGameObject* jelly = new CGameObject;
 
 	jelly->AddComponent(new CTransform);
@@ -192,6 +204,7 @@ void CJellyPushScript::CreateBigJellyPush(JellyPushType _Type)
 	jelly->AddComponent(new CSpriteComponent);
 	jelly->AddComponent(new CRigidBody);
 	jelly->AddComponent(new CInteractionScript);
+	jelly->AddComponent(new CJellyPushScript);
 	jelly->AddComponent(new CPushScript);
 
 	jelly->Transform()->SetIndependentScale(true);
@@ -205,20 +218,26 @@ void CJellyPushScript::CreateBigJellyPush(JellyPushType _Type)
 	jelly->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	jelly->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 
+	CScript* script = jelly->GetScript("CJellyPushScript");
+	CJellyPushScript* jellyScript = dynamic_cast<CJellyPushScript*>(script);
+
 	Ptr<CSprite> pSprite;
 	switch (_Type)
 	{
 	case JellyPushType::BLUE:
 		jelly->SetName(L"JellyPush_Blue");
 		pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_blue.sprite");
+		jellyScript->SetType(JellyPushType::BLUE);
 		break;
 	case JellyPushType::GREEN:
 		jelly->SetName(L"JellyPush_Green");
 		pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_green.sprite");
+		jellyScript->SetType(JellyPushType::GREEN);
 		break;
 	case JellyPushType::RED:
 		jelly->SetName(L"JellyPush_Red");
 		pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_red.sprite");
+		jellyScript->SetType(JellyPushType::RED);
 		break;
 	default:
 		break;
@@ -227,4 +246,168 @@ void CJellyPushScript::CreateBigJellyPush(JellyPushType _Type)
 	jelly->SpriteComponent()->AddSprite(pSprite);
 
 	CreateObject(jelly, 6);
+}
+
+CGameObject* CJellyPushScript::CreateMiniJellyPush(JellyPushType _Type)
+{
+	CGameObject* jelly;
+
+	jelly = new CGameObject;
+	jelly->AddComponent(new CTransform);
+	jelly->AddComponent(new CCollider2D);
+	jelly->AddComponent(new CMeshRender);
+	jelly->AddComponent(new CSpriteComponent);
+	jelly->AddComponent(new CRigidBody);
+	jelly->AddComponent(new CInteractionScript);
+	jelly->AddComponent(new CJellyPushScript);
+	jelly->AddComponent(new CPushScript);
+	jelly->AddComponent(new CLiftScript);
+
+	jelly->Transform()->SetIndependentScale(true);
+	jelly->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
+	jelly->Transform()->SetRelativeScale(Vec3(150.f, 150.f, 0.f));
+
+	jelly->Collider2D()->SetIndependentScale(false);
+	jelly->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	jelly->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
+
+	jelly->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	jelly->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+
+	CScript* script = jelly->GetScript("CJellyPushScript");
+	CJellyPushScript* jellyScript = dynamic_cast<CJellyPushScript*>(script);
+
+	Ptr<CSprite> pSprite;
+	switch (_Type)
+	{
+	case JellyPushType::CYAN:
+		jelly->SetName(L"JellyPush_Cyan");
+		pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_cyan.sprite");
+		jellyScript->SetType(JellyPushType::CYAN);
+		break;
+	case JellyPushType::MAGENTA:
+		jelly->SetName(L"JellyPush_Magenta");
+		pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_magenta.sprite");
+		jellyScript->SetType(JellyPushType::MAGENTA);
+		break;
+	case JellyPushType::YELLOW:
+		jelly->SetName(L"JellyPush_Yellow");
+		pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellyPush_yellow.sprite");
+		jellyScript->SetType(JellyPushType::YELLOW);
+		break;
+	default:
+		break;
+	}
+	jelly->SpriteComponent()->AddSprite(pSprite);
+
+	CreateObject(jelly, 6);
+
+	return jelly;
+}
+
+void CJellyPushScript::CreateParticle()
+{
+	CGameObject* pParticleObj = new CGameObject;
+	pParticleObj->SetName(L"JellyPushParticle");
+
+	pParticleObj->AddComponent(new CTransform);
+	pParticleObj->AddComponent(new CParticleSystem);
+
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"particle\\jellyPush_0.particle";
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	pParticleObj->ParticleSystem()->LoadFromFile(File);
+	fclose(File);
+
+	// 삭제되는 시간을 지정해준다.
+	pParticleObj->AddComponent(new CCountDownDeleteScript);
+	CScript* pScript = pParticleObj->GetScript("CCountDownDeleteScript");
+	CCountDownDeleteScript* pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
+	pCountDown->SetSaveTime(TIME);
+	pCountDown->SetDeadTime(1.5f);
+
+	pParticleObj->Transform()->SetRelativePos(Transform()->GetRelativePos());
+
+	CreateObject(pParticleObj, 0);
+
+	pParticleObj = new CGameObject;
+	pParticleObj->SetName(L"JellyPushParticle");
+
+	pParticleObj->AddComponent(new CTransform);
+	pParticleObj->AddComponent(new CParticleSystem);
+
+	strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"particle\\jellyPush_1.particle";
+
+	File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	pParticleObj->ParticleSystem()->LoadFromFile(File);
+	fclose(File);
+
+	// 삭제되는 시간을 지정해준다.
+	pParticleObj->AddComponent(new CCountDownDeleteScript);
+	pScript = pParticleObj->GetScript("CCountDownDeleteScript");
+	pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
+	pCountDown->SetSaveTime(TIME);
+	pCountDown->SetDeadTime(1.5f);
+
+	pParticleObj->Transform()->SetRelativePos(Transform()->GetRelativePos());
+
+	CreateObject(pParticleObj, 0);
+
+	pParticleObj = new CGameObject;
+	pParticleObj->SetName(L"JellyPushParticle");
+
+	pParticleObj->AddComponent(new CTransform);
+	pParticleObj->AddComponent(new CParticleSystem);
+
+	strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"particle\\jellyPush_2.particle";
+
+	File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	pParticleObj->ParticleSystem()->LoadFromFile(File);
+	fclose(File);
+
+	// 삭제되는 시간을 지정해준다.
+	pParticleObj->AddComponent(new CCountDownDeleteScript);
+	pScript = pParticleObj->GetScript("CCountDownDeleteScript");
+	pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
+	pCountDown->SetSaveTime(TIME);
+	pCountDown->SetDeadTime(1.5f);
+
+	pParticleObj->Transform()->SetRelativePos(Transform()->GetRelativePos());
+
+	CreateObject(pParticleObj, 0);
+}
+
+CGameObject* CJellyPushScript::Speparation()
+{
+	DeleteObject(GetOwner());
+
+	// 하나는 그대로 남고 하나는 Lift상태로 바로 보낸다.
+	switch (m_Type)
+	{
+	case JellyPushType::BLUE:
+		CreateMiniJellyPush(JellyPushType::CYAN);
+		return CreateMiniJellyPush(JellyPushType::MAGENTA);
+		break;
+	case JellyPushType::GREEN:
+		CreateMiniJellyPush(JellyPushType::YELLOW);	
+		return CreateMiniJellyPush(JellyPushType::CYAN);
+		break;
+	case JellyPushType::RED:
+		CreateMiniJellyPush(JellyPushType::MAGENTA);
+		return CreateMiniJellyPush(JellyPushType::YELLOW);
+		break;
+	default:
+		break;
+	}
+
+	return nullptr;
 }

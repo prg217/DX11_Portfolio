@@ -26,6 +26,8 @@ private:
     float m_Speed;
     Vec3 m_OtherPos;
 
+    float m_SaveSpawnTime;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -41,10 +43,16 @@ private:
     void SetDestinationMove(CGameObject* _Destination); // 목적지까지 이동 셋팅
     void DestinationMove();
     void CreateBigJellyPush(JellyPushType _Type);
+    CGameObject* CreateMiniJellyPush(JellyPushType _Type);
+    void CreateParticle();
 
 public:
     JellyPushType GetJellyPushType() { return m_Type; }
     bool IsOverlap() { return m_IsOverlap; }
+
+    CGameObject* Speparation(); // 큰 색 젤리(JellyPush) 분리
+
+    void SetType(JellyPushType _Type) { m_Type = _Type; }
 
 public:
     CLONE(CJellyPushScript);

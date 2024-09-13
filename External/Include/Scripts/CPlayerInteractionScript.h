@@ -4,14 +4,6 @@
 
 class CPlayerScript;
 enum class OguAniState;
-class CLiftScript;
-
-enum class InteractionState
-{
-    NONE,
-
-    LIFT_START,
-};
 
 class CPlayerInteractionScript :
     public CScript
@@ -23,16 +15,13 @@ private:
     OguAniState         m_PlayerCurAS;
 
     CGameObject*        m_pInteractionObj;
-    InteractionState    m_InteractionState;
-
-    CLiftScript*        m_LiftScript;
-    bool                m_LiftOK;
 
 public:
     virtual void Begin() override;
     virtual void Tick() override;
 
     virtual void BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider) override;
+    virtual void Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider) override;
     virtual void EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider) override;
 
     virtual void SaveToFile(FILE* _File) override;
@@ -40,6 +29,8 @@ public:
 
 private:
     void Move();
+
+    void Lift(CGameObject* _Other);
 
 public:
     CLONE(CPlayerInteractionScript);

@@ -172,6 +172,7 @@ private:
 public:
 	OguAniState GetCurAS() { return m_CurAS; }
 	float GetSpeed() { return m_Speed; }
+	PlayerState GetCurPS() { return m_CurPS; }
 
 	void LiftStart();
 	void LiftEnd();

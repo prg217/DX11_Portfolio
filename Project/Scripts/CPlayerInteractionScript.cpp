@@ -3,6 +3,7 @@
 
 #include "CPlayerScript.h"
 #include "CLiftScript.h"
+#include "CJellyPushScript.h"
 
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
@@ -11,9 +12,6 @@ CPlayerInteractionScript::CPlayerInteractionScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERINTERACTIONSCRIPT))
 	, m_pPlayer(nullptr)
 	, m_pInteractionObj(nullptr)
-	, m_InteractionState(InteractionState::NONE)
-	, m_LiftScript(nullptr)
-	, m_LiftOK(false)
 {
 }
 
@@ -33,45 +31,39 @@ void CPlayerInteractionScript::Begin()
 
 void CPlayerInteractionScript::Tick()
 {
-	// 결정키 S
-	if (KEY_TAP(KEY::S))
-	{
-		if (m_LiftOK && m_InteractionState == InteractionState::NONE)
-		{
-			m_InteractionState = InteractionState::LIFT_START;
-			// 들어올리는 애니메이션 재생(재생하는 동안 못 움직임)
-			m_pPlayerScript->LiftStart();
-			// 자식으로 넣어주고 위치 조정
-			m_LiftScript->Start();
-			m_LiftOK = false;
-		}
-		else if (m_InteractionState == InteractionState::LIFT_START)
-		{
-			m_InteractionState = InteractionState::NONE;
-			// 내리는 애니메이션 재생(재생하는 동안 못 움직임)
-			m_pPlayerScript->LiftEnd();
-			m_LiftScript->End();
-		}
-	}
-
 	Move();
 }
 
 void CPlayerInteractionScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
-	// 상호작용 오브젝트 레이어
-	if (_OtherObject->GetLayerIdx() == 6)
+
+}
+
+void CPlayerInteractionScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
+	// 결정키 S
+	if (KEY_TAP(KEY::S))
 	{
-		// CLiftScript 스크립트를 가지고 있다면
-		if (_OtherObject->GetScript("CLiftScript") != nullptr)
+		// 상호작용 오브젝트 레이어
+		if (_OtherObject->GetLayerIdx() == 6)
 		{
-			CScript* script = _OtherObject->GetScript("CLiftScript");
-			m_LiftScript = dynamic_cast<CLiftScript*>(script);
-			//m_pInteractionObj = _OtherObject;
-			m_LiftOK = true;
+			// CLiftScript 스크립트를 가지고 있다면
+			if (_OtherObject->GetScript("CLiftScript") != nullptr)
+			{
+				Lift(_OtherObject);
+			}
+
+			else if (_OtherObject->GetScript("CJellyPushScript") != nullptr)
+			{
+				CScript* script = _OtherObject->GetScript("CJellyPushScript");
+				CJellyPushScript* jellyPushScript = dynamic_cast<CJellyPushScript*>(script);
+
+				// 젤리 스크립트 쪽에 신호를 줘서 분리 시킨 후, 하나를 lift하게 한다.
+				Lift(jellyPushScript->Speparation());
+			}
 		}
-		// else if 를 사용해서 하나만 선택하게 할 수 있게
 	}
+
 }
 
 void CPlayerInteractionScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
@@ -153,6 +145,27 @@ void CPlayerInteractionScript::Move()
 		default:
 			break;
 		}
+	}
+}
+
+void CPlayerInteractionScript::Lift(CGameObject* _Other)
+{
+	CScript* script = _Other->GetScript("CLiftScript");
+	CLiftScript* liftScript = dynamic_cast<CLiftScript*>(script);
+
+	// 플레이어가 아무것도 안 하는 상태인지 체크
+	if (m_pPlayerScript->GetCurPS() == PlayerState::NONE)
+	{
+		// 들어올리는 애니메이션 재생(재생하는 동안 못 움직임)
+		m_pPlayerScript->LiftStart();
+		// 자식으로 넣어주고 위치 조정
+		liftScript->Start();
+	}
+	else if (m_pPlayerScript->GetCurPS() == PlayerState::LIFT_START)
+	{
+		// 내리는 애니메이션 재생(재생하는 동안 못 움직임)
+		m_pPlayerScript->LiftEnd();
+		liftScript->End();
 	}
 }
 
