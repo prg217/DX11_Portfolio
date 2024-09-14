@@ -67,11 +67,6 @@ void CGameObject::AddComponent(CComponent* _Comopnent)
 {
 	COMPONENT_TYPE Type = _Comopnent->GetComponentType();
 
-	if (COMPONENT_TYPE::SPRITECOMPONENT == Type)
-	{
-		int i = 0;
-	}
-
 	if (COMPONENT_TYPE::SCRIPT == Type)
 	{
 		m_vecScript.push_back((CScript*)_Comopnent);
@@ -188,6 +183,34 @@ void CGameObject::DeregisterChild()
 	}
 
 	assert(nullptr);
+}
+
+void CGameObject::DeregisterComponent(COMPONENT_TYPE _Type, CScript* _Script)
+{
+	if (_Type == COMPONENT_TYPE::SCRIPT)
+	{
+		for (int i = 0; i < m_vecScript.size(); i++)
+		{
+			if (_Script == m_vecScript[i])
+			{
+				m_vecScript.erase(m_vecScript.begin() + i);
+			}
+		}
+	}
+	else if (GetComponent(_Type) != nullptr)
+	{
+		m_arrCom[(UINT)_Type] = nullptr;
+	}
+}
+
+void CGameObject::ObjDeleteComponent(COMPONENT_TYPE _Type)
+{
+	DeleteComponent(this, _Type);
+}
+
+void CGameObject::ObjDeleteScript(string _Script)
+{
+	DeleteScript(this, GetScript(_Script));
 }
 
 void CGameObject::SetUIActive(bool _UI)

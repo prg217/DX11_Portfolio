@@ -166,9 +166,16 @@ enum TASK_TYPE
 	// Param_0 : AssetAdress
 	DEL_ASSET,
 
+	// Param_0 : Object Adress, Param_1 : Delete Component Type
+	DEL_COMPONENT,
+
+	// Param_0 : Object Adress, Param_1 : Delete Script Adress
+	DEL_SCRIPT,
+
 	LEVEL_CHANGED,
 	ASSET_CHANGED,
 
+	// Param_0 : Parents Object Adress, Param_1 : Child Object Adress
 	ADD_CHILD,
 	COMPONENT_ACTIVATE,
 	COMPONENT_DEACTIVATE,

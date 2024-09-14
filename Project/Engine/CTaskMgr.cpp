@@ -116,6 +116,26 @@ void CTaskMgr::ExecuteTask()
 			CLevelMgr::GetInst()->m_LevelChanged = true;
 		}
 		break;
+		case TASK_TYPE::DEL_COMPONENT:
+		{
+			CGameObject* pObj = (CGameObject*)task.Param_0;
+			COMPONENT_TYPE type = (COMPONENT_TYPE)task.Param_1;
+
+			pObj->DeregisterComponent(type);
+
+			CLevelMgr::GetInst()->m_LevelChanged = true;
+		}
+		break;
+		case TASK_TYPE::DEL_SCRIPT:
+		{
+			CGameObject* pObj = (CGameObject*)task.Param_0;
+			CScript* script = (CScript*)task.Param_1;
+			
+			pObj->DeregisterComponent(COMPONENT_TYPE::SCRIPT, script);
+			
+			CLevelMgr::GetInst()->m_LevelChanged = true;
+		}
+		break;
 		}
 	}
 

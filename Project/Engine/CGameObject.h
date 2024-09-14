@@ -44,6 +44,9 @@ public:
     // Unregister : 등록을 취소하다, 등록하는 행위를 취소하다
     // Deregister : 등록된것을 취소하다
     void DeregisterChild();
+    void DeregisterComponent(COMPONENT_TYPE _Type, CScript* _Script = nullptr);
+    void ObjDeleteComponent(COMPONENT_TYPE _Type);
+    void ObjDeleteScript(string _Script);
 
     void SetUIActive(bool _UI);
     bool GetUIActive() { return m_UI; }

@@ -4,6 +4,7 @@
 #include "CTaskMgr.h"
 
 #include "CGameObject.h"
+#include "CScript.h"
 #include "func.h"
 
 void CreateObject(CGameObject* _NewObject, int _LayerIndex)
@@ -32,6 +33,26 @@ void AddChildObject(CGameObject* _Parent, CGameObject* _Child)
 	task.Param_0 = (DWORD_PTR)_Parent;
 	task.Param_1 = (DWORD_PTR)_Child;
 
+	CTaskMgr::GetInst()->AddTask(task);
+}
+
+void DeleteComponent(CGameObject* _Obj, COMPONENT_TYPE _ComType)
+{
+	tTask task = {};
+	task.Type = TASK_TYPE::DEL_COMPONENT;
+	task.Param_0 = (DWORD_PTR)_Obj;
+	task.Param_1 = (DWORD_PTR)_ComType;
+
+	CTaskMgr::GetInst()->AddTask(task);
+}
+
+void DeleteScript(CGameObject* _Obj, CScript* _Script)
+{
+	tTask task = {};
+	task.Type = TASK_TYPE::DEL_SCRIPT;
+	task.Param_0 = (DWORD_PTR)_Obj;
+	task.Param_1 = (DWORD_PTR)_Script;
+	
 	CTaskMgr::GetInst()->AddTask(task);
 }
 

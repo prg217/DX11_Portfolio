@@ -6,6 +6,8 @@
 
 #include "ParamUI.h"
 #include "ListUI.h"
+#include "Inspector.h"
+#include "CEditorMgr.h"
 
 ScriptUI::ScriptUI()
 	: ComponentUI(COMPONENT_TYPE::SCRIPT)
@@ -29,6 +31,37 @@ void ScriptUI::Update()
 	
 	wstring strScriptName = CScriptMgr::GetScriptName(m_Script);
 	ImGui::Button(string(strScriptName.begin(), strScriptName.end()).c_str());
+
+	// 버튼이 오른쪽 클릭되었을 때 팝업 열기
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
+	{
+		ImGui::OpenPopup("ScriptUIOption");
+	}
+	// 팝업이 열렸을 때 표시할 내용
+	if (ImGui::BeginPopup("ScriptUIOption"))
+	{
+		ImGui::Button("DeleteScript");
+		{
+			// 인스펙터
+			Inspector* pInspector = (Inspector*)CEditorMgr::GetInst()->FindEditorUI("Inspector");
+
+			// 타겟 오브젝트 알아냄
+			CGameObject* pObject = pInspector->GetTargetObject();
+			if (nullptr != pObject)
+			{
+				pObject->ObjDeleteScript(string(strScriptName.begin(), strScriptName.end()).c_str());
+			}
+
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::Button("Close");
+		{
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
+	}
 
 	ImGui::PopStyleColor(3);
 	ImGui::PopID();
