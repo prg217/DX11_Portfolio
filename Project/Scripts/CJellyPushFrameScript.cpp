@@ -70,7 +70,7 @@ void CJellyPushFrameScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject*
 		{
 			m_Open = true;
 			m_Pos = m_StoneBlock->Transform()->GetRelativePos();
-			m_GoalPosY = m_Pos.y - 25.f;
+			m_GoalPosY = m_Pos.y - 15.f;
 			if (GetOwner()->GetComponent(COMPONENT_TYPE::COLLIDER2D) != nullptr)
 			{
 				DeleteComponent(GetOwner(), COMPONENT_TYPE::COLLIDER2D);
@@ -107,7 +107,13 @@ void CJellyPushFrameScript::LoadFromFile(FILE* _File)
 
 void CJellyPushFrameScript::Open()
 {
+	// 스프라이트 오른쪽 아래...거기도 같이 줄이기?
 	m_Pos.y -= m_Speed * DT;
+
+	Ptr<CSprite> sprite = m_StoneBlock->SpriteComponent()->GetSprite();
+	Vec2 slice = sprite->GetSliceUV() * sprite->GetTexSize();
+	slice.y -= 40.f * DT;
+	sprite->SetSlice(Vec2(slice.x, slice.y));
 
 	if (m_Pos.y <= m_GoalPosY)
 	{
