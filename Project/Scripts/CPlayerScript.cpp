@@ -145,7 +145,7 @@ void CPlayerScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 		return;
 	}
 	// 충돌 예외
-	if (_OtherObject->GetScript("CGrassScript") != nullptr)
+	if (_OtherObject->GetScript("CGrassScript") != nullptr || _OtherObject->GetScript("CJellyPushFrameScript") != nullptr)
 	{
 		return;
 	}

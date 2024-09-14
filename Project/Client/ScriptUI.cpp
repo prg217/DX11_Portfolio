@@ -110,10 +110,19 @@ void ScriptUI::Update()
 			m_UIHeight += 8;
 			break;
 		}
-			break;	
-		}	
+		case SCRIPT_PARAM::GAMEOBJECT:
+		{
+			CGameObject*& pObj = *(CGameObject**)vecParam[i].pData;
 
+			ParamUI::InputGameObject(pObj, vecParam[i].Desc);
+
+			m_UIHeight += 8;
+			break;
+		}
+		break;
+		}
 		m_UIHeight += (int)ImGui::GetItemRectSize().y;
+
 	}
 
 	SetChildSize(ImVec2(0.f, (float)m_UIHeight));

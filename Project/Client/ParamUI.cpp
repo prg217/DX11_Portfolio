@@ -2,6 +2,7 @@
 #include "ParamUI.h"
 
 #include <Engine/CAssetMgr.h>
+#include <Engine/CGameObject.h>
 
 #include "ImGui/imgui.h"
 
@@ -272,6 +273,52 @@ bool ParamUI::InputPrefab(Ptr<CPrefab>& _CurPrefab, const string& _Desc, EditorU
 
 		return true;
 	}
+
+	return false;
+}
+
+bool ParamUI::InputGameObject(CGameObject*& _Obj, const string& _Desc)
+{
+	CGameObject* CurObj = _Obj;
+
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine(120);
+
+	char szID[255] = {};
+	sprintf_s(szID, 255, "##GameObject%d", g_ID++);
+
+	ImGui::SetNextItemWidth(150.f);
+	if (_Obj == nullptr)
+	{
+		ImGui::InputText(szID, (char*)"", ImGuiInputTextFlags_::ImGuiInputTextFlags_ReadOnly);
+	}
+	else
+	{
+		string name = string(_Obj->GetName().begin(), _Obj->GetName().end());
+		ImGui::InputText(szID, (char*)name.c_str(), ImGuiInputTextFlags_::ImGuiInputTextFlags_ReadOnly);
+	}
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("OutlinerTree");
+		if (payload)
+		{
+			TreeNode** ppNode = (TreeNode**)payload->Data;
+			TreeNode* pNode = *ppNode;
+
+			CGameObject* pObj = (CGameObject*)pNode->GetData();
+			if (pObj != nullptr)
+			{
+				_Obj = pObj;
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+
+	// DragDrop 으로 원본이 바뀐경우
+	if (_Obj != CurObj)
+		return true;
 
 	return false;
 }

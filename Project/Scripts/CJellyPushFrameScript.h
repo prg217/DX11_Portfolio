@@ -9,6 +9,8 @@ class CJellyPushFrameScript :
 private:
     // 이 프레임의 타입을 정해서 그 타입에 맞는 것만 정답 판정->길 열기
     JellyPushType m_Type;
+    int m_PuzzleNum;
+    CGameObject* m_StoneBlock;
 
 public:
     virtual void Begin() override;

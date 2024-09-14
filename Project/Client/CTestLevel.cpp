@@ -73,60 +73,28 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(30)->SetName(L"Camera");
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
-	CGameObject* pObj = new CGameObject;
-	pObj->SetName(L"StoneBlock");
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CCollider2D);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(new CSpriteComponent);
-	
-	pObj->Transform()->SetRelativePos(Vec3(-320, -325, -325));
-	pObj->Transform()->SetRelativeScale(Vec3(150, 150, 0));
-	
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pObj->MeshRender()->SetMaterial(pMtrl);
-	
-	pObj->Collider2D()->SetIndependentScale(false);
-	pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
-	
-	Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\stoneBlock\\stoneBlock.sprite");
-	pObj->SpriteComponent()->AddSprite(pSprite);
-	
-	pLoadedLevel->AddObject(28, pObj);
+	//CGameObject* pObj = new CGameObject;
+	//pObj->SetName(L"StoneBlock");
+	//pObj->AddComponent(new CTransform);
+	//pObj->AddComponent(new CCollider2D);
+	//pObj->AddComponent(new CMeshRender);
+	//pObj->AddComponent(new CSpriteComponent);
+	//
+	//pObj->Transform()->SetRelativePos(Vec3(-320, -325, -325));
+	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 0));
+	//
+	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pObj->MeshRender()->SetMaterial(pMtrl);
+	//
+	//pObj->Collider2D()->SetIndependentScale(false);
+	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	//pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
+	//
+	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\stoneBlock\\stoneBlock.sprite");
+	//pObj->SpriteComponent()->AddSprite(pSprite);
+	//
+	//pLoadedLevel->AddObject(28, pObj);
 
-	pObj = new CGameObject;
-	pObj->SetName(L"StoneBlockFrame_fornt");
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(new CSpriteComponent);
-
-	pObj->Transform()->SetRelativePos(Vec3(100, 0, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(150, 150, 0));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pObj->MeshRender()->SetMaterial(pMtrl);
-
-	pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\stoneBlock\\stoneBlockFrame_front.sprite");
-	pObj->SpriteComponent()->AddSprite(pSprite);
-
-	pLoadedLevel->AddObject(28, pObj);
-	pObj = new CGameObject;
-	pObj->SetName(L"StoneBlockFrame_back");
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(new CSpriteComponent);
-
-	pObj->Transform()->SetRelativePos(Vec3(100, 0, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(150, 150, 0));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pObj->MeshRender()->SetMaterial(pMtrl);
-
-	pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\stoneBlock\\stoneBlockFrame_back.sprite");
-	pObj->SpriteComponent()->AddSprite(pSprite);
-
-	pLoadedLevel->AddObject(28, pObj);
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;
