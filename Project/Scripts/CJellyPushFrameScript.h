@@ -16,6 +16,7 @@ private:
     Vec3 m_Pos;
     float m_GoalPosY;
     float m_Speed;
+    Vec2 m_Slice;
 
 public:
     virtual void Begin() override;

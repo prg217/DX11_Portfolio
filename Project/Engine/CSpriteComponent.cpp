@@ -11,15 +11,17 @@ CSpriteComponent::CSpriteComponent()
 	, m_AddColor(false)
 	, m_Color(Vec3(0.f, 0.f, 0.f))
 	, m_UseLight(true)
+	, m_UseSliceAmend(false)
 {
 }	 
 
 CSpriteComponent::CSpriteComponent(CSpriteComponent& _Origin)
 	: CComponent(_Origin)
-	, m_Outline(_Origin.m_Outline)
-	, m_AddColor(_Origin.m_AddColor)
-	, m_Color(_Origin.m_Color)
-	, m_UseLight(_Origin.m_UseLight)
+	, m_Outline(false)
+	, m_AddColor(false)
+	, m_Color(Vec3(0.f, 0.f, 0.f))
+	, m_UseLight(true)
+	, m_UseSliceAmend(false)
 {
 }
 
@@ -44,7 +46,14 @@ void CSpriteComponent::Binding()
 		tSpriteInfo tInfo = {};
 
 		tInfo.LeftTopUV = m_Sprite->GetLeftTopUV();
-		tInfo.SliceUV = m_Sprite->GetSliceUV();
+		if (m_UseSliceAmend)
+		{
+			tInfo.SliceUV = m_SliceAmend;
+		}
+		else
+		{
+			tInfo.SliceUV = m_Sprite->GetSliceUV();
+		}
 		tInfo.BackGroundUV = m_Sprite->GetBackgroundUV();
 		tInfo.OffsetUV = m_Sprite->GetOffsetUV();
 		tInfo.TexSize = m_Sprite->GetTexSize();
@@ -93,4 +102,10 @@ void CSpriteComponent::AddColor(bool _AddColor, Vec3 Color)
 {
 	m_AddColor = _AddColor;
 	m_Color = Color;
+}
+
+void CSpriteComponent::SliceAmend(bool _Use, Vec2 _Slice)
+{
+	m_UseSliceAmend = _Use;
+	m_SliceAmend = _Slice / m_Sprite->GetTexSize();
 }

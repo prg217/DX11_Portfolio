@@ -10,7 +10,7 @@ CCameraPlayerTrackingScript::CCameraPlayerTrackingScript()
 	: CScript(UINT(SCRIPT_TYPE::CAMERAPLAYERTRACKINGSCRIPT))
 	, m_IsMove(true)
 	, m_Speed(2000.f)
-	, m_pPlayer(nullptr)
+	, m_pFocusObj(nullptr)
 {
 }
 
@@ -21,7 +21,7 @@ CCameraPlayerTrackingScript::~CCameraPlayerTrackingScript()
 void CCameraPlayerTrackingScript::Begin()
 {
 	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-	m_pPlayer = curLevel->FindObjectByName(L"Player");
+	m_pFocusObj = curLevel->FindObjectByName(L"Player");
 }
 
 void CCameraPlayerTrackingScript::Tick()
@@ -61,7 +61,7 @@ void CCameraPlayerTrackingScript::LoadFromFile(FILE* _File)
 void CCameraPlayerTrackingScript::OrthoGraphicMove()
 {
 	// 플레이어를 따라오되, 이제 맵 바깥으로 나가려하면 거기 막고 있는 콜라이더가 더 이상 카메라 이동을 막음
-	Vec3 playerPos = m_pPlayer->Transform()->GetRelativePos();
+	Vec3 playerPos = m_pFocusObj->Transform()->GetRelativePos();
 	Vec3 myPos = GetOwner()->Transform()->GetRelativePos();
 	Vec3 pos;
 	if (m_IsMove)

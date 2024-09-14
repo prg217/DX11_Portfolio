@@ -18,7 +18,7 @@ private:
     bool   m_IsMove;
     float  m_Speed;
 
-    CGameObject* m_pPlayer;
+    CGameObject* m_pFocusObj;
     CameraDontMove m_Dir;
 
 public:
@@ -39,6 +39,8 @@ private:
 public:
     void Stop(CameraDontMove _Dir) { m_IsMove = false; m_Dir = _Dir; }
     void Move() { m_IsMove = true; }
+
+    void Focus(CGameObject* _FocusObj) { m_pFocusObj = _FocusObj; }
 
 public:
     CLONE(CCameraPlayerTrackingScript);

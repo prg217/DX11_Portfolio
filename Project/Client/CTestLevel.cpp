@@ -74,7 +74,7 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"StoneBlock");
+	//pObj->SetName(L"StoneBlock_Bug");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
@@ -90,10 +90,11 @@ void CTestLevel::CreateTestLevel()
 	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	//pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
 	//
-	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\stoneBlock\\stoneBlock.sprite");
+	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\stoneBlock\\stoneBlock_bug.sprite");
 	//pObj->SpriteComponent()->AddSprite(pSprite);
+	//pObj->SpriteComponent()->AddColor(true, Vec3(0, 0, 0));
 	//
-	//pLoadedLevel->AddObject(28, pObj);
+	//pLoadedLevel->AddObject(0, pObj);
 
 /*
 	// 카메라 오브젝트

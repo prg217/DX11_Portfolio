@@ -2,6 +2,7 @@
 #include "CJellyPushFrameScript.h"
 
 #include "CJellyPushScript.h"
+#include "CCameraPlayerTrackingScript.h"
 
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
@@ -68,17 +69,55 @@ void CJellyPushFrameScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject*
 
 		if (jellyScript->GetJellyPushType() == m_Type)
 		{
-			m_Open = true;
+			// m_StoneBlock을 연다.
 			m_Pos = m_StoneBlock->Transform()->GetRelativePos();
 			m_GoalPosY = m_Pos.y - 15.f;
+
+			Ptr<CSprite> sprite = m_StoneBlock->SpriteComponent()->GetSprite();
+			m_Slice = sprite->GetSliceUV() * sprite->GetTexSize();
+			
+			// 카메라 포커스
+			CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+			CGameObject* mainCamera = curLevel->FindObjectByName(L"MainCamera");
+			CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
+			CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
+			cameraScript->Focus(m_StoneBlock);
+
+			// 그림 빛 추가
+			if (m_StoneBlock->GetChildren().size() != 0 && !m_Open)
+			{
+				CGameObject* bug = m_StoneBlock->GetChildren()[0];
+				bug->SpriteComponent()->AddColor(true, Vec3(0.7f, 0.99f, 0.8f));
+
+				// 포인트 라이트 추가
+				CGameObject* pLight = new CGameObject;
+				pLight->SetName(L"StoneBlock_Light");
+				pLight->AddComponent(new CTransform);
+				pLight->AddComponent(new CLight2D);
+
+				pLight->Transform()->SetRelativePos(Vec3(0, 0, 0));
+				pLight->Transform()->SetRelativeScale(Vec3(1, 1, 0));
+
+				pLight->Light2D()->SetLightColor(Vec3(0.62f, 0.99f, 0.97f));
+				pLight->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+				pLight->Light2D()->SetRadius(35.f);
+
+				CreateObject(pLight, 0);
+				AddChildObject(m_StoneBlock, pLight);
+			}
+
+			// 더 이상 반응 할 수 없게 콜라이더를 제거해준다.
 			if (GetOwner()->GetComponent(COMPONENT_TYPE::COLLIDER2D) != nullptr)
 			{
 				DeleteComponent(GetOwner(), COMPONENT_TYPE::COLLIDER2D);
 			}
+			// 더 이상 충돌 할 수 없게 콜라이더를 제거해준다.
 			if (m_StoneBlock->GetComponent(COMPONENT_TYPE::COLLIDER2D) != nullptr)
 			{
 				DeleteComponent(m_StoneBlock, COMPONENT_TYPE::COLLIDER2D);
 			}
+
+			m_Open = true;
 		}
 	}
 }
@@ -110,13 +149,31 @@ void CJellyPushFrameScript::Open()
 	// 스프라이트 오른쪽 아래...거기도 같이 줄이기?
 	m_Pos.y -= m_Speed * DT;
 
-	Ptr<CSprite> sprite = m_StoneBlock->SpriteComponent()->GetSprite();
-	Vec2 slice = sprite->GetSliceUV() * sprite->GetTexSize();
-	slice.y -= 40.f * DT;
-	sprite->SetSlice(Vec2(slice.x, slice.y));
+	m_Slice.y -= 40.f * DT;
+	m_StoneBlock->SpriteComponent()->SliceAmend(true, Vec2(m_Slice.x, m_Slice.y));
+	if (m_StoneBlock->GetChildren().size() != 0)
+	{
+		CGameObject* bug = m_StoneBlock->GetChildren()[0];
+		bug->SpriteComponent()->SliceAmend(true, Vec2(m_Slice.x, m_Slice.y));
+	}
 
 	if (m_Pos.y <= m_GoalPosY)
 	{
+		if (m_StoneBlock->GetChildren().size() != 0)
+		{
+			for (auto i : m_StoneBlock->GetChildren())
+			{
+				DeleteObject(i);
+			}
+		}
+
+		// 카메라 포커스
+		CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+		CGameObject* mainCamera = curLevel->FindObjectByName(L"MainCamera");
+		CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
+		CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
+		cameraScript->Focus(curLevel->FindObjectByName(L"Player"));
+
 		m_Open = false;
 	}
 
