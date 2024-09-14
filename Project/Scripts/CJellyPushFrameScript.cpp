@@ -11,6 +11,9 @@ CJellyPushFrameScript::CJellyPushFrameScript()
 	, m_Type(JellyPushType::NONE)
 	, m_StoneBlock(nullptr)
 	, m_PuzzleNum(0)
+	, m_Open(false)
+	, m_GoalPosY(0)
+	, m_Speed(10.f)
 {
 	AddScriptParam(SCRIPT_PARAM::INT, "JellyPushType", &m_Type);
 	AddScriptParam(SCRIPT_PARAM::INT, "PuzzleNumber", &m_PuzzleNum);
@@ -22,6 +25,9 @@ CJellyPushFrameScript::CJellyPushFrameScript(const CJellyPushFrameScript& _Origi
 	, m_Type(JellyPushType::NONE)
 	, m_StoneBlock(nullptr)
 	, m_PuzzleNum(0)
+	, m_Open(false)
+	, m_GoalPosY(0)
+	, m_Speed(10.f)
 {
 }
 
@@ -45,12 +51,36 @@ void CJellyPushFrameScript::Begin()
 
 void CJellyPushFrameScript::Tick()
 {
+	if (m_Open)
+	{
+		Open();
+	}
 }
 
 void CJellyPushFrameScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
 	// 본인 타입과 같은 젤리면 길을 열음(밑으로 25만큼 이동)
 	// 큰 젤리는 한 번 정답 맞추면 움직일 수 없게 아예 삭제하고 모양만 갖춘거 새로 만들까?
+	if (_OtherObject->GetScript("CJellyPushScript") != nullptr)
+	{
+		CScript* script = _OtherObject->GetScript("CJellyPushScript");
+		CJellyPushScript* jellyScript = dynamic_cast<CJellyPushScript*>(script);
+
+		if (jellyScript->GetJellyPushType() == m_Type)
+		{
+			m_Open = true;
+			m_Pos = m_StoneBlock->Transform()->GetRelativePos();
+			m_GoalPosY = m_Pos.y - 25.f;
+			if (GetOwner()->GetComponent(COMPONENT_TYPE::COLLIDER2D) != nullptr)
+			{
+				DeleteComponent(GetOwner(), COMPONENT_TYPE::COLLIDER2D);
+			}
+			if (m_StoneBlock->GetComponent(COMPONENT_TYPE::COLLIDER2D) != nullptr)
+			{
+				DeleteComponent(m_StoneBlock, COMPONENT_TYPE::COLLIDER2D);
+			}
+		}
+	}
 }
 
 void CJellyPushFrameScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
@@ -73,4 +103,16 @@ void CJellyPushFrameScript::LoadFromFile(FILE* _File)
 	fread(&m_Type, sizeof(JellyPushType), 1, _File);
 	fread(&m_PuzzleNum, sizeof(int), 1, _File);
 	//fread(&m_StoneBlock, sizeof(CGameObject*), 1, _File);
+}
+
+void CJellyPushFrameScript::Open()
+{
+	m_Pos.y -= m_Speed * DT;
+
+	if (m_Pos.y <= m_GoalPosY)
+	{
+		m_Open = false;
+	}
+
+	m_StoneBlock->Transform()->SetRelativePos(m_Pos.x, m_Pos.y, 490.f);
 }

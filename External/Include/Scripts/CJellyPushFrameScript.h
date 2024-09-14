@@ -12,6 +12,11 @@ private:
     int m_PuzzleNum;
     CGameObject* m_StoneBlock;
 
+    bool m_Open;
+    Vec3 m_Pos;
+    float m_GoalPosY;
+    float m_Speed;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -22,6 +27,9 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+
+private:
+    void Open();
 
 public:
     CLONE(CJellyPushFrameScript);
