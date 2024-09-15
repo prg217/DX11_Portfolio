@@ -28,6 +28,9 @@
     <Filter Include="Scripts\Obstacle">
       <UniqueIdentifier>{08ff55ef-4673-47f6-8a7e-db27314cc058}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Obj">
+      <UniqueIdentifier>{9318b877-c843-49f8-86b3-e8841db2c92c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -99,6 +102,12 @@
     <ClInclude Include="CJellyBombScript.h">
       <Filter>Scripts\Obstacle</Filter>
     </ClInclude>
+    <ClInclude Include="CJellyBombDetectScript.h">
+      <Filter>Scripts\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="CStoneBreakableScript.h">
+      <Filter>Scripts\Obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -169,6 +178,12 @@
     </ClCompile>
     <ClCompile Include="CJellyBombScript.cpp">
       <Filter>Scripts\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="CJellyBombDetectScript.cpp">
+      <Filter>Scripts\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="CStoneBreakableScript.cpp">
+      <Filter>Scripts\Obj</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

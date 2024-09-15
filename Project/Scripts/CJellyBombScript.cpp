@@ -2,6 +2,8 @@
 #include "CJellyBombScript.h"
 
 #include "CSwingObjScript.h"
+#include "CJellyBombDetectScript.h"
+#include "CCountDownDeleteScript.h"
 
 CJellyBombScript::CJellyBombScript()
 	 : CScript(UINT(SCRIPT_TYPE::JELLYBOMBSCRIPT))
@@ -85,6 +87,10 @@ void CJellyBombScript::Bomb()
 	{
 		// 익스플로전 이펙트 소환, 폭발, 오브젝트 삭제
 		DetectDestroy();
+
+		CreateExplosion();
+
+		DeleteObject(GetOwner());
 		m_IsBomb = false;
 	}
 	else if (TIME - m_SaveTime >= 1.f)
@@ -140,7 +146,8 @@ void CJellyBombScript::DetectDestroy()
 	CGameObject* pDetect = new CGameObject;
 	pDetect->SetName(L"JellyBomb_Detect");
 	pDetect->AddComponent(new CTransform);
-	pDetect->AddComponent(new CCollider2D);
+	pDetect->AddComponent(new CCollider2D); 
+	pDetect->AddComponent(new CJellyBombDetectScript);
 
 	pDetect->Transform()->SetRelativePos(Vec3(0, 0, 0));
 	pDetect->Transform()->SetRelativeScale(Vec3(1, 1, 0));
@@ -150,4 +157,58 @@ void CJellyBombScript::DetectDestroy()
 	CreateObject(pDetect, 8);
 	AddChildObject(GetOwner(), pDetect);
 
+}
+
+void CJellyBombScript::CreateExplosion()
+{
+	CGameObject* pExplosion = new CGameObject;
+	pExplosion->SetName(L"JellyBomb_Explosion0");
+	pExplosion->AddComponent(new CTransform);
+	pExplosion->AddComponent(new CFlipBookComponent);
+	pExplosion->AddComponent(new CMeshRender);
+	pExplosion->AddComponent(new CCountDownDeleteScript);
+
+	pExplosion->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
+	pExplosion->Transform()->SetRelativeScale(Vec3(500, 500, 0));
+
+	Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Obstacle\\jellyBomb_explosion_0.flip");
+	pExplosion->FlipBookComponent()->AddFlipBook(0, pFlip);
+	pExplosion->FlipBookComponent()->Play(0, 5, false);
+
+	Ptr<CMaterial> pAlphaBlendMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl");
+	pExplosion->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pExplosion->MeshRender()->SetMaterial(pAlphaBlendMtrl);
+
+	// 삭제되는 시간을 지정해준다.
+	CScript* pScript = pExplosion->GetScript("CCountDownDeleteScript");
+	CCountDownDeleteScript* pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
+	pCountDown->SetSaveTime(TIME);
+	pCountDown->SetDeadTime(3.f);
+
+	CreateObject(pExplosion, 0);
+
+	pExplosion = new CGameObject;
+	pExplosion->SetName(L"JellyBomb_Explosion1");
+	pExplosion->AddComponent(new CTransform);
+	pExplosion->AddComponent(new CFlipBookComponent);
+	pExplosion->AddComponent(new CMeshRender);
+	pExplosion->AddComponent(new CCountDownDeleteScript);
+
+	pExplosion->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
+	pExplosion->Transform()->SetRelativeScale(Vec3(500, 500, 0));
+
+	pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Obstacle\\jellyBomb_explosion_1.flip");
+	pExplosion->FlipBookComponent()->AddFlipBook(0, pFlip);
+	pExplosion->FlipBookComponent()->Play(0, 5, false);
+
+	pExplosion->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pExplosion->MeshRender()->SetMaterial(pAlphaBlendMtrl);
+
+	// 삭제되는 시간을 지정해준다.
+	pScript = pExplosion->GetScript("CCountDownDeleteScript");
+	pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
+	pCountDown->SetSaveTime(TIME);
+	pCountDown->SetDeadTime(3.f);
+
+	CreateObject(pExplosion, 0);
 }

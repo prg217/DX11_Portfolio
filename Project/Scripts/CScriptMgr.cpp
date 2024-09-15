@@ -7,6 +7,7 @@
 #include "CGlowingPlantsScript.h"
 #include "CGrassScript.h"
 #include "CInteractionScript.h"
+#include "CJellyBombDetectScript.h"
 #include "CJellyBombScript.h"
 #include "CJellyPushFrameScript.h"
 #include "CJellyPushScript.h"
@@ -18,6 +19,7 @@
 #include "CPlayerInteractionScript.h"
 #include "CPlayerScript.h"
 #include "CPushScript.h"
+#include "CStoneBreakableScript.h"
 #include "CSwingObjScript.h"
 #include "CTextBoxScript.h"
 #include "CUIScript.h"
@@ -30,6 +32,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CGlowingPlantsScript");
 	_vec.push_back(L"CGrassScript");
 	_vec.push_back(L"CInteractionScript");
+	_vec.push_back(L"CJellyBombDetectScript");
 	_vec.push_back(L"CJellyBombScript");
 	_vec.push_back(L"CJellyPushFrameScript");
 	_vec.push_back(L"CJellyPushScript");
@@ -41,6 +44,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerInteractionScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CPushScript");
+	_vec.push_back(L"CStoneBreakableScript");
 	_vec.push_back(L"CSwingObjScript");
 	_vec.push_back(L"CTextBoxScript");
 	_vec.push_back(L"CUIScript");
@@ -60,6 +64,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CGrassScript;
 	if (L"CInteractionScript" == _strScriptName)
 		return new CInteractionScript;
+	if (L"CJellyBombDetectScript" == _strScriptName)
+		return new CJellyBombDetectScript;
 	if (L"CJellyBombScript" == _strScriptName)
 		return new CJellyBombScript;
 	if (L"CJellyPushFrameScript" == _strScriptName)
@@ -82,6 +88,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerScript;
 	if (L"CPushScript" == _strScriptName)
 		return new CPushScript;
+	if (L"CStoneBreakableScript" == _strScriptName)
+		return new CStoneBreakableScript;
 	if (L"CSwingObjScript" == _strScriptName)
 		return new CSwingObjScript;
 	if (L"CTextBoxScript" == _strScriptName)
@@ -112,6 +120,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::INTERACTIONSCRIPT:
 		return new CInteractionScript;
+		break;
+	case (UINT)SCRIPT_TYPE::JELLYBOMBDETECTSCRIPT:
+		return new CJellyBombDetectScript;
 		break;
 	case (UINT)SCRIPT_TYPE::JELLYBOMBSCRIPT:
 		return new CJellyBombScript;
@@ -145,6 +156,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PUSHSCRIPT:
 		return new CPushScript;
+		break;
+	case (UINT)SCRIPT_TYPE::STONEBREAKABLESCRIPT:
+		return new CStoneBreakableScript;
 		break;
 	case (UINT)SCRIPT_TYPE::SWINGOBJSCRIPT:
 		return new CSwingObjScript;
@@ -185,6 +199,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::INTERACTIONSCRIPT:
 		return L"CInteractionScript";
+		break;
+
+	case SCRIPT_TYPE::JELLYBOMBDETECTSCRIPT:
+		return L"CJellyBombDetectScript";
 		break;
 
 	case SCRIPT_TYPE::JELLYBOMBSCRIPT:
@@ -229,6 +247,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PUSHSCRIPT:
 		return L"CPushScript";
+		break;
+
+	case SCRIPT_TYPE::STONEBREAKABLESCRIPT:
+		return L"CStoneBreakableScript";
 		break;
 
 	case SCRIPT_TYPE::SWINGOBJSCRIPT:

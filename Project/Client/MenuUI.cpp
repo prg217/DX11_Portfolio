@@ -163,6 +163,18 @@ void MenuUI::GameObject()
 					pObject->Collider2D()->SetScale(Vec3(1.f, 1.f, 0.f));
 				}
 			}
+			if (ImGui::MenuItem("RigidBody"))
+			{
+				// ÀÎ½ºÆåÅÍ
+				Inspector* pInspector = (Inspector*)CEditorMgr::GetInst()->FindEditorUI("Inspector");
+
+				// Å¸°Ù ¿ÀºêÁ§Æ® ¾Ë¾Æ³¿
+				CGameObject* pObject = pInspector->GetTargetObject();
+				if (nullptr != pObject)
+				{
+					pObject->AddComponent(new CRigidBody);
+				}
+			}
 			ImGui::MenuItem("Camera");
 
 			ImGui::EndMenu();

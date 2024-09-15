@@ -4,6 +4,7 @@ CCountDownDeleteScript
 CGlowingPlantsScript
 CGrassScript
 CInteractionScript
+CJellyBombDetectScript
 CJellyBombScript
 CJellyPushFrameScript
 CJellyPushScript
@@ -15,6 +16,7 @@ CPlayerCameraScript
 CPlayerInteractionScript
 CPlayerScript
 CPushScript
+CStoneBreakableScript
 CSwingObjScript
 CTextBoxScript
 CUIScript

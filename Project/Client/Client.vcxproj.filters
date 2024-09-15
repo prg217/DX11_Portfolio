@@ -154,6 +154,9 @@
     <Filter Include="EditorUI\01. Inspector\ComponentUI\10. SpriteUI">
       <UniqueIdentifier>{c1280841-066a-4a8e-9175-add8dd749b9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EditorUI\01. Inspector\ComponentUI\11. RigidBody">
+      <UniqueIdentifier>{326fe27d-3c87-406a-8072-b591633bdd6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -338,6 +341,9 @@
     </ClInclude>
     <ClInclude Include="SpriteComUI.h">
       <Filter>EditorUI\01. Inspector\ComponentUI\10. SpriteUI</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodyUI.h">
+      <Filter>EditorUI\01. Inspector\ComponentUI\11. RigidBody</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -524,6 +530,9 @@
     </ClCompile>
     <ClCompile Include="SpriteComUI.cpp">
       <Filter>EditorUI\01. Inspector\ComponentUI\10. SpriteUI</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodyUI.cpp">
+      <Filter>EditorUI\01. Inspector\ComponentUI\11. RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

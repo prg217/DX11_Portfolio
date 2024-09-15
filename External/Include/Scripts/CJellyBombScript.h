@@ -27,6 +27,7 @@ private:
     
     void CreateLight(float _Radius, Vec3 _Color);
     void DetectDestroy();
+    void CreateExplosion();
 
 public:
     CLONE(CJellyBombScript);

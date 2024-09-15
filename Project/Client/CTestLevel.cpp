@@ -68,7 +68,7 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(6)->SetName(L"Interaction");
 	pLoadedLevel->GetLayer(7)->SetName(L"PlayerSwing");
 	pLoadedLevel->GetLayer(8)->SetName(L"Detect");
-	pLoadedLevel->GetLayer(9)->SetName(L"DestroyBolck");
+	pLoadedLevel->GetLayer(9)->SetName(L"DestroyBlock");
 
 	pLoadedLevel->GetLayer(28)->SetName(L"Block");
 	pLoadedLevel->GetLayer(29)->SetName(L"CameraBlock");
@@ -415,7 +415,7 @@ void CTestLevel::CreateTestLevel()
 	CCollisionMgr::GetInst()->CollisionCheck(3, 28); // 플레이어, 블록
 	CCollisionMgr::GetInst()->CollisionCheck(4, 28); // 몬스터, 블록
 	CCollisionMgr::GetInst()->CollisionCheck(6, 28); // 상호작용, 블록
-	CCollisionMgr::GetInst()->CollisionCheck(8, 9); // 감지, 파괴 블록
+	CCollisionMgr::GetInst()->CollisionCheck(8, 28); // 감지, 블록
 
 	CCollisionMgr::GetInst()->CollisionCheck(3, 29); // 플레이어, 카메라 블록
 	CCollisionMgr::GetInst()->CollisionCheck(6, 29); // 상호작용, 카메라 블록

@@ -114,7 +114,7 @@ void CFlipBookComponent::Play(int _FliBookIdx, float _FPS, bool _Repeat, int _St
 {
 	m_Stop = false;
 
-	if (m_CurFlipBook == m_vecFlipBook[_FliBookIdx])
+	if (m_CurFlipBook == m_vecFlipBook[_FliBookIdx] && m_FPS == _FPS)
 	{
 		return;
 	}

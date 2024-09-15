@@ -173,6 +173,7 @@
     <ClInclude Include="ParamUI.h" />
     <ClInclude Include="ParticleSystemUI.h" />
     <ClInclude Include="PrefabUI.h" />
+    <ClInclude Include="RigidBodyUI.h" />
     <ClInclude Include="ScriptUI.h" />
     <ClInclude Include="SE_AtlasView.h" />
     <ClInclude Include="SE_Detail.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="ParamUI.cpp" />
     <ClCompile Include="ParticleSystemUI.cpp" />
     <ClCompile Include="PrefabUI.cpp" />
+    <ClCompile Include="RigidBodyUI.cpp" />
     <ClCompile Include="ScriptUI.cpp" />
     <ClCompile Include="SE_AtlasView.cpp" />
     <ClCompile Include="SE_Detail.cpp" />
