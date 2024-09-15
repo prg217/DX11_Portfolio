@@ -146,9 +146,9 @@ void CJellyPushFrameScript::LoadFromFile(FILE* _File)
 
 void CJellyPushFrameScript::Open()
 {
-	// 스프라이트 오른쪽 아래...거기도 같이 줄이기?
 	m_Pos.y -= m_Speed * DT;
 
+	// 스프라이트 Slice 부분을 줄여 삐져나오는 아래 부분을 없애준다.
 	m_Slice.y -= 40.f * DT;
 	m_StoneBlock->SpriteComponent()->SliceAmend(true, Vec2(m_Slice.x, m_Slice.y));
 	if (m_StoneBlock->GetChildren().size() != 0)

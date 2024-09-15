@@ -2,7 +2,6 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts_d.pch
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.pdb
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.idb
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\pch.obj
-c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cuiscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ctextboxscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cswingobjscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cscriptmgr.obj
@@ -16,6 +15,7 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cmissilescript.
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cliftscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cjellypushscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cjellypushframescript.obj
+c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cjellybombscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cinteractionscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cgrassscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cglowingplantsscript.obj
@@ -23,6 +23,7 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccountdowndelet
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccameraplayertrackingscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccameramovescript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.obj
+c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cuiscript.obj
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.lib
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.tlog\cl.command.1.tlog
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.tlog\cl.items.tlog

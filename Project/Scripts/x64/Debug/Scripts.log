@@ -4,6 +4,7 @@
   .\Project\Scripts\CGlowingPlantsScript.h
   .\Project\Scripts\CGrassScript.h
   .\Project\Scripts\CInteractionScript.h
+  .\Project\Scripts\CJellyBombScript.h
   .\Project\Scripts\CJellyPushFrameScript.h
   .\Project\Scripts\CJellyPushScript.h
   .\Project\Scripts\CLiftScript.h
@@ -18,33 +19,8 @@
   .\Project\Scripts\CSwingObjScript.h
   .\Project\Scripts\CTextBoxScript.h
   .\Project\Scripts\CUIScript.h
-  20개 파일이 복사되었습니다.
-  pch.cpp
-C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): warning C4005: 'DELETE': 매크로 재정의
-  CCameraMoveScript.cpp
-  CCameraPlayerTrackingScript.cpp
-  CCountDownDeleteScript.cpp
-  CGlowingPlantsScript.cpp
-  CGrassScript.cpp
-  CInteractionScript.cpp
-  CJellyPushFrameScript.cpp
-  CJellyPushScript.cpp
-  CLiftScript.cpp
-  CMissileScript.cpp
-  CNPCScript.cpp
-  COguDancePointLightScript.cpp
-  CPlayerCameraScript.cpp
-  CPlayerInteractionScript.cpp
-  CPlayerScript.cpp
-  CPushScript.cpp
+  21개 파일이 복사되었습니다.
+  CJellyBombScript.cpp
   CScriptMgr.cpp
-  CSwingObjScript.cpp
-  CTextBoxScript.cpp
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CTextBoxScript.cpp(145,43): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CTextBoxScript.cpp(146,18): warning C4244: '초기화 중': '__int64'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  CUIScript.cpp
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  Scripts.cpp
   코드를 생성하고 있습니다...
   Scripts.vcxproj -> C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Scripts\Scripts_D.lib

@@ -67,18 +67,22 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(5)->SetName(L"PlayerInteraction");
 	pLoadedLevel->GetLayer(6)->SetName(L"Interaction");
 	pLoadedLevel->GetLayer(7)->SetName(L"PlayerSwing");
-	//pLevel->GetLayer(6)->SetName(L"MonsterProjectile");
+	pLoadedLevel->GetLayer(8)->SetName(L"Detect");
+	pLoadedLevel->GetLayer(9)->SetName(L"DestroyBolck");
+
 	pLoadedLevel->GetLayer(28)->SetName(L"Block");
 	pLoadedLevel->GetLayer(29)->SetName(L"CameraBlock");
 	pLoadedLevel->GetLayer(30)->SetName(L"Camera");
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"StoneBlock_Bug");
+	//pObj->SetName(L"JellyBomb");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
 	//pObj->AddComponent(new CSpriteComponent);
+	//pObj->AddComponent(new CPushScript);
+	//pObj->AddComponent(new CLiftScript);
 	//
 	//pObj->Transform()->SetRelativePos(Vec3(-320, -325, -325));
 	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 0));
@@ -89,13 +93,15 @@ void CTestLevel::CreateTestLevel()
 	//pObj->Collider2D()->SetIndependentScale(false);
 	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	//pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
-	//
-	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\stoneBlock\\stoneBlock_bug.sprite");
+	
+	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Obj\\obj_stoneBreakble.flip");
+	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
+	//pObj->FlipBookComponent()->Play(0, 0, false);
+	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellybomb\\jellybomb.sprite");
 	//pObj->SpriteComponent()->AddSprite(pSprite);
 	//pObj->SpriteComponent()->AddColor(true, Vec3(0, 0, 0));
-	//
-	//pLoadedLevel->AddObject(0, pObj);
-
+	
+	//pLoadedLevel->AddObject(6, pObj);
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;
@@ -409,6 +415,7 @@ void CTestLevel::CreateTestLevel()
 	CCollisionMgr::GetInst()->CollisionCheck(3, 28); // 플레이어, 블록
 	CCollisionMgr::GetInst()->CollisionCheck(4, 28); // 몬스터, 블록
 	CCollisionMgr::GetInst()->CollisionCheck(6, 28); // 상호작용, 블록
+	CCollisionMgr::GetInst()->CollisionCheck(8, 9); // 감지, 파괴 블록
 
 	CCollisionMgr::GetInst()->CollisionCheck(3, 29); // 플레이어, 카메라 블록
 	CCollisionMgr::GetInst()->CollisionCheck(6, 29); // 상호작용, 카메라 블록

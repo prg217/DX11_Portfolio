@@ -7,6 +7,7 @@
 #include "CGlowingPlantsScript.h"
 #include "CGrassScript.h"
 #include "CInteractionScript.h"
+#include "CJellyBombScript.h"
 #include "CJellyPushFrameScript.h"
 #include "CJellyPushScript.h"
 #include "CLiftScript.h"
@@ -29,6 +30,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CGlowingPlantsScript");
 	_vec.push_back(L"CGrassScript");
 	_vec.push_back(L"CInteractionScript");
+	_vec.push_back(L"CJellyBombScript");
 	_vec.push_back(L"CJellyPushFrameScript");
 	_vec.push_back(L"CJellyPushScript");
 	_vec.push_back(L"CLiftScript");
@@ -58,6 +60,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CGrassScript;
 	if (L"CInteractionScript" == _strScriptName)
 		return new CInteractionScript;
+	if (L"CJellyBombScript" == _strScriptName)
+		return new CJellyBombScript;
 	if (L"CJellyPushFrameScript" == _strScriptName)
 		return new CJellyPushFrameScript;
 	if (L"CJellyPushScript" == _strScriptName)
@@ -108,6 +112,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::INTERACTIONSCRIPT:
 		return new CInteractionScript;
+		break;
+	case (UINT)SCRIPT_TYPE::JELLYBOMBSCRIPT:
+		return new CJellyBombScript;
 		break;
 	case (UINT)SCRIPT_TYPE::JELLYPUSHFRAMESCRIPT:
 		return new CJellyPushFrameScript;
@@ -178,6 +185,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::INTERACTIONSCRIPT:
 		return L"CInteractionScript";
+		break;
+
+	case SCRIPT_TYPE::JELLYBOMBSCRIPT:
+		return L"CJellyBombScript";
 		break;
 
 	case SCRIPT_TYPE::JELLYPUSHFRAMESCRIPT:

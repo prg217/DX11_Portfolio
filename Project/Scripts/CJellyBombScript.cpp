@@ -1,0 +1,153 @@
+#include "pch.h"
+#include "CJellyBombScript.h"
+
+#include "CSwingObjScript.h"
+
+CJellyBombScript::CJellyBombScript()
+	 : CScript(UINT(SCRIPT_TYPE::JELLYBOMBSCRIPT))
+	, m_IsBomb(false)
+	, m_SaveTime(0)
+	, m_RadiusLight(nullptr)
+{
+}
+
+CJellyBombScript::CJellyBombScript(const CJellyBombScript& _Origin)
+	: CScript(_Origin)
+	, m_IsBomb(false)
+	, m_SaveTime(0)
+	, m_RadiusLight(nullptr)
+{
+}
+
+CJellyBombScript::~CJellyBombScript()
+{
+}
+
+void CJellyBombScript::Begin()
+{
+}
+
+void CJellyBombScript::Tick()
+{
+	if (m_IsBomb)
+	{
+		Bomb();
+	}
+}
+
+void CJellyBombScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
+}
+
+void CJellyBombScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
+	// 플레이어가 채 휘두르기 중일 때 채 휘두르기 콜라이더랑 만나면 폭발
+	if (_OtherObject->GetLayerIdx() == 7)
+	{
+		CScript* script = _OtherObject->GetScript("CSwingObjScript");
+		CSwingObjScript* pSwing = dynamic_cast<CSwingObjScript*>(script);
+		if (pSwing)
+		{
+			if (pSwing->GetIsSwing() && !m_IsBomb)
+			{
+				BombStart();
+			}
+		}
+	}
+}
+
+void CJellyBombScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
+}
+
+void CJellyBombScript::SaveToFile(FILE* _File)
+{
+}
+
+void CJellyBombScript::LoadFromFile(FILE* _File)
+{
+}
+
+void CJellyBombScript::BombStart()
+{
+	CreateLight(80.f, Vec3(0.62f, 0.99f, 0.97f));
+	CreateLight(0.f, Vec3(0.52f, 0.69f, 0.5f));
+
+	m_IsBomb = true;
+	m_SaveTime = TIME;
+}
+
+void CJellyBombScript::Bomb()
+{
+	// 빛이 작았다가 커짐
+	// 좀 줄었다가 다시 커졌다가... 커져서
+	if (TIME - m_SaveTime >= 1.2f)
+	{
+		// 익스플로전 이펙트 소환, 폭발, 오브젝트 삭제
+		DetectDestroy();
+		m_IsBomb = false;
+	}
+	else if (TIME - m_SaveTime >= 1.f)
+	{
+		m_RadiusLight->Light2D()->SetRadius(60.f);
+	}
+	else if (TIME - m_SaveTime >= 0.9f)
+	{
+		m_RadiusLight->Light2D()->SetRadius(35.f);
+	}
+	else if (TIME - m_SaveTime >= 0.7f)
+	{
+		m_RadiusLight->Light2D()->SetRadius(50.f);
+	}
+	else if (TIME - m_SaveTime >= 0.5f)
+	{
+		m_RadiusLight->Light2D()->SetRadius(35.f);
+	}
+	else if (TIME - m_SaveTime >= 0.3f)
+	{
+		m_RadiusLight->Light2D()->SetRadius(50.f);
+	}
+	else if (TIME - m_SaveTime >= 0.2f)
+	{
+		m_RadiusLight->Light2D()->SetRadius(35.f);
+	}
+}
+
+void CJellyBombScript::CreateLight(float _Radius, Vec3 _Color)
+{
+	// 포인트 라이트 추가
+	CGameObject* pLight = new CGameObject;
+	pLight->SetName(L"JellyBomb_Light");
+	pLight->AddComponent(new CTransform);
+	pLight->AddComponent(new CLight2D);
+
+	pLight->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	pLight->Transform()->SetRelativeScale(Vec3(1, 1, 0));
+
+	pLight->Light2D()->SetLightColor(_Color);
+	pLight->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+	pLight->Light2D()->SetRadius(_Radius);
+
+	CreateObject(pLight, 0);
+	AddChildObject(GetOwner(), pLight);
+
+	m_RadiusLight = pLight;
+}
+
+void CJellyBombScript::DetectDestroy()
+{
+	// 자식 오브젝트로 Detect오브젝트를 만들고 Detect의 콜라이더에 걸리는 9번 레이어(파괴 블록) 오브젝트들 삭제
+	CGameObject* pDetect = new CGameObject;
+	pDetect->SetName(L"JellyBomb_Detect");
+	pDetect->AddComponent(new CTransform);
+	pDetect->AddComponent(new CCollider2D);
+
+	pDetect->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	pDetect->Transform()->SetRelativeScale(Vec3(1, 1, 0));
+	pDetect->Collider2D()->SetOffset(Vec3(0, 0, 0));
+	pDetect->Collider2D()->SetScale(Vec3(2, 2, 0));
+
+	CreateObject(pDetect, 8);
+	AddChildObject(GetOwner(), pDetect);
+
+}
