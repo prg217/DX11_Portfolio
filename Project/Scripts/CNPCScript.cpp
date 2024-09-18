@@ -67,8 +67,8 @@ void CNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, C
 
 			CScript* script = pTextBox->GetScript("CTextBoxScript");
 			CTextBoxScript* texScript = dynamic_cast<CTextBoxScript*>(script);
-			texScript->SetText(L"Çì·Õ Çì·Õ...\n¹º ÀÏ ÀÖ¾î?");
-			texScript->SetText(L"¹Ç¾î¾î¾û");
+			texScript->SetText(L"Çì·Õ Çì·Õ...");
+			//texScript->SetText(L"¹Ç¾î¾î¾û");
 
 			CreateObject(pTextBox, 31);
 

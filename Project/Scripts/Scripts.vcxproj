@@ -166,11 +166,13 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CBugNPCScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCameraPlayerTrackingScript.h" />
     <ClInclude Include="CCountDownDeleteScript.h" />
     <ClInclude Include="CGlowingPlantsScript.h" />
     <ClInclude Include="CGrassScript.h" />
+    <ClInclude Include="CHPScript.h" />
     <ClInclude Include="CInteractionScript.h" />
     <ClInclude Include="CJellyBombDetectScript.h" />
     <ClInclude Include="CJellyBombScript.h" />
@@ -193,11 +195,13 @@ call CodeGen.exe</Command>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CBugNPCScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCameraPlayerTrackingScript.cpp" />
     <ClCompile Include="CCountDownDeleteScript.cpp" />
     <ClCompile Include="CGlowingPlantsScript.cpp" />
     <ClCompile Include="CGrassScript.cpp" />
+    <ClCompile Include="CHPScript.cpp" />
     <ClCompile Include="CInteractionScript.cpp" />
     <ClCompile Include="CJellyBombDetectScript.cpp" />
     <ClCompile Include="CJellyBombScript.cpp" />

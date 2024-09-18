@@ -182,9 +182,6 @@ void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 	default:
 		break;
 	}
-
-	// 큰 젤리 일 경우
-	// 들면 분리되어 랜덤 1개를 플레이어가 들게 됨
 }
 
 void CJellyPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)

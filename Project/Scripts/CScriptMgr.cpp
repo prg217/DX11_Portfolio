@@ -1,11 +1,13 @@
 #include "pch.h"
 #include "CScriptMgr.h"
 
+#include "CBugNPCScript.h"
 #include "CCameraMoveScript.h"
 #include "CCameraPlayerTrackingScript.h"
 #include "CCountDownDeleteScript.h"
 #include "CGlowingPlantsScript.h"
 #include "CGrassScript.h"
+#include "CHPScript.h"
 #include "CInteractionScript.h"
 #include "CJellyBombDetectScript.h"
 #include "CJellyBombScript.h"
@@ -26,11 +28,13 @@
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
+	_vec.push_back(L"CBugNPCScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CCameraPlayerTrackingScript");
 	_vec.push_back(L"CCountDownDeleteScript");
 	_vec.push_back(L"CGlowingPlantsScript");
 	_vec.push_back(L"CGrassScript");
+	_vec.push_back(L"CHPScript");
 	_vec.push_back(L"CInteractionScript");
 	_vec.push_back(L"CJellyBombDetectScript");
 	_vec.push_back(L"CJellyBombScript");
@@ -52,6 +56,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
+	if (L"CBugNPCScript" == _strScriptName)
+		return new CBugNPCScript;
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CCameraPlayerTrackingScript" == _strScriptName)
@@ -62,6 +68,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CGlowingPlantsScript;
 	if (L"CGrassScript" == _strScriptName)
 		return new CGrassScript;
+	if (L"CHPScript" == _strScriptName)
+		return new CHPScript;
 	if (L"CInteractionScript" == _strScriptName)
 		return new CInteractionScript;
 	if (L"CJellyBombDetectScript" == _strScriptName)
@@ -103,6 +111,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 {
 	switch (_iScriptType)
 	{
+	case (UINT)SCRIPT_TYPE::BUGNPCSCRIPT:
+		return new CBugNPCScript;
+		break;
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
 		break;
@@ -117,6 +128,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::GRASSSCRIPT:
 		return new CGrassScript;
+		break;
+	case (UINT)SCRIPT_TYPE::HPSCRIPT:
+		return new CHPScript;
 		break;
 	case (UINT)SCRIPT_TYPE::INTERACTIONSCRIPT:
 		return new CInteractionScript;
@@ -177,6 +191,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 {
 	switch ((SCRIPT_TYPE)_pScript->GetScriptType())
 	{
+	case SCRIPT_TYPE::BUGNPCSCRIPT:
+		return L"CBugNPCScript";
+		break;
+
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return L"CCameraMoveScript";
 		break;
@@ -195,6 +213,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::GRASSSCRIPT:
 		return L"CGrassScript";
+		break;
+
+	case SCRIPT_TYPE::HPSCRIPT:
+		return L"CHPScript";
 		break;
 
 	case SCRIPT_TYPE::INTERACTIONSCRIPT:

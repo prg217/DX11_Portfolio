@@ -31,6 +31,9 @@
     <Filter Include="Scripts\Obj">
       <UniqueIdentifier>{9318b877-c843-49f8-86b3-e8841db2c92c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Monster">
+      <UniqueIdentifier>{94a71f56-fd54-497b-8d49-1fe796fb2a1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -108,6 +111,12 @@
     <ClInclude Include="CStoneBreakableScript.h">
       <Filter>Scripts\Obj</Filter>
     </ClInclude>
+    <ClInclude Include="CHPScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CBugNPCScript.h">
+      <Filter>Scripts\Interaction\NPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -184,6 +193,12 @@
     </ClCompile>
     <ClCompile Include="CStoneBreakableScript.cpp">
       <Filter>Scripts\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="CHPScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CBugNPCScript.cpp">
+      <Filter>Scripts\Interaction\NPC</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

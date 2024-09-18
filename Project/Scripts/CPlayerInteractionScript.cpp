@@ -156,6 +156,7 @@ void CPlayerInteractionScript::Lift(CGameObject* _Other)
 	// 플레이어가 아무것도 안 하는 상태인지 체크
 	if (m_pPlayerScript->GetCurPS() == PlayerState::NONE)
 	{
+		m_pInteractionObj = _Other;
 		// 들어올리는 애니메이션 재생(재생하는 동안 못 움직임)
 		m_pPlayerScript->LiftStart();
 		// 자식으로 넣어주고 위치 조정
@@ -163,9 +164,16 @@ void CPlayerInteractionScript::Lift(CGameObject* _Other)
 	}
 	else if (m_pPlayerScript->GetCurPS() == PlayerState::LIFT_START)
 	{
+		if (m_pInteractionObj == nullptr)
+		{
+			return;
+		}
 		// 내리는 애니메이션 재생(재생하는 동안 못 움직임)
 		m_pPlayerScript->LiftEnd();
+		script = m_pInteractionObj->GetScript("CLiftScript");
+		liftScript = dynamic_cast<CLiftScript*>(script);
 		liftScript->End();
+		m_pInteractionObj = nullptr;
 	}
 }
 

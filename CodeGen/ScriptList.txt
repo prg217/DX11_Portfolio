@@ -1,8 +1,10 @@
+CBugNPCScript
 CCameraMoveScript
 CCameraPlayerTrackingScript
 CCountDownDeleteScript
 CGlowingPlantsScript
 CGrassScript
+CHPScript
 CInteractionScript
 CJellyBombDetectScript
 CJellyBombScript

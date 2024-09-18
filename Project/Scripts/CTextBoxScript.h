@@ -32,6 +32,7 @@ public:
 public:
     void IsName() { m_IsName = true; }
     void SetText(wstring _Text); 
+    void TextClear() { m_vText.clear(); }
 
 public:
     CLONE(CTextBoxScript);
