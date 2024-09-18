@@ -22,7 +22,6 @@ c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\animationeditor.
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\ae_sub.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\ae_detail.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\ae_spriteview.obj
-c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\tilemapeditor.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\textureui.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\spriteui.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\spriteeditor.obj
@@ -32,6 +31,7 @@ c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\se_sub.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\se_detail.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\se_atlasview.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\scriptui.obj
+c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\rigidbodyui.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\prefabui.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\particlesystemui.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\paramui.obj
@@ -61,7 +61,7 @@ c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\tme_sub.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\tme_selecttex.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\tme_detail.obj
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\tilemapui.obj
-c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\rigidbodyui.obj
+c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\tilemapeditor.obj
 c:\assortrock\portfolio\dx11_portfolio\outputfile\bin\client_d.exe
 c:\assortrock\portfolio\dx11_portfolio\outputfile\bin\client_d.pdb
 c:\assortrock\portfolio\dx11_portfolio\project\client\x64\debug\client.res

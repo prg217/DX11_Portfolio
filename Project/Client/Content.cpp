@@ -142,11 +142,11 @@ void Content::FindAssetName(const wstring& _FolderPath, const wstring& _Filter)
 	{
 		wstring strFindName = tFindData.cFileName;
 
-		if (tFindData.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)
+		if (tFindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{		
 			if (strFindName == L"..")
 				continue;
-			
+
 			FindAssetName(_FolderPath + strFindName + L"\\", _Filter);
 		}
 		else
