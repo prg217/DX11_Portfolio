@@ -2,7 +2,6 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts_d.pch
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.pdb
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.idb
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\pch.obj
-c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cpushscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cplayerscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cplayerinteractionscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cplayercamerascript.obj
@@ -18,6 +17,7 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cinteractionscr
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\chpscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cgrassscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cglowingplantsscript.obj
+c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cflowerlightscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccountdowndeletescript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccameraplayertrackingscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccameramovescript.obj
@@ -28,6 +28,7 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ctextboxscript.
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cswingobjscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cstonebreakablescript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cscriptmgr.obj
+c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cpushscript.obj
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.lib
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.tlog\cl.command.1.tlog
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.tlog\cl.items.tlog

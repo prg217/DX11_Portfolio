@@ -170,6 +170,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCameraPlayerTrackingScript.h" />
     <ClInclude Include="CCountDownDeleteScript.h" />
+    <ClInclude Include="CFlowerLightScript.h" />
     <ClInclude Include="CGlowingPlantsScript.h" />
     <ClInclude Include="CGrassScript.h" />
     <ClInclude Include="CHPScript.h" />
@@ -199,6 +200,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCameraPlayerTrackingScript.cpp" />
     <ClCompile Include="CCountDownDeleteScript.cpp" />
+    <ClCompile Include="CFlowerLightScript.cpp" />
     <ClCompile Include="CGlowingPlantsScript.cpp" />
     <ClCompile Include="CGrassScript.cpp" />
     <ClCompile Include="CHPScript.cpp" />

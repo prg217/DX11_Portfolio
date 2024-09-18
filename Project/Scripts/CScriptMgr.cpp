@@ -5,6 +5,7 @@
 #include "CCameraMoveScript.h"
 #include "CCameraPlayerTrackingScript.h"
 #include "CCountDownDeleteScript.h"
+#include "CFlowerLightScript.h"
 #include "CGlowingPlantsScript.h"
 #include "CGrassScript.h"
 #include "CHPScript.h"
@@ -32,6 +33,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CCameraPlayerTrackingScript");
 	_vec.push_back(L"CCountDownDeleteScript");
+	_vec.push_back(L"CFlowerLightScript");
 	_vec.push_back(L"CGlowingPlantsScript");
 	_vec.push_back(L"CGrassScript");
 	_vec.push_back(L"CHPScript");
@@ -64,6 +66,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCameraPlayerTrackingScript;
 	if (L"CCountDownDeleteScript" == _strScriptName)
 		return new CCountDownDeleteScript;
+	if (L"CFlowerLightScript" == _strScriptName)
+		return new CFlowerLightScript;
 	if (L"CGlowingPlantsScript" == _strScriptName)
 		return new CGlowingPlantsScript;
 	if (L"CGrassScript" == _strScriptName)
@@ -122,6 +126,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:
 		return new CCountDownDeleteScript;
+		break;
+	case (UINT)SCRIPT_TYPE::FLOWERLIGHTSCRIPT:
+		return new CFlowerLightScript;
 		break;
 	case (UINT)SCRIPT_TYPE::GLOWINGPLANTSSCRIPT:
 		return new CGlowingPlantsScript;
@@ -205,6 +212,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:
 		return L"CCountDownDeleteScript";
+		break;
+
+	case SCRIPT_TYPE::FLOWERLIGHTSCRIPT:
+		return L"CFlowerLightScript";
 		break;
 
 	case SCRIPT_TYPE::GLOWINGPLANTSSCRIPT:

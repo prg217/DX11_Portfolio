@@ -12,6 +12,7 @@ CFlipBookComponent::CFlipBookComponent()
 	: CComponent(COMPONENT_TYPE::FLIPBOOKCOMPONENT)
 	, m_CurFlipBook(nullptr)
 	, m_CurFrmIdx(0)
+	, m_Reverse(false)
 	, m_Stop(false)
 	, m_Outline(false)
 	, m_AddColor(false)
@@ -25,6 +26,7 @@ CFlipBookComponent::CFlipBookComponent(CFlipBookComponent& _Origin)
 	, m_vecFlipBook(_Origin.m_vecFlipBook)
 	, m_CurFlipBook(_Origin.m_CurFlipBook)
 	, m_CurFrmIdx(0)
+	, m_Reverse(false)
 	, m_FPS(_Origin.m_FPS)
 	, m_AccTime(0.f)
 	, m_Repeat(_Origin.m_Repeat)
@@ -76,12 +78,26 @@ void CFlipBookComponent::FinalTick()
 		if (MaxTime < m_AccTime)
 		{
 			m_AccTime -= MaxTime;
-			++m_CurFrmIdx;
 
-			if (m_CurFlipBook->GetMaxFrameCount() <= m_CurFrmIdx)
+			if (m_Reverse)
 			{
 				--m_CurFrmIdx;
-				m_Finish = true;
+
+				if (m_CurFlipBook->GetMaxFrameCount() <= 0)
+				{
+					++m_CurFrmIdx;
+					m_Finish = true;
+				}
+			}
+			else
+			{
+				++m_CurFrmIdx;
+
+				if (m_CurFlipBook->GetMaxFrameCount() <= m_CurFrmIdx)
+				{
+					--m_CurFrmIdx;
+					m_Finish = true;
+				}
 			}
 		}
 
@@ -112,12 +128,13 @@ Ptr<CFlipBook> CFlipBookComponent::FindFlipBook(const wstring& _Key)
 
 void CFlipBookComponent::Play(int _FliBookIdx, float _FPS, bool _Repeat, int _StartFrmIdx)
 {
-	m_Stop = false;
-
-	if (m_CurFlipBook == m_vecFlipBook[_FliBookIdx] && m_FPS == _FPS)
+	if (m_CurFlipBook == m_vecFlipBook[_FliBookIdx] && m_FPS == _FPS && m_Repeat == _Repeat && !m_Reverse)
 	{
 		return;
 	}
+
+	m_Reverse = false;
+	m_Stop = false;
 
 	m_CurFlipBook = m_vecFlipBook[_FliBookIdx];
 
@@ -127,6 +144,29 @@ void CFlipBookComponent::Play(int _FliBookIdx, float _FPS, bool _Repeat, int _St
 	}
 	
 	m_CurFrmIdx = _StartFrmIdx;
+	m_AccTime = 0.f;
+	m_FPS = _FPS;
+	m_Repeat = _Repeat;
+}
+
+void CFlipBookComponent::ReversePlay(int _FliBookIdx, float _FPS, bool _Repeat)
+{
+	if (m_CurFlipBook == m_vecFlipBook[_FliBookIdx] && m_FPS == _FPS && m_Repeat == _Repeat && m_Reverse)
+	{
+		return;
+	}
+
+	m_Reverse = true;
+	m_Stop = false;
+
+	m_CurFlipBook = m_vecFlipBook[_FliBookIdx];
+
+	if (nullptr == m_CurFlipBook)
+	{
+		return;
+	}
+
+	m_CurFrmIdx = m_CurFlipBook->GetMaxFrameCount();
 	m_AccTime = 0.f;
 	m_FPS = _FPS;
 	m_Repeat = _Repeat;

@@ -15,6 +15,7 @@ private:
     float                   m_AccTime;      // 누적 시간값 체크
     bool                    m_Repeat;
     bool                    m_Finish;       // FlipBook 재생이 끝에 도달했는지 여부
+    bool                    m_Reverse;      // 역재생 여부
 
     bool                    m_Stop;
 
@@ -31,6 +32,7 @@ public:
     void AddFlipBook(int _Idx, Ptr<CFlipBook> _Flipbook);
     Ptr<CFlipBook> FindFlipBook(const wstring& _Key);
     void Play(int _FliBookIdx, float _FPS, bool _Repeat, int _StartFrmIdx = 0);
+    void ReversePlay(int _FliBookIdx, float _FPS, bool _Repeat);
     bool GetIsFinish() { return m_Finish; }
     Ptr<CSprite> GetCurSprite() { return m_CurFrmSprite; }
     int GetCurIdx() { return m_CurFrmIdx; }

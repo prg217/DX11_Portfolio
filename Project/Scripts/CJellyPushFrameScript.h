@@ -1,22 +1,31 @@
 #pragma once
 #include <Engine/CScript.h>
 
+enum class PuzzleType
+{
+    STONE_BLOCK,
+    FLOWER,
+};
+
 enum class JellyPushType;
 
 class CJellyPushFrameScript :
     public CScript
 {
 private:
-    // 이 프레임의 타입을 정해서 그 타입에 맞는 것만 정답 판정->길 열기
-    JellyPushType m_Type;
-    int m_PuzzleNum;
-    CGameObject* m_StoneBlock;
+    // 이 프레임의 타입을 정해서 그 타입에 맞는 것만 정답 판정
+    JellyPushType m_JellyType;
+    PuzzleType m_PuzzleType;
+    int m_PuzzleObjNum;
+    CGameObject* m_InteractionObj;
 
+    // =====STONE_BLOCK퍼즐에 필요한 변수들=====
     bool m_Open;
     Vec3 m_Pos;
     float m_GoalPosY;
     float m_Speed;
     Vec2 m_Slice;
+    // =========================================
 
 public:
     virtual void Begin() override;
@@ -31,6 +40,9 @@ public:
 
 private:
     void Open();
+
+    void StoneBlock();
+    void Flower(CGameObject* _Other);
 
 public:
     CLONE(CJellyPushFrameScript);

@@ -2,6 +2,7 @@
   .\Project\Scripts\CCameraMoveScript.h
   .\Project\Scripts\CCameraPlayerTrackingScript.h
   .\Project\Scripts\CCountDownDeleteScript.h
+  .\Project\Scripts\CFlowerLightScript.h
   .\Project\Scripts\CGlowingPlantsScript.h
   .\Project\Scripts\CGrassScript.h
   .\Project\Scripts\CHPScript.h
@@ -23,13 +24,14 @@
   .\Project\Scripts\CSwingObjScript.h
   .\Project\Scripts\CTextBoxScript.h
   .\Project\Scripts\CUIScript.h
-  25개 파일이 복사되었습니다.
+  26개 파일이 복사되었습니다.
   pch.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): warning C4005: 'DELETE': 매크로 재정의
   CBugNPCScript.cpp
   CCameraMoveScript.cpp
   CCameraPlayerTrackingScript.cpp
   CCountDownDeleteScript.cpp
+  CFlowerLightScript.cpp
   CGlowingPlantsScript.cpp
   CGrassScript.cpp
   CHPScript.cpp
@@ -45,9 +47,9 @@ C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): w
   CPlayerCameraScript.cpp
   CPlayerInteractionScript.cpp
   CPlayerScript.cpp
-  CPushScript.cpp
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
+  CPushScript.cpp
   CScriptMgr.cpp
   CStoneBreakableScript.cpp
   CSwingObjScript.cpp

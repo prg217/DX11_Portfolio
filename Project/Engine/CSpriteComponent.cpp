@@ -7,6 +7,7 @@
 
 CSpriteComponent::CSpriteComponent()
 	: CComponent(COMPONENT_TYPE::SPRITECOMPONENT)
+	, m_Sprite(nullptr)
 	, m_Outline(false)
 	, m_AddColor(false)
 	, m_Color(Vec3(0.f, 0.f, 0.f))
@@ -17,10 +18,11 @@ CSpriteComponent::CSpriteComponent()
 
 CSpriteComponent::CSpriteComponent(CSpriteComponent& _Origin)
 	: CComponent(_Origin)
-	, m_Outline(false)
-	, m_AddColor(false)
-	, m_Color(Vec3(0.f, 0.f, 0.f))
-	, m_UseLight(true)
+	, m_Sprite(_Origin.m_Sprite)
+	, m_Outline(_Origin.m_Outline)
+	, m_AddColor(_Origin.m_AddColor)
+	, m_Color(_Origin.m_Color)
+	, m_UseLight(_Origin.m_Color)
 	, m_UseSliceAmend(false)
 {
 }

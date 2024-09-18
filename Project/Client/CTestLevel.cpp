@@ -76,32 +76,30 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"JellyBomb");
+	//pObj->SetName(L"FlowerLight");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
-	//pObj->AddComponent(new CSpriteComponent);
-	//pObj->AddComponent(new CPushScript);
-	//pObj->AddComponent(new CLiftScript);
+	//pObj->AddComponent(new CFlipBookComponent);
 	//
-	//pObj->Transform()->SetRelativePos(Vec3(-320, -325, -325));
-	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 0));
+	//pObj->Transform()->SetRelativePos(Vec3(1000, -325, -325));
+	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 1));
 	//
 	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	//pObj->MeshRender()->SetMaterial(pMtrl);
-	//
+	
 	//pObj->Collider2D()->SetIndependentScale(false);
 	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	//pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
 	
-	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Obj\\obj_stoneBreakble.flip");
+	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Obstacle\\flowerLight.flip");
 	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
 	//pObj->FlipBookComponent()->Play(0, 0, false);
-	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\jellybomb\\jellybomb.sprite");
+	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\flowerLight\\flowerLight_stem.sprite");
 	//pObj->SpriteComponent()->AddSprite(pSprite);
-	//pObj->SpriteComponent()->AddColor(true, Vec3(0, 0, 0));
+	//pObj->SpriteComponent()->AddColor(false, Vec3(0, 0, 0));
 	
-	//pLoadedLevel->AddObject(6, pObj);
+	//pLoadedLevel->AddObject(0, pObj);
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;

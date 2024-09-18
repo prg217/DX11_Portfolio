@@ -15,6 +15,7 @@
 #include "FlipBookComUI.h"
 #include "TileMapUI.h"
 #include "ParticleSystemUI.h"
+#include "SpriteComUI.h"
 
 #include "MeshUI.h"
 #include "MeshDataUI.h"
@@ -87,6 +88,11 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]->SetName("ParticleSystemUI");
 	m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]->SetChildSize(ImVec2(0.f, 500.f));
 	AddChild(m_arrComUI[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]);
+
+	m_arrComUI[(UINT)COMPONENT_TYPE::SPRITECOMPONENT] = new SpriteComUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::SPRITECOMPONENT]->SetName("SpriteComUI");
+	m_arrComUI[(UINT)COMPONENT_TYPE::SPRITECOMPONENT]->SetChildSize(ImVec2(0.f, 100.f));
+	AddChild(m_arrComUI[(UINT)COMPONENT_TYPE::SPRITECOMPONENT]);
 }
 
 void Inspector::CreateScriptUI(UINT _Count)
