@@ -120,6 +120,9 @@
     <ClInclude Include="CFlowerLightScript.h">
       <Filter>Scripts\Obstacle</Filter>
     </ClInclude>
+    <ClInclude Include="CFlowerLightAreaScript.h">
+      <Filter>Scripts\Obstacle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -204,6 +207,9 @@
       <Filter>Scripts\Interaction\NPC</Filter>
     </ClCompile>
     <ClCompile Include="CFlowerLightScript.cpp">
+      <Filter>Scripts\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlowerLightAreaScript.cpp">
       <Filter>Scripts\Obstacle</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,9 +1,16 @@
 #pragma once
 #include <Engine/CScript.h>
 
+enum class JellyPushType;
+
 class CBugNPCScript :
     public CScript
 {
+private:
+    JellyPushType m_JellyPushType;
+
+    bool m_SameType;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;

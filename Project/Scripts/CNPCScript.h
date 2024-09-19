@@ -4,6 +4,9 @@
 class CNPCScript :
     public CScript
 {
+private:
+    vector<wstring> m_Text;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -14,6 +17,10 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+
+public:
+    void SetText(wstring _Text);
+    void TextClear() { m_Text.clear(); }
 
 public:
     CLONE(CNPCScript);

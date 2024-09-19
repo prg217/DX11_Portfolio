@@ -83,9 +83,9 @@ void CFlipBookComponent::FinalTick()
 			{
 				--m_CurFrmIdx;
 
-				if (m_CurFlipBook->GetMaxFrameCount() <= 0)
+				if (m_CurFrmIdx < 0)
 				{
-					++m_CurFrmIdx;
+					m_CurFrmIdx = 0;
 					m_Finish = true;
 				}
 			}
@@ -95,7 +95,7 @@ void CFlipBookComponent::FinalTick()
 
 				if (m_CurFlipBook->GetMaxFrameCount() <= m_CurFrmIdx)
 				{
-					--m_CurFrmIdx;
+					m_CurFrmIdx = m_CurFlipBook->GetMaxFrameCount() - 1;
 					m_Finish = true;
 				}
 			}
@@ -147,6 +147,7 @@ void CFlipBookComponent::Play(int _FliBookIdx, float _FPS, bool _Repeat, int _St
 	m_AccTime = 0.f;
 	m_FPS = _FPS;
 	m_Repeat = _Repeat;
+	m_Finish = false;
 }
 
 void CFlipBookComponent::ReversePlay(int _FliBookIdx, float _FPS, bool _Repeat)
@@ -166,10 +167,11 @@ void CFlipBookComponent::ReversePlay(int _FliBookIdx, float _FPS, bool _Repeat)
 		return;
 	}
 
-	m_CurFrmIdx = m_CurFlipBook->GetMaxFrameCount();
+	m_CurFrmIdx = m_CurFlipBook->GetMaxFrameCount() - 1;
 	m_AccTime = 0.f;
 	m_FPS = _FPS;
 	m_Repeat = _Repeat;
+	m_Finish = false;
 }
 
 void CFlipBookComponent::Reset()

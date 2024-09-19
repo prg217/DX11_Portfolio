@@ -2,6 +2,7 @@ CBugNPCScript
 CCameraMoveScript
 CCameraPlayerTrackingScript
 CCountDownDeleteScript
+CFlowerLightAreaScript
 CFlowerLightScript
 CGlowingPlantsScript
 CGrassScript

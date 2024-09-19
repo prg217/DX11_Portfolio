@@ -104,12 +104,15 @@ void CJellyPushFrameScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject*
 					DeleteComponent(m_InteractionObj, COMPONENT_TYPE::COLLIDER2D);
 				}
 				break;
-			case PuzzleType::FLOWER:
-				Flower(_OtherObject);
-				break;
 			default:
 				break;
 			}
+		}
+
+		// 색상에 관계 없이 꽃이 핀다.
+		if (m_PuzzleType == PuzzleType::FLOWER)
+		{
+			FlowerBloom(jellyScript->GetJellyPushType());
 		}
 	}
 }
@@ -120,6 +123,14 @@ void CJellyPushFrameScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 
 void CJellyPushFrameScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	if (_OtherObject->GetScript("CJellyPushScript") != nullptr)
+	{
+		if (m_PuzzleType == PuzzleType::FLOWER)
+		{
+			FlowerFall();
+		}
+	}
+
 }
 
 void CJellyPushFrameScript::SaveToFile(FILE* _File)
@@ -214,10 +225,18 @@ void CJellyPushFrameScript::StoneBlock()
 	m_Open = true;
 }
 
-void CJellyPushFrameScript::Flower(CGameObject* _Other)
+void CJellyPushFrameScript::FlowerBloom(JellyPushType _JellyPushType)
 {
-	CScript* script = _Other->GetScript("CFlowerLightScript");
+	CScript* script = m_InteractionObj->GetScript("CFlowerLightScript");
 	CFlowerLightScript* flowerLightScript = dynamic_cast<CFlowerLightScript*>(script);
 	
-	flowerLightScript->Bloom();
+	flowerLightScript->Bloom(_JellyPushType);
+}
+
+void CJellyPushFrameScript::FlowerFall()
+{
+	CScript* script = m_InteractionObj->GetScript("CFlowerLightScript");
+	CFlowerLightScript* flowerLightScript = dynamic_cast<CFlowerLightScript*>(script);
+
+	flowerLightScript->Fall();
 }

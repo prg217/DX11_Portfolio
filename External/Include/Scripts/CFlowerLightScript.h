@@ -1,9 +1,14 @@
 #pragma once
 #include <Engine/CScript.h>
 
+enum class JellyPushType;
+
 class CFlowerLightScript :
     public CScript
 {
+private:
+    JellyPushType m_Type; // ¡©∏Æ ªˆªÛ
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -17,7 +22,7 @@ public:
 
 public:
     // ≤…¿Ã «À
-    void Bloom();
+    void Bloom(JellyPushType _JellyPushType);
     // ≤…¿Ã ¡¸
     void Fall();
 

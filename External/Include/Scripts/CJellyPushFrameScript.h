@@ -42,7 +42,8 @@ private:
     void Open();
 
     void StoneBlock();
-    void Flower(CGameObject* _Other);
+    void FlowerBloom(JellyPushType _JellyPushType);
+    void FlowerFall();
 
 public:
     CLONE(CJellyPushFrameScript);

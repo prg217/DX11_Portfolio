@@ -66,6 +66,12 @@ void CCollisionMgr::CollisionBtwLayer(UINT _Left, UINT _Right)
 	if (nullptr == pCurLevel)
 		return;
 
+	// 레벨이 시작하기 전이면 작동하지 않는다.
+	if (pCurLevel->GetState() == LEVEL_STATE::STOP)
+	{
+		return;
+	}
+
 	// 각 레이어에 속한 모든 오브젝트들을 가져온다.
 	const vector<CGameObject*>& vecLeft = pCurLevel->GetLayer(_Left)->GetObjects();
 	const vector<CGameObject*>& vecRight = pCurLevel->GetLayer(_Right)->GetObjects();
