@@ -36,6 +36,9 @@ public:
     bool GetIsFinish() { return m_Finish; }
     Ptr<CSprite> GetCurSprite() { return m_CurFrmSprite; }
     int GetCurIdx() { return m_CurFrmIdx; }
+    vector<Ptr<CFlipBook>> GetFlipBooks() { return m_vecFlipBook; }
+    void SetFlipBook(vector<Ptr<CFlipBook>> _vFlipBook) { m_vecFlipBook = _vFlipBook; }
+
     void Reset();
     void Binding();
     void Stop();

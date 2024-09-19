@@ -10,6 +10,8 @@ private:
     JellyPushType m_JellyPushType;
 
     bool m_SameType;
+    bool m_Happy;
+    bool m_WakeUp;
 
 public:
     virtual void Begin() override;
