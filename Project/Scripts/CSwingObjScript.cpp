@@ -106,7 +106,6 @@ void CSwingObjScript::Tick()
 	if (FlipBookComponent()->GetIsFinish())
 	{
 		m_IsSwing = false;
-		//FlipBookComponent()->Clear();
 	}
 }
 

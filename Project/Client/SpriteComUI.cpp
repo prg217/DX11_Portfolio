@@ -47,5 +47,30 @@ void SpriteComUI::Update()
 		float ratio = widthSize / pTex->Width();
 		ImGui::Image(pTex->GetSRV().Get(), ImVec2(widthSize, pTex->Height() * ratio), leftTopUV, rightDownUV, tint_col, border_col);
 	}
+
+	// 색 적용
+	ImGui::Text("AddColor");
+	ImGui::SameLine(100);
+	bool addColor = spriteCom->GetAddColor();
+	ImGui::Checkbox("##SpriteAddColor", &addColor);
+
+	if (addColor)
+	{
+		ImGui::Text("Color");
+		ImGui::SameLine(100);
+		Vec3 Color = spriteCom->GetColor();
+		ImGui::ColorEdit3("##SpriteColor", Color);
+
+		spriteCom->AddColor(addColor, Color);
+	}
+
+	// 빛 적용 유무
+	ImGui::Text("UseLight");
+	ImGui::SameLine(100);
+	bool useLight = spriteCom->GetUseLight();
+	if (ImGui::Checkbox("##SpriteUseLight", &useLight))
+	{
+		spriteCom->SetUseLight(useLight);
+	}
 }
 

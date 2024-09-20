@@ -14,9 +14,11 @@
   .\Project\Scripts\CJellyPushScript.h
   .\Project\Scripts\CLiftScript.h
   .\Project\Scripts\CMissileScript.h
+  .\Project\Scripts\CMonsterScript.h
   .\Project\Scripts\CNPCScript.h
   .\Project\Scripts\COguDancePointLightScript.h
   .\Project\Scripts\CPlayerCameraScript.h
+  .\Project\Scripts\CPlayerDetectScript.h
   .\Project\Scripts\CPlayerInteractionScript.h
   .\Project\Scripts\CPlayerScript.h
   .\Project\Scripts\CPushScript.h
@@ -25,7 +27,7 @@
   .\Project\Scripts\CSwingObjScript.h
   .\Project\Scripts\CTextBoxScript.h
   .\Project\Scripts\CUIScript.h
-  27개 파일이 복사되었습니다.
+  29개 파일이 복사되었습니다.
   pch.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): warning C4005: 'DELETE': 매크로 재정의
   CBugNPCScript.cpp
@@ -44,12 +46,14 @@ C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): w
   CJellyPushScript.cpp
   CLiftScript.cpp
   CMissileScript.cpp
+  CMonsterScript.cpp
   CNPCScript.cpp
   COguDancePointLightScript.cpp
   CPlayerCameraScript.cpp
-  CPlayerInteractionScript.cpp
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
+  CPlayerDetectScript.cpp
+  CPlayerInteractionScript.cpp
   CPlayerScript.cpp
   CPushScript.cpp
   CScriptMgr.cpp

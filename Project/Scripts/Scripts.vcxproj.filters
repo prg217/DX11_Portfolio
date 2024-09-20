@@ -123,6 +123,12 @@
     <ClInclude Include="CFlowerLightAreaScript.h">
       <Filter>Scripts\Obstacle</Filter>
     </ClInclude>
+    <ClInclude Include="CMonsterScript.h">
+      <Filter>Scripts\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerDetectScript.h">
+      <Filter>Scripts\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -211,6 +217,12 @@
     </ClCompile>
     <ClCompile Include="CFlowerLightAreaScript.cpp">
       <Filter>Scripts\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterScript.cpp">
+      <Filter>Scripts\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerDetectScript.cpp">
+      <Filter>Scripts\Monster</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

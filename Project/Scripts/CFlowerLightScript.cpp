@@ -53,7 +53,8 @@ void CFlowerLightScript::Bloom(JellyPushType _JellyPushType)
 
 	for (auto i : GetOwner()->GetChildren())
 	{
-		if (i->GetName().compare(L"FlowerLight_Area"))
+		// 문자열이 같음에도 0이 반환되지 않음, GetName 길이 17 FlowerLight_Area 길이 16
+		//if (i->GetName().compare(L"FlowerLight_Area") == 0)
 		{
 			i->Transform()->SetRelativePos(Vec3(0, -0.5f, 0));
 			// 색 적용 시키기
@@ -72,7 +73,7 @@ void CFlowerLightScript::Fall()
 
 	for (auto i : GetOwner()->GetChildren())
 	{
-		if (i->GetName().compare(L"FlowerLight_Area"))
+		//if (i->GetName().compare(L"FlowerLight_Area") == 0)
 		{
 			i->Transform()->SetRelativePos(Vec3(0, 15, 0));
 		}

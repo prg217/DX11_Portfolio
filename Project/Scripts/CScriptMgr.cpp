@@ -17,9 +17,11 @@
 #include "CJellyPushScript.h"
 #include "CLiftScript.h"
 #include "CMissileScript.h"
+#include "CMonsterScript.h"
 #include "CNPCScript.h"
 #include "COguDancePointLightScript.h"
 #include "CPlayerCameraScript.h"
+#include "CPlayerDetectScript.h"
 #include "CPlayerInteractionScript.h"
 #include "CPlayerScript.h"
 #include "CPushScript.h"
@@ -46,9 +48,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CJellyPushScript");
 	_vec.push_back(L"CLiftScript");
 	_vec.push_back(L"CMissileScript");
+	_vec.push_back(L"CMonsterScript");
 	_vec.push_back(L"CNPCScript");
 	_vec.push_back(L"COguDancePointLightScript");
 	_vec.push_back(L"CPlayerCameraScript");
+	_vec.push_back(L"CPlayerDetectScript");
 	_vec.push_back(L"CPlayerInteractionScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CPushScript");
@@ -92,12 +96,16 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CLiftScript;
 	if (L"CMissileScript" == _strScriptName)
 		return new CMissileScript;
+	if (L"CMonsterScript" == _strScriptName)
+		return new CMonsterScript;
 	if (L"CNPCScript" == _strScriptName)
 		return new CNPCScript;
 	if (L"COguDancePointLightScript" == _strScriptName)
 		return new COguDancePointLightScript;
 	if (L"CPlayerCameraScript" == _strScriptName)
 		return new CPlayerCameraScript;
+	if (L"CPlayerDetectScript" == _strScriptName)
+		return new CPlayerDetectScript;
 	if (L"CPlayerInteractionScript" == _strScriptName)
 		return new CPlayerInteractionScript;
 	if (L"CPlayerScript" == _strScriptName)
@@ -167,6 +175,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::MISSILESCRIPT:
 		return new CMissileScript;
 		break;
+	case (UINT)SCRIPT_TYPE::MONSTERSCRIPT:
+		return new CMonsterScript;
+		break;
 	case (UINT)SCRIPT_TYPE::NPCSCRIPT:
 		return new CNPCScript;
 		break;
@@ -175,6 +186,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERCAMERASCRIPT:
 		return new CPlayerCameraScript;
+		break;
+	case (UINT)SCRIPT_TYPE::PLAYERDETECTSCRIPT:
+		return new CPlayerDetectScript;
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERINTERACTIONSCRIPT:
 		return new CPlayerInteractionScript;
@@ -269,6 +283,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CMissileScript";
 		break;
 
+	case SCRIPT_TYPE::MONSTERSCRIPT:
+		return L"CMonsterScript";
+		break;
+
 	case SCRIPT_TYPE::NPCSCRIPT:
 		return L"CNPCScript";
 		break;
@@ -279,6 +297,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PLAYERCAMERASCRIPT:
 		return L"CPlayerCameraScript";
+		break;
+
+	case SCRIPT_TYPE::PLAYERDETECTSCRIPT:
+		return L"CPlayerDetectScript";
 		break;
 
 	case SCRIPT_TYPE::PLAYERINTERACTIONSCRIPT:

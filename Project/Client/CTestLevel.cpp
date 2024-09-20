@@ -69,6 +69,7 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(7)->SetName(L"PlayerSwing");
 	pLoadedLevel->GetLayer(8)->SetName(L"Detect");
 	pLoadedLevel->GetLayer(9)->SetName(L"DestroyBlock");
+	pLoadedLevel->GetLayer(10)->SetName(L"MonsterAttack");
 
 	pLoadedLevel->GetLayer(28)->SetName(L"Block");
 	pLoadedLevel->GetLayer(29)->SetName(L"CameraBlock");
@@ -76,33 +77,33 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"FlowerLight_Light");
+	//pObj->SetName(L"HPBar");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
 	//pObj->AddComponent(new CSpriteComponent);
 	//pObj->AddComponent(new CLight2D);
-	//
-	//pObj->Transform()->SetRelativePos(Vec3(1000, -325, -325));
-	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 1));
 	
-	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	//pObj->MeshRender()->SetMaterial(pAlphaBlendMtrl);
+	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(1, 1, 1));
 	//
+	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pObj->MeshRender()->SetMaterial(pMtrl);
+	
 	//pObj->Collider2D()->SetIndependentScale(false);
 	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	//pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
 	
-	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Obstacle\\flowerLight.flip");
+	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Monster\\monster_spitCactusPoison.flip");
 	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
 	//pObj->FlipBookComponent()->Play(0, 0, false);
-	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\flowerLight\\flowerLight_light.sprite");
+	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\ui\\hp_bar.sprite");
 	//pObj->SpriteComponent()->AddSprite(pSprite);
 	//pObj->SpriteComponent()->AddColor(false, Vec3(0, 0, 0));
 
 	//pObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
 	//pObj->Light2D()->SetRadius(10.f);
-	//
+	
 	//pLoadedLevel->AddObject(0, pObj);
 /*
 	// 카메라 오브젝트
@@ -411,6 +412,8 @@ void CTestLevel::CreateTestLevel()
 	// 충돌 지정
 	CCollisionMgr::GetInst()->CollisionCheck(3, 4); // 플레이어, 몬스터
 	CCollisionMgr::GetInst()->CollisionCheck(3, 6); // 플레이어, 상호작용
+	CCollisionMgr::GetInst()->CollisionCheck(3, 8); // 플레이어, 감지
+	CCollisionMgr::GetInst()->CollisionCheck(4, 7); // 몬스터, 플레이어 채 휘두르기
 	CCollisionMgr::GetInst()->CollisionCheck(5, 6); // 플레이어 상호작용 감지, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(6, 6); // 상호작용, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(7, 6); // 플레이어 채 휘두르기, 상호작용
@@ -419,6 +422,7 @@ void CTestLevel::CreateTestLevel()
 	CCollisionMgr::GetInst()->CollisionCheck(6, 28); // 상호작용, 블록
 	CCollisionMgr::GetInst()->CollisionCheck(8, 28); // 감지, 블록
 	CCollisionMgr::GetInst()->CollisionCheck(6, 8); // 감지, 상호작용
+	CCollisionMgr::GetInst()->CollisionCheck(3, 10); // 플레이어, 몬스터 공격
 
 	CCollisionMgr::GetInst()->CollisionCheck(3, 29); // 플레이어, 카메라 블록
 	CCollisionMgr::GetInst()->CollisionCheck(6, 29); // 상호작용, 카메라 블록

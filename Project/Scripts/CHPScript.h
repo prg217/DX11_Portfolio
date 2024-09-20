@@ -8,6 +8,8 @@ private:
     int m_HP;
     int m_MaxHP;
 
+    CGameObject* m_HPBar;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -19,7 +21,7 @@ private:
     void Dead();
 
 public:
-    void Hit(int _Damage = 1);
+    void Hit(int _Damage = 1, CGameObject* _HPBar = nullptr);
     void Heal(int _Heal = 1);
 
 public:

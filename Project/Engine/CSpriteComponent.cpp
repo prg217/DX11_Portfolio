@@ -111,3 +111,9 @@ void CSpriteComponent::SliceAmend(bool _Use, Vec2 _Slice)
 	m_UseSliceAmend = _Use;
 	m_SliceAmend = _Slice / m_Sprite->GetTexSize();
 }
+
+void CSpriteComponent::SliceAmendUV(bool _Use, Vec2 _SliceUV)
+{
+	m_UseSliceAmend = _Use;
+	m_SliceAmend = _SliceUV;
+}
