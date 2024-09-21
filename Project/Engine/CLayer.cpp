@@ -119,6 +119,11 @@ void CLayer::LayerChange(CGameObject* _Object, int _LayerIdx)
 	{
 		return;
 	}
+	if (_Object->m_LayerIdx == -1)
+	{
+		_Object->m_LayerIdx = _LayerIdx;
+		return;
+	}
 
 	_Object->DisconnectWithLayer();
 	_Object->m_LayerIdx = _LayerIdx;

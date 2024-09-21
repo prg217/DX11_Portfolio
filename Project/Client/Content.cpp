@@ -8,7 +8,7 @@
 #include <Engine/CAssetMgr.h>
 #include <Engine/assets.h>
 #include <Engine/CTaskMgr.h>
-
+#include <Engine/CGameObject.h>
 
 Content::Content()
 {
@@ -197,7 +197,7 @@ void Content::PopupMenu(DWORD_PTR _Param)
 			Ptr<CPrefab> pPrefab = (CPrefab*)pAsset.Get();
 
 			CGameObject* CloneObj = pPrefab->Instantiate();
-
+			
 			CreateObject(CloneObj, 0);
 
 			ImGui::CloseCurrentPopup();

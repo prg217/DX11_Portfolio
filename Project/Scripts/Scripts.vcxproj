@@ -167,6 +167,7 @@ call CodeGen.exe</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CBugNPCScript.h" />
+    <ClInclude Include="CCactusNeedleScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCameraPlayerTrackingScript.h" />
     <ClInclude Include="CCountDownDeleteScript.h" />
@@ -191,6 +192,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPushScript.h" />
     <ClInclude Include="CScriptMgr.h" />
+    <ClInclude Include="CSpitCactusScript.h" />
     <ClInclude Include="CStoneBreakableScript.h" />
     <ClInclude Include="CSwingObjScript.h" />
     <ClInclude Include="CTextBoxScript.h" />
@@ -200,6 +202,7 @@ call CodeGen.exe</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBugNPCScript.cpp" />
+    <ClCompile Include="CCactusNeedleScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCameraPlayerTrackingScript.cpp" />
     <ClCompile Include="CCountDownDeleteScript.cpp" />
@@ -224,6 +227,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPushScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
+    <ClCompile Include="CSpitCactusScript.cpp" />
     <ClCompile Include="CStoneBreakableScript.cpp" />
     <ClCompile Include="CSwingObjScript.cpp" />
     <ClCompile Include="CTextBoxScript.cpp" />

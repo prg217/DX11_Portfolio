@@ -2,6 +2,7 @@
 #include "CScriptMgr.h"
 
 #include "CBugNPCScript.h"
+#include "CCactusNeedleScript.h"
 #include "CCameraMoveScript.h"
 #include "CCameraPlayerTrackingScript.h"
 #include "CCountDownDeleteScript.h"
@@ -25,6 +26,7 @@
 #include "CPlayerInteractionScript.h"
 #include "CPlayerScript.h"
 #include "CPushScript.h"
+#include "CSpitCactusScript.h"
 #include "CStoneBreakableScript.h"
 #include "CSwingObjScript.h"
 #include "CTextBoxScript.h"
@@ -33,6 +35,7 @@
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CBugNPCScript");
+	_vec.push_back(L"CCactusNeedleScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CCameraPlayerTrackingScript");
 	_vec.push_back(L"CCountDownDeleteScript");
@@ -56,6 +59,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerInteractionScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CPushScript");
+	_vec.push_back(L"CSpitCactusScript");
 	_vec.push_back(L"CStoneBreakableScript");
 	_vec.push_back(L"CSwingObjScript");
 	_vec.push_back(L"CTextBoxScript");
@@ -66,6 +70,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CBugNPCScript" == _strScriptName)
 		return new CBugNPCScript;
+	if (L"CCactusNeedleScript" == _strScriptName)
+		return new CCactusNeedleScript;
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CCameraPlayerTrackingScript" == _strScriptName)
@@ -112,6 +118,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerScript;
 	if (L"CPushScript" == _strScriptName)
 		return new CPushScript;
+	if (L"CSpitCactusScript" == _strScriptName)
+		return new CSpitCactusScript;
 	if (L"CStoneBreakableScript" == _strScriptName)
 		return new CStoneBreakableScript;
 	if (L"CSwingObjScript" == _strScriptName)
@@ -129,6 +137,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	{
 	case (UINT)SCRIPT_TYPE::BUGNPCSCRIPT:
 		return new CBugNPCScript;
+		break;
+	case (UINT)SCRIPT_TYPE::CACTUSNEEDLESCRIPT:
+		return new CCactusNeedleScript;
 		break;
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
@@ -199,6 +210,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PUSHSCRIPT:
 		return new CPushScript;
 		break;
+	case (UINT)SCRIPT_TYPE::SPITCACTUSSCRIPT:
+		return new CSpitCactusScript;
+		break;
 	case (UINT)SCRIPT_TYPE::STONEBREAKABLESCRIPT:
 		return new CStoneBreakableScript;
 		break;
@@ -221,6 +235,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 	{
 	case SCRIPT_TYPE::BUGNPCSCRIPT:
 		return L"CBugNPCScript";
+		break;
+
+	case SCRIPT_TYPE::CACTUSNEEDLESCRIPT:
+		return L"CCactusNeedleScript";
 		break;
 
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
@@ -313,6 +331,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PUSHSCRIPT:
 		return L"CPushScript";
+		break;
+
+	case SCRIPT_TYPE::SPITCACTUSSCRIPT:
+		return L"CSpitCactusScript";
 		break;
 
 	case SCRIPT_TYPE::STONEBREAKABLESCRIPT:

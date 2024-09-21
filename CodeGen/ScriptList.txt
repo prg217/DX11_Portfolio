@@ -1,4 +1,5 @@
 CBugNPCScript
+CCactusNeedleScript
 CCameraMoveScript
 CCameraPlayerTrackingScript
 CCountDownDeleteScript
@@ -22,6 +23,7 @@ CPlayerDetectScript
 CPlayerInteractionScript
 CPlayerScript
 CPushScript
+CSpitCactusScript
 CStoneBreakableScript
 CSwingObjScript
 CTextBoxScript

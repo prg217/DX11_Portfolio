@@ -40,12 +40,18 @@ void CHPScript::LoadFromFile(FILE* _File)
 
 void CHPScript::Dead()
 {
+	if (m_HPBar != nullptr)
+	{
+		// HP바 삭제
+		DeleteObject(m_HPBar);
+	}
+
+	// 죽는 애니메이션 후 삭제(플레이어는 제외)
+	// 죽는 애니메이션 출력하게 상대방에게 호출
 }
 
 void CHPScript::Hit(int _Damage, CGameObject* _HPBar)
 {
-	// 플레이어나 보스가 아닐 경우 HP바 활성화 시켜야 함
-
 	if (_HPBar != nullptr)
 	{
 		m_HPBar = _HPBar;
@@ -69,9 +75,8 @@ void CHPScript::Hit(int _Damage, CGameObject* _HPBar)
 
 	if (m_HP <= 0)
 	{
-		// HP바 사라지기
 		m_HP = 0;
-		Dead();
+		//Dead();
 	}
 }
 

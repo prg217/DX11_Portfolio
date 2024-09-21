@@ -5,17 +5,26 @@
 #include "CHPScript.h"
 #include "CSwingObjScript.h"
 
+#include "CSpitCactusScript.h"
+
 CMonsterScript::CMonsterScript()
 	: CScript(UINT(SCRIPT_TYPE::MONSTERSCRIPT))
 	, m_HPBar(nullptr)
+	, m_HPFrame(nullptr)
 	, m_Hit(false)
+	, m_SaveHitTime(0)
+	, m_MonsterType(MonsterType::SpitCactus)
 {
+	AddScriptParam(SCRIPT_PARAM::INT, "MonsterType", &m_MonsterType);
 }
 
 CMonsterScript::CMonsterScript(const CMonsterScript& _Origin)
 	: CScript(_Origin)
 	, m_HPBar(nullptr)
+	, m_HPFrame(nullptr)
 	, m_Hit(false)
+	, m_SaveHitTime(0)
+	, m_MonsterType(_Origin.m_MonsterType)
 {
 }
 
@@ -35,8 +44,9 @@ void CMonsterScript::Begin()
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
+	pObj->Collider2D()->SetIndependentScale(true);
 	pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
+	pObj->Collider2D()->SetScale(Vec3(450.f, 450.f, 1.f));
 
 	CPlayerDetectScript* script = dynamic_cast<CPlayerDetectScript*>(pObj->GetScript("CPlayerDetectScript"));
 	script->SetMonsterScript(this);
@@ -49,6 +59,7 @@ void CMonsterScript::Begin()
 	{
 		if (i->GetName().compare(L"HPFrame") == 0)
 		{
+			m_HPFrame = i;
 			for (auto j : i->GetChildren())
 			{
 				if (j->GetName().compare(L"HPBar") == 0)
@@ -63,6 +74,15 @@ void CMonsterScript::Begin()
 
 void CMonsterScript::Tick()
 {
+	// Hit가 일정 시간 동안 안 들어올 경우 안 보이게 한다.
+	if (TIME - m_SaveHitTime >= 3.f)
+	{
+		if (m_HPFrame != nullptr)
+		{
+			Vec3 pos = m_HPFrame->Transform()->GetRelativePos();
+			m_HPFrame->Transform()->SetRelativePos(pos.x, 30.f, pos.z);
+		}
+	}
 }
 
 void CMonsterScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
@@ -111,10 +131,12 @@ void CMonsterScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherOb
 
 void CMonsterScript::SaveToFile(FILE* _File)
 {
+	fwrite(&m_MonsterType, sizeof(MonsterType), 1, _File);
 }
 
 void CMonsterScript::LoadFromFile(FILE* _File)
 {
+	fread(&m_MonsterType, sizeof(MonsterType), 1, _File);
 }
 
 void CMonsterScript::PlayerDetect(bool _In)
@@ -122,10 +144,32 @@ void CMonsterScript::PlayerDetect(bool _In)
 	if (_In)
 	{
 		// 공격 태세
+		switch (m_MonsterType)
+		{
+		case MonsterType::SpitCactus:
+		{
+			CSpitCactusScript* pSpitCactusScript = dynamic_cast<CSpitCactusScript*>(GetOwner()->GetScript("CSpitCactusScript"));
+			pSpitCactusScript->Attack();
+		}
+		break;
+		default:
+			break;
+		}
 	}
 	else
 	{
 		// 멈춤
+		switch (m_MonsterType)
+		{
+		case MonsterType::SpitCactus:
+		{
+			CSpitCactusScript* pSpitCactusScript = dynamic_cast<CSpitCactusScript*>(GetOwner()->GetScript("CSpitCactusScript"));
+			pSpitCactusScript->Stop();
+		}
+		break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -139,6 +183,9 @@ void CMonsterScript::Hit()
 	CHPScript* hpScript = dynamic_cast<CHPScript*>(GetOwner()->GetScript("CHPScript"));
 	if (hpScript != nullptr)
 	{
+		m_SaveHitTime = TIME;
+		Vec3 pos = m_HPFrame->Transform()->GetRelativePos();
+		m_HPFrame->Transform()->SetRelativePos(pos.x, 0.3f, pos.z);
 		hpScript->Hit(1, m_HPBar);
 	}
 }

@@ -16,9 +16,14 @@ void SpriteComUI::Update()
 {
 	Title();
 
-	// 이미지
 	CSpriteComponent* spriteCom = GetTargetObject()->SpriteComponent();
 
+	if (spriteCom == nullptr)
+	{
+		return;
+	}
+
+	// 이미지
 	Ptr<CSprite> pSprite = spriteCom->GetSprite();
 	Ptr<CTexture> pTex = pSprite->GetAtlasTexture();
 

@@ -1,13 +1,22 @@
 #pragma once
 #include <Engine/CScript.h>
 
+enum class MonsterType
+{
+    SpitCactus,
+};
+
 class CMonsterScript :
     public CScript
 {
 private:
     CGameObject* m_HPBar;
+    CGameObject* m_HPFrame;
 
     bool m_Hit;
+    float m_SaveHitTime;
+
+    MonsterType m_MonsterType;
 
 public:
     virtual void Begin() override;

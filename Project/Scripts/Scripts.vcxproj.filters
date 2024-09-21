@@ -34,6 +34,9 @@
     <Filter Include="Scripts\Monster">
       <UniqueIdentifier>{94a71f56-fd54-497b-8d49-1fe796fb2a1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Monster\SpitCactus">
+      <UniqueIdentifier>{fd980153-66a1-4d55-9290-a202dd312a41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -129,6 +132,12 @@
     <ClInclude Include="CPlayerDetectScript.h">
       <Filter>Scripts\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="CSpitCactusScript.h">
+      <Filter>Scripts\Monster\SpitCactus</Filter>
+    </ClInclude>
+    <ClInclude Include="CCactusNeedleScript.h">
+      <Filter>Scripts\Monster\SpitCactus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -223,6 +232,12 @@
     </ClCompile>
     <ClCompile Include="CPlayerDetectScript.cpp">
       <Filter>Scripts\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpitCactusScript.cpp">
+      <Filter>Scripts\Monster\SpitCactus</Filter>
+    </ClCompile>
+    <ClCompile Include="CCactusNeedleScript.cpp">
+      <Filter>Scripts\Monster\SpitCactus</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

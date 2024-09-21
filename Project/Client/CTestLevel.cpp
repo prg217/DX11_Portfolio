@@ -77,15 +77,15 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"HPBar");
+	//pObj->SetName(L"CactusNeedle");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
 	//pObj->AddComponent(new CSpriteComponent);
 	//pObj->AddComponent(new CLight2D);
 	
-	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	//pObj->Transform()->SetRelativeScale(Vec3(1, 1, 1));
+	//pObj->Transform()->SetRelativePos(Vec3(0, -100, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 1));
 	//
 	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	//pObj->MeshRender()->SetMaterial(pMtrl);
@@ -97,14 +97,14 @@ void CTestLevel::CreateTestLevel()
 	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Monster\\monster_spitCactusPoison.flip");
 	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
 	//pObj->FlipBookComponent()->Play(0, 0, false);
-	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\ui\\hp_bar.sprite");
+	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\monster\\CactusNeedle.sprite");
 	//pObj->SpriteComponent()->AddSprite(pSprite);
 	//pObj->SpriteComponent()->AddColor(false, Vec3(0, 0, 0));
 
 	//pObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
 	//pObj->Light2D()->SetRadius(10.f);
 	
-	//pLoadedLevel->AddObject(0, pObj);
+	//pLoadedLevel->AddObject(10, pObj);
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;
@@ -262,117 +262,6 @@ void CTestLevel::CreateTestLevel()
 	pLiftStone->SpriteComponent()->AddSprite(pSprite);
 
 	pLevel->AddObject(6, pLiftStone);
-
-	// 밀 수 있는 돌
-	CGameObject* pPushStone = new CGameObject;
-	pPushStone->SetName(L"PushStone");
-	pPushStone->AddComponent(new CTransform);
-	pPushStone->AddComponent(new CMeshRender);
-	pPushStone->AddComponent(new CCollider2D);
-	pPushStone->AddComponent(new CRigidBody);
-	pPushStone->AddComponent(new CSpriteComponent);
-	pPushStone->AddComponent(new CInteractionScript);
-	pPushStone->AddComponent(new CPushScript);
-
-	pPushStone->Transform()->SetRelativePos(-100.f, 0.f, 0.f);
-	pPushStone->Transform()->SetRelativeScale(150.f, 150.f, 0.f);
-	pPushStone->Transform()->SetIndependentScale(true);
-
-	pPushStone->Collider2D()->SetIndependentScale(false);
-	pPushStone->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pPushStone->Collider2D()->SetScale(Vec3(0.4f, 0.2f, 1.f));
-
-	pPushStone->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pPushStone->MeshRender()->SetMaterial(pMtrl);
-
-	pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\Obj\\obj_pushStone.sprite");
-	pPushStone->SpriteComponent()->AddSprite(pSprite);
-
-	pLevel->AddObject(6, pPushStone);
-
-	// 빛나는 풀
-	CGameObject* pGrass = new CGameObject;
-	pGrass->SetName(L"Grass");
-	pGrass->AddComponent(new CTransform);
-	pGrass->AddComponent(new CMeshRender);
-	pGrass->AddComponent(new CCollider2D);
-	pGrass->AddComponent(new CGrassScript);
-
-	pGrass->Transform()->SetRelativePos(-100.f, -100.f, -100.f);
-	pGrass->Transform()->SetRelativeScale(150.f, 150.f, 0.f);
-
-	pGrass->Collider2D()->SetIndependentScale(false);
-	pGrass->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pGrass->Collider2D()->SetScale(Vec3(0.45f, 0.5f, 1.f));
-
-	pGrass->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pGrass->MeshRender()->SetMaterial(pMtrl);
-
-	pLevel->AddObject(6, pGrass);
-
-	// npc
-	CGameObject* pNPC = new CGameObject;
-	pNPC->SetName(L"PantyBug_Red");
-	pNPC->AddComponent(new CTransform);
-	pNPC->AddComponent(new CMeshRender);
-	pNPC->AddComponent(new CCollider2D);
-	pNPC->AddComponent(new CFlipBookComponent);
-	pNPC->AddComponent(new CInteractionScript); 
-	pNPC->AddComponent(new CNPCScript);
-
-	pNPC->Transform()->SetRelativePos(-150.f, -200.f, -200.f);
-	pNPC->Transform()->SetRelativeScale(300.f, 300.f, 0.f);
-
-	pNPC->Collider2D()->SetIndependentScale(false);
-	pNPC->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pNPC->Collider2D()->SetScale(Vec3(0.1f, 0.1f, 1.f));
-
-	pNPC->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pNPC->MeshRender()->SetMaterial(pMtrl);
-
-	pFlipBook = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\NPC\\PantyBug\\npc_pantyBug_dizzy.flip");
-	pNPC->FlipBookComponent()->AddFlipBook(0, pFlipBook);
-	pNPC->FlipBookComponent()->Play(0, 10, true);
-
-	pLevel->AddObject(6, pNPC);
-
-	// Monster Object
-	//CGameObject* pMonster = new CGameObject;
-	//pMonster->SetName(L"Monster");
-
-	//pMonster->AddComponent(new CTransform);
-	//pMonster->AddComponent(new CMeshRender);
-	//pMonster->AddComponent(new CCollider2D);
-
-	//pMonster->Transform()->SetRelativePos(-400.f, 0.f, 100.f);
-	//pMonster->Transform()->SetRelativeScale(150.f, 150.f, 1.f);	
-
-	//pMonster->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	//pMonster->Collider2D()->SetScale(Vec3(1.2f, 1.2f, 1.f));
-
-	//pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	//pMonster->MeshRender()->SetMaterial(pMtrl);
-
-	//pLevel->AddObject(4, pMonster);
-
-	// TileMap Object
-	CGameObject* pTileMapObj = new CGameObject;
-	pTileMapObj->SetName(L"TileMap");
-	
-	pTileMapObj->AddComponent(new CTransform);
-	pTileMapObj->AddComponent(new CTileMap);
-	
-	pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
-
-	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
-	strInitPath += L"tile\\JellyStope.tile";
-
-	FILE* File = nullptr;
-	_wfopen_s(&File, strInitPath.c_str(), L"rb");
-		
-	pTileMapObj->TileMap()->LoadFromFile(File);
-	fclose(File);
-	pLevel->AddObject(2, pTileMapObj);
 
 
 	// Particle Object
