@@ -29,6 +29,10 @@ CSpitCactusScript::~CSpitCactusScript()
 
 void CSpitCactusScript::Begin()
 {
+	m_NeedleObj0 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleUp.pref");
+	m_NeedleObj1 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleDown.pref");
+	m_NeedleObj2 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleLeft.pref");
+	m_NeedleObj3 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleRight.pref");
 }
 
 void CSpitCactusScript::Tick()
@@ -92,7 +96,7 @@ void CSpitCactusScript::Attack()
 	// 애니메이션 활성화
 	m_Attack = true;
 	m_SaveAttackTime = TIME;
-	GetOwner()->FlipBookComponent()->Play(0, 8, true);
+	GetOwner()->FlipBookComponent()->Play(0, 6, true);
 }
 
 void CSpitCactusScript::Stop()
