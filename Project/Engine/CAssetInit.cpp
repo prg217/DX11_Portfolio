@@ -129,6 +129,8 @@ void CAssetMgr::CreateEngineMesh()
 	AddAsset(L"CircleMesh_Debug", pMesh);
 }
 
+float g_Scale = 0.25f;
+
 void CAssetMgr::CreateEngineTexture()
 {
 	// PostProcess 용도 텍스쳐 생성
@@ -138,6 +140,21 @@ void CAssetMgr::CreateEngineTexture()
 									, (UINT)Resolution.x, (UINT)Resolution.y
 									, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 	
+	Ptr<CTexture> pDownScaleTex = CreateTexture(
+		L"DownScaleTex"
+		, (UINT)(Resolution.x * 0.2f), (UINT)(Resolution.y * 0.2f)
+		, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+
+
+	Ptr<CTexture> pEffectTarget = CreateTexture(
+		L"EffectTargetTex"
+		, (UINT)(Resolution.x * g_Scale), (UINT)(Resolution.y * g_Scale)
+		, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+
+	Ptr<CTexture> pEffectDepth = CreateTexture(
+		L"EffectDepthStencilTex"
+		, (UINT)(Resolution.x * g_Scale), (UINT)(Resolution.y * g_Scale)
+		, DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL);
 
 	// Noise Texture
 	Load<CTexture>(L"texture\\noise\\noise_01.png", L"texture\\noise\\noise_01.png");
@@ -211,6 +228,19 @@ void CAssetMgr::CreateEngineGraphicShader()
 
 	AddAsset(L"Std2DAlphaBlendShader", pShader);
 
+	// EffectShader
+	pShader = new CGraphicShader;
+	pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Effect");
+	pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Effect");
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::LESS);
+	pShader->SetBSType(BS_TYPE::ALPHABLEND);
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_EFFECT);
+
+	AddAsset(L"EffectShader", pShader);
+
 
 	// DebugShapeShader
 	pShader = new CGraphicShader;
@@ -277,6 +307,15 @@ void CAssetMgr::CreateEngineGraphicShader()
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 	AddAsset(L"DistortionShader", pShader);
+
+	pShader = new CGraphicShader;
+	pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Blur");
+	pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_Blur");
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ALPHABLEND);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+	AddAsset(L"BlurShader", pShader);
 }
 
 #include "CParticleTickCS.h"
@@ -303,6 +342,11 @@ void CAssetMgr::CreateEngineMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicShader>(L"Std2DAlphaBlendShader"));
 	AddAsset(L"Std2DAlphaBlendMtrl", pMtrl);
+
+	// EffectMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicShader>(L"EffectShader"));
+	AddAsset(L"EffectMtrl", pMtrl);
 
 	// DebugShapeMtrl
 	pMtrl = new CMaterial(true);
@@ -337,4 +381,10 @@ void CAssetMgr::CreateEngineMaterial()
 	pMtrl->SetTexParam(TEX_2, FindAsset<CTexture>(L"texture\\noise\\noise_02.png"));
 	pMtrl->SetTexParam(TEX_3, FindAsset<CTexture>(L"texture\\noise\\noise_03.jpg"));
 	AddAsset(L"DistortionMtrl", pMtrl);
+
+	// BlurMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicShader>(L"BlurShader"));
+	pMtrl->SetScalarParam(FLOAT_0, g_Scale);
+	AddAsset(L"BlurMtrl", pMtrl);
 }

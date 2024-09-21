@@ -54,15 +54,16 @@ void SpriteComUI::Update()
 	bool addColor = spriteCom->GetAddColor();
 	ImGui::Checkbox("##SpriteAddColor", &addColor);
 
+	Vec3 Color = spriteCom->GetColor();
+
 	if (addColor)
 	{
 		ImGui::Text("Color");
 		ImGui::SameLine(100);
-		Vec3 Color = spriteCom->GetColor();
 		ImGui::ColorEdit3("##SpriteColor", Color);
-
-		spriteCom->AddColor(addColor, Color);
 	}
+
+	spriteCom->AddColor(addColor, Color);
 
 	// 빛 적용 유무
 	ImGui::Text("UseLight");
