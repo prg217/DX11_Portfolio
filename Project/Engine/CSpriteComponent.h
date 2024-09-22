@@ -39,6 +39,8 @@ public:
     Vec3 GetColor() { return m_Color; }
     bool GetUseLight() { return m_UseLight; }
 
+    void SetSprite(Ptr<CSprite> _Sprite) { m_Sprite = _Sprite; }
+
 public:
     CLONE(CSpriteComponent);
     CSpriteComponent();

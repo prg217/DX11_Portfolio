@@ -6,6 +6,8 @@ class SpriteComUI :
 private:
     virtual void Update() override;
 
+    void SelectSprite(DWORD_PTR _ListUI);
+
 public:
     SpriteComUI();
     ~SpriteComUI();

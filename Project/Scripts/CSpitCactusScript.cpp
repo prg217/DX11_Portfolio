@@ -3,11 +3,14 @@
 
 CSpitCactusScript::CSpitCactusScript()
 	: CScript(UINT(SCRIPT_TYPE::SPITCACTUSSCRIPT))
+	, m_Type(SpitCactusType::Nomal)
 	, m_Attack(false)
 	, m_Dead(false)
 	, m_SaveAttackTime(0)
 	, m_AttackTime(2.f)
 {
+	AddScriptParam(SCRIPT_PARAM::INT, "Type", &m_Type);
+
 	AddScriptParam(SCRIPT_PARAM::PREFAB, "Needle0", &m_NeedleObj0);
 	AddScriptParam(SCRIPT_PARAM::PREFAB, "Needle1", &m_NeedleObj1);
 	AddScriptParam(SCRIPT_PARAM::PREFAB, "Needle2", &m_NeedleObj2);
@@ -16,6 +19,7 @@ CSpitCactusScript::CSpitCactusScript()
 
 CSpitCactusScript::CSpitCactusScript(const CSpitCactusScript& _Origin)
 	: CScript(_Origin)
+	, m_Type(_Origin.m_Type)
 	, m_Attack(false)
 	, m_Dead(false)
 	, m_SaveAttackTime(0)
@@ -29,10 +33,23 @@ CSpitCactusScript::~CSpitCactusScript()
 
 void CSpitCactusScript::Begin()
 {
-	m_NeedleObj0 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleUp.pref");
-	m_NeedleObj1 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleDown.pref");
-	m_NeedleObj2 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleLeft.pref");
-	m_NeedleObj3 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleRight.pref");
+	switch (m_Type)
+	{
+	case SpitCactusType::Nomal:
+		m_NeedleObj0 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleUp.pref");
+		m_NeedleObj1 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleDown.pref");
+		m_NeedleObj2 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleLeft.pref");
+		m_NeedleObj3 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedleRight.pref");
+		break;
+	case SpitCactusType::Poison:
+		m_NeedleObj0 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedlePoisonUp.pref");
+		m_NeedleObj1 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedlePoisonDown.pref");
+		m_NeedleObj2 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedlePoisonLeft.pref");
+		m_NeedleObj3 = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CactusNeedlePoisonRight.pref");
+		break;
+	default:
+		break;
+	}
 }
 
 void CSpitCactusScript::Tick()
@@ -71,12 +88,12 @@ void CSpitCactusScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _Othe
 
 void CSpitCactusScript::SaveToFile(FILE* _File)
 {
-
+	fwrite(&m_Type, sizeof(SpitCactusType), 1, _File);
 }
 
 void CSpitCactusScript::LoadFromFile(FILE* _File)
 {
-
+	fread(&m_Type, sizeof(SpitCactusType), 1, _File);
 }
 
 void CSpitCactusScript::SpawnNeedle()

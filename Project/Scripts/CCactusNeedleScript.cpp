@@ -43,6 +43,12 @@ void CCactusNeedleScript::Begin()
 	CLayer* pLayer = pCurLevel->GetLayer(LayerIdx);
 
 	pLayer->LayerChange(GetOwner(), 10);
+
+	// Poison일 경우 독 파티클 생성
+	if (m_Type == SpitCactusType::Poison)
+	{
+		PoisonEffect();
+	}
 }
 
 void CCactusNeedleScript::Tick()
@@ -86,6 +92,16 @@ void CCactusNeedleScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _
 		{
 			CPlayerScript* script = dynamic_cast<CPlayerScript*>(_OtherObject->GetScript("CPlayerScript"));
 			script->Hit();
+
+			switch (m_Type)
+			{
+			case SpitCactusType::Poison:
+				// 독 상태이상 부여
+				break;
+			default:
+				break;
+			}
+
 			DeleteObject(GetOwner());
 		}
 	}
@@ -140,4 +156,44 @@ void CCactusNeedleScript::AttackEffect()
 	effect->FlipBookComponent()->Play(0, 8, false);
 
 	CreateObject(effect, 0);
+}
+
+void CCactusNeedleScript::PoisonEffect()
+{
+	CGameObject* pParticleObj = new CGameObject;
+	pParticleObj->SetName(L"PoisonParticle");
+
+	pParticleObj->AddComponent(new CTransform);
+	pParticleObj->AddComponent(new CParticleSystem);
+
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	// 파티클의 방향은 파티클들이 향하는 방향이다.
+	switch (m_Dir)
+	{
+	case NeedleDir::UP:
+		strInitPath += L"particle\\monster_poison_down.particle";
+		break;
+	case NeedleDir::DOWN:
+		strInitPath += L"particle\\monster_poison_up.particle";
+		break;
+	case NeedleDir::LEFT:
+		strInitPath += L"particle\\monster_poison_right.particle";
+		break;
+	case NeedleDir::RIGHT:
+		strInitPath += L"particle\\monster_poison_left.particle";
+		break;
+	default:
+		break;
+	}
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	pParticleObj->ParticleSystem()->LoadFromFile(File);
+	fclose(File);
+
+	pParticleObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+
+	CreateObject(pParticleObj, 0);
+	AddChildObject(GetOwner(), pParticleObj);
 }

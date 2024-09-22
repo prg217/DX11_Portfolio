@@ -34,6 +34,7 @@ public:
 
 private:
     void AttackEffect();
+    void PoisonEffect();
 
 public:
     CLONE(CCactusNeedleScript);

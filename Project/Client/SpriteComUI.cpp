@@ -2,6 +2,11 @@
 #include "SpriteComUI.h"
 
 #include <Engine/CSpriteComponent.h>
+#include <Engine/CAssetMgr.h>
+
+#include "ListUI.h"
+#include "TreeUI.h"
+#include "CEditorMgr.h"
 
 SpriteComUI::SpriteComUI()
 	: ComponentUI(COMPONENT_TYPE::SPRITECOMPONENT)
@@ -23,7 +28,7 @@ void SpriteComUI::Update()
 		return;
 	}
 
-	// 이미지
+	// ===========이미지===========
 	Ptr<CSprite> pSprite = spriteCom->GetSprite();
 	Ptr<CTexture> pTex = pSprite->GetAtlasTexture();
 
@@ -53,6 +58,18 @@ void SpriteComUI::Update()
 		ImGui::Image(pTex->GetSRV().Get(), ImVec2(widthSize, pTex->Height() * ratio), leftTopUV, rightDownUV, tint_col, border_col);
 	}
 
+	if (ImGui::Button("##SpriteBtn", ImVec2(18.f, 18.f)))
+	{
+		ListUI* pListUI = (ListUI*)CEditorMgr::GetInst()->FindEditorUI("List");
+		pListUI->SetName("Sprite");
+		vector<string> vecSpriteNames;
+		CAssetMgr::GetInst()->GetAssetNames(ASSET_TYPE::SPRITE, vecSpriteNames);
+		pListUI->AddList(vecSpriteNames);
+		pListUI->AddDelegate(this, (DELEGATE_1)&SpriteComUI::SelectSprite);
+		pListUI->SetActive(true);
+	}
+	// ============================
+
 	// 색 적용
 	ImGui::Text("AddColor");
 	ImGui::SameLine(100);
@@ -78,5 +95,25 @@ void SpriteComUI::Update()
 	{
 		spriteCom->SetUseLight(useLight);
 	}
+}
+
+void SpriteComUI::SelectSprite(DWORD_PTR _ListUI)
+{
+	ListUI* pListUI = (ListUI*)_ListUI;
+	string strName = pListUI->GetSelectName();
+
+	if (strName == "None")
+	{
+		return;
+	}
+
+	wstring strAssetName = wstring(strName.begin(), strName.end());
+
+	Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(strAssetName);
+
+	assert(pSprite.Get());
+
+	CSpriteComponent* spriteCom = GetTargetObject()->SpriteComponent();
+	spriteCom->AddSprite(pSprite);
 }
 

@@ -11,6 +11,8 @@ class CSpitCactusScript :
     public CScript
 {
 private:
+    SpitCactusType m_Type;
+
     bool m_Attack;
     float m_SaveAttackTime;
     float m_AttackTime;

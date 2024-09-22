@@ -77,15 +77,15 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"CactusNeedle");
+	//pObj->SetName(L"Poison");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
-	//pObj->AddComponent(new CSpriteComponent);
+	//pObj->AddComponent(new CParticleSystem);
 	//pObj->AddComponent(new CLight2D);
 	
-	//pObj->Transform()->SetRelativePos(Vec3(0, -100, 0));
-	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 1));
+	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(1, 1, -1));
 	//
 	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	//pObj->MeshRender()->SetMaterial(pMtrl);
@@ -103,8 +103,17 @@ void CTestLevel::CreateTestLevel()
 
 	//pObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
 	//pObj->Light2D()->SetRadius(10.f);
-	
-	//pLoadedLevel->AddObject(10, pObj);
+
+	//strInitPath = CPathMgr::GetInst()->GetContentPath();
+	//strInitPath += L"particle\\monster_poison.particle";
+	//
+	//File = nullptr;
+	//_wfopen_s(&File, strInitPath.c_str(), L"rb");
+	//
+	//pObj->ParticleSystem()->LoadFromFile(File);
+	//fclose(File);
+	//
+	//pLoadedLevel->AddObject(0, pObj);
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;
