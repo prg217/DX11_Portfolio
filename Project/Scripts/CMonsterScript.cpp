@@ -11,6 +11,7 @@ CMonsterScript::CMonsterScript()
 	: CScript(UINT(SCRIPT_TYPE::MONSTERSCRIPT))
 	, m_HPBar(nullptr)
 	, m_HPFrame(nullptr)
+	, m_HpScript(nullptr)
 	, m_Hit(false)
 	, m_SaveHitTime(0)
 	, m_MonsterType(MonsterType::SpitCactus)
@@ -22,6 +23,7 @@ CMonsterScript::CMonsterScript(const CMonsterScript& _Origin)
 	: CScript(_Origin)
 	, m_HPBar(nullptr)
 	, m_HPFrame(nullptr)
+	, m_HpScript(nullptr)
 	, m_Hit(false)
 	, m_SaveHitTime(0)
 	, m_MonsterType(_Origin.m_MonsterType)
@@ -34,6 +36,8 @@ CMonsterScript::~CMonsterScript()
 
 void CMonsterScript::Begin()
 {
+	m_HpScript = dynamic_cast<CHPScript*>(GetOwner()->GetScript("CHPScript"));
+
 	// 플레이어 감지 오브젝트 만들어서 자식에 넣기
 	CGameObject* pObj = new CGameObject;
 	pObj->SetName(L"Player_Detect");
@@ -177,15 +181,29 @@ void CMonsterScript::Hit()
 {
 	// 넉백 구현 필요(넉백되는 얘들만)
 
-	// 타격 이펙트 추가 필요
+	// 피격 이펙트 추가 필요
 
 	// 데미지 주기
-	CHPScript* hpScript = dynamic_cast<CHPScript*>(GetOwner()->GetScript("CHPScript"));
-	if (hpScript != nullptr)
+	if (m_HpScript != nullptr)
 	{
 		m_SaveHitTime = TIME;
 		Vec3 pos = m_HPFrame->Transform()->GetRelativePos();
 		m_HPFrame->Transform()->SetRelativePos(pos.x, 0.3f, pos.z);
-		hpScript->Hit(1, m_HPBar);
+		m_HpScript->Hit(1, m_HPBar);
+	}
+}
+
+void CMonsterScript::Dead()
+{
+	switch (m_MonsterType)
+	{
+	case MonsterType::SpitCactus:
+	{
+		CSpitCactusScript* pSpitCactusScript = dynamic_cast<CSpitCactusScript*>(GetOwner()->GetScript("CSpitCactusScript"));
+		pSpitCactusScript->Dead();
+	}
+	break;
+	default:
+		break;
 	}
 }

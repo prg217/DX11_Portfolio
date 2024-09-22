@@ -6,11 +6,14 @@
 #include "CCountDownDeleteScript.h"
 #include "COguDancePointLightScript.h"
 #include "CPushScript.h"
+#include "CHPScript.h"
+#include "CAniFinishDestroyScript.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERSCRIPT))
 	, m_CurPS(PlayerState::NONE)
 	, m_StartFrmIdx(0)
+	, m_HPScript(nullptr)
 	, m_Speed(200.f)
 	, m_MinSpeed(200.f)
 	, m_MaxSpeed(300.f)
@@ -46,6 +49,8 @@ CPlayerScript::~CPlayerScript()
 void CPlayerScript::Begin()
 {
 	GetRenderComponent()->GetDynamicMaterial();
+
+	CHPScript* m_HPScript = dynamic_cast<CHPScript*>(GetOwner()->GetScript("CHPScript"));
 }
 
 void CPlayerScript::Tick()
@@ -1965,6 +1970,29 @@ void CPlayerScript::PushMove()
 	Transform()->SetRelativePos(vPos);
 }
 
+void CPlayerScript::HitEffect()
+{
+	CGameObject* effect = new CGameObject;
+	effect->SetName(L"HitEffect");
+
+	effect->AddComponent(new CTransform);
+	effect->AddComponent(new CMeshRender);
+	effect->AddComponent(new CFlipBookComponent);
+	effect->AddComponent(new CAniFinishDestroyScript);
+
+	effect->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
+	effect->Transform()->SetRelativeScale(Vec3(200, 200, 1));
+
+	effect->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	effect->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl"));
+
+	Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Effect\\oguHit.flip");
+	effect->FlipBookComponent()->AddFlipBook(0, pFlip);
+	effect->FlipBookComponent()->Play(0, 8, false);
+
+	CreateObject(effect, 0);
+}
+
 void CPlayerScript::LiftEnd()
 {
 	m_CurPS = PlayerState::LIFT_END;
@@ -2008,4 +2036,87 @@ void CPlayerScript::LiftEnd()
 	default:
 		break;
 	}
+}
+
+void CPlayerScript::Hit()
+{
+	// 구르는 중이면 무적
+	if (m_CurPS == PlayerState::ROLLING)
+	{
+		return;
+	}
+
+	// 피격 이펙트
+	HitEffect();
+
+	// 넉백
+	Vec3 force = Vec3(0.f, 0.f, 0.f);
+	float speed = 800.f;
+
+	switch (m_CurAS)
+	{
+	case OguAniState::WALK_DOWN:
+	case OguAniState::RUN_DOWN:
+	case OguAniState::LIFT_WALK_DOWN:
+	case OguAniState::IDLE:
+		force = Vec3(0.f, -speed, -speed);
+		break;
+	case OguAniState::WALK_UP:
+	case OguAniState::RUN_UP:
+	case OguAniState::LIFT_WALK_UP:
+	case OguAniState::IDLE_BACK:
+		force = Vec3(0.f, speed, speed);
+		break;
+	case OguAniState::WALK_LEFT:
+	case OguAniState::RUN_LEFT:
+	case OguAniState::LIFT_WALK_LEFT:
+	case OguAniState::IDLE_LEFT:
+		force = Vec3(-speed, 0.f, 0.f);
+		break;
+	case OguAniState::WALK_RIGHT:
+	case OguAniState::RUN_RIGHT:
+	case OguAniState::LIFT_WALK_RIGHT:
+	case OguAniState::IDLE_RIGHT:
+		force = Vec3(speed, 0.f, 0.f);
+		break;
+	case OguAniState::WALK_LEFTDOWN:
+	case OguAniState::RUN_LEFTDOWN:
+	case OguAniState::LIFT_WALK_LEFTDOWN:
+	case OguAniState::IDLE_LEFTDOWN:
+		force = Vec3(-speed, -speed, -speed);
+		break;
+	case OguAniState::WALK_LEFTUP:
+	case OguAniState::RUN_LEFTUP:
+	case OguAniState::LIFT_WALK_LEFTUP:
+	case OguAniState::IDLE_LEFTUP:
+		force = Vec3(-speed, speed, speed);
+		break;
+	case OguAniState::WALK_RIGHTDOWN:
+	case OguAniState::RUN_RIGHTDOWN:
+	case OguAniState::LIFT_WALK_RIGHTDOWN:
+	case OguAniState::IDLE_RIGHTDOWN:
+		force = Vec3(speed, -speed, -speed);
+		break;
+	case OguAniState::WALK_RIGHTUP:
+	case OguAniState::RUN_RIGHTUP:
+	case OguAniState::LIFT_WALK_RIGHTUP:
+	case OguAniState::IDLE_RIGHTUP:
+		force = Vec3(speed, speed, speed);
+		break;
+	default:
+		break;
+	}
+
+	GetOwner()->RigidBody()->SetForce(force);
+
+	// 데미지 주기
+	if (m_HPScript != nullptr)
+	{
+		m_HPScript->Hit(1/*, m_HPBar*/);
+	}
+}
+
+void CPlayerScript::Dead()
+{
+	// 플레이어 죽음 추가
 }

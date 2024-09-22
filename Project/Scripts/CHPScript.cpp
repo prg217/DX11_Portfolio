@@ -1,8 +1,12 @@
 #include "pch.h"
 #include "CHPScript.h"
 
+#include "CPlayerScript.h"
+#include "CMonsterScript.h"
+
 CHPScript::CHPScript()
 	: CScript(UINT(SCRIPT_TYPE::HPSCRIPT))
+	, m_HPBar(nullptr)
 {
 	AddScriptParam(SCRIPT_PARAM::INT, "HP", &m_HP);
 	AddScriptParam(SCRIPT_PARAM::INT, "MaxHP", &m_MaxHP);
@@ -10,6 +14,7 @@ CHPScript::CHPScript()
 
 CHPScript::CHPScript(const CHPScript& _Origin)
 	: CScript(_Origin)
+	, m_HPBar(nullptr)
 {
 }
 
@@ -46,8 +51,18 @@ void CHPScript::Dead()
 		DeleteObject(m_HPBar);
 	}
 
-	// 죽는 애니메이션 후 삭제(플레이어는 제외)
-	// 죽는 애니메이션 출력하게 상대방에게 호출
+	CMonsterScript* monsterScript = dynamic_cast<CMonsterScript*>(GetOwner()->GetScript("CMonsterScript"));
+	if (monsterScript != nullptr)
+	{
+		monsterScript->Dead();
+		return;
+	}
+	CPlayerScript* playerScript = dynamic_cast<CPlayerScript*>(GetOwner()->GetScript("CPlayerScript"));
+	if (playerScript != nullptr)
+	{
+		playerScript->Dead();
+		return;
+	}
 }
 
 void CHPScript::Hit(int _Damage, CGameObject* _HPBar)
@@ -58,6 +73,13 @@ void CHPScript::Hit(int _Damage, CGameObject* _HPBar)
 	}
 
 	m_HP -= _Damage;
+
+	if (m_HP <= 0)
+	{
+		m_HP = 0;
+		Dead();
+		return;
+	}
 
 	if (m_HPBar != nullptr)
 	{
@@ -71,12 +93,6 @@ void CHPScript::Hit(int _Damage, CGameObject* _HPBar)
 		// HP 바의 왼쪽 끝이 고정되도록 위치를 조정
 		float offsetX = (scale.x - hp) * 0.4f; // 원래 크기에서 줄어든 크기만큼 왼쪽으로 이동
 		m_HPBar->Transform()->SetRelativePos(Vec3(originalPosition.x - offsetX, originalPosition.y, originalPosition.z));
-	}
-
-	if (m_HP <= 0)
-	{
-		m_HP = 0;
-		//Dead();
 	}
 }
 

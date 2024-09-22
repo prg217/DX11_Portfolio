@@ -166,6 +166,7 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAniFinishDestroyScript.h" />
     <ClInclude Include="CBugNPCScript.h" />
     <ClInclude Include="CCactusNeedleScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
@@ -201,6 +202,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAniFinishDestroyScript.cpp" />
     <ClCompile Include="CBugNPCScript.cpp" />
     <ClCompile Include="CCactusNeedleScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />

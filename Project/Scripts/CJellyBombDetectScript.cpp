@@ -2,6 +2,8 @@
 #include "CJellyBombDetectScript.h"
 
 #include "CStoneBreakableScript.h"
+#include "CMonsterScript.h"
+#include "CPlayerScript.h"
 
 CJellyBombDetectScript::CJellyBombDetectScript()
 	: CScript(UINT(SCRIPT_TYPE::JELLYBOMBDETECTSCRIPT))
@@ -33,6 +35,22 @@ void CJellyBombDetectScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject
 		{
 			CStoneBreakableScript* script = dynamic_cast<CStoneBreakableScript*>(_OtherObject->GetScript("CStoneBreakableScript"));
 			script->Destroy();
+		}
+	}
+	if (_OtherObject->GetLayerIdx() == 3)
+	{
+		if (_OtherObject->GetScript("CPlayerScript") != nullptr)
+		{
+			CPlayerScript* script = dynamic_cast<CPlayerScript*>(_OtherObject->GetScript("CPlayerScript"));
+			script->Hit();
+		}
+	}
+	if (_OtherObject->GetLayerIdx() == 4)
+	{
+		if (_OtherObject->GetScript("CMonsterScript") != nullptr)
+		{
+			CMonsterScript* script = dynamic_cast<CMonsterScript*>(_OtherObject->GetScript("CMonsterScript"));
+			script->Hit();
 		}
 	}
 }

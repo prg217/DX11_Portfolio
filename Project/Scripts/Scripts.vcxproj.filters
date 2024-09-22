@@ -138,6 +138,9 @@
     <ClInclude Include="CCactusNeedleScript.h">
       <Filter>Scripts\Monster\SpitCactus</Filter>
     </ClInclude>
+    <ClInclude Include="CAniFinishDestroyScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -238,6 +241,9 @@
     </ClCompile>
     <ClCompile Include="CCactusNeedleScript.cpp">
       <Filter>Scripts\Monster\SpitCactus</Filter>
+    </ClCompile>
+    <ClCompile Include="CAniFinishDestroyScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

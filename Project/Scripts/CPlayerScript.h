@@ -94,6 +94,8 @@ enum class OguAniState
 	PUSH_RIGHT,
 };
 
+class CHPScript;
+
 class CPlayerScript :
     public CScript
 {
@@ -105,6 +107,8 @@ private:
 	OguAniState		m_PreAS; // 이전 애니메이션
 
 	int				m_StartFrmIdx; // 애니메이션 시작 인덱스
+
+	CHPScript*		m_HPScript;
 
 	// =======이동 관련 변수들=======
 	float           m_Speed;
@@ -169,6 +173,8 @@ private:
 	void LiftMove();
 	void PushMove();
 
+	void HitEffect();
+
 public:
 	OguAniState GetCurAS() { return m_CurAS; }
 	float GetSpeed() { return m_Speed; }
@@ -178,6 +184,9 @@ public:
 	void LiftEnd();
 
 	void SetIsPush(bool _IsPush) { m_IsPush = _IsPush; }
+
+	void Hit();
+	void Dead();
 
 public:
     CLONE(CPlayerScript);

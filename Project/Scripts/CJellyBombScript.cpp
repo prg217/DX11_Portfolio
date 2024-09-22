@@ -3,7 +3,7 @@
 
 #include "CSwingObjScript.h"
 #include "CJellyBombDetectScript.h"
-#include "CCountDownDeleteScript.h"
+#include "CAniFinishDestroyScript.h"
 
 CJellyBombScript::CJellyBombScript()
 	 : CScript(UINT(SCRIPT_TYPE::JELLYBOMBSCRIPT))
@@ -166,7 +166,7 @@ void CJellyBombScript::CreateExplosion()
 	pExplosion->AddComponent(new CTransform);
 	pExplosion->AddComponent(new CFlipBookComponent);
 	pExplosion->AddComponent(new CMeshRender);
-	pExplosion->AddComponent(new CCountDownDeleteScript);
+	pExplosion->AddComponent(new CAniFinishDestroyScript);
 
 	pExplosion->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
 	pExplosion->Transform()->SetRelativeScale(Vec3(500, 500, 0));
@@ -179,12 +179,6 @@ void CJellyBombScript::CreateExplosion()
 	pExplosion->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pExplosion->MeshRender()->SetMaterial(pAlphaBlendMtrl);
 
-	// 삭제되는 시간을 지정해준다.
-	CScript* pScript = pExplosion->GetScript("CCountDownDeleteScript");
-	CCountDownDeleteScript* pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
-	pCountDown->SetSaveTime(TIME);
-	pCountDown->SetDeadTime(3.f);
-
 	CreateObject(pExplosion, 0);
 
 	pExplosion = new CGameObject;
@@ -192,7 +186,7 @@ void CJellyBombScript::CreateExplosion()
 	pExplosion->AddComponent(new CTransform);
 	pExplosion->AddComponent(new CFlipBookComponent);
 	pExplosion->AddComponent(new CMeshRender);
-	pExplosion->AddComponent(new CCountDownDeleteScript);
+	pExplosion->AddComponent(new CAniFinishDestroyScript);
 
 	pExplosion->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
 	pExplosion->Transform()->SetRelativeScale(Vec3(500, 500, 0));
@@ -203,12 +197,6 @@ void CJellyBombScript::CreateExplosion()
 
 	pExplosion->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pExplosion->MeshRender()->SetMaterial(pAlphaBlendMtrl);
-
-	// 삭제되는 시간을 지정해준다.
-	pScript = pExplosion->GetScript("CCountDownDeleteScript");
-	pCountDown = dynamic_cast<CCountDownDeleteScript*>(pScript);
-	pCountDown->SetSaveTime(TIME);
-	pCountDown->SetDeadTime(3.f);
 
 	CreateObject(pExplosion, 0);
 }

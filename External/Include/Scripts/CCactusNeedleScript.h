@@ -19,6 +19,7 @@ private:
     NeedleDir m_Dir;
 
     float m_Speed;
+    float m_SaveTime;
 
 public:
     virtual void Begin() override;
@@ -30,6 +31,9 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+
+private:
+    void AttackEffect();
 
 public:
     CLONE(CCactusNeedleScript);

@@ -46,6 +46,15 @@ void CSpitCactusScript::Tick()
 			SpawnNeedle();
 		}
 	}
+
+	if (m_Dead)
+	{
+		if (GetOwner()->FlipBookComponent()->GetIsFinish())
+		{
+			DeleteObject(GetOwner());
+			m_Dead = false;
+		}
+	}
 }
 
 void CSpitCactusScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)

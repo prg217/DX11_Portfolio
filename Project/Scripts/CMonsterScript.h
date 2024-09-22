@@ -6,12 +6,16 @@ enum class MonsterType
     SpitCactus,
 };
 
+class CHPScript;
+
 class CMonsterScript :
     public CScript
 {
 private:
     CGameObject* m_HPBar;
     CGameObject* m_HPFrame;
+
+    CHPScript* m_HpScript;
 
     bool m_Hit;
     float m_SaveHitTime;
@@ -33,6 +37,7 @@ public:
     void PlayerDetect(bool _In);
 
     void Hit();
+    void Dead();
 
 public:
     CLONE(CMonsterScript);
