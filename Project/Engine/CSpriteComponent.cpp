@@ -11,6 +11,7 @@ CSpriteComponent::CSpriteComponent()
 	, m_Outline(false)
 	, m_AddColor(false)
 	, m_Color(Vec3(0.f, 0.f, 0.f))
+	, m_Alpha(1.f)
 	, m_UseLight(true)
 	, m_UseSliceAmend(false)
 {
@@ -22,6 +23,7 @@ CSpriteComponent::CSpriteComponent(CSpriteComponent& _Origin)
 	, m_Outline(_Origin.m_Outline)
 	, m_AddColor(_Origin.m_AddColor)
 	, m_Color(_Origin.m_Color)
+	, m_Alpha(1.f)
 	, m_UseLight(_Origin.m_Color)
 	, m_UseSliceAmend(false)
 {
@@ -63,6 +65,7 @@ void CSpriteComponent::Binding()
 		tInfo.UseOutline = m_Outline;
 		tInfo.UseAddColor = m_AddColor;
 		tInfo.AddColor = m_Color;
+		tInfo.AddAlpha = m_Alpha;
 		tInfo.UseLight = m_UseLight;
 
 		static CConstBuffer* CB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::SPRITE);
@@ -84,6 +87,7 @@ void CSpriteComponent::SaveToFile(FILE* _File)
 	// 색 추가 유무 및 색
 	fwrite(&m_AddColor, sizeof(bool), 1, _File);
 	fwrite(&m_Color, sizeof(Vec3), 1, _File);
+	fwrite(&m_Alpha, sizeof(float), 1, _File);
 	// 빛 유무
 	fwrite(&m_UseLight, sizeof(bool), 1, _File);
 }
@@ -96,6 +100,7 @@ void CSpriteComponent::LoadFromFile(FILE* _File)
 	// 색 추가 유무 및 색
 	fread(&m_AddColor, sizeof(bool), 1, _File);
 	fread(&m_Color, sizeof(Vec3), 1, _File);
+	fread(&m_Alpha, sizeof(float), 1, _File);
 	// 빛 유무
 	fread(&m_UseLight, sizeof(bool), 1, _File);
 }

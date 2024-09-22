@@ -47,11 +47,7 @@
   .\Project\Engine\enum.h
   .\Project\Engine\func.h
   .\Project\Engine\global.h
-  .\Project\Engine\Ptr.h
-  .\Project\Engine\SimpleMath.h
-  .\Project\Engine\singleton.h
-  .\Project\Engine\struct.h
-  53개 파일이 복사되었습니다.
+  공유 위반입니다.
   .\Project\Engine\SimpleMath.inl
   1개 파일이 복사되었습니다.
   .\Project\Engine\debug.fx

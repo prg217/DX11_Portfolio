@@ -120,15 +120,21 @@ float4 PS_Std2D(VTX_OUT _in) : SV_Target
         discard;
     }
     
-    if(vColor.a == 0.f)
-    {    
-        discard;
-    }
-    
     // 색 추가
     if (UseAddColor)
     {
         vColor.rgb *= AddColor;
+    }
+    
+    // 투명도 추가
+    if (AddAlpha != 1.f)
+    {
+        vColor.a *= AddAlpha;
+    }
+    
+    if(vColor.a == 0.f)
+    {    
+        discard;
     }
     
     // 광원 적용
@@ -232,17 +238,23 @@ float4 PS_Std2D_Alphablend(VTX_OUT _in) : SV_Target
         discard;
     }
     
-    if (vColor.a == 0.f)
-    {
-        discard;
-    }
-    
     // 색 추가
     if (UseAddColor)
     {
         vColor.rgb *= AddColor;
     }
     
+    // 투명도 추가
+    if (AddAlpha != 1.f)
+    {
+        vColor.a *= AddAlpha;
+    }
+    
+    if (vColor.a == 0.f)
+    {
+        discard;
+    }
+   
     // 광원 적용
     if (UseLight)
     {

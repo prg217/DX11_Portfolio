@@ -12,6 +12,7 @@ private:
     bool                    m_Outline;      // 외곽선 유무
     bool                    m_AddColor;     // 색 추가 유무
     Vec3                    m_Color;        // 색 추가
+    float                   m_Alpha;        // 알파값
 
     bool                    m_UseLight;     // 빛 적용 유무
     
@@ -30,6 +31,7 @@ public:
 
     void SetOutline(bool _Outline) { m_Outline = _Outline; }
     void AddColor(bool _AddColor, Vec3 Color);
+    void AddAlpha(float _Alpha) { m_Alpha = _Alpha; }
     void SetUseLight(bool _UseLight) { m_UseLight = _UseLight; }
 
     void SliceAmend(bool _Use, Vec2 _Slice = Vec2(0, 0));
@@ -38,6 +40,8 @@ public:
     bool GetAddColor() { return m_AddColor; }
     Vec3 GetColor() { return m_Color; }
     bool GetUseLight() { return m_UseLight; }
+
+    void SetSprite(Ptr<CSprite> _Sprite) { m_Sprite = _Sprite; }
 
 public:
     CLONE(CSpriteComponent);

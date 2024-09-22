@@ -14,6 +14,9 @@ CPlayerScript::CPlayerScript()
 	, m_CurPS(PlayerState::NONE)
 	, m_StartFrmIdx(0)
 	, m_HPScript(nullptr)
+	, m_Hit(false)
+	, m_SaveHitTime(0.f)
+	, m_InvincibilityTime(1.f)
 	, m_Speed(200.f)
 	, m_MinSpeed(200.f)
 	, m_MaxSpeed(300.f)
@@ -55,19 +58,61 @@ void CPlayerScript::Begin()
 
 void CPlayerScript::Tick()
 {
+	// 맞았을 때
+	if (m_Hit)
+	{
+		m_SaveHitTime += DT;
+
+		if (m_SaveHitTime >= m_InvincibilityTime)
+		{
+			m_Hit = false;
+			m_SaveHitTime = 0.f;
+
+			GetOwner()->FlipBookComponent()->AddAlpha(1.f);
+			GetOwner()->FlipBookComponent()->AddColor(false, Vec3(1.f, 0.3f, 0.2f));
+
+			m_CurAS = m_HitPreAS;
+		}
+		else if (m_SaveHitTime >= 0.8f)
+		{
+			GetOwner()->FlipBookComponent()->AddAlpha(0.3f);
+			GetOwner()->FlipBookComponent()->AddColor(true, Vec3(1.f, 0.3f, 0.2f));
+		}
+		else if (m_SaveHitTime >= 0.6f)
+		{
+			GetOwner()->FlipBookComponent()->AddAlpha(0.3f);
+			GetOwner()->FlipBookComponent()->AddColor(false, Vec3(1.f, 0.3f, 0.2f));
+		}
+		else if (m_SaveHitTime >= 0.4f)
+		{
+			GetOwner()->FlipBookComponent()->AddAlpha(0.3f);
+			GetOwner()->FlipBookComponent()->AddColor(true, Vec3(1.f, 0.3f, 0.2f));
+		}
+		else if (m_SaveHitTime >= 0.2f)
+		{
+			GetOwner()->FlipBookComponent()->AddAlpha(0.3f);
+			GetOwner()->FlipBookComponent()->AddColor(false, Vec3(1.f, 0.3f, 0.2f));
+		}
+	}
+
+	// 들어올릴 때
 	if (m_CurPS == PlayerState::LIFT_START && !m_Interaction)
 	{
 		m_StartFrmIdx = 0;
 		LiftMove();
 	}
 
+	// 아무것도 안 할 때
 	if (m_CurPS == PlayerState::NONE)
 	{
 		m_StartFrmIdx = 0;
+
+		// 밀고 있는 상황이라면
 		if (m_IsPush)
 		{
 			PushMove();
 		}
+		// 기본 상태라면
 		else
 		{
 			Move();
@@ -812,6 +857,30 @@ void CPlayerScript::AniState()
 		break;
 	case OguAniState::PUSH_RIGHT:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_PUSH_RIGHT, 10, true);
+		break;
+	case OguAniState::HURT_DOWN:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_HURT_DOWN, 5, false);
+		break;
+	case OguAniState::HURT_UP:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_HURT_UP, 5, false);
+		break;
+	case OguAniState::HURT_LEFT:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_HURT_LEFT, 5, false);
+		break;
+	case OguAniState::HURT_RIGHT:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_HURT_RIGHT, 5, false);
+		break;
+	case OguAniState::HURT_LEFTDOWN:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_HURT_LEFTDOWN, 5, false);
+		break;
+	case OguAniState::HURT_LEFTUP:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_HURT_LEFTUP, 5, false);
+		break;
+	case OguAniState::HURT_RIGHTDOWN:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_HURT_RIGHTDOWN, 5, false);
+		break;
+	case OguAniState::HURT_RIGHTUP:
+		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_HURT_RIGHTUP, 5, false);
 		break;
 	default:
 		break;
@@ -2045,62 +2114,87 @@ void CPlayerScript::Hit()
 	{
 		return;
 	}
+	else if (m_Hit)
+	{
+		return;
+	}
+
+	m_Hit = true;
 
 	// 피격 이펙트
 	HitEffect();
+	
+	// 빨갛게 변함+무적 시간 동안 반투명
+	GetOwner()->FlipBookComponent()->AddAlpha(0.3f);
+	GetOwner()->FlipBookComponent()->AddColor(true, Vec3(1.f, 0.3f, 0.2f));
+	
+	// 대기 모션 시간 초기화
+	m_SaveFinalActionTime = TIME;
+
+	// 피가 절반 이하면 주변에 뻘겋게...위험... 그런 테두리? 포스트 프로세스?
 
 	// 넉백
 	Vec3 force = Vec3(0.f, 0.f, 0.f);
 	float speed = 800.f;
 
-	switch (m_CurAS)
+	m_HitPreAS = m_CurAS;
+
+	switch (m_HitPreAS)
 	{
 	case OguAniState::WALK_DOWN:
 	case OguAniState::RUN_DOWN:
 	case OguAniState::LIFT_WALK_DOWN:
 	case OguAniState::IDLE:
+		m_CurAS = OguAniState::HURT_DOWN;
 		force = Vec3(0.f, -speed, -speed);
 		break;
 	case OguAniState::WALK_UP:
 	case OguAniState::RUN_UP:
 	case OguAniState::LIFT_WALK_UP:
 	case OguAniState::IDLE_BACK:
+		m_CurAS = OguAniState::HURT_UP;
 		force = Vec3(0.f, speed, speed);
 		break;
 	case OguAniState::WALK_LEFT:
 	case OguAniState::RUN_LEFT:
 	case OguAniState::LIFT_WALK_LEFT:
 	case OguAniState::IDLE_LEFT:
+		m_CurAS = OguAniState::HURT_LEFT;
 		force = Vec3(-speed, 0.f, 0.f);
 		break;
 	case OguAniState::WALK_RIGHT:
 	case OguAniState::RUN_RIGHT:
 	case OguAniState::LIFT_WALK_RIGHT:
 	case OguAniState::IDLE_RIGHT:
+		m_CurAS = OguAniState::HURT_RIGHT;
 		force = Vec3(speed, 0.f, 0.f);
 		break;
 	case OguAniState::WALK_LEFTDOWN:
 	case OguAniState::RUN_LEFTDOWN:
 	case OguAniState::LIFT_WALK_LEFTDOWN:
 	case OguAniState::IDLE_LEFTDOWN:
+		m_CurAS = OguAniState::HURT_LEFTDOWN;
 		force = Vec3(-speed, -speed, -speed);
 		break;
 	case OguAniState::WALK_LEFTUP:
 	case OguAniState::RUN_LEFTUP:
 	case OguAniState::LIFT_WALK_LEFTUP:
 	case OguAniState::IDLE_LEFTUP:
+		m_CurAS = OguAniState::HURT_LEFTUP;
 		force = Vec3(-speed, speed, speed);
 		break;
 	case OguAniState::WALK_RIGHTDOWN:
 	case OguAniState::RUN_RIGHTDOWN:
 	case OguAniState::LIFT_WALK_RIGHTDOWN:
 	case OguAniState::IDLE_RIGHTDOWN:
+		m_CurAS = OguAniState::HURT_RIGHTDOWN;
 		force = Vec3(speed, -speed, -speed);
 		break;
 	case OguAniState::WALK_RIGHTUP:
 	case OguAniState::RUN_RIGHTUP:
 	case OguAniState::LIFT_WALK_RIGHTUP:
 	case OguAniState::IDLE_RIGHTUP:
+		m_CurAS = OguAniState::HURT_RIGHTUP;
 		force = Vec3(speed, speed, speed);
 		break;
 	default:

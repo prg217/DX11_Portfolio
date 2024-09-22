@@ -92,6 +92,15 @@ enum class OguAniState
 	PUSH_UP,
 	PUSH_LEFT,
 	PUSH_RIGHT,
+
+	HURT_DOWN,
+	HURT_UP,
+	HURT_LEFT,
+	HURT_RIGHT,
+	HURT_LEFTDOWN,
+	HURT_LEFTUP,
+	HURT_RIGHTDOWN,
+	HURT_RIGHTUP,
 };
 
 class CHPScript;
@@ -109,6 +118,11 @@ private:
 	int				m_StartFrmIdx; // 애니메이션 시작 인덱스
 
 	CHPScript*		m_HPScript;
+
+	bool			m_Hit; // 맞았을 때
+	float			m_SaveHitTime;
+	float			m_InvincibilityTime; // 무적 시간
+	OguAniState		m_HitPreAS; // 맞았을 때 이전 애니메이션
 
 	// =======이동 관련 변수들=======
 	float           m_Speed;

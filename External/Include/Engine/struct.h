@@ -175,8 +175,9 @@ struct tSpriteInfo
 	int	 UseOutline;
 	int  UseAddColor;
 	Vec3 AddColor;
+	float AddAlpha;
 	int  UseLight;
-	int  Padding[3];
+	int  Padding[2];
 };
 
 struct tGlobalData

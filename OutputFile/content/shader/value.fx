@@ -69,8 +69,9 @@ cbuffer SPRITE_INFO : register(b2)
     int     UseOutline;
     int     UseAddColor;
     float3  AddColor;
+    float   AddAlpha;
     int     UseLight;
-    int3    SpriteInfoPadding;
+    int2    SpriteInfoPadding;
 }
 
 cbuffer GLOBAL_DATA : register(b3)
