@@ -300,6 +300,8 @@ void CLiftScript::Ending()
 
 			CreateObject(pParticleObj, 0);
 
+			m_pPlayerScript->LiftEndFinish();
+
 			m_End = false;
 		}
 	}

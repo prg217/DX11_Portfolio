@@ -58,6 +58,10 @@ void CPlayerScript::Begin()
 
 void CPlayerScript::Tick()
 {
+	AniFinishCheck();
+
+	AniState();
+
 	// 맞았을 때
 	if (m_Hit)
 	{
@@ -68,6 +72,7 @@ void CPlayerScript::Tick()
 			m_Hit = false;
 			m_SaveHitTime = 0.f;
 
+			GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 			GetOwner()->FlipBookComponent()->AddAlpha(1.f);
 			GetOwner()->FlipBookComponent()->AddColor(false, Vec3(1.f, 0.3f, 0.2f));
 
@@ -167,10 +172,6 @@ void CPlayerScript::Tick()
 	{
 		Rolling();
 	}
-
-	AniFinishCheck();
-	
-	AniState();
 }
 
 void CPlayerScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
@@ -1136,48 +1137,6 @@ void CPlayerScript::AniFinishCheck()
 			}
 		}
 	}
-
-	if (m_CurPS == PlayerState::LIFT_END)
-	{
-		if (FlipBookComponent()->GetIsFinish())
-		{
-			if (m_Interaction)
-			{
-				m_CurPS = PlayerState::NONE;
-				m_Interaction = false;
-
-				switch (m_CurAS)
-				{
-				case OguAniState::LIFT_IDLE2_DOWN:
-					m_CurAS = OguAniState::IDLE;
-					break;
-				case OguAniState::LIFT_IDLE2_UP:
-					m_CurAS = OguAniState::IDLE_BACK;
-					break;
-				case OguAniState::LIFT_IDLE2_LEFT:
-					m_CurAS = OguAniState::IDLE_LEFT;
-					break;
-				case OguAniState::LIFT_IDLE2_RIGHT:
-					m_CurAS = OguAniState::IDLE_RIGHT;
-					break;
-				case OguAniState::LIFT_IDLE2_LEFTDOWN:
-					m_CurAS = OguAniState::IDLE_LEFTDOWN;
-					break;
-				case OguAniState::LIFT_IDLE2_LEFTUP:
-					m_CurAS = OguAniState::IDLE_LEFTUP;
-					break;
-				case OguAniState::LIFT_IDLE2_RIGHTDOWN:
-					m_CurAS = OguAniState::IDLE_RIGHTDOWN;
-					break;
-				case OguAniState::LIFT_IDLE2_RIGHTUP:
-					m_CurAS = OguAniState::IDLE_RIGHTUP;
-					break;
-				default:
-					break;
-				}
-			}
-		}
-	}
 	
 }
 
@@ -2107,6 +2066,45 @@ void CPlayerScript::LiftEnd()
 	}
 }
 
+void CPlayerScript::LiftEndFinish()
+{
+	if (m_Interaction)
+	{
+		m_CurPS = PlayerState::NONE;
+		m_Interaction = false;
+
+		switch (m_CurAS)
+		{
+		case OguAniState::LIFT_IDLE2_DOWN:
+			m_CurAS = OguAniState::IDLE;
+			break;
+		case OguAniState::LIFT_IDLE2_UP:
+			m_CurAS = OguAniState::IDLE_BACK;
+			break;
+		case OguAniState::LIFT_IDLE2_LEFT:
+			m_CurAS = OguAniState::IDLE_LEFT;
+			break;
+		case OguAniState::LIFT_IDLE2_RIGHT:
+			m_CurAS = OguAniState::IDLE_RIGHT;
+			break;
+		case OguAniState::LIFT_IDLE2_LEFTDOWN:
+			m_CurAS = OguAniState::IDLE_LEFTDOWN;
+			break;
+		case OguAniState::LIFT_IDLE2_LEFTUP:
+			m_CurAS = OguAniState::IDLE_LEFTUP;
+			break;
+		case OguAniState::LIFT_IDLE2_RIGHTDOWN:
+			m_CurAS = OguAniState::IDLE_RIGHTDOWN;
+			break;
+		case OguAniState::LIFT_IDLE2_RIGHTUP:
+			m_CurAS = OguAniState::IDLE_RIGHTUP;
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void CPlayerScript::Hit()
 {
 	// 구르는 중이면 무적
@@ -2125,6 +2123,7 @@ void CPlayerScript::Hit()
 	HitEffect();
 	
 	// 빨갛게 변함+무적 시간 동안 반투명
+	GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl"));
 	GetOwner()->FlipBookComponent()->AddAlpha(0.3f);
 	GetOwner()->FlipBookComponent()->AddColor(true, Vec3(1.f, 0.3f, 0.2f));
 	

@@ -32,6 +32,12 @@ void CPlayerInteractionScript::Begin()
 void CPlayerInteractionScript::Tick()
 {
 	Move();
+
+	// Lift 중이라면
+	if (KEY_TAP(KEY::S) && m_pPlayerScript->GetCurPS() == PlayerState::LIFT_START)
+	{
+		LiftEnd(m_pInteractionObj);
+	}
 }
 
 void CPlayerInteractionScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
@@ -162,18 +168,22 @@ void CPlayerInteractionScript::Lift(CGameObject* _Other)
 		// 자식으로 넣어주고 위치 조정
 		liftScript->Start();
 	}
-	else if (m_pPlayerScript->GetCurPS() == PlayerState::LIFT_START)
+}
+
+void CPlayerInteractionScript::LiftEnd(CGameObject* _pInteractionObj)
+{
+	if (m_pInteractionObj == nullptr)
 	{
-		if (m_pInteractionObj == nullptr)
-		{
-			return;
-		}
-		// 내리는 애니메이션 재생(재생하는 동안 못 움직임)
-		m_pPlayerScript->LiftEnd();
-		script = m_pInteractionObj->GetScript("CLiftScript");
-		liftScript = dynamic_cast<CLiftScript*>(script);
-		liftScript->End();
-		m_pInteractionObj = nullptr;
+		return;
 	}
+
+	CScript* script = m_pInteractionObj->GetScript("CLiftScript");
+	CLiftScript* liftScript = dynamic_cast<CLiftScript*>(script);
+
+	// 내리는 애니메이션 재생(재생하는 동안 못 움직임)
+	m_pPlayerScript->LiftEnd();
+	liftScript = dynamic_cast<CLiftScript*>(script);
+	liftScript->End();
+	m_pInteractionObj = nullptr;
 }
 

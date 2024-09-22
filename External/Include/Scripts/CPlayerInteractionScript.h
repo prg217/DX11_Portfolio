@@ -31,6 +31,7 @@ private:
     void Move();
 
     void Lift(CGameObject* _Other);
+    void LiftEnd(CGameObject* _pInteractionObj);
 
 public:
     CLONE(CPlayerInteractionScript);

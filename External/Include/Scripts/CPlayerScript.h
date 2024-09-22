@@ -196,6 +196,7 @@ public:
 
 	void LiftStart();
 	void LiftEnd();
+	void LiftEndFinish();
 
 	void SetIsPush(bool _IsPush) { m_IsPush = _IsPush; }
 
