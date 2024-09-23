@@ -168,6 +168,7 @@ call CodeGen.exe</Command>
   <ItemGroup>
     <ClInclude Include="CAniFinishDestroyScript.h" />
     <ClInclude Include="CBugNPCScript.h" />
+    <ClInclude Include="CBugRollingScript.h" />
     <ClInclude Include="CCactusNeedleScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCameraPlayerTrackingScript.h" />
@@ -204,6 +205,7 @@ call CodeGen.exe</Command>
   <ItemGroup>
     <ClCompile Include="CAniFinishDestroyScript.cpp" />
     <ClCompile Include="CBugNPCScript.cpp" />
+    <ClCompile Include="CBugRollingScript.cpp" />
     <ClCompile Include="CCactusNeedleScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCameraPlayerTrackingScript.cpp" />

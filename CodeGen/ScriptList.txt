@@ -1,5 +1,6 @@
 CAniFinishDestroyScript
 CBugNPCScript
+CBugRollingScript
 CCactusNeedleScript
 CCameraMoveScript
 CCameraPlayerTrackingScript

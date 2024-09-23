@@ -4,6 +4,7 @@
 enum class MonsterType
 {
     SpitCactus,
+    BugRolling,
 };
 
 class CHPScript;
@@ -17,10 +18,13 @@ private:
 
     CHPScript* m_HpScript;
 
+    bool m_HitOK; // 피격 될 수 있는지
     bool m_Hit;
     float m_SaveHitTime;
 
     MonsterType m_MonsterType;
+
+    //bool m_KnockBackOK; // 넉백 될 수 있는지
 
 public:
     virtual void Begin() override;
@@ -33,11 +37,16 @@ public:
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
 
+private:
+    void HitEffect();
+
 public:
     void PlayerDetect(bool _In);
 
     void Hit();
     void Dead();
+
+    void SetHitOK(bool _OK) { m_HitOK = _OK; }
 
 public:
     CLONE(CMonsterScript);

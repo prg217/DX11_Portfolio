@@ -154,6 +154,7 @@ void CCactusNeedleScript::AttackEffect()
 	Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Effect\\hit.flip");
 	effect->FlipBookComponent()->AddFlipBook(0, pFlip);
 	effect->FlipBookComponent()->Play(0, 8, false);
+	effect->FlipBookComponent()->SetUseLight(false);
 
 	CreateObject(effect, 0);
 }

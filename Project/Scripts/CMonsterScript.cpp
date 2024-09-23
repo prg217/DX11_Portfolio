@@ -4,14 +4,17 @@
 #include "CPlayerDetectScript.h"
 #include "CHPScript.h"
 #include "CSwingObjScript.h"
+#include "CAniFinishDestroyScript.h"
 
 #include "CSpitCactusScript.h"
+#include "CBugRollingScript.h"
 
 CMonsterScript::CMonsterScript()
 	: CScript(UINT(SCRIPT_TYPE::MONSTERSCRIPT))
 	, m_HPBar(nullptr)
 	, m_HPFrame(nullptr)
 	, m_HpScript(nullptr)
+	, m_HitOK(true)
 	, m_Hit(false)
 	, m_SaveHitTime(0)
 	, m_MonsterType(MonsterType::SpitCactus)
@@ -24,6 +27,7 @@ CMonsterScript::CMonsterScript(const CMonsterScript& _Origin)
 	, m_HPBar(nullptr)
 	, m_HPFrame(nullptr)
 	, m_HpScript(nullptr)
+	, m_HitOK(_Origin.m_HitOK)
 	, m_Hit(false)
 	, m_SaveHitTime(0)
 	, m_MonsterType(_Origin.m_MonsterType)
@@ -50,7 +54,7 @@ void CMonsterScript::Begin()
 
 	pObj->Collider2D()->SetIndependentScale(true);
 	pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pObj->Collider2D()->SetScale(Vec3(450.f, 450.f, 1.f));
+	pObj->Collider2D()->SetScale(Vec3(550.f, 550.f, 1.f));
 
 	CPlayerDetectScript* script = dynamic_cast<CPlayerDetectScript*>(pObj->GetScript("CPlayerDetectScript"));
 	script->SetMonsterScript(this);
@@ -100,18 +104,22 @@ void CMonsterScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObjec
 	// 플레이어가 채 휘두르기 중일 때 채 휘두르기 콜라이더랑 만나면 데미지
 	if (_OtherObject->GetLayerIdx() == 7)
 	{
-		CScript* script = _OtherObject->GetScript("CSwingObjScript");
-		CSwingObjScript* pSwing = dynamic_cast<CSwingObjScript*>(script);
-		if (pSwing)
+		// 피격 가능할 때
+		if (m_HitOK)
 		{
-			if (pSwing->GetIsSwing() && !m_Hit)
+			CScript* script = _OtherObject->GetScript("CSwingObjScript");
+			CSwingObjScript* pSwing = dynamic_cast<CSwingObjScript*>(script);
+			if (pSwing)
 			{
-				m_Hit = true;
-				Hit();
-			}
-			else if (!pSwing->GetIsSwing())
-			{
-				m_Hit = false;
+				if (pSwing->GetIsSwing() && !m_Hit)
+				{
+					m_Hit = true;
+					Hit();
+				}
+				else if (!pSwing->GetIsSwing())
+				{
+					m_Hit = false;
+				}
 			}
 		}
 	}
@@ -136,11 +144,38 @@ void CMonsterScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherOb
 void CMonsterScript::SaveToFile(FILE* _File)
 {
 	fwrite(&m_MonsterType, sizeof(MonsterType), 1, _File);
+	fwrite(&m_HitOK, sizeof(bool), 1, _File);
 }
 
 void CMonsterScript::LoadFromFile(FILE* _File)
 {
 	fread(&m_MonsterType, sizeof(MonsterType), 1, _File);
+	fread(&m_HitOK, sizeof(bool), 1, _File);
+}
+
+void CMonsterScript::HitEffect()
+{
+	CGameObject* effect = new CGameObject;
+	effect->SetName(L"HitEffect");
+
+	effect->AddComponent(new CTransform);
+	effect->AddComponent(new CMeshRender);
+	effect->AddComponent(new CFlipBookComponent);
+	effect->AddComponent(new CAniFinishDestroyScript);
+
+	effect->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
+	effect->Transform()->SetRelativeScale(Vec3(200, 200, 1));
+
+	effect->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	effect->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl"));
+
+	Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Effect\\hit.flip");
+	effect->FlipBookComponent()->AddFlipBook(0, pFlip);
+	effect->FlipBookComponent()->Play(0, 8, false);
+	effect->FlipBookComponent()->SetUseLight(false);
+	effect->FlipBookComponent()->AddColor(true, Vec3(0.9f, 1.f, 0.8f));
+
+	CreateObject(effect, 0);
 }
 
 void CMonsterScript::PlayerDetect(bool _In)
@@ -152,8 +187,14 @@ void CMonsterScript::PlayerDetect(bool _In)
 		{
 		case MonsterType::SpitCactus:
 		{
-			CSpitCactusScript* pSpitCactusScript = dynamic_cast<CSpitCactusScript*>(GetOwner()->GetScript("CSpitCactusScript"));
-			pSpitCactusScript->Attack();
+			CSpitCactusScript* monsterScript = dynamic_cast<CSpitCactusScript*>(GetOwner()->GetScript("CSpitCactusScript"));
+			monsterScript->Attack();
+		}
+		break;
+		case MonsterType::BugRolling:
+		{
+			CBugRollingScript* monsterScript = dynamic_cast<CBugRollingScript*>(GetOwner()->GetScript("CBugRollingScript"));
+			monsterScript->Attack();
 		}
 		break;
 		default:
@@ -167,8 +208,14 @@ void CMonsterScript::PlayerDetect(bool _In)
 		{
 		case MonsterType::SpitCactus:
 		{
-			CSpitCactusScript* pSpitCactusScript = dynamic_cast<CSpitCactusScript*>(GetOwner()->GetScript("CSpitCactusScript"));
-			pSpitCactusScript->Stop();
+			CSpitCactusScript* monsterScript = dynamic_cast<CSpitCactusScript*>(GetOwner()->GetScript("CSpitCactusScript"));
+			monsterScript->Stop();
+		}
+		break;
+		case MonsterType::BugRolling:
+		{
+			CBugRollingScript* monsterScript = dynamic_cast<CBugRollingScript*>(GetOwner()->GetScript("CBugRollingScript"));
+			monsterScript->Stop();
 		}
 		break;
 		default:
@@ -181,7 +228,8 @@ void CMonsterScript::Hit()
 {
 	// 넉백 구현 필요(넉백되는 얘들만)
 
-	// 피격 이펙트 추가 필요
+	// 피격 이펙트
+	HitEffect();
 
 	// 데미지 주기
 	if (m_HpScript != nullptr)
@@ -199,8 +247,14 @@ void CMonsterScript::Dead()
 	{
 	case MonsterType::SpitCactus:
 	{
-		CSpitCactusScript* pSpitCactusScript = dynamic_cast<CSpitCactusScript*>(GetOwner()->GetScript("CSpitCactusScript"));
-		pSpitCactusScript->Dead();
+		CSpitCactusScript* monsterScript = dynamic_cast<CSpitCactusScript*>(GetOwner()->GetScript("CSpitCactusScript"));
+		monsterScript->Dead();
+	}
+	break;
+	case MonsterType::BugRolling:
+	{
+		CBugRollingScript* monsterScript = dynamic_cast<CBugRollingScript*>(GetOwner()->GetScript("CBugRollingScript"));
+		monsterScript->Dead();
 	}
 	break;
 	default:

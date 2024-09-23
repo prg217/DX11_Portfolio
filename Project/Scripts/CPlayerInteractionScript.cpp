@@ -103,24 +103,28 @@ void CPlayerInteractionScript::Move()
 		case OguAniState::IDLE:
 		case OguAniState::WALK_DOWN:
 		case OguAniState::RUN_DOWN:
+		case OguAniState::PUSH_DOWN:
 			Transform()->SetRelativeRotation(0.f, 0.f, 0.f);
 			Transform()->SetRelativePos(0.f, -0.2f, 0.f);
 			break;
 		case OguAniState::IDLE_BACK:
 		case OguAniState::WALK_UP:
 		case OguAniState::RUN_UP:
+		case OguAniState::PUSH_UP:
 			Transform()->SetRelativeRotation(0.f, 0.f, 0.f);
 			Transform()->SetRelativePos(0.f, 0.2f, 0.f);
 			break;
 		case OguAniState::IDLE_LEFT:
 		case OguAniState::WALK_LEFT:
 		case OguAniState::RUN_LEFT:
+		case OguAniState::PUSH_LEFT:
 			Transform()->SetRelativeRotation(0.f, 0.f, 1.571f);
 			Transform()->SetRelativePos(-0.2f, 0.f, 0.f);
 			break;
 		case OguAniState::IDLE_RIGHT:
 		case OguAniState::WALK_RIGHT:
 		case OguAniState::RUN_RIGHT:
+		case OguAniState::PUSH_RIGHT:
 			Transform()->SetRelativeRotation(0.f, 0.f, -1.571f);
 			Transform()->SetRelativePos(0.2f, 0.f, 0.f);
 			break;

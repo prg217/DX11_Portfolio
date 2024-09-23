@@ -3,6 +3,7 @@
 
 #include "CAniFinishDestroyScript.h"
 #include "CBugNPCScript.h"
+#include "CBugRollingScript.h"
 #include "CCactusNeedleScript.h"
 #include "CCameraMoveScript.h"
 #include "CCameraPlayerTrackingScript.h"
@@ -37,6 +38,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CAniFinishDestroyScript");
 	_vec.push_back(L"CBugNPCScript");
+	_vec.push_back(L"CBugRollingScript");
 	_vec.push_back(L"CCactusNeedleScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CCameraPlayerTrackingScript");
@@ -74,6 +76,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CAniFinishDestroyScript;
 	if (L"CBugNPCScript" == _strScriptName)
 		return new CBugNPCScript;
+	if (L"CBugRollingScript" == _strScriptName)
+		return new CBugRollingScript;
 	if (L"CCactusNeedleScript" == _strScriptName)
 		return new CCactusNeedleScript;
 	if (L"CCameraMoveScript" == _strScriptName)
@@ -144,6 +148,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::BUGNPCSCRIPT:
 		return new CBugNPCScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BUGROLLINGSCRIPT:
+		return new CBugRollingScript;
 		break;
 	case (UINT)SCRIPT_TYPE::CACTUSNEEDLESCRIPT:
 		return new CCactusNeedleScript;
@@ -246,6 +253,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::BUGNPCSCRIPT:
 		return L"CBugNPCScript";
+		break;
+
+	case SCRIPT_TYPE::BUGROLLINGSCRIPT:
+		return L"CBugRollingScript";
 		break;
 
 	case SCRIPT_TYPE::CACTUSNEEDLESCRIPT:

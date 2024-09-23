@@ -37,6 +37,9 @@
     <Filter Include="Scripts\Monster\SpitCactus">
       <UniqueIdentifier>{fd980153-66a1-4d55-9290-a202dd312a41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Monster\RugRolling">
+      <UniqueIdentifier>{f2043ca2-537b-454f-9d8e-851488f5a064}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -141,6 +144,9 @@
     <ClInclude Include="CAniFinishDestroyScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CBugRollingScript.h">
+      <Filter>Scripts\Monster\RugRolling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -239,11 +245,14 @@
     <ClCompile Include="CSpitCactusScript.cpp">
       <Filter>Scripts\Monster\SpitCactus</Filter>
     </ClCompile>
-    <ClCompile Include="CCactusNeedleScript.cpp">
-      <Filter>Scripts\Monster\SpitCactus</Filter>
-    </ClCompile>
     <ClCompile Include="CAniFinishDestroyScript.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CBugRollingScript.cpp">
+      <Filter>Scripts\Monster\RugRolling</Filter>
+    </ClCompile>
+    <ClCompile Include="CCactusNeedleScript.cpp">
+      <Filter>Scripts\Monster\SpitCactus</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

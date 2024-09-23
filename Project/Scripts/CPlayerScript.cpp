@@ -2017,6 +2017,7 @@ void CPlayerScript::HitEffect()
 	Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Effect\\oguHit.flip");
 	effect->FlipBookComponent()->AddFlipBook(0, pFlip);
 	effect->FlipBookComponent()->Play(0, 8, false);
+	effect->FlipBookComponent()->SetUseLight(false);
 
 	CreateObject(effect, 0);
 }

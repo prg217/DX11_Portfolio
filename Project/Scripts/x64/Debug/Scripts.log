@@ -1,5 +1,6 @@
 ﻿  .\Project\Scripts\CAniFinishDestroyScript.h
   .\Project\Scripts\CBugNPCScript.h
+  .\Project\Scripts\CBugRollingScript.h
   .\Project\Scripts\CCactusNeedleScript.h
   .\Project\Scripts\CCameraMoveScript.h
   .\Project\Scripts\CCameraPlayerTrackingScript.h
@@ -30,11 +31,12 @@
   .\Project\Scripts\CSwingObjScript.h
   .\Project\Scripts\CTextBoxScript.h
   .\Project\Scripts\CUIScript.h
-  32개 파일이 복사되었습니다.
+  33개 파일이 복사되었습니다.
   pch.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): warning C4005: 'DELETE': 매크로 재정의
   CAniFinishDestroyScript.cpp
   CBugNPCScript.cpp
+  CBugRollingScript.cpp
   CCactusNeedleScript.cpp
   CCameraMoveScript.cpp
   CCameraPlayerTrackingScript.cpp
@@ -52,9 +54,9 @@ C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): w
   CLiftScript.cpp
   CMissileScript.cpp
   CMonsterScript.cpp
-  CNPCScript.cpp
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
+  CNPCScript.cpp
   COguDancePointLightScript.cpp
   CPlayerCameraScript.cpp
   CPlayerDetectScript.cpp

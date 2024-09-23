@@ -77,43 +77,43 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
 	// Effect Object
-	CGameObject* pMonster = new CGameObject;
-	pMonster->SetName(L"Area_White");
+	//CGameObject* pMonster = new CGameObject;
+	//pMonster->SetName(L"Area_White");
+	//
+	//pMonster->AddComponent(new CTransform);
+	//pMonster->AddComponent(new CMeshRender);
+	//
+	//pMonster->Transform()->SetRelativePos(0.f, 0.f, -1.f);
+	//pMonster->Transform()->SetRelativeScale(1.f, 1.f, 1.f);
+	//
+	//pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"EffectMtrl"));
+	//
+	//pMonster->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(10.f, 10.f, 10.f, 1.f));
+	//pMonster->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\obstacle\\Sprite_MoonForest_FlowerLightStandArea.png"));
+	//
+	//pLoadedLevel->AddObject(0, pMonster);
 
-	pMonster->AddComponent(new CTransform);
-	pMonster->AddComponent(new CMeshRender);
-
-	pMonster->Transform()->SetRelativePos(0.f, 0.f, -1.f);
-	pMonster->Transform()->SetRelativeScale(1.f, 1.f, 1.f);
-
-	pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"EffectMtrl"));
-
-	pMonster->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(10.f, 10.f, 10.f, 1.f));
-	pMonster->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\obstacle\\Sprite_MoonForest_FlowerLightStandArea.png"));
-
-	pLoadedLevel->AddObject(0, pMonster);
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"Poison");
+	//pObj->SetName(L"BugRolling");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
-	//pObj->AddComponent(new CParticleSystem);
+	//pObj->AddComponent(new CFlipBookComponent);
 	//pObj->AddComponent(new CLight2D);
 	
 	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	//pObj->Transform()->SetRelativeScale(Vec3(1, 1, -1));
+	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 1));
 	//
 	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	//pObj->MeshRender()->SetMaterial(pMtrl);
-	
-	//pObj->Collider2D()->SetIndependentScale(false);
+	//
 	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	//pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
-	
-	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Monster\\monster_spitCactusPoison.flip");
+	//
+	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Monster\\BugRolling\\BugRolling_idle_down.flip");
 	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
-	//pObj->FlipBookComponent()->Play(0, 0, false);
+	//pObj->FlipBookComponent()->Play(0, 8, true);
 	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\monster\\CactusNeedle.sprite");
 	//pObj->SpriteComponent()->AddSprite(pSprite);
 	//pObj->SpriteComponent()->AddColor(false, Vec3(0, 0, 0));
@@ -129,8 +129,8 @@ void CTestLevel::CreateTestLevel()
 	//
 	//pObj->ParticleSystem()->LoadFromFile(File);
 	//fclose(File);
-	//
-	//pLoadedLevel->AddObject(0, pObj);
+
+	//pLoadedLevel->AddObject(4, pObj);
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;
