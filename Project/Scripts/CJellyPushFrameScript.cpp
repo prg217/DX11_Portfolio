@@ -81,12 +81,17 @@ void CJellyPushFrameScript::Tick()
 
 void CJellyPushFrameScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+
+}
+
+void CJellyPushFrameScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
 	if (_OtherObject->GetScript("CJellyPushScript") != nullptr)
 	{
 		CScript* script = _OtherObject->GetScript("CJellyPushScript");
 		CJellyPushScript* jellyScript = dynamic_cast<CJellyPushScript*>(script);
 
-		if (jellyScript->GetJellyPushType() == m_JellyType)
+		if (jellyScript->GetJellyPushType() == m_JellyType && !m_Open)
 		{
 			switch (m_PuzzleType)
 			{
@@ -115,10 +120,6 @@ void CJellyPushFrameScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject*
 			FlowerBloom(jellyScript->GetJellyPushType());
 		}
 	}
-}
-
-void CJellyPushFrameScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
-{
 }
 
 void CJellyPushFrameScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)

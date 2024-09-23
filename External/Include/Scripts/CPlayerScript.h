@@ -12,6 +12,14 @@ enum class PlayerState
 	LIFT_END,
 };
 
+// 상태이상
+enum class StatusEffect
+{
+	NONE,
+
+	POISON,
+};
+
 enum class OguAniState
 {
 	IDLE,
@@ -188,6 +196,8 @@ private:
 	void PushMove();
 
 	void HitEffect();
+
+
 
 public:
 	OguAniState GetCurAS() { return m_CurAS; }

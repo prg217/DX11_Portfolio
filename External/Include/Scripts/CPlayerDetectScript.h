@@ -9,6 +9,8 @@ class CPlayerDetectScript :
 private:
     CMonsterScript* m_MonsterScript;
 
+    bool m_PlayerIn;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -22,6 +24,8 @@ public:
 
 public:
     void SetMonsterScript(CMonsterScript* _Script) { m_MonsterScript = _Script; }
+
+    bool GetPlayerIn() { return m_PlayerIn; }
 
 public:
     CLONE(CPlayerDetectScript);

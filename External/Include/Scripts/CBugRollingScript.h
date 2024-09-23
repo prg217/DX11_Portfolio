@@ -38,6 +38,7 @@ enum class BugRollingDir
 };
 
 class CMonsterScript;
+enum class JellyPushType;
 
 class CBugRollingScript :
     public CScript
@@ -45,13 +46,20 @@ class CBugRollingScript :
 private:
     CMonsterScript* m_pMonsterScript;
     CGameObject* m_pPlayer;
+    CGameObject* m_RollParticle;
 
     float m_Speed;
     
     bool m_Attack;
+    bool m_End;
     float m_ChaseTime; // 추격 시간
     BugRollingAni m_CurAni;
     BugRollingDir m_CurDir;
+
+    JellyPushType m_JellyType;
+
+    bool m_Stun;
+    CGameObject* m_StunObj;
 
 public:
     virtual void Begin() override;
@@ -68,6 +76,10 @@ private:
     void AniChange();
     void Chase(); // 추격
     void Move(); // 이동
+    void MoveEndAni();
+
+    void StunEffect();
+    void StunDelete();
 
 public:
     void Attack();

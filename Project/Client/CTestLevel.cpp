@@ -345,6 +345,7 @@ void CTestLevel::CreateTestLevel()
 	CCollisionMgr::GetInst()->CollisionCheck(29, 10); // 카메라 블록, 몬스터 공격
 
 	CCollisionMgr::GetInst()->CollisionCheck(3, 29); // 플레이어, 카메라 블록
+	CCollisionMgr::GetInst()->CollisionCheck(4, 29); // 몬스터, 카메라 블록
 	CCollisionMgr::GetInst()->CollisionCheck(6, 29); // 상호작용, 카메라 블록
 	CCollisionMgr::GetInst()->CollisionCheck(29, 30); // 카메라 블록, 카메라
 }

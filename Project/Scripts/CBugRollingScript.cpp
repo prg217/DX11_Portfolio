@@ -1,7 +1,14 @@
 #include "pch.h"
 #include "CBugRollingScript.h"
 
+#include "CJellyPushScript.h"
+
 #include "CMonsterScript.h"
+#include "CPlayerScript.h"
+#include "CFlowerLightAreaScript.h"
+
+#include "CPlayerDetectScript.h"
+#include "CAniFinishDestroyScript.h"
 
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
@@ -10,11 +17,16 @@ CBugRollingScript::CBugRollingScript()
 	: CScript(UINT(SCRIPT_TYPE::BUGROLLINGSCRIPT))
 	, m_pMonsterScript(nullptr)
 	, m_pPlayer(nullptr)
+	, m_RollParticle(nullptr)
 	, m_Speed(200.f)
 	, m_Attack(false)
+	, m_End(false)
 	, m_ChaseTime(0.f)
 	, m_CurAni(BugRollingAni::IDLE_DOWN)
 	, m_CurDir(BugRollingDir::NONE)
+	, m_JellyType(JellyPushType::MAGENTA)
+	, m_Stun(false)
+	, m_StunObj(nullptr)
 {
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "Speed", &m_Speed);
 	AddScriptParam(SCRIPT_PARAM::GAMEOBJECT, "Player", &m_pPlayer);
@@ -24,11 +36,16 @@ CBugRollingScript::CBugRollingScript(const CBugRollingScript& _Origin)
 	: CScript(_Origin)
 	, m_pMonsterScript(nullptr)
 	, m_pPlayer(_Origin.m_pPlayer)
+	, m_RollParticle(nullptr)
 	, m_Speed(_Origin.m_Speed)
 	, m_Attack(false)
+	, m_End(false)
 	, m_ChaseTime(0.f)
 	, m_CurAni(BugRollingAni::IDLE_DOWN)
 	, m_CurDir(BugRollingDir::NONE)
+	, m_JellyType(_Origin.m_JellyType)
+	, m_Stun(false)
+	, m_StunObj(nullptr)
 {
 }
 
@@ -42,10 +59,23 @@ void CBugRollingScript::Begin()
 
 	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 	m_pPlayer = curLevel->FindObjectByName(L"Player");
+
+	for (auto i : GetOwner()->GetChildren())
+	{
+		if (i->GetName().compare(L"RollParticle"))
+		{
+			m_RollParticle = i;
+		}
+	}
 }
 
 void CBugRollingScript::Tick()
 {
+	if (m_End)
+	{
+		MoveEndAni();
+	}
+
 	// 공격 활성화
 	if (m_Attack)
 	{
@@ -92,21 +122,112 @@ void CBugRollingScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Ot
 	// 플레이어와 부딪칠 때마다 데미지, 본인 넉백
 	if (_OtherObject->GetLayerIdx() == 3)
 	{
+		if (_OtherObject->GetScript("CPlayerScript") != nullptr)
+		{
+			CPlayerScript* script = dynamic_cast<CPlayerScript*>(_OtherObject->GetScript("CPlayerScript"));
+			script->Hit();
+		}
 
+		// 넉백은 공격할 때만
+		if (m_Attack)
+		{
+			Vec3 force = Vec3(0.f, 0.f, 0.f);
+			float speed = 1800.f;
+
+			switch (m_CurDir)
+			{
+			case BugRollingDir::DOWN:
+				force = Vec3(0.f, -speed, -speed);
+				break;
+			case BugRollingDir::UP:
+				force = Vec3(0.f, speed, speed);
+				break;
+			case BugRollingDir::LEFT:
+				force = Vec3(-speed, 0.f, 0.f);
+				break;
+			case BugRollingDir::RIGHT:
+				force = Vec3(speed, 0.f, 0.f);
+				break;
+			case BugRollingDir::LEFTDOWN:
+				force = Vec3(-speed, -speed, -speed);
+				break;
+			case BugRollingDir::LEFTUP:
+				force = Vec3(-speed, speed, speed);
+				break;
+			case BugRollingDir::RIGHTDOWN:
+				force = Vec3(speed, -speed, -speed);
+				break;
+			case BugRollingDir::RIGHTUP:
+				force = Vec3(speed, speed, speed);
+				break;
+			default:
+				break;
+			}
+
+			GetOwner()->RigidBody()->SetForce(force);
+		}
 	}
 }
 
 void CBugRollingScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	// 꽃의 빛에 닿으면
+	if (_OtherObject->GetLayerIdx() == 8) // 감지 레이어
+	{
+		CFlowerLightAreaScript* areaScript = dynamic_cast<CFlowerLightAreaScript*>(_OtherObject->GetScript("CFlowerLightAreaScript"));
+		if (areaScript != nullptr)
+		{
+			// 꽃의 빛 색이 내 타입과 같을 때
+			if (areaScript->GetJellyPushType() == m_JellyType && !m_Stun)
+			{
+				m_Stun = true;
+
+				Stop();
+
+				// 기절 이펙트
+				StunEffect();
+
+				// 타격 가능
+				m_pMonsterScript->SetHitOK(true);
+			}
+			// 아니라면
+			else if (areaScript->GetJellyPushType() != m_JellyType && m_Stun)
+			{
+				m_Stun = false;
+
+				// 기절 이펙트 삭제
+				StunDelete();
+
+				// 현재 플레이어가 안에 있는지 정보를 얻고, 안에 있으면 다시 공격을 한다.
+				for (auto i : GetOwner()->GetChildren())
+				{
+					CPlayerDetectScript* detectScript = dynamic_cast<CPlayerDetectScript*>(i->GetScript("CPlayerDetectScript"));
+					if (detectScript != nullptr)
+					{
+						if (detectScript->GetPlayerIn() == true)
+						{
+							Attack();
+						}
+					}
+				}
+			}
+		}
+	}
+
 	// 충돌 예외
 	if (_OtherObject->GetLayerIdx() == 7 || _OtherObject->GetLayerIdx() == 8)
 	{
 		return;
 	}
 
+	// 공격 중이 아니거나 방향을 바꾼지 얼마 안됐을 때는 return
+	if (!m_Attack || m_ChaseTime <= 0.1f)
+	{
+		return;
+	}
 	// 물리적으로 충돌되게 하기
 	Vec3 force = Vec3(0.f, 0.f, 0.f);
-	float speed = m_Speed;
+	float speed = 800.f;
 
 	switch (m_CurDir)
 	{
@@ -143,14 +264,40 @@ void CBugRollingScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherOb
 
 void CBugRollingScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
+	// 꽃의 빛이 사라지면
+	if (_OtherObject->GetLayerIdx() == 8) // 감지 레이어
+	{
+		if (m_Stun)
+		{
+			m_Stun = false;
+
+			// 기절 이펙트 삭제
+			StunDelete();
+
+			// 현재 플레이어가 안에 있는지 정보를 얻고, 안에 있으면 다시 공격을 한다.
+			for (auto i : GetOwner()->GetChildren())
+			{
+				CPlayerDetectScript* detectScript = dynamic_cast<CPlayerDetectScript*>(i->GetScript("CPlayerDetectScript"));
+				if (detectScript != nullptr)
+				{
+					if (detectScript->GetPlayerIn() == true)
+					{
+						Attack();
+					}
+				}
+			}
+		}
+	}
 }
 
 void CBugRollingScript::SaveToFile(FILE* _File)
 {
+	fwrite(&m_JellyType, sizeof(JellyPushType), 1, _File);
 }
 
 void CBugRollingScript::LoadFromFile(FILE* _File)
 {
+	fread(&m_JellyType, sizeof(JellyPushType), 1, _File);
 }
 
 void CBugRollingScript::AniChange()
@@ -236,7 +383,7 @@ void CBugRollingScript::Chase()
 	direction.Normalize();
 
 	// 대각선
-	if (abs(abs(direction.x) - abs(direction.y)) < 0.2f)
+	if (abs(abs(direction.x) - abs(direction.y)) < 0.25f)
 	{
 		if (direction.x > 0 && direction.y > 0)
 		{
@@ -334,22 +481,8 @@ void CBugRollingScript::Move()
 	GetOwner()->Transform()->SetRelativePos(vPos);
 }
 
-void CBugRollingScript::Attack()
+void CBugRollingScript::MoveEndAni()
 {
-	// 공격 활성화
-	m_Attack = true;
-	Chase();
-	// 색 젤리 꽃 빛에 똑같은 색상 맞으면 기절
-	// 기절 이펙트 머리 위에 뱅글뱅글
-	// 타격 가능
-
-	// 구르는 도중 파티클 활성화
-}
-
-void CBugRollingScript::Stop()
-{
-	m_Attack = false;
-
 	// end 애니메이션
 	switch (m_CurDir)
 	{
@@ -384,6 +517,7 @@ void CBugRollingScript::Stop()
 		{
 			m_CurAni = BugRollingAni::IDLE_DOWN;
 			GetOwner()->FlipBookComponent()->Play((int)m_CurAni, 10, true);
+			m_End = false;
 		}
 		break;
 	case BugRollingAni::END_UP:
@@ -391,6 +525,7 @@ void CBugRollingScript::Stop()
 		{
 			m_CurAni = BugRollingAni::IDLE_UP;
 			GetOwner()->FlipBookComponent()->Play((int)m_CurAni, 10, true);
+			m_End = false;
 		}
 		break;
 	case BugRollingAni::END_LEFT:
@@ -398,6 +533,7 @@ void CBugRollingScript::Stop()
 		{
 			m_CurAni = BugRollingAni::IDLE_LEFT;
 			GetOwner()->FlipBookComponent()->Play((int)m_CurAni, 10, true);
+			m_End = false;
 		}
 		break;
 	case BugRollingAni::END_RIGHT:
@@ -405,6 +541,7 @@ void CBugRollingScript::Stop()
 		{
 			m_CurAni = BugRollingAni::IDLE_RIGHT;
 			GetOwner()->FlipBookComponent()->Play((int)m_CurAni, 10, true);
+			m_End = false;
 		}
 		break;
 	default:
@@ -412,8 +549,84 @@ void CBugRollingScript::Stop()
 	}
 }
 
+void CBugRollingScript::StunEffect()
+{
+	m_StunObj = new CGameObject;
+	m_StunObj->AddComponent(new CTransform);
+	m_StunObj->AddComponent(new CMeshRender);
+	m_StunObj->AddComponent(new CFlipBookComponent);
+
+	m_StunObj->Transform()->SetRelativePos(Vec3(0, 0.2f, 0));
+	m_StunObj->Transform()->SetRelativeScale(Vec3(1, 1, 1));
+	
+	m_StunObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	m_StunObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl"));
+	
+	Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Effect\\stun.flip");
+	m_StunObj->FlipBookComponent()->AddFlipBook(0, pFlip);
+	m_StunObj->FlipBookComponent()->Play(0, 10, true);
+
+	CreateObject(m_StunObj, 0);
+	AddChildObject(GetOwner(), m_StunObj);
+}
+
+void CBugRollingScript::StunDelete()
+{
+	if (m_StunObj != nullptr)
+	{
+		DeleteObject(m_StunObj);
+
+		m_StunObj = nullptr;
+	}
+}
+
+void CBugRollingScript::Attack()
+{
+	// 공격 활성화
+	m_Attack = true;
+	Chase();
+
+	// 구르는 도중 파티클 활성화
+	if (m_RollParticle != nullptr)
+	{
+		m_RollParticle->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	}
+}
+
+void CBugRollingScript::Stop()
+{
+	m_Attack = false;
+	m_End = true;
+	m_ChaseTime = 0.f;
+
+	// 파티클 비활성화
+	if (m_RollParticle != nullptr)
+	{
+		m_RollParticle->Transform()->SetRelativePos(Vec3(0, 30, 0));
+	}
+}
+
 void CBugRollingScript::Dead()
 {
-	// 죽을 때는 파괴 이펙트 출력, 애니메이션 없음
+	// 죽을 때는 파괴 이펙트 출력
+	CGameObject* deadEffect = new CGameObject;
+	deadEffect->AddComponent(new CTransform);
+	deadEffect->AddComponent(new CMeshRender);
+	deadEffect->AddComponent(new CFlipBookComponent);
+	deadEffect->AddComponent(new CAniFinishDestroyScript);
+
+	deadEffect->Transform()->SetRelativePos(GetOwner()->Transform()->GetRelativePos());
+	deadEffect->Transform()->SetRelativeScale(Vec3(150.f, 150.f, 1));
+
+	deadEffect->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	deadEffect->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+
+	Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Effect\\monsterEffect.flip");
+	deadEffect->FlipBookComponent()->AddFlipBook(0, pFlip);
+	deadEffect->FlipBookComponent()->Play(0, 10, false);
+
+	CreateObject(deadEffect, 0);
+
+	DeleteObject(GetOwner());
 }
 

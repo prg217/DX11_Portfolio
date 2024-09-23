@@ -236,7 +236,7 @@ void CMonsterScript::Hit()
 	{
 		m_SaveHitTime = TIME;
 		Vec3 pos = m_HPFrame->Transform()->GetRelativePos();
-		m_HPFrame->Transform()->SetRelativePos(pos.x, 0.3f, pos.z);
+		m_HPFrame->Transform()->SetRelativePos(pos.x, 0.5f, pos.z);
 		m_HpScript->Hit(1, m_HPBar);
 	}
 }

@@ -1690,6 +1690,7 @@ void CPlayerScript::PushMove()
 
 	if (KEY_PRESSED(KEY::LEFT) && KEY_PRESSED(KEY::UP))
 	{
+		SetIsPush(false);
 		if (m_IsRun)
 		{
 			m_CurAS = OguAniState::RUN_LEFTUP;
@@ -1712,6 +1713,7 @@ void CPlayerScript::PushMove()
 	}
 	else if (KEY_PRESSED(KEY::LEFT) && KEY_PRESSED(KEY::DOWN))
 	{
+		SetIsPush(false);
 		if (m_IsRun)
 		{
 			m_CurAS = OguAniState::RUN_LEFTDOWN;
@@ -1733,6 +1735,7 @@ void CPlayerScript::PushMove()
 	}
 	else if (KEY_PRESSED(KEY::RIGHT) && KEY_PRESSED(KEY::UP))
 	{
+		SetIsPush(false);
 		if (m_IsRun)
 		{
 			m_CurAS = OguAniState::RUN_RIGHTUP;
@@ -1754,6 +1757,7 @@ void CPlayerScript::PushMove()
 	}
 	else if (KEY_PRESSED(KEY::RIGHT) && KEY_PRESSED(KEY::DOWN))
 	{
+		SetIsPush(false);
 		if (m_IsRun)
 		{
 			m_CurAS = OguAniState::RUN_RIGHTDOWN;
@@ -1778,22 +1782,54 @@ void CPlayerScript::PushMove()
 		if (KEY_PRESSED(KEY::LEFT))
 		{
 			m_Speed = m_MinSpeed;
-			m_CurAS = OguAniState::PUSH_LEFT;
+			if (m_CurAS == OguAniState::PUSH_LEFT || m_CurAS == OguAniState::WALK_LEFT || m_CurAS != OguAniState::RUN_LEFT)
+			{
+				m_CurAS = OguAniState::PUSH_LEFT;
+			}
+			else
+			{
+				SetIsPush(false);
+				return;
+			}
 		}
 		else if (KEY_PRESSED(KEY::RIGHT))
 		{
 			m_Speed = m_MinSpeed;
-			m_CurAS = OguAniState::PUSH_RIGHT;
+			if (m_CurAS == OguAniState::PUSH_RIGHT || m_CurAS == OguAniState::WALK_RIGHT || m_CurAS == OguAniState::RUN_RIGHT)
+			{
+				m_CurAS = OguAniState::PUSH_RIGHT;
+			}
+			else
+			{
+				SetIsPush(false);
+				return;
+			}
 		}
 		else if (KEY_PRESSED(KEY::UP))
 		{
 			m_Speed = m_MinSpeed;
-			m_CurAS = OguAniState::PUSH_UP;
+			if (m_CurAS == OguAniState::PUSH_UP || m_CurAS == OguAniState::WALK_UP || m_CurAS == OguAniState::RUN_UP)
+			{
+				m_CurAS = OguAniState::PUSH_UP;
+			}
+			else
+			{
+				SetIsPush(false);
+				return;
+			}
 		}
 		else if (KEY_PRESSED(KEY::DOWN))
 		{
 			m_Speed = m_MinSpeed;
-			m_CurAS = OguAniState::PUSH_DOWN;
+			if (m_CurAS == OguAniState::PUSH_DOWN || m_CurAS == OguAniState::WALK_DOWN || m_CurAS == OguAniState::RUN_DOWN)
+			{
+				m_CurAS = OguAniState::PUSH_DOWN;
+			}
+			else
+			{
+				SetIsPush(false);
+				return;
+			}
 		}
 
 	}
