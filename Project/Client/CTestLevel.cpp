@@ -76,6 +76,23 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(30)->SetName(L"Camera");
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
+	// Effect Object
+	CGameObject* pMonster = new CGameObject;
+	pMonster->SetName(L"Area_White");
+
+	pMonster->AddComponent(new CTransform);
+	pMonster->AddComponent(new CMeshRender);
+
+	pMonster->Transform()->SetRelativePos(0.f, 0.f, -1.f);
+	pMonster->Transform()->SetRelativeScale(1.f, 1.f, 1.f);
+
+	pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"EffectMtrl"));
+
+	pMonster->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(10.f, 10.f, 10.f, 1.f));
+	pMonster->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"texture\\obstacle\\Sprite_MoonForest_FlowerLightStandArea.png"));
+
+	pLoadedLevel->AddObject(0, pMonster);
 	//CGameObject* pObj = new CGameObject;
 	//pObj->SetName(L"Poison");
 	//pObj->AddComponent(new CTransform);

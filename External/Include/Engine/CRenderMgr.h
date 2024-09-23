@@ -36,8 +36,6 @@ public:
 
     void PostProcessCopy();
 
-    void Blur();
-
 private:
     void RenderStart();
     void Clear();

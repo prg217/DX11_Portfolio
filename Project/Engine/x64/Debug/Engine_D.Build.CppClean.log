@@ -8,7 +8,6 @@ c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\ckeymgr.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cgraphicshader.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cgameobject.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cfontmgr.obj
-c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cflipbookcomponent.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cflipbook.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\centity.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cengine.obj
@@ -22,6 +21,7 @@ c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\ccamera.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cassetmgr.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cassetinit.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\casset.obj
+c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cflipbookcomponent.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\ctaskmgr.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cstructuredbuffer.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cspritecomponent.obj
