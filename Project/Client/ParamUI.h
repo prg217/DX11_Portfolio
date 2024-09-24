@@ -27,5 +27,7 @@ public:
 	static bool InputPrefab(Ptr<CPrefab>& _CurPrefab, const string& _Desc, EditorUI* _Inst = nullptr, DELEGATE_1 _MemFunc = nullptr);
 
 	static bool InputGameObject(CGameObject*& _Obj, const string& _Desc);
+
+	static bool InputWstring(char* _Data, const string& _Desc);
 };
 

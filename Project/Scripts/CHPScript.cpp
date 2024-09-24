@@ -41,18 +41,6 @@ void CHPScript::Tick()
 {
 }
 
-void CHPScript::Render()
-{
-	//if (!m_PlayerHP)
-	//{
-	//	return;
-	//}
-	//
-	//wstring hpText = std::to_wstring(m_HP) + L" / " + std::to_wstring(m_MaxHP);
-	//
-	//CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), 50, 50, 30, FONT_RGBA(236, 230, 206, 255));
-}
-
 void CHPScript::SaveToFile(FILE* _File)
 {
 	fwrite(&m_HP, sizeof(int), 1, _File);

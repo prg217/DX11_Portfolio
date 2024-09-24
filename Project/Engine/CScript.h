@@ -17,6 +17,7 @@ enum class SCRIPT_PARAM
     TEXTURE,
     PREFAB,
     GAMEOBJECT,
+    WSTRING,
 };
 
 struct tScriptParam

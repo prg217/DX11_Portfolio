@@ -22,12 +22,17 @@ ScriptUI::~ScriptUI()
 
 void ScriptUI::Update()
 {	
-	if (GetTargetObject() == nullptr)
+	Inspector* pInspector = (Inspector*)CEditorMgr::GetInst()->FindEditorUI("Inspector");
+
+	// Å¸°Ù ¿ÀºêÁ§Æ® ¾Ë¾Æ³¿
+	CGameObject* pObject = pInspector->GetTargetObject();
+
+	if (pObject == nullptr)
 	{
 		return;
 	}
 
-	if (GetTargetObject()->IsDead())
+	if (pObject->IsDead())
 	{
 		return;
 	}
@@ -127,6 +132,20 @@ void ScriptUI::Update()
 			ParamUI::InputGameObject(pObj, vecParam[i].Desc);
 
 			m_UIHeight += 8;
+			break;
+		}
+		case SCRIPT_PARAM::WSTRING:
+		{
+			//wstring* text = (wstring*)vecParam[i].pData;
+			//char* charText = (char*)text->c_str();
+			//
+			//ParamUI::InputWstring(charText, vecParam[i].Desc);
+			//
+			//string stext(charText);
+			//(*text).assign(stext.begin(), stext.end());
+			//(wstring*&)vecParam[i].pData = text;
+			//
+			//m_UIHeight += 8;
 			break;
 		}
 		break;

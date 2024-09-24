@@ -6,6 +6,9 @@
 #include "CGameObject.h"
 
 #include "CTaskMgr.h"
+#include "CPathMgr.h"
+
+LEVEL_LOAD  CLevelMgr::g_LavelLoadFunc = nullptr;
 
 CLevelMgr::CLevelMgr()
 	: m_CurLevel(nullptr)
@@ -34,6 +37,26 @@ void CLevelMgr::LevelChanged()
 	CTaskMgr::GetInst()->AddTask(tTask{TASK_TYPE::LEVEL_CHANGED});
 }
 
+void CLevelMgr::SetLevelLoad(LEVEL_LOAD _Func)
+{
+	g_LavelLoadFunc = _Func;
+}
+
+void CLevelMgr::LevelNameChange(wstring _LeveName)
+{
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"level\\";
+	strInitPath += _LeveName;
+	strInitPath += L".lv";
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	CLevel* pLoadedLevel = g_LavelLoadFunc(strInitPath);
+	fclose(File);
+	ChangeLevel(pLoadedLevel, LEVEL_STATE::PLAY);
+}
+
 
 void CLevelMgr::Init()
 {	
@@ -54,7 +77,7 @@ void CLevelMgr::Progress()
 	m_CurLevel->FinalTick();
 }
 
-bool CLevelMgr::ChangeLevel(CLevel* _NextLevel)
+bool CLevelMgr::ChangeStopLevel(CLevel* _NextLevel)
 {
 	if (m_CurLevel == _NextLevel)
 		return false;

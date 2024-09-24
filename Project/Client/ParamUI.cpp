@@ -322,3 +322,20 @@ bool ParamUI::InputGameObject(CGameObject*& _Obj, const string& _Desc)
 
 	return false;
 }
+
+bool ParamUI::InputWstring(char* _Data, const string& _Desc)
+{
+	// 만드는 중
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine(120);
+
+	char szID[255] = {};
+	sprintf_s(szID, 255, "##Input%d", g_ID++);
+
+	if (ImGui::InputText(szID, _Data, 255))
+	{
+		return true;
+	}
+
+	return false;
+}

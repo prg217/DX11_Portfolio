@@ -9,6 +9,8 @@
 #include "CLevelSaveLoad.h"
 #include "CTestLevel.h"
 
+#include <Engine/CLevelMgr.h>
+
 // 전역 변수:
 HINSTANCE g_hInst = nullptr;
 
@@ -48,6 +50,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         MessageBox(nullptr, L"CEngine 초기화 실패", L"엔진 초기화 실패", MB_OK);
         return 0;
     }
+
+    CLevelMgr::GetInst()->SetLevelLoad((LEVEL_LOAD)&CLevelSaveLoad::LoadLevel);
 
 #ifdef _DEBUG
     // CEditorMgr 초기화

@@ -34,7 +34,7 @@
 void CTestLevel::CreateTestLevel()
 {
 	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
-	strInitPath += L"level\\test.lv";
+	strInitPath += L"level\\boss.lv";
 
 	FILE* File = nullptr;
 	_wfopen_s(&File, strInitPath.c_str(), L"rb");
@@ -75,6 +75,25 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(29)->SetName(L"CameraBlock");
 	pLoadedLevel->GetLayer(30)->SetName(L"Camera");
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
+
+	// TileMap Object
+	//CGameObject* pTileMapObj = new CGameObject;
+	//pTileMapObj->SetName(L"TileMap");
+	//
+	//pTileMapObj->AddComponent(new CTransform);
+	//pTileMapObj->AddComponent(new CTileMap);
+	//
+	//pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
+	//
+	//strInitPath = CPathMgr::GetInst()->GetContentPath();
+	//strInitPath += L"tile\\boss.tile";
+	//
+	//File = nullptr;
+	//_wfopen_s(&File, strInitPath.c_str(), L"rb");
+	//
+	//pTileMapObj->TileMap()->LoadFromFile(File);
+	//fclose(File);
+	//pLoadedLevel->AddObject(2, pTileMapObj);
 
 	// Effect Object
 	//CGameObject* pMonster = new CGameObject;
@@ -322,7 +341,7 @@ void CTestLevel::CreateTestLevel()
 
 	//pLevel->AddObject(0, pGrayFilterObj);
 
-	ChangeLevel(pLevel, LEVEL_STATE::STOP);
+	ChangeStopLevel(pLevel, LEVEL_STATE::STOP);
 	*/
 	// 충돌 지정
 	CCollisionMgr::GetInst()->CollisionCheck(3, 4); // 플레이어, 몬스터

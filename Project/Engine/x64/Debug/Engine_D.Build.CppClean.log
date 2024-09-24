@@ -41,7 +41,6 @@ c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cmeshrender.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cmesh.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\cmaterial.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\clight2d.obj
-c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\clevelmgr.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\func.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\extern.obj
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.obj
@@ -59,14 +58,9 @@ c:\assortrock\portfolio\dx11_portfolio\external\library\engine\std2d.cso
 c:\assortrock\portfolio\dx11_portfolio\external\library\engine\struct.cso
 c:\assortrock\portfolio\dx11_portfolio\external\library\engine\tilemap.cso
 c:\assortrock\portfolio\dx11_portfolio\external\library\engine\value.cso
-c:\assortrock\portfolio\dx11_portfolio\external\library\engine\engine_d.lib
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.tlog\cl.command.1.tlog
-c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.tlog\cl.items.tlog
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.tlog\cl.read.1.tlog
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.tlog\cl.write.1.tlog
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.tlog\fxc.command.1.tlog
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.tlog\fxc.read.1.tlog
 c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.tlog\fxc.write.1.tlog
-c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.tlog\lib-link.read.1.tlog
-c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.tlog\lib-link.write.1.tlog
-c:\assortrock\portfolio\dx11_portfolio\project\engine\x64\debug\engine.tlog\lib.command.1.tlog
