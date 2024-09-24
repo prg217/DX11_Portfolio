@@ -15,6 +15,7 @@ CJellyBombDetectScript
 CJellyBombScript
 CJellyPushFrameScript
 CJellyPushScript
+CLevelChangeScript
 CLiftScript
 CMissileScript
 CMonsterScript
@@ -22,6 +23,7 @@ CNPCScript
 COguDancePointLightScript
 CPlayerCameraScript
 CPlayerDetectScript
+CPlayerHPScript
 CPlayerInteractionScript
 CPlayerScript
 CPushScript

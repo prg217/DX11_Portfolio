@@ -100,10 +100,14 @@ CGameObject* CLevel::FindObjectByName(const wstring& _Name)
 					list.push_back(vecChild[i]);
 				}
 
-				if (_Name == pObject->GetName())
+				if (wcscmp(_Name.c_str(), pObject->GetName().c_str()) == 0)
 				{
 					return pObject;
 				}
+				//if (_Name == pObject->GetName())
+				//{
+				//	return pObject;
+				//}
 			}
 		}
 	}

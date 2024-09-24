@@ -321,4 +321,8 @@ void CGameObject::Render()
 	{
 		GetScript("CTextBoxScript")->Render();
 	}
+	if (GetScript("CPlayerHPScript") != nullptr)
+	{
+		GetScript("CPlayerHPScript")->Render();
+	}
 }

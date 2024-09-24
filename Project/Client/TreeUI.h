@@ -27,7 +27,8 @@ public:
     DWORD_PTR GetData() { return m_Data; }
 
     void AddChildNode(TreeNode* _Node) { m_vecChildNode.push_back(_Node); }
-
+    
+    void Deselect();
   
     void DragCheck();
     void DropCheck();

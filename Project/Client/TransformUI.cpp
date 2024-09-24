@@ -17,6 +17,11 @@ void TransformUI::Update()
 {	
 	Title();
 
+	if (GetTargetObject() == nullptr)
+	{
+		return;
+	}
+
 	if (GetTargetObject()->IsDead())
 	{
 		return;

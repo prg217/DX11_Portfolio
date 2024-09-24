@@ -18,6 +18,7 @@
 #include "CJellyBombScript.h"
 #include "CJellyPushFrameScript.h"
 #include "CJellyPushScript.h"
+#include "CLevelChangeScript.h"
 #include "CLiftScript.h"
 #include "CMissileScript.h"
 #include "CMonsterScript.h"
@@ -25,6 +26,7 @@
 #include "COguDancePointLightScript.h"
 #include "CPlayerCameraScript.h"
 #include "CPlayerDetectScript.h"
+#include "CPlayerHPScript.h"
 #include "CPlayerInteractionScript.h"
 #include "CPlayerScript.h"
 #include "CPushScript.h"
@@ -53,6 +55,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CJellyBombScript");
 	_vec.push_back(L"CJellyPushFrameScript");
 	_vec.push_back(L"CJellyPushScript");
+	_vec.push_back(L"CLevelChangeScript");
 	_vec.push_back(L"CLiftScript");
 	_vec.push_back(L"CMissileScript");
 	_vec.push_back(L"CMonsterScript");
@@ -60,6 +63,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"COguDancePointLightScript");
 	_vec.push_back(L"CPlayerCameraScript");
 	_vec.push_back(L"CPlayerDetectScript");
+	_vec.push_back(L"CPlayerHPScript");
 	_vec.push_back(L"CPlayerInteractionScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CPushScript");
@@ -106,6 +110,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CJellyPushFrameScript;
 	if (L"CJellyPushScript" == _strScriptName)
 		return new CJellyPushScript;
+	if (L"CLevelChangeScript" == _strScriptName)
+		return new CLevelChangeScript;
 	if (L"CLiftScript" == _strScriptName)
 		return new CLiftScript;
 	if (L"CMissileScript" == _strScriptName)
@@ -120,6 +126,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerCameraScript;
 	if (L"CPlayerDetectScript" == _strScriptName)
 		return new CPlayerDetectScript;
+	if (L"CPlayerHPScript" == _strScriptName)
+		return new CPlayerHPScript;
 	if (L"CPlayerInteractionScript" == _strScriptName)
 		return new CPlayerInteractionScript;
 	if (L"CPlayerScript" == _strScriptName)
@@ -194,6 +202,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::JELLYPUSHSCRIPT:
 		return new CJellyPushScript;
 		break;
+	case (UINT)SCRIPT_TYPE::LEVELCHANGESCRIPT:
+		return new CLevelChangeScript;
+		break;
 	case (UINT)SCRIPT_TYPE::LIFTSCRIPT:
 		return new CLiftScript;
 		break;
@@ -214,6 +225,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERDETECTSCRIPT:
 		return new CPlayerDetectScript;
+		break;
+	case (UINT)SCRIPT_TYPE::PLAYERHPSCRIPT:
+		return new CPlayerHPScript;
 		break;
 	case (UINT)SCRIPT_TYPE::PLAYERINTERACTIONSCRIPT:
 		return new CPlayerInteractionScript;
@@ -315,6 +329,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CJellyPushScript";
 		break;
 
+	case SCRIPT_TYPE::LEVELCHANGESCRIPT:
+		return L"CLevelChangeScript";
+		break;
+
 	case SCRIPT_TYPE::LIFTSCRIPT:
 		return L"CLiftScript";
 		break;
@@ -341,6 +359,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PLAYERDETECTSCRIPT:
 		return L"CPlayerDetectScript";
+		break;
+
+	case SCRIPT_TYPE::PLAYERHPSCRIPT:
+		return L"CPlayerHPScript";
 		break;
 
 	case SCRIPT_TYPE::PLAYERINTERACTIONSCRIPT:

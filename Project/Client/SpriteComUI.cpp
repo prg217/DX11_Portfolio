@@ -23,7 +23,7 @@ void SpriteComUI::Update()
 
 	CSpriteComponent* spriteCom = GetTargetObject()->SpriteComponent();
 
-	if (spriteCom == nullptr)
+	if (GetTargetObject()->IsDead())
 	{
 		return;
 	}

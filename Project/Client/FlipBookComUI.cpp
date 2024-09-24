@@ -22,6 +22,11 @@ void FlipBookComUI::Update()
 {
 	Title();
 
+	if (GetTargetObject()->IsDead())
+	{
+		return;
+	}
+
 	// AddFlipBook목록, 그리고 추가할 수 있게
 	CFlipBookComponent* flipCom = GetTargetObject()->FlipBookComponent();
 	for (int i = 0; i < flipCom->GetFlipBooks().size() + 1; i++)

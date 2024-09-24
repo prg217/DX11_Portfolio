@@ -82,11 +82,11 @@ void TreeNode::Update()
 		// 우클릭시 팝업메뉴
 		if (ImGui::BeginPopupContextItem()) // <-- use last item id as popup id
 		{
-			// Popup 내용을 어떻게 채울지
-			m_Owner->PopupMenu(this);
-
 			// 노드를 우클릭시 선택된것으로 본다.
 			m_Owner->SetSelectedNode(this);
+
+			// Popup 내용을 어떻게 채울지
+			m_Owner->PopupMenu(this);
 		}
 
 		for (size_t i = 0; i < m_vecChildNode.size(); ++i)
@@ -96,6 +96,11 @@ void TreeNode::Update()
 
 		ImGui::TreePop();
 	}
+}
+
+void TreeNode::Deselect()
+{
+	m_Owner->Clear();
 }
 
 void TreeNode::DragCheck()

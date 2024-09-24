@@ -2,6 +2,8 @@
 #include "CPlayerScript.h"
 
 #include <Engine/enum.h>
+#include <Engine/CLevelMgr.h>
+#include <Engine/CLevel.h>
 
 #include "CCountDownDeleteScript.h"
 #include "COguDancePointLightScript.h"
@@ -13,6 +15,7 @@ CPlayerScript::CPlayerScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERSCRIPT))
 	, m_CurPS(PlayerState::NONE)
 	, m_StartFrmIdx(0)
+	, m_HPBar(nullptr)
 	, m_HPScript(nullptr)
 	, m_Hit(false)
 	, m_SaveHitTime(0.f)
@@ -32,6 +35,7 @@ CPlayerScript::CPlayerScript()
 	, m_SaveDanceTime(0.f)
 	, m_DanceTime(1.5f)
 	, m_IsDance(false)
+	, m_DanceHealTime(0.f)
 	, m_RollingSpeedMax(400.f)
 	, m_RollingSpeed(400.f)
 	, m_RollingDeceleration(5.f)
@@ -41,7 +45,7 @@ CPlayerScript::CPlayerScript()
 	, m_IsPush(false)
 {	
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "PlayerSpeed", &m_Speed);
-	//AddScriptParam(SCRIPT_PARAM::TEXTURE, "Test", &m_Texture);
+	AddScriptParam(SCRIPT_PARAM::GAMEOBJECT, "HPObj", &m_HPBar);
 }
 
 CPlayerScript::~CPlayerScript()
@@ -53,7 +57,17 @@ void CPlayerScript::Begin()
 {
 	GetRenderComponent()->GetDynamicMaterial();
 
-	CHPScript* m_HPScript = dynamic_cast<CHPScript*>(GetOwner()->GetScript("CHPScript"));
+	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	CGameObject* hpFrame = curLevel->FindObjectByName(L"PHP");
+	for (auto i : hpFrame->GetChildren())
+	{
+		if (wcscmp(i->GetName().c_str(), L"HPBar") == 0)
+		{
+			m_HPBar = i;
+		}
+	}
+
+	m_HPScript = dynamic_cast<CHPScript*>(GetOwner()->GetScript("CHPScript"));
 }
 
 void CPlayerScript::Tick()
@@ -135,17 +149,22 @@ void CPlayerScript::Tick()
 			if (TIME - m_SaveDanceTime >= m_DanceTime)
 			{
 				m_CurAS = OguAniState::DANCE;
+				DanceHeal();
 			}
 		}
 		if (KEY_RELEASED(KEY::Q))
 		{
 			DanceEffectDelete();
 			m_IsDance = false;
+			m_DanceHealTime = 0.f;
 		}
 
 		if (TIME - m_SaveFinalActionTime >= m_IdleDanceTime)
 		{
-			m_CurAS = OguAniState::IDLE_DANCE;
+			if (m_CurAS != OguAniState::DANCE)
+			{
+				m_CurAS = OguAniState::IDLE_DANCE;
+			}
 		}
 
 		// A 버튼을 누르면 채를 휘두른다.
@@ -1040,6 +1059,27 @@ void CPlayerScript::DanceEffectDelete()
 		DeleteObject(i);
 	}
 	m_vDanceEffects.clear();
+}
+
+void CPlayerScript::DanceHeal()
+{
+	m_DanceHealTime += DT;
+
+	if (m_DanceHealTime >= 1.5f)
+	{
+		if (m_HPScript != nullptr)
+		{
+			int hp = m_HPScript->GetHP();
+			int maxHp = m_HPScript->GetMaxHP();
+			if (maxHp > hp)
+			{
+				DanceEffect();
+				m_HPScript->Heal();
+			}
+
+			m_DanceHealTime = 0.f;
+		}
+	}
 }
 
 void CPlayerScript::Swing()
@@ -2242,7 +2282,7 @@ void CPlayerScript::Hit()
 	// 데미지 주기
 	if (m_HPScript != nullptr)
 	{
-		m_HPScript->Hit(1/*, m_HPBar*/);
+		m_HPScript->Hit(1, m_HPBar);
 	}
 }
 

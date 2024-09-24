@@ -23,6 +23,18 @@ void ComponentUI::SetTargetObject(CGameObject* _Object)
 {
 	m_TargetObject = _Object;
 
+	if (m_TargetObject == nullptr)
+	{
+		SetActive(false);
+		return;
+	}
+
+	if (m_TargetObject->IsDead())
+	{
+		SetActive(false);
+		return;
+	}
+
 	if (nullptr != m_TargetObject && 
 		nullptr != m_TargetObject->GetComponent(m_Type))
 	{

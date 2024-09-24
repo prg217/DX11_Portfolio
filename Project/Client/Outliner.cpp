@@ -192,6 +192,7 @@ void Outliner::PopupMenu(DWORD_PTR _Param)
 		CGameObject* pObject = (CGameObject*)pNode->GetData();
 
 		//CEditorMgr::GetInst()->EditorDeleteObject(pObject);
+		pNode->Deselect();
 		DeleteObject(pObject);
 		RenewLevel();
 

@@ -43,22 +43,22 @@ void CSwingObjScript::Tick()
 		case OguAniState::SWING_DOWN:
 			Transform()->SetRelativeScale(-1.f, -1.f, 0.f);
 			Transform()->SetRelativeRotation(0.f, 0.f, 0.f);
-			Transform()->SetRelativePos(0.f, -0.5f, 0.f);
+			Transform()->SetRelativePos(0.f, -0.3f, 0.f);
 			break;
 		case OguAniState::SWING_UP:
 			Transform()->SetRelativeScale(1.f, 1.f, 0.f);
 			Transform()->SetRelativeRotation(0.f, 0.f, 0.f);
-			Transform()->SetRelativePos(0.f, 0.5f, 0.f);
+			Transform()->SetRelativePos(0.f, 0.3f, 0.f);
 			break;
 		case OguAniState::SWING_LEFT:
 			Transform()->SetRelativeScale(1.f, 1.f, 0.f);
 			Transform()->SetRelativeRotation(0.f, 0.f, 1.571f);
-			Transform()->SetRelativePos(-0.5f, 0.f, 0.f);
+			Transform()->SetRelativePos(-0.3f, 0.f, 0.f);
 			break;
 		case OguAniState::SWING_RIGHT:
 			Transform()->SetRelativeScale(1.f, 1.f, 0.f);
 			Transform()->SetRelativeRotation(0.f, 0.f, -1.571f);
-			Transform()->SetRelativePos(0.5f, 0.f, 0.f);
+			Transform()->SetRelativePos(0.3f, 0.f, 0.f);
 			break;
 		case OguAniState::SWING_LEFTDOWN:
 			Transform()->SetRelativeScale(1.f, 1.f, 0.f);

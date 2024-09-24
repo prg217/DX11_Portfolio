@@ -10,9 +10,12 @@ private:
 
     CGameObject* m_HPBar;
 
+    bool m_Player;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
+    virtual void Render() override;
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
@@ -23,6 +26,9 @@ private:
 public:
     void Hit(int _Damage = 1, CGameObject* _HPBar = nullptr);
     void Heal(int _Heal = 1);
+
+    int GetHP() { return m_HP; }
+    int GetMaxHP() { return m_MaxHP; }
 
 public:
     CLONE(CHPScript);

@@ -147,6 +147,12 @@
     <ClInclude Include="CBugRollingScript.h">
       <Filter>Scripts\Monster\RugRolling</Filter>
     </ClInclude>
+    <ClInclude Include="CPlayerHPScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelChangeScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -253,6 +259,12 @@
     </ClCompile>
     <ClCompile Include="CCactusNeedleScript.cpp">
       <Filter>Scripts\Monster\SpitCactus</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerHPScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelChangeScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

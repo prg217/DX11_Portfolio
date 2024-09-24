@@ -125,6 +125,7 @@ private:
 
 	int				m_StartFrmIdx; // 애니메이션 시작 인덱스
 
+	CGameObject*	m_HPBar;
 	CHPScript*		m_HPScript;
 
 	bool			m_Hit; // 맞았을 때
@@ -150,6 +151,7 @@ private:
 	float					m_SaveDanceTime;
 	float					m_DanceTime;
 	bool					m_IsDance;
+	float					m_DanceHealTime;
 	vector<CGameObject*>	m_vDanceEffects;
 	// ============================
 	// =======구르기=======
@@ -183,6 +185,7 @@ private:
 
 	void DanceEffect();
 	void DanceEffectDelete();
+	void DanceHeal();
 
 	void AniFinishCheck();
 
