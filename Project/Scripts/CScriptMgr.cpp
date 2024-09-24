@@ -2,6 +2,7 @@
 #include "CScriptMgr.h"
 
 #include "CAniFinishDestroyScript.h"
+#include "CBugBossScript.h"
 #include "CBugNPCScript.h"
 #include "CBugRollingScript.h"
 #include "CCactusNeedleScript.h"
@@ -39,6 +40,7 @@
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CAniFinishDestroyScript");
+	_vec.push_back(L"CBugBossScript");
 	_vec.push_back(L"CBugNPCScript");
 	_vec.push_back(L"CBugRollingScript");
 	_vec.push_back(L"CCactusNeedleScript");
@@ -78,6 +80,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CAniFinishDestroyScript" == _strScriptName)
 		return new CAniFinishDestroyScript;
+	if (L"CBugBossScript" == _strScriptName)
+		return new CBugBossScript;
 	if (L"CBugNPCScript" == _strScriptName)
 		return new CBugNPCScript;
 	if (L"CBugRollingScript" == _strScriptName)
@@ -153,6 +157,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	{
 	case (UINT)SCRIPT_TYPE::ANIFINISHDESTROYSCRIPT:
 		return new CAniFinishDestroyScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BUGBOSSSCRIPT:
+		return new CBugBossScript;
 		break;
 	case (UINT)SCRIPT_TYPE::BUGNPCSCRIPT:
 		return new CBugNPCScript;
@@ -263,6 +270,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 	{
 	case SCRIPT_TYPE::ANIFINISHDESTROYSCRIPT:
 		return L"CAniFinishDestroyScript";
+		break;
+
+	case SCRIPT_TYPE::BUGBOSSSCRIPT:
+		return L"CBugBossScript";
 		break;
 
 	case SCRIPT_TYPE::BUGNPCSCRIPT:

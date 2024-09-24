@@ -40,6 +40,9 @@
     <Filter Include="Scripts\Monster\RugRolling">
       <UniqueIdentifier>{f2043ca2-537b-454f-9d8e-851488f5a064}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Boss">
+      <UniqueIdentifier>{c8c1138e-ca58-4e3c-bb52-d0689fc68cbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -153,6 +156,9 @@
     <ClInclude Include="CLevelChangeScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CBugBossScript.h">
+      <Filter>Scripts\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -265,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="CLevelChangeScript.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CBugBossScript.cpp">
+      <Filter>Scripts\Boss</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

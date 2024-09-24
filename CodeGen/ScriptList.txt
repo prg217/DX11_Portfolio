@@ -1,4 +1,5 @@
 CAniFinishDestroyScript
+CBugBossScript
 CBugNPCScript
 CBugRollingScript
 CCactusNeedleScript

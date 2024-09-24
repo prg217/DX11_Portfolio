@@ -114,7 +114,7 @@ void CTestLevel::CreateTestLevel()
 	//pLoadedLevel->AddObject(0, pMonster);
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"BugRolling");
+	//pObj->SetName(L"White");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
@@ -126,13 +126,15 @@ void CTestLevel::CreateTestLevel()
 	//
 	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	//pObj->MeshRender()->SetMaterial(pMtrl);
-	//
+	
 	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	//pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
-	//
-	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Monster\\BugRolling\\BugRolling_idle_down.flip");
+	
+	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Boss\\White\\appeared.flip");
 	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
 	//pObj->FlipBookComponent()->Play(0, 8, true);
+	//pObj->FlipBookComponent()->AddAlpha(0.9f);
+
 	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\monster\\CactusNeedle.sprite");
 	//pObj->SpriteComponent()->AddSprite(pSprite);
 	//pObj->SpriteComponent()->AddColor(false, Vec3(0, 0, 0));

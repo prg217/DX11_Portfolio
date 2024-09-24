@@ -2,7 +2,6 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts_d.pch
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.pdb
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.idb
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\pch.obj
-c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cmissilescript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cliftscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\clevelchangescript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cjellypushscript.obj
@@ -21,6 +20,7 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccameramovescri
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccactusneedlescript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cbugrollingscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cbugnpcscript.obj
+c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cbugbossscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\canifinishdestroyscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cuiscript.obj
@@ -38,6 +38,7 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cplayercamerasc
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cogudancepointlightscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cnpcscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cmonsterscript.obj
+c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cmissilescript.obj
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.lib
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.tlog\cl.command.1.tlog
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.tlog\cl.items.tlog

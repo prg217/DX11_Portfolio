@@ -167,6 +167,7 @@ call CodeGen.exe</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAniFinishDestroyScript.h" />
+    <ClInclude Include="CBugBossScript.h" />
     <ClInclude Include="CBugNPCScript.h" />
     <ClInclude Include="CBugRollingScript.h" />
     <ClInclude Include="CCactusNeedleScript.h" />
@@ -206,6 +207,7 @@ call CodeGen.exe</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAniFinishDestroyScript.cpp" />
+    <ClCompile Include="CBugBossScript.cpp" />
     <ClCompile Include="CBugNPCScript.cpp" />
     <ClCompile Include="CBugRollingScript.cpp" />
     <ClCompile Include="CCactusNeedleScript.cpp" />

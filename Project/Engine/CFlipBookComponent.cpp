@@ -176,6 +176,18 @@ void CFlipBookComponent::ReversePlay(int _FliBookIdx, float _FPS, bool _Repeat)
 	m_Finish = false;
 }
 
+int CFlipBookComponent::GetCurFlipBookIdx()
+{
+	for (int i = 0; i < m_vecFlipBook.size(); i++)
+	{
+		if (m_CurFlipBook == m_vecFlipBook[i])
+		{
+			return i;
+		}
+	}
+	return 0;
+}
+
 void CFlipBookComponent::Reset()
 {
 	m_CurFrmIdx = 0;

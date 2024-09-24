@@ -39,6 +39,7 @@ public:
     int GetCurIdx() { return m_CurFrmIdx; }
     vector<Ptr<CFlipBook>> GetFlipBooks() { return m_vecFlipBook; }
     void SetFlipBook(vector<Ptr<CFlipBook>> _vFlipBook) { m_vecFlipBook = _vFlipBook; }
+    int GetCurFlipBookIdx();
 
     void Reset();
     void Binding();
