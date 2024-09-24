@@ -16,6 +16,8 @@ CJellyPushScript::CJellyPushScript()
 	, m_SaveSpawnTime(TIME)
 	, m_Shaking(false)
 	, m_SaveShakingTime(0)
+	, m_Split(false)
+	, m_SplitTime(0.f)
 {
 	AddScriptParam(SCRIPT_PARAM::INT, "JellyPushType", &m_Type);
 	AddScriptParam(SCRIPT_PARAM::INT, "Speed", &m_Speed);
@@ -23,7 +25,7 @@ CJellyPushScript::CJellyPushScript()
 
 CJellyPushScript::CJellyPushScript(const CJellyPushScript& _Origin)
 	: CScript(_Origin)
-	, m_Type(JellyPushType::NONE)
+	, m_Type(_Origin.m_Type)
 	, m_OtherObjType(JellyPushType::NONE)
 	, m_IsOverlap(false)
 	, m_Destination(nullptr)
@@ -31,6 +33,8 @@ CJellyPushScript::CJellyPushScript(const CJellyPushScript& _Origin)
 	, m_SaveSpawnTime(TIME)
 	, m_Shaking(false)
 	, m_SaveShakingTime(0)
+	, m_Split(false)
+	, m_SplitTime(0.f)
 {
 }
 
@@ -47,6 +51,19 @@ void CJellyPushScript::Tick()
 	if (m_Shaking)
 	{
 		Shaking();
+	}
+
+	if (m_Split)
+	{
+		// 일정 시간 동안 합쳐지지 않게 한다.
+		m_SplitTime += DT;
+		m_IsOverlap = true;
+		if (m_SplitTime >= 0.5f)
+		{
+			m_Split = false;
+			m_IsOverlap = false;
+			m_SplitTime = 0.f;
+		}
 	}
 
 	DestinationMove();
@@ -131,6 +148,19 @@ void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 		m_Speed = 3000.f;
 		SetDestinationMove(_OtherObject, false);
 	}
+}
+
+void CJellyPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
+{
+	// 부모가 있으면 return
+	if (GetOwner()->GetParent() != nullptr)
+	{
+		return;
+	}
+	if (_OtherObject->GetParent() != nullptr)
+	{
+		return;
+	}
 
 	// 미니 젤리 일 경우
 	// 같은 색이면 같이 밀려짐
@@ -172,20 +202,16 @@ void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 				m_IsOverlap = true;
 				m_OtherObjType = jellyPushScript->GetJellyPushType();
 			}
-				break;
+			break;
 			default:
 				break;
 			}
 		}
 	}
-		break;
+	break;
 	default:
 		break;
 	}
-}
-
-void CJellyPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
-{
 }
 
 void CJellyPushScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
@@ -329,6 +355,10 @@ CGameObject* CJellyPushScript::CreateMiniJellyPush(JellyPushType _Type)
 	CScript* script = jelly->GetScript("CJellyPushScript");
 	CJellyPushScript* jellyScript = dynamic_cast<CJellyPushScript*>(script);
 
+	// 분열 알림
+	jellyScript->SetSplit(true);
+
+	// 색에 따라 다른 스프라이트
 	Ptr<CSprite> pSprite;
 	switch (_Type)
 	{

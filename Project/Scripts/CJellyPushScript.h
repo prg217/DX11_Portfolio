@@ -31,6 +31,9 @@ private:
     bool m_Shaking;
     float m_SaveShakingTime;
 
+    bool m_Split;
+    float m_SplitTime; // 큰 색 젤리에서 분열 된지 얼마나 지났는지
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -57,6 +60,7 @@ public:
     CGameObject* Speparation(); // 큰 색 젤리(JellyPush) 분리
 
     void SetType(JellyPushType _Type) { m_Type = _Type; }
+    void SetSplit(bool _Split) { m_Split = _Split; }
 
 public:
     CLONE(CJellyPushScript);
