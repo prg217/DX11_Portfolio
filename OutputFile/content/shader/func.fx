@@ -52,12 +52,16 @@ void CalculateLight2D(int _LightIdx, float3 _WorldPos, inout tLight _Light)
         // 거리값을 각도로 치환해서 거리에 따른 빛의 세기를 코사인 그래프 형태로 사용한다.
         float fPow = saturate(cos((fDist / Info.Radius) * (PI / 2.f)));
 
-        if ((Info.Angle / 2.f) > dot(normalize(Info.WorldDir.xy), normalize(Info.WorldPos.xy - _WorldPos.xy)))
-        {
-            fPow = 0.f;
-        }
+        // 스포트라이트 각도에 따른 빛 감쇠
+        float fAngleCos = dot(normalize(Info.WorldDir.xy), normalize(Info.WorldPos.xy - _WorldPos.xy));
 
-        // 최종 색상 계산 = 빛의 색 * 거리에따른 세기
+        // 스포트라이트의 각도 범위에 맞는 빛 감쇠 적용 (cos 그래프)
+        float fAnglePow = saturate((fAngleCos - cos(Info.Angle / 2.f)) / (1.0 - cos(Info.Angle / 2.f)));
+
+        // 거리와 각도에 따른 빛의 세기 결합
+        fPow *= fAnglePow;
+
+        // 최종 색상 계산 = 빛의 색 * 거리에따른 세기 * 각도에 따른 세기
         _Light.Color.rgb += Info.light.Color.rgb * fPow;
         _Light.Ambient.rgb += Info.light.Ambient.rgb;
     }    

@@ -1,4 +1,5 @@
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CAniFinishDestroyScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CAniFinishDestroyScript.obj
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBossInScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CBossInScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CBugBossScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugNPCScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CBugNPCScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugRollingScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CBugRollingScript.obj
@@ -6,6 +7,7 @@ C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CCactusNeedleScript.cpp;C
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CCameraMoveScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CCameraMoveScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CCameraPlayerTrackingScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CCameraPlayerTrackingScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CCountDownDeleteScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CCountDownDeleteScript.obj
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CDoorOpenScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CDoorOpenScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CFlowerLightAreaScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CFlowerLightAreaScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CFlowerLightScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CFlowerLightScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CGlowingPlantsScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CGlowingPlantsScript.obj
@@ -18,6 +20,7 @@ C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CJellyPushFrameScript.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CJellyPushScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CJellyPushScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CLevelChangeScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CLevelChangeScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CLiftScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CLiftScript.obj
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CLightBallScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CLightBallScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CMissileScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CMissileScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CMonsterScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CMonsterScript.obj
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CNPCScript.cpp;C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\x64\Debug\CNPCScript.obj

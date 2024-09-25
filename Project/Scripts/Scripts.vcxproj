@@ -167,6 +167,7 @@ call CodeGen.exe</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAniFinishDestroyScript.h" />
+    <ClInclude Include="CBossInScript.h" />
     <ClInclude Include="CBugBossScript.h" />
     <ClInclude Include="CBugNPCScript.h" />
     <ClInclude Include="CBugRollingScript.h" />
@@ -174,6 +175,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCameraPlayerTrackingScript.h" />
     <ClInclude Include="CCountDownDeleteScript.h" />
+    <ClInclude Include="CDoorOpenScript.h" />
     <ClInclude Include="CFlowerLightAreaScript.h" />
     <ClInclude Include="CFlowerLightScript.h" />
     <ClInclude Include="CGlowingPlantsScript.h" />
@@ -186,6 +188,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CJellyPushScript.h" />
     <ClInclude Include="CLevelChangeScript.h" />
     <ClInclude Include="CLiftScript.h" />
+    <ClInclude Include="CLightBallScript.h" />
     <ClInclude Include="CMissileScript.h" />
     <ClInclude Include="CMonsterScript.h" />
     <ClInclude Include="CNPCScript.h" />
@@ -207,6 +210,7 @@ call CodeGen.exe</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAniFinishDestroyScript.cpp" />
+    <ClCompile Include="CBossInScript.cpp" />
     <ClCompile Include="CBugBossScript.cpp" />
     <ClCompile Include="CBugNPCScript.cpp" />
     <ClCompile Include="CBugRollingScript.cpp" />
@@ -214,6 +218,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCameraPlayerTrackingScript.cpp" />
     <ClCompile Include="CCountDownDeleteScript.cpp" />
+    <ClCompile Include="CDoorOpenScript.cpp" />
     <ClCompile Include="CFlowerLightAreaScript.cpp" />
     <ClCompile Include="CFlowerLightScript.cpp" />
     <ClCompile Include="CGlowingPlantsScript.cpp" />
@@ -226,6 +231,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CJellyPushScript.cpp" />
     <ClCompile Include="CLevelChangeScript.cpp" />
     <ClCompile Include="CLiftScript.cpp" />
+    <ClCompile Include="CLightBallScript.cpp" />
     <ClCompile Include="CMissileScript.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
     <ClCompile Include="CNPCScript.cpp" />

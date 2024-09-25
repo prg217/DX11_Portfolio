@@ -1063,9 +1063,7 @@ void CPlayerScript::DanceEffectDelete()
 
 void CPlayerScript::DanceHeal()
 {
-	m_DanceHealTime += DT;
-
-	if (m_DanceHealTime >= 1.5f)
+	if (TIME - m_DanceHealTime >= 1.5f || m_DanceHealTime == 0.f)
 	{
 		if (m_HPScript != nullptr)
 		{
@@ -1079,6 +1077,8 @@ void CPlayerScript::DanceHeal()
 
 			m_DanceHealTime = 0.f;
 		}
+
+		m_DanceHealTime = TIME;
 	}
 }
 

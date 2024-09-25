@@ -49,7 +49,7 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
 
     void SetOutline(bool _Outline) { m_Outline = _Outline; }
-    void AddColor(bool _AddColor, Vec3 Color);
+    void AddColor(bool _AddColor, Vec3 Color = Vec3(0, 0, 0));
     void AddAlpha(float _Alpha) { m_Alpha = _Alpha; }
     void SetUseLight(bool _UseLight) { m_UseLight = _UseLight; }
 

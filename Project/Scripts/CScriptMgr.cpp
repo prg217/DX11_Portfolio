@@ -2,6 +2,7 @@
 #include "CScriptMgr.h"
 
 #include "CAniFinishDestroyScript.h"
+#include "CBossInScript.h"
 #include "CBugBossScript.h"
 #include "CBugNPCScript.h"
 #include "CBugRollingScript.h"
@@ -9,6 +10,7 @@
 #include "CCameraMoveScript.h"
 #include "CCameraPlayerTrackingScript.h"
 #include "CCountDownDeleteScript.h"
+#include "CDoorOpenScript.h"
 #include "CFlowerLightAreaScript.h"
 #include "CFlowerLightScript.h"
 #include "CGlowingPlantsScript.h"
@@ -21,6 +23,7 @@
 #include "CJellyPushScript.h"
 #include "CLevelChangeScript.h"
 #include "CLiftScript.h"
+#include "CLightBallScript.h"
 #include "CMissileScript.h"
 #include "CMonsterScript.h"
 #include "CNPCScript.h"
@@ -40,6 +43,7 @@
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CAniFinishDestroyScript");
+	_vec.push_back(L"CBossInScript");
 	_vec.push_back(L"CBugBossScript");
 	_vec.push_back(L"CBugNPCScript");
 	_vec.push_back(L"CBugRollingScript");
@@ -47,6 +51,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CCameraPlayerTrackingScript");
 	_vec.push_back(L"CCountDownDeleteScript");
+	_vec.push_back(L"CDoorOpenScript");
 	_vec.push_back(L"CFlowerLightAreaScript");
 	_vec.push_back(L"CFlowerLightScript");
 	_vec.push_back(L"CGlowingPlantsScript");
@@ -59,6 +64,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CJellyPushScript");
 	_vec.push_back(L"CLevelChangeScript");
 	_vec.push_back(L"CLiftScript");
+	_vec.push_back(L"CLightBallScript");
 	_vec.push_back(L"CMissileScript");
 	_vec.push_back(L"CMonsterScript");
 	_vec.push_back(L"CNPCScript");
@@ -80,6 +86,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CAniFinishDestroyScript" == _strScriptName)
 		return new CAniFinishDestroyScript;
+	if (L"CBossInScript" == _strScriptName)
+		return new CBossInScript;
 	if (L"CBugBossScript" == _strScriptName)
 		return new CBugBossScript;
 	if (L"CBugNPCScript" == _strScriptName)
@@ -94,6 +102,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCameraPlayerTrackingScript;
 	if (L"CCountDownDeleteScript" == _strScriptName)
 		return new CCountDownDeleteScript;
+	if (L"CDoorOpenScript" == _strScriptName)
+		return new CDoorOpenScript;
 	if (L"CFlowerLightAreaScript" == _strScriptName)
 		return new CFlowerLightAreaScript;
 	if (L"CFlowerLightScript" == _strScriptName)
@@ -118,6 +128,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CLevelChangeScript;
 	if (L"CLiftScript" == _strScriptName)
 		return new CLiftScript;
+	if (L"CLightBallScript" == _strScriptName)
+		return new CLightBallScript;
 	if (L"CMissileScript" == _strScriptName)
 		return new CMissileScript;
 	if (L"CMonsterScript" == _strScriptName)
@@ -158,6 +170,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::ANIFINISHDESTROYSCRIPT:
 		return new CAniFinishDestroyScript;
 		break;
+	case (UINT)SCRIPT_TYPE::BOSSINSCRIPT:
+		return new CBossInScript;
+		break;
 	case (UINT)SCRIPT_TYPE::BUGBOSSSCRIPT:
 		return new CBugBossScript;
 		break;
@@ -178,6 +193,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:
 		return new CCountDownDeleteScript;
+		break;
+	case (UINT)SCRIPT_TYPE::DOOROPENSCRIPT:
+		return new CDoorOpenScript;
 		break;
 	case (UINT)SCRIPT_TYPE::FLOWERLIGHTAREASCRIPT:
 		return new CFlowerLightAreaScript;
@@ -214,6 +232,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::LIFTSCRIPT:
 		return new CLiftScript;
+		break;
+	case (UINT)SCRIPT_TYPE::LIGHTBALLSCRIPT:
+		return new CLightBallScript;
 		break;
 	case (UINT)SCRIPT_TYPE::MISSILESCRIPT:
 		return new CMissileScript;
@@ -272,6 +293,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CAniFinishDestroyScript";
 		break;
 
+	case SCRIPT_TYPE::BOSSINSCRIPT:
+		return L"CBossInScript";
+		break;
+
 	case SCRIPT_TYPE::BUGBOSSSCRIPT:
 		return L"CBugBossScript";
 		break;
@@ -298,6 +323,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:
 		return L"CCountDownDeleteScript";
+		break;
+
+	case SCRIPT_TYPE::DOOROPENSCRIPT:
+		return L"CDoorOpenScript";
 		break;
 
 	case SCRIPT_TYPE::FLOWERLIGHTAREASCRIPT:
@@ -346,6 +375,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::LIFTSCRIPT:
 		return L"CLiftScript";
+		break;
+
+	case SCRIPT_TYPE::LIGHTBALLSCRIPT:
+		return L"CLightBallScript";
 		break;
 
 	case SCRIPT_TYPE::MISSILESCRIPT:

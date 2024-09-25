@@ -63,7 +63,7 @@ void CFlowerLightAreaScript::SetJellyPushType(JellyPushType _Type)
 		GetOwner()->SpriteComponent()->AddColor(true, Vec3(1.f, 0.95f, 0.f));
 		break;
 	case JellyPushType::BLUE:
-		GetOwner()->SpriteComponent()->AddColor(true, Vec3(0.62f, 0.28f, 0.7f));
+		GetOwner()->SpriteComponent()->AddColor(true, Vec3(0.1f, 0.27f, 0.7f));
 		break;
 	case JellyPushType::GREEN:
 		GetOwner()->SpriteComponent()->AddColor(true, Vec3(0.f, 0.65f, 0.16f));

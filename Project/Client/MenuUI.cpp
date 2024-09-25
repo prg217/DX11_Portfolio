@@ -175,6 +175,18 @@ void MenuUI::GameObject()
 					pObject->AddComponent(new CRigidBody);
 				}
 			}
+			if (ImGui::MenuItem("Light2D"))
+			{
+				// ÀÎ½ºÆåÅÍ
+				Inspector* pInspector = (Inspector*)CEditorMgr::GetInst()->FindEditorUI("Inspector");
+
+				// Å¸°Ù ¿ÀºêÁ§Æ® ¾Ë¾Æ³¿
+				CGameObject* pObject = pInspector->GetTargetObject();
+				if (nullptr != pObject)
+				{
+					pObject->AddComponent(new CLight2D);
+				}
+			}
 			ImGui::MenuItem("Camera");
 
 			ImGui::EndMenu();
