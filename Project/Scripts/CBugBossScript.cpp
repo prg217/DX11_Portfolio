@@ -22,7 +22,9 @@ CBugBossScript::CBugBossScript()
 	, m_PhaseIn(false)
 	, m_AppearedTime(0.f)
 	, m_Phase1Time(0.f)
+	, m_IsAttack(false)
 	, m_AttackCount(0)
+	, m_Phase1Attack0_Obj(nullptr)
 {
 }
 
@@ -39,7 +41,9 @@ CBugBossScript::CBugBossScript(const CBugBossScript& _Origin)
 	, m_PhaseIn(false)
 	, m_AppearedTime(0.f)
 	, m_Phase1Time(0.f)
+	, m_IsAttack(false)
 	, m_AttackCount(0)
+	, m_Phase1Attack0_Obj(nullptr)
 {
 }
 
@@ -85,6 +89,9 @@ void CBugBossScript::Begin()
 
 	m_LightObj->FlipBookComponent()->AddAlpha(0.3f);
 	m_LightObj->FlipBookComponent()->AddColor(true, Vec3(1.5f, 1.5f, 1.5f));
+
+	// 프리팹 등록
+	m_Phase1Attack0_Obj = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\LightBall.pref");
 }
 
 void CBugBossScript::Tick()
@@ -266,16 +273,14 @@ void CBugBossScript::Phase1()
 		m_LightObj->FlipBookComponent()->SetUseLight(false);
 
 		m_PhaseIn = false;
-		m_AttackCount++;
 	}
 
 	if (m_Phase1Time >= 5.f)
 	{
-		Vec3 color;
 		if (m_AttackCount >= 1)
 		{
 			// 볼 공격
-			color = Vec3(1.5f, 1.5f, 1.5f);
+			m_AttackColor = Vec3(1.5f, 1.5f, 1.5f);
 		}
 		else
 		{
@@ -290,15 +295,15 @@ void CBugBossScript::Phase1()
 			{
 			case 0:
 				// 파랑
-				color = Vec3(0.1f, 0.27f, 1.7f);
+				m_AttackColor = Vec3(0.1f, 0.27f, 1.7f);
 				break;
 			case 1:
 				// 초록
-				color = Vec3(0.f, 1.65f, 0.16f);
+				m_AttackColor = Vec3(0.f, 1.65f, 0.16f);
 				break;
 			case 2:
 				// 빨강
-				color = Vec3(3.f, 0.25f, 0.25f);
+				m_AttackColor = Vec3(3.f, 0.25f, 0.25f);
 				break;
 			default:
 				break;
@@ -306,8 +311,8 @@ void CBugBossScript::Phase1()
 		}
 
 		FlipPlay((int)BugBossAni::StandAttack, 8, false);
-		ChargeEffect(color);
-		m_LightObj->FlipBookComponent()->AddColor(true, color);
+		ChargeEffect(m_AttackColor);
+		m_LightObj->FlipBookComponent()->AddColor(true, m_AttackColor);
 		m_LightObj->FlipBookComponent()->SetUseLight(false);
 
 		m_Phase1Time = 0.f;
@@ -316,7 +321,7 @@ void CBugBossScript::Phase1()
 	if (GetOwner()->FlipBookComponent()->GetCurFlipBookIdx() == (int)BugBossAni::StandAttack)
 	{
 		// 공격 날리기
-		if (GetOwner()->FlipBookComponent()->GetCurIdx() == 8)
+		if (GetOwner()->FlipBookComponent()->GetCurIdx() == 8 && !m_IsAttack)
 		{
 			if (m_AttackCount >= 1)
 			{
@@ -330,6 +335,7 @@ void CBugBossScript::Phase1()
 				Phase1Attack0();
 				m_AttackCount++;
 			}
+			m_IsAttack = true;
 		}
 
 		// 공격 모션이 끝나면 idle상태로 되돌린다.
@@ -338,12 +344,28 @@ void CBugBossScript::Phase1()
 			FlipPlay((int)BugBossAni::Idle, 5, true);
 			m_LightObj->FlipBookComponent()->AddColor(true, Vec3(1.5f, 1.5f, 1.5f));
 			m_LightObj->FlipBookComponent()->SetUseLight(true);
+			m_IsAttack = false;
 		}
 	}
 }
 
 void CBugBossScript::Phase1Attack0()
 {
+	// LightBall 8개 소환
+	Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+	float angle = 215.f;
+	// 반지름 위치에 소환한다.
+	for (int i = 0; i < 8; i++)
+	{
+		float X = pos.x + (260.f * cos(XMConvertToRadians(angle)));
+		float Y = pos.y + (260.f * sin(XMConvertToRadians(angle)));
+		CGameObject* lightBall = Instantiate(m_Phase1Attack0_Obj, 10, Vec3(X, Y, 0.f), L"LightBall");
+		lightBall->FlipBookComponent()->AddColor(true, m_AttackColor);
+		float setAngle = ((angle / 180.f) * XM_PI) + ((270.f / 180.f) * XM_PI);
+		lightBall->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, setAngle));
+
+		angle += 20.f;
+	}
 }
 
 void CBugBossScript::Phase1Attack1()

@@ -8,6 +8,8 @@ private:
     float m_Time;
     float m_Speed;
 
+    bool m_Destroy;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;

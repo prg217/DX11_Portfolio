@@ -55,22 +55,24 @@ void CHPScript::LoadFromFile(FILE* _File)
 
 void CHPScript::Dead()
 {
-	if (m_HPBar != nullptr)
-	{
-		// HP바 삭제
-		DeleteObject(m_HPBar);
-	}
-
 	CMonsterScript* monsterScript = dynamic_cast<CMonsterScript*>(GetOwner()->GetScript("CMonsterScript"));
 	if (monsterScript != nullptr)
 	{
+		if (m_HPBar != nullptr)
+		{
+			// HP바 삭제
+			DeleteObject(m_HPBar);
+		}
+
 		monsterScript->Dead();
 		return;
 	}
 	CPlayerScript* playerScript = dynamic_cast<CPlayerScript*>(GetOwner()->GetScript("CPlayerScript"));
 	if (playerScript != nullptr)
 	{
-		playerScript->Dead();
+		// 죽음 구현을 안 했기 때문에 이지 모드와 같이 체력을 1에서 더 안 내려가게
+		m_HP = 1;
+		//playerScript->Dead();
 		return;
 	}
 }

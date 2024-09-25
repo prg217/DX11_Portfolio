@@ -13,6 +13,7 @@ CLightBallScript::CLightBallScript()
 	: CScript(UINT(SCRIPT_TYPE::LIGHTBALLSCRIPT))
 	, m_Time(0.f)
 	, m_Speed(200.f)
+	, m_Destroy(false)
 {
 }
 
@@ -20,6 +21,7 @@ CLightBallScript::CLightBallScript(const CLightBallScript& _Origin)
 	: CScript(_Origin)
 	, m_Time(0.f)
 	, m_Speed(200.f)
+	, m_Destroy(false)
 {
 }
 
@@ -48,9 +50,18 @@ void CLightBallScript::Tick()
 {
 	m_Time += DT;
 
+	if (m_Destroy)
+	{
+		if (GetOwner()->FlipBookComponent()->GetIsFinish())
+		{
+			DeleteObject(GetOwner());
+		}
+		return;
+	}
+
 	if (m_Time >= 4.5f)
 	{
-		//Destroy();
+		Destroy();
 	}
 
 	Vec3 up = GetOwner()->Transform()->GetRelativeDir(DIR::UP);
@@ -77,6 +88,14 @@ void CLightBallScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 	// 벽, 같은 공격에 부딪치면 튕겨짐
 	else if (_OtherObject->GetLayerIdx() == 28 || _OtherObject->GetLayerIdx() == 29 || _OtherObject->GetLayerIdx() == 6 || _OtherObject->GetLayerIdx() == 10)
 	{
+		// 반사
+		Vec3 up = GetOwner()->Transform()->GetRelativeDir(DIR::UP);
+		Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+
+		pos += m_Speed * 2.f * DT * -up;
+
+		GetOwner()->Transform()->SetRelativePos(pos);
+
 		// 회전
 		Vec3 rot = GetOwner()->Transform()->GetRelativeRotation();
 		rot.z += 30.f;
@@ -114,5 +133,10 @@ void CLightBallScript::Destroy()
 {
 	GetOwner()->FlipBookComponent()->Play(0, 10, false);
 
-	DeleteObject(GetOwner());
+	for (auto i : GetOwner()->GetChildren())
+	{
+		DeleteObject(i);
+	}
+
+	m_Destroy = true;
 }

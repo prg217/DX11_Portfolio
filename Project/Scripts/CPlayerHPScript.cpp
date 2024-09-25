@@ -39,7 +39,7 @@ void CPlayerHPScript::Render()
 	wstring hpText = std::to_wstring(m_PlayerHP->GetHP()) + L" / " + std::to_wstring(m_PlayerHP->GetMaxHP());
 
 	// 두껍게 만들기 위해 여러번 출력
-	float x = 180.f;
+	float x = 185.f;
 	float y = 34.0f;
 	// 그림자
 	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x - 3, y, 30, FONT_RGBA(115, 128, 118, 80));

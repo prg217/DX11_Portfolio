@@ -6,6 +6,7 @@
 #include "CKeyMgr.h"
 #include "CAssetMgr.h"
 #include "components.h"
+#include "CGameObject.h"
 
 enum class SCRIPT_PARAM
 {
@@ -48,7 +49,7 @@ protected:
         m_ScriptParam.push_back(tScriptParam{ _Type,_pData, _Desc, _Param0, _Param1});
     }
 
-    void Instantiate(Ptr<CPrefab> _Pref, int _LayerIdx, Vec3 _WorldPos, const wstring& _Name = L"");
+    CGameObject* Instantiate(Ptr<CPrefab> _Pref, int _LayerIdx, Vec3 _WorldPos, const wstring& _Name = L"");
 
 public:
     virtual void Begin() override {}

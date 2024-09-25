@@ -50,7 +50,13 @@ private:
     float m_AppearedTime;
     float m_Phase1Time;
 
+    bool m_IsAttack;
     int m_AttackCount;
+    Vec3 m_AttackColor;
+
+    Ptr<CPrefab> m_Phase1Attack0_Obj;
+
+    float ad;
 
 public:
     virtual void Begin() override;
