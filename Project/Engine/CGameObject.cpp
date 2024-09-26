@@ -325,4 +325,8 @@ void CGameObject::Render()
 	{
 		GetScript("CPlayerHPScript")->Render();
 	}
+	if (GetScript("CBossHPScript") != nullptr)
+	{
+		GetScript("CBossHPScript")->Render();
+	}
 }

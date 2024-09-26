@@ -3,6 +3,8 @@
 
 #include "CCameraPlayerTrackingScript.h"
 #include "CAniFinishDestroyScript.h"
+#include "CHPScript.h"
+#include "CBossHPScript.h"
 
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
@@ -25,6 +27,10 @@ CBugBossScript::CBugBossScript()
 	, m_IsAttack(false)
 	, m_AttackCount(0)
 	, m_Phase1Attack0_Obj(nullptr)
+	, m_HpScript(nullptr)
+	, m_Hit(false)
+	, m_SaveHitTime(0.f)
+	, m_InvincibilityTime(0.4f)
 {
 }
 
@@ -44,6 +50,10 @@ CBugBossScript::CBugBossScript(const CBugBossScript& _Origin)
 	, m_IsAttack(false)
 	, m_AttackCount(0)
 	, m_Phase1Attack0_Obj(nullptr)
+	, m_HpScript(nullptr)
+	, m_Hit(false)
+	, m_SaveHitTime(0.f)
+	, m_InvincibilityTime(_Origin.m_InvincibilityTime)
 {
 }
 
@@ -53,6 +63,20 @@ CBugBossScript::~CBugBossScript()
 
 void CBugBossScript::Begin()
 {
+	GetRenderComponent()->GetDynamicMaterial();
+
+	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	CGameObject* hpFrame = curLevel->FindObjectByName(L"BHP");
+	for (auto i : hpFrame->GetChildren())
+	{
+		if (wcscmp(i->GetName().c_str(), L"HPBar") == 0)
+		{
+			m_HPBar = i;
+		}
+	}
+
+	m_HpScript = dynamic_cast<CHPScript*>(GetOwner()->GetScript("CHPScript"));
+
 	for (auto i : GetOwner()->GetChildren())
 	{
 		if (wcscmp(i->GetName().c_str(), L"Light") == 0)
@@ -78,7 +102,6 @@ void CBugBossScript::Begin()
 		}
 	}
 
-	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 	m_Light1 = curLevel->FindObjectByName(L"light1");
 	m_Light2 = curLevel->FindObjectByName(L"light2");
 
@@ -92,6 +115,7 @@ void CBugBossScript::Begin()
 
 	// 프리팹 등록
 	m_Phase1Attack0_Obj = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\LightBall.pref");
+	m_Phase1Attack1_Obj = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\BugBall.pref");
 }
 
 void CBugBossScript::Tick()
@@ -107,6 +131,22 @@ void CBugBossScript::Tick()
 		m_Phase1Time += DT;
 		Phase1();
 		// 베리어는 볼 날릴 때만 알파값... 낮춰서...
+	}
+
+	// 맞았을 때
+	if (m_Hit)
+	{
+		m_SaveHitTime += DT;
+
+		if (m_SaveHitTime >= m_InvincibilityTime)
+		{
+			m_Hit = false;
+			m_SaveHitTime = 0.f;
+
+			GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+			GetOwner()->FlipBookComponent()->AddAlpha(1.f);
+			GetOwner()->FlipBookComponent()->AddColor(false);
+		}
 	}
 }
 
@@ -157,8 +197,13 @@ void CBugBossScript::Appeared()
 			m_Phase = BugBossPhase::Phase1;
 			m_PhaseIn = true;
 
-			// 카메라 포커스
+			// 보스 HP바 활성화
 			CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+			CGameObject* hpFrame = curLevel->FindObjectByName(L"BHP");
+			CBossHPScript* hpScript = dynamic_cast<CBossHPScript*>(hpFrame->GetScript("CBossHPScript"));
+			hpScript->Start();
+
+			// 카메라 포커스
 			CGameObject* mainCamera = curLevel->FindObjectByName(L"MainCamera");
 			CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
 			CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
@@ -353,12 +398,12 @@ void CBugBossScript::Phase1Attack0()
 {
 	// LightBall 8개 소환
 	Vec3 pos = GetOwner()->Transform()->GetRelativePos();
-	float angle = 215.f;
+	float angle = 195.f;
 	// 반지름 위치에 소환한다.
 	for (int i = 0; i < 8; i++)
 	{
-		float X = pos.x + (260.f * cos(XMConvertToRadians(angle)));
-		float Y = pos.y + (260.f * sin(XMConvertToRadians(angle)));
+		float X = pos.x + (240.f * cos(XMConvertToRadians(angle)));
+		float Y = pos.y + (240.f * sin(XMConvertToRadians(angle)));
 		CGameObject* lightBall = Instantiate(m_Phase1Attack0_Obj, 10, Vec3(X, Y, 0.f), L"LightBall");
 
 		lightBall->FlipBookComponent()->AddColor(true, m_AttackColor);
@@ -371,8 +416,21 @@ void CBugBossScript::Phase1Attack0()
 
 void CBugBossScript::Phase1Attack1()
 {
-	// 볼 소환, 볼 맞받아치면 보스 방향으로 가서 데미지
-	// 하얗게 빛나서 소환됐다가 맞받아칠 때 다시 빛남
+	// BugBall 8개 소환
+	Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+	float angle = 195.f;
+	// 반지름 위치에 소환한다.
+	for (int i = 0; i < 8; i++)
+	{
+		float X = pos.x + (240.f * cos(XMConvertToRadians(angle)));
+		float Y = pos.y + (240.f * sin(XMConvertToRadians(angle)));
+		CGameObject* lightBall = Instantiate(m_Phase1Attack1_Obj, 10, Vec3(X, Y, 0.f), L"BugBall");
+
+		float setAngle = ((angle / 180.f) * XM_PI) + ((270.f / 180.f) * XM_PI);
+		lightBall->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, setAngle));
+
+		angle += 20.f;
+	}
 }
 
 void CBugBossScript::ChargeEffect(Vec3 _Color)
@@ -420,6 +478,10 @@ void CBugBossScript::ChargeEffect(Vec3 _Color)
 	CreateObject(charge, 0);
 }
 
+void CBugBossScript::HitEffect()
+{
+}
+
 void CBugBossScript::Active()
 {
 	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -435,4 +497,33 @@ void CBugBossScript::Active()
 	CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
 	CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
 	cameraScript->Focus(GetOwner());
+}
+
+void CBugBossScript::Hit()
+{
+	if (m_Hit)
+	{
+		return;
+	}
+
+	// 피격 이펙트
+	HitEffect();
+
+	m_Hit = true;
+
+	// 빨갛게 변함+무적 시간 동안 반투명
+	GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl"));
+	GetOwner()->FlipBookComponent()->AddAlpha(0.3f);
+	GetOwner()->FlipBookComponent()->AddColor(true, Vec3(1.f, 0.3f, 0.2f));
+
+	// 데미지 주기
+	if (m_HpScript != nullptr)
+	{
+		m_HpScript->Hit(1, m_HPBar);
+	}
+}
+
+void CBugBossScript::Dead()
+{
+	// 죽음
 }

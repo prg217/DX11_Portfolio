@@ -5,9 +5,9 @@
 #include <Engine/CLevel.h>
 #include <Engine/CLayer.h>
 
-#include <random>
-
 #include "CPlayerScript.h"
+
+#include <random>
 
 CLightBallScript::CLightBallScript()
 	: CScript(UINT(SCRIPT_TYPE::LIGHTBALLSCRIPT))
@@ -39,13 +39,6 @@ void CLightBallScript::Begin()
 	CLayer* pLayer = pCurLevel->GetLayer(LayerIdx);
 
 	pLayer->LayerChange(GetOwner(), 10);
-
-	// 속도 랜덤하게 주기
-	static std::mt19937 engine(static_cast<unsigned int>(std::time(nullptr)));
-	std::uniform_int_distribution<int> dist(100, 400);
-	int random = dist(engine);
-
-	m_Speed = (float)random;
 
 	// 파티클 소환
 	m_Particle = new CGameObject;
@@ -120,17 +113,24 @@ void CLightBallScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 		Vec3 up = GetOwner()->Transform()->GetRelativeDir(DIR::UP);
 		Vec3 pos = GetOwner()->Transform()->GetRelativePos();
 
-		pos += m_Speed * 2.f * DT * -up;
+		pos += m_Speed * 5.f * DT * -up;
 
 		GetOwner()->Transform()->SetRelativePos(pos);
 
 		// 회전
+		std::random_device rd;  // 시드로 사용할 랜덤 장치
+		std::mt19937 gen(rd()); // 난수 생성 엔진
+		std::uniform_real_distribution<float> dis(60.f, 150.f);
+
 		Vec3 rot = GetOwner()->Transform()->GetRelativeRotation();
-		rot.z += 30.f;
+		rot.z += ((dis(gen) / 180.f) * XM_PI);
 		GetOwner()->Transform()->SetRelativeRotation(rot);
-		Vec3 rot2 = GetOwner()->Transform()->GetRelativeRotation();
-		rot2.z += 30.f;
-		m_Particle->Transform()->SetRelativeRotation(rot2);
+		if (m_Particle != nullptr)
+		{
+			Vec3 rot2 = GetOwner()->Transform()->GetRelativeRotation();
+			rot2.z += ((dis(gen) / 180.f) * XM_PI);
+			m_Particle->Transform()->SetRelativeRotation(rot2);
+		}
 	}
 }
 

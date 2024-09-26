@@ -168,6 +168,12 @@
     <ClInclude Include="CLightBallScript.h">
       <Filter>Scripts\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="CBugBallScript.h">
+      <Filter>Scripts\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossHPScript.h">
+      <Filter>Scripts\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -291,6 +297,12 @@
       <Filter>Scripts\Obstacle</Filter>
     </ClCompile>
     <ClCompile Include="CLightBallScript.cpp">
+      <Filter>Scripts\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CBugBallScript.cpp">
+      <Filter>Scripts\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossHPScript.cpp">
       <Filter>Scripts\Boss</Filter>
     </ClCompile>
   </ItemGroup>

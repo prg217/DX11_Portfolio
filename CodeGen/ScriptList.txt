@@ -1,5 +1,7 @@
 CAniFinishDestroyScript
+CBossHPScript
 CBossInScript
+CBugBallScript
 CBugBossScript
 CBugNPCScript
 CBugRollingScript

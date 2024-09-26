@@ -167,7 +167,9 @@ call CodeGen.exe</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAniFinishDestroyScript.h" />
+    <ClInclude Include="CBossHPScript.h" />
     <ClInclude Include="CBossInScript.h" />
+    <ClInclude Include="CBugBallScript.h" />
     <ClInclude Include="CBugBossScript.h" />
     <ClInclude Include="CBugNPCScript.h" />
     <ClInclude Include="CBugRollingScript.h" />
@@ -210,7 +212,9 @@ call CodeGen.exe</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAniFinishDestroyScript.cpp" />
+    <ClCompile Include="CBossHPScript.cpp" />
     <ClCompile Include="CBossInScript.cpp" />
+    <ClCompile Include="CBugBallScript.cpp" />
     <ClCompile Include="CBugBossScript.cpp" />
     <ClCompile Include="CBugNPCScript.cpp" />
     <ClCompile Include="CBugRollingScript.cpp" />

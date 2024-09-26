@@ -2,7 +2,9 @@
 #include "CScriptMgr.h"
 
 #include "CAniFinishDestroyScript.h"
+#include "CBossHPScript.h"
 #include "CBossInScript.h"
+#include "CBugBallScript.h"
 #include "CBugBossScript.h"
 #include "CBugNPCScript.h"
 #include "CBugRollingScript.h"
@@ -43,7 +45,9 @@
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CAniFinishDestroyScript");
+	_vec.push_back(L"CBossHPScript");
 	_vec.push_back(L"CBossInScript");
+	_vec.push_back(L"CBugBallScript");
 	_vec.push_back(L"CBugBossScript");
 	_vec.push_back(L"CBugNPCScript");
 	_vec.push_back(L"CBugRollingScript");
@@ -86,8 +90,12 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CAniFinishDestroyScript" == _strScriptName)
 		return new CAniFinishDestroyScript;
+	if (L"CBossHPScript" == _strScriptName)
+		return new CBossHPScript;
 	if (L"CBossInScript" == _strScriptName)
 		return new CBossInScript;
+	if (L"CBugBallScript" == _strScriptName)
+		return new CBugBallScript;
 	if (L"CBugBossScript" == _strScriptName)
 		return new CBugBossScript;
 	if (L"CBugNPCScript" == _strScriptName)
@@ -170,8 +178,14 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::ANIFINISHDESTROYSCRIPT:
 		return new CAniFinishDestroyScript;
 		break;
+	case (UINT)SCRIPT_TYPE::BOSSHPSCRIPT:
+		return new CBossHPScript;
+		break;
 	case (UINT)SCRIPT_TYPE::BOSSINSCRIPT:
 		return new CBossInScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BUGBALLSCRIPT:
+		return new CBugBallScript;
 		break;
 	case (UINT)SCRIPT_TYPE::BUGBOSSSCRIPT:
 		return new CBugBossScript;
@@ -293,8 +307,16 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CAniFinishDestroyScript";
 		break;
 
+	case SCRIPT_TYPE::BOSSHPSCRIPT:
+		return L"CBossHPScript";
+		break;
+
 	case SCRIPT_TYPE::BOSSINSCRIPT:
 		return L"CBossInScript";
+		break;
+
+	case SCRIPT_TYPE::BUGBALLSCRIPT:
+		return L"CBugBallScript";
 		break;
 
 	case SCRIPT_TYPE::BUGBOSSSCRIPT:

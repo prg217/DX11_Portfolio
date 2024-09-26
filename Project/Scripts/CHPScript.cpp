@@ -3,6 +3,7 @@
 
 #include "CPlayerScript.h"
 #include "CMonsterScript.h"
+#include "CBugBossScript.h"
 
 #include <Engine/CFontMgr.h>
 
@@ -73,6 +74,18 @@ void CHPScript::Dead()
 		// 죽음 구현을 안 했기 때문에 이지 모드와 같이 체력을 1에서 더 안 내려가게
 		m_HP = 1;
 		//playerScript->Dead();
+		return;
+	}
+	CBugBossScript* bpssScript = dynamic_cast<CBugBossScript*>(GetOwner()->GetScript("CBugBossScript"));
+	if (bpssScript != nullptr)
+	{
+		if (m_HPBar != nullptr)
+		{
+			// HP바 삭제
+			DeleteObject(m_HPBar);
+		}
+
+		bpssScript->Dead();
 		return;
 	}
 }

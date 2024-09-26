@@ -1,5 +1,7 @@
 ﻿  .\Project\Scripts\CAniFinishDestroyScript.h
+  .\Project\Scripts\CBossHPScript.h
   .\Project\Scripts\CBossInScript.h
+  .\Project\Scripts\CBugBallScript.h
   .\Project\Scripts\CBugBossScript.h
   .\Project\Scripts\CBugNPCScript.h
   .\Project\Scripts\CBugRollingScript.h
@@ -37,16 +39,20 @@
   .\Project\Scripts\CSwingObjScript.h
   .\Project\Scripts\CTextBoxScript.h
   .\Project\Scripts\CUIScript.h
-  39개 파일이 복사되었습니다.
+  41개 파일이 복사되었습니다.
   pch.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\External\Include\Engine\define.h(25,9): warning C4005: 'DELETE': 매크로 재정의
   CAniFinishDestroyScript.cpp
+  CBossHPScript.cpp
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBossHPScript.cpp(47,57): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBossHPScript.cpp(47,52): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   CBossInScript.cpp
+  CBugBallScript.cpp
   CBugBossScript.cpp
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp(135,53): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp(136,53): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp(137,53): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp(141,77): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp(175,53): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp(176,53): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp(177,53): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp(181,77): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   CBugNPCScript.cpp
   CBugRollingScript.cpp
   CCactusNeedleScript.cpp
@@ -62,10 +68,10 @@ C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp(141,77
   CInteractionScript.cpp
   CJellyBombDetectScript.cpp
   CJellyBombScript.cpp
-  CJellyPushFrameScript.cpp
-  CJellyPushScript.cpp
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
+  CJellyPushFrameScript.cpp
+  CJellyPushScript.cpp
   CLevelChangeScript.cpp
   CLiftScript.cpp
   CLightBallScript.cpp
@@ -86,6 +92,8 @@ C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CBugBossScript.cpp(141,77
   CTextBoxScript.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CTextBoxScript.cpp(145,43): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Scripts\CTextBoxScript.cpp(146,18): warning C4244: '초기화 중': '__int64'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
   CUIScript.cpp
   Scripts.cpp
   코드를 생성하고 있습니다...

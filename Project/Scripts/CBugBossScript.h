@@ -26,6 +26,8 @@ enum class BugBossPhase
     Phase3, // 어두워짐, 2페와 같음 / 12번 타격 시 죽음
 };
 
+class CHPScript;
+
 class CBugBossScript :
     public CScript
 {
@@ -55,6 +57,13 @@ private:
     Vec3 m_AttackColor;
 
     Ptr<CPrefab> m_Phase1Attack0_Obj;
+    Ptr<CPrefab> m_Phase1Attack1_Obj;
+
+    CGameObject* m_HPBar;
+    CHPScript* m_HpScript;
+    bool m_Hit;
+    float m_SaveHitTime;
+    float m_InvincibilityTime; // 무적 시간
 
 public:
     virtual void Begin() override;
@@ -78,8 +87,13 @@ private:
 
     void ChargeEffect(Vec3 _Color);
 
+    void HitEffect();
+
 public:
     void Active(); // 맵의 특정 콜라이더에 진입하면 시작
+    
+    void Hit();
+    void Dead();
 
 public:
     CLONE(CBugBossScript);

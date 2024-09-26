@@ -114,7 +114,7 @@ void CTestLevel::CreateTestLevel()
 	//pLoadedLevel->AddObject(0, pMonster);
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"LightBall");
+	//pObj->SetName(L"BugBall");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
@@ -128,11 +128,11 @@ void CTestLevel::CreateTestLevel()
 	//pObj->MeshRender()->SetMaterial(pAlphaBlendMtrl);
 	//
 	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	//pObj->Collider2D()->SetScale(Vec3(0.25f, 0.15f, 1.f));
+	//pObj->Collider2D()->SetScale(Vec3(0.15f, 0.15f, 1.f));
 	//
-	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Boss\\Ball\\lightBall_destroy.flip");
+	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Boss\\Ball\\ball.flip");
 	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
-	//pObj->FlipBookComponent()->Play(0, 0, false);
+	//pObj->FlipBookComponent()->Play(0, 8, true);
 	//pObj->FlipBookComponent()->AddAlpha(0.5f);
 	//pObj->FlipBookComponent()->SetUseLight(false);
 
@@ -350,6 +350,7 @@ void CTestLevel::CreateTestLevel()
 	CCollisionMgr::GetInst()->CollisionCheck(3, 4); // 플레이어, 몬스터
 	CCollisionMgr::GetInst()->CollisionCheck(3, 6); // 플레이어, 상호작용
 	CCollisionMgr::GetInst()->CollisionCheck(3, 8); // 플레이어, 감지
+	CCollisionMgr::GetInst()->CollisionCheck(4, 4); // 몬스터, 몬스터
 	CCollisionMgr::GetInst()->CollisionCheck(4, 7); // 몬스터, 플레이어 채 휘두르기
 	CCollisionMgr::GetInst()->CollisionCheck(4, 8); // 몬스터, 감지
 	CCollisionMgr::GetInst()->CollisionCheck(5, 6); // 플레이어 상호작용 감지, 상호작용
