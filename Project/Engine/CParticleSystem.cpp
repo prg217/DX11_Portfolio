@@ -124,6 +124,7 @@ void CParticleSystem::FinalTick()
 
 	// ComputeShader
 	m_TickCS->SetParticleWorldPos(Transform()->GetWorldPos());	
+	m_TickCS->SetParticleRelativeRotation(GetOwner()->Transform()->GetRelativeRotation());
 	m_TickCS->SetParticleBuffer(m_ParticleBuffer);
 	m_TickCS->SetSpawnCount(m_SpawnCountBuffer);
 	m_TickCS->SetModuleBuffer(m_ModuleBuffer);

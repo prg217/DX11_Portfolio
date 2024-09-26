@@ -12,6 +12,7 @@ Texture2D                           NoiseTex            : register(t20);
 StructuredBuffer<tParticleModule>   Module              : register(t21);
 
 #define ParticleObjectPos   g_vec4_0.xyz
+#define ParticleObjectRot   g_vec4_1.xyz
 #define MAX_COUNT           g_int_0
 #define Particle            ParticleBuffer[_ID.x]
 
@@ -61,9 +62,25 @@ void CS_ParticleTick(int3 _ID : SV_DispatchThreadID)
                 // 0 : Box,  1 : Sphere
                 if (0 == SpawnShapeType)
                 {
+// 원하는 회전 각도 (라디안)
+                    float RotationZ = ParticleObjectRot.z;
+
+// 사인, 코사인 값 미리 계산
+                    float cosTheta = cos(RotationZ);
+                    float sinTheta = sin(RotationZ);
+
+// 기존 스폰 위치 계산
                     vSpawnPos.x = vRandom0.x * Module[0].SpawnShapeScale.x - (Module[0].SpawnShapeScale.x / 2.f);
                     vSpawnPos.y = vRandom0.y * Module[0].SpawnShapeScale.y - (Module[0].SpawnShapeScale.y / 2.f);
                     vSpawnPos.z = vRandom0.z * Module[0].SpawnShapeScale.z - (Module[0].SpawnShapeScale.z / 2.f);
+
+// z축 회전 변환 적용
+                    float rotatedX = vSpawnPos.x * cosTheta - vSpawnPos.y * sinTheta;
+                    float rotatedY = vSpawnPos.x * sinTheta + vSpawnPos.y * cosTheta;
+
+// 회전 적용된 위치
+                    vSpawnPos.x = rotatedX;
+                    vSpawnPos.y = rotatedY;
                 }
                 else if (1 == SpawnShapeType)
                 {
@@ -99,6 +116,7 @@ void CS_ParticleTick(int3 _ID : SV_DispatchThreadID)
                     
                 Particle.vLocalPos = vSpawnPos;
                 Particle.vWorldPos = Particle.vLocalPos + ParticleObjectPos.xyz;
+                Particle.vWorldRotation = ParticleObjectRot.xyz;
                 Particle.vWorldInitScale = (Module[0].vSpawnMaxScale - Module[0].vSpawnMinScale) * vRandom0.x + Module[0].vSpawnMinScale;
                                     
                 Particle.vColor = Module[0].vSpawnColor;
@@ -151,11 +169,13 @@ void CS_ParticleTick(int3 _ID : SV_DispatchThreadID)
             // Space 가 Local 이라면
             Particle.vLocalPos += Particle.vVelocity * g_EngineDT;
             Particle.vWorldPos = Particle.vLocalPos + ParticleObjectPos.xyz;
+            Particle.vWorldRotation = ParticleObjectRot.xyz;
         }
         else
         {
             Particle.vLocalPos += Particle.vVelocity * g_EngineDT;
             Particle.vWorldPos += Particle.vVelocity * g_EngineDT;
+            Particle.vWorldRotation = ParticleObjectRot.xyz;
         }
         
         // Scale 모듈에 따른 현재 크기 계산

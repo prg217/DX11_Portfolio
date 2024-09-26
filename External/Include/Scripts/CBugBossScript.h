@@ -56,8 +56,6 @@ private:
 
     Ptr<CPrefab> m_Phase1Attack0_Obj;
 
-    float ad;
-
 public:
     virtual void Begin() override;
     virtual void Tick() override;

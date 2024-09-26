@@ -360,6 +360,7 @@ void CBugBossScript::Phase1Attack0()
 		float X = pos.x + (260.f * cos(XMConvertToRadians(angle)));
 		float Y = pos.y + (260.f * sin(XMConvertToRadians(angle)));
 		CGameObject* lightBall = Instantiate(m_Phase1Attack0_Obj, 10, Vec3(X, Y, 0.f), L"LightBall");
+
 		lightBall->FlipBookComponent()->AddColor(true, m_AttackColor);
 		float setAngle = ((angle / 180.f) * XM_PI) + ((270.f / 180.f) * XM_PI);
 		lightBall->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, setAngle));

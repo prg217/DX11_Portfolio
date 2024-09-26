@@ -29,6 +29,7 @@ int CParticleTickCS::Binding()
 
 	m_Const.iArr[0] = m_ParticleBuffer->GetElementCount();
 	m_Const.v4Arr[0] = m_ParticleWorldPos;
+	m_Const.v4Arr[1] = m_ParticleRelativeRotation;
 
 	return S_OK;
 }

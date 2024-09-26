@@ -14,6 +14,7 @@ private:
 
     Ptr<CTexture>       m_NoiseTex;
     Vec3                m_ParticleWorldPos;
+    Vec3                m_ParticleRelativeRotation;
 
 public:
     void SetParticleBuffer(CStructuredBuffer* _Buffer) { m_ParticleBuffer = _Buffer; }
@@ -21,6 +22,7 @@ public:
     void SetModuleBuffer(CStructuredBuffer* _ModuleBuffer) { m_ModuleBuffer = _ModuleBuffer; }
 
     void SetParticleWorldPos(Vec3 _Pos) { m_ParticleWorldPos = _Pos; }
+    void SetParticleRelativeRotation(Vec3 _Rotation) { m_ParticleRelativeRotation = _Rotation; }
     void SetNoiseTexture(Ptr<CTexture> _Noise) { m_NoiseTex = _Noise; }
 
 public:
