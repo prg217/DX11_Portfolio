@@ -62,23 +62,23 @@ void CS_ParticleTick(int3 _ID : SV_DispatchThreadID)
                 // 0 : Box,  1 : Sphere
                 if (0 == SpawnShapeType)
                 {
-// 원하는 회전 각도 (라디안)
+                    // 회전 각도
                     float RotationZ = ParticleObjectRot.z;
 
-// 사인, 코사인 값 미리 계산
+                    // 사인, 코사인
                     float cosTheta = cos(RotationZ);
                     float sinTheta = sin(RotationZ);
 
-// 기존 스폰 위치 계산
+                    // 기존 스폰 위치
                     vSpawnPos.x = vRandom0.x * Module[0].SpawnShapeScale.x - (Module[0].SpawnShapeScale.x / 2.f);
                     vSpawnPos.y = vRandom0.y * Module[0].SpawnShapeScale.y - (Module[0].SpawnShapeScale.y / 2.f);
                     vSpawnPos.z = vRandom0.z * Module[0].SpawnShapeScale.z - (Module[0].SpawnShapeScale.z / 2.f);
 
-// z축 회전 변환 적용
+                    // z축 회전 변환 적용
                     float rotatedX = vSpawnPos.x * cosTheta - vSpawnPos.y * sinTheta;
                     float rotatedY = vSpawnPos.x * sinTheta + vSpawnPos.y * cosTheta;
 
-// 회전 적용된 위치
+                    // 회전 적용된 위치
                     vSpawnPos.x = rotatedX;
                     vSpawnPos.y = rotatedY;
                 }

@@ -371,6 +371,8 @@ void CBugBossScript::Phase1Attack0()
 
 void CBugBossScript::Phase1Attack1()
 {
+	// 볼 소환, 볼 맞받아치면 보스 방향으로 가서 데미지
+	// 하얗게 빛나서 소환됐다가 맞받아칠 때 다시 빛남
 }
 
 void CBugBossScript::ChargeEffect(Vec3 _Color)

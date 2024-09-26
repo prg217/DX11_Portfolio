@@ -14,6 +14,7 @@ CLightBallScript::CLightBallScript()
 	, m_Time(0.f)
 	, m_Speed(200.f)
 	, m_Destroy(false)
+	, m_Particle (nullptr)
 {
 }
 
@@ -22,6 +23,7 @@ CLightBallScript::CLightBallScript(const CLightBallScript& _Origin)
 	, m_Time(0.f)
 	, m_Speed(200.f)
 	, m_Destroy(false)
+	, m_Particle(nullptr)
 {
 }
 
@@ -44,6 +46,32 @@ void CLightBallScript::Begin()
 	int random = dist(engine);
 
 	m_Speed = (float)random;
+
+	// 파티클 소환
+	m_Particle = new CGameObject;
+	m_Particle->SetName(L"Particle");
+
+	m_Particle->AddComponent(new CTransform);
+	m_Particle->AddComponent(new CParticleSystem);
+
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"particle\\boss_lightBall.particle";
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	m_Particle->ParticleSystem()->LoadFromFile(File);
+	fclose(File);
+
+	// 파티클 회전 설정
+	Vec3 rot = GetOwner()->Transform()->GetRelativeRotation();
+	rot.z += ((90.f / 180.f) * XM_PI);
+	m_Particle->Transform()->SetRelativeRotation(rot);
+
+	m_Particle->Transform()->SetRelativePos(Vec3(0, -0.2f, 0));
+
+	CreateObject(m_Particle, 0);
+	AddChildObject(GetOwner(), m_Particle);
 }
 
 void CLightBallScript::Tick()
@@ -100,6 +128,9 @@ void CLightBallScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 		Vec3 rot = GetOwner()->Transform()->GetRelativeRotation();
 		rot.z += 30.f;
 		GetOwner()->Transform()->SetRelativeRotation(rot);
+		Vec3 rot2 = GetOwner()->Transform()->GetRelativeRotation();
+		rot2.z += 30.f;
+		m_Particle->Transform()->SetRelativeRotation(rot2);
 	}
 }
 

@@ -10,6 +10,8 @@ private:
 
     bool m_Destroy;
 
+    CGameObject* m_Particle;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
