@@ -551,6 +551,11 @@ void CBugRollingScript::MoveEndAni()
 
 void CBugRollingScript::StunEffect()
 {
+	if (GetOwner()->IsDead())
+	{
+		return;
+	}
+
 	m_StunObj = new CGameObject;
 	m_StunObj->AddComponent(new CTransform);
 	m_StunObj->AddComponent(new CMeshRender);

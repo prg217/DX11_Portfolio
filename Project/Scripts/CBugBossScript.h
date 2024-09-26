@@ -40,6 +40,7 @@ private:
     // 레벨 빛
     CGameObject* m_Light1;
     CGameObject* m_Light2;
+    CGameObject* m_Light3;
 
     // 두 눈 빛
     CGameObject* m_ELight1;
@@ -50,9 +51,9 @@ private:
     bool m_PhaseIn; // 페이즈 최초 진입
 
     float m_AppearedTime;
-    float m_Phase1Time;
+    float m_PhaseTime;
 
-    bool m_IsAttack;
+    bool m_IsAttack; // 공격 중
     int m_AttackCount;
     Vec3 m_AttackColor;
 
@@ -64,6 +65,8 @@ private:
     bool m_Hit;
     float m_SaveHitTime;
     float m_InvincibilityTime; // 무적 시간
+
+    vector<CGameObject*> m_LotusObjs;
 
 public:
     virtual void Begin() override;
@@ -81,9 +84,13 @@ private:
 
     void Appeared(); // 등장 연출
     void Phase1();
+    void Phase2();
+    void Phase2Production(); // 페이즈 2 연출
     
     void Phase1Attack0();
     void Phase1Attack1();
+
+    void Phase2Attack();
 
     void ChargeEffect(Vec3 _Color);
 
@@ -98,7 +105,6 @@ public:
 public:
     CLONE(CBugBossScript);
     CBugBossScript();
-    CBugBossScript(const CBugBossScript& _Origin);
     ~CBugBossScript();
 };
 

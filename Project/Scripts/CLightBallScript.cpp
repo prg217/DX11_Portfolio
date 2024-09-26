@@ -165,10 +165,5 @@ void CLightBallScript::Destroy()
 	GetOwner()->FlipBookComponent()->Play(0, 10, false);
 	GetOwner()->FlipBookComponent()->AddColor(false);
 
-	for (auto i : GetOwner()->GetChildren())
-	{
-		DeleteObject(i);
-	}
-
 	m_Destroy = true;
 }

@@ -18,12 +18,13 @@ CBugBossScript::CBugBossScript()
 	, m_WingObj(nullptr)
 	, m_Light1(nullptr)
 	, m_Light2(nullptr)
+	, m_Light3(nullptr)
 	, m_ELight1(nullptr)
 	, m_ELight2(nullptr)
 	, m_Phase(BugBossPhase::None)
 	, m_PhaseIn(false)
 	, m_AppearedTime(0.f)
-	, m_Phase1Time(0.f)
+	, m_PhaseTime(0.f)
 	, m_IsAttack(false)
 	, m_AttackCount(0)
 	, m_Phase1Attack0_Obj(nullptr)
@@ -31,29 +32,6 @@ CBugBossScript::CBugBossScript()
 	, m_Hit(false)
 	, m_SaveHitTime(0.f)
 	, m_InvincibilityTime(0.4f)
-{
-}
-
-CBugBossScript::CBugBossScript(const CBugBossScript& _Origin)
-	: CScript(_Origin)
-	, m_LightObj(nullptr)
-	, m_WhiteObj(nullptr)
-	, m_WingObj(nullptr)
-	, m_Light1(nullptr)
-	, m_Light2(nullptr)
-	, m_ELight1(nullptr)
-	, m_ELight2(nullptr)
-	, m_Phase(BugBossPhase::None)
-	, m_PhaseIn(false)
-	, m_AppearedTime(0.f)
-	, m_Phase1Time(0.f)
-	, m_IsAttack(false)
-	, m_AttackCount(0)
-	, m_Phase1Attack0_Obj(nullptr)
-	, m_HpScript(nullptr)
-	, m_Hit(false)
-	, m_SaveHitTime(0.f)
-	, m_InvincibilityTime(_Origin.m_InvincibilityTime)
 {
 }
 
@@ -104,6 +82,7 @@ void CBugBossScript::Begin()
 
 	m_Light1 = curLevel->FindObjectByName(L"light1");
 	m_Light2 = curLevel->FindObjectByName(L"light2");
+	m_Light3 = curLevel->FindObjectByName(L"light3");
 
 	FlipPlay((int)BugBossAni::Appeared, 0, false);
 
@@ -128,9 +107,37 @@ void CBugBossScript::Tick()
 
 	if (m_Phase == BugBossPhase::Phase1)
 	{
-		m_Phase1Time += DT;
+		m_PhaseTime += DT;
 		Phase1();
 		// 베리어는 볼 날릴 때만 알파값... 낮춰서...
+
+		// 2페이즈 전환
+		if (m_HpScript->GetHP() <= 23)
+		{
+			if (!m_IsAttack)
+			{
+				m_Phase = BugBossPhase::Phase2;
+				m_PhaseIn = true;
+				m_PhaseTime = 0.f;
+				m_AttackCount = 0;
+			}
+		}
+	}
+
+	if (m_Phase == BugBossPhase::Phase2)
+	{
+		m_PhaseTime += DT;
+		Phase2();
+
+		// 3페이즈 전환
+		if (m_HpScript->GetHP() <= 12)
+		{
+			if (!m_IsAttack)
+			{
+				m_Phase = BugBossPhase::Phase3;
+				m_PhaseIn = true;
+			}
+		}
 	}
 
 	// 맞았을 때
@@ -286,7 +293,7 @@ void CBugBossScript::Appeared()
 
 void CBugBossScript::Phase1()
 {
-	if (m_PhaseIn && m_Phase1Time >= 1.f)
+	if (m_PhaseIn && m_PhaseTime >= 1.f)
 	{
 		// 난수 생성 엔진 (시간에 기반한 시드값 사용)
 		static std::mt19937 engine(static_cast<unsigned int>(std::time(nullptr)));
@@ -320,7 +327,7 @@ void CBugBossScript::Phase1()
 		m_PhaseIn = false;
 	}
 
-	if (m_Phase1Time >= 5.f)
+	if (m_PhaseTime >= 5.f)
 	{
 		if (m_AttackCount >= 1)
 		{
@@ -360,7 +367,7 @@ void CBugBossScript::Phase1()
 		m_LightObj->FlipBookComponent()->AddColor(true, m_AttackColor);
 		m_LightObj->FlipBookComponent()->SetUseLight(false);
 
-		m_Phase1Time = 0.f;
+		m_PhaseTime = 0.f;
 	}
 
 	if (GetOwner()->FlipBookComponent()->GetCurFlipBookIdx() == (int)BugBossAni::StandAttack)
@@ -391,6 +398,101 @@ void CBugBossScript::Phase1()
 			m_LightObj->FlipBookComponent()->SetUseLight(true);
 			m_IsAttack = false;
 		}
+	}
+}
+
+void CBugBossScript::Phase2()
+{
+	if (m_PhaseIn)
+	{
+		Phase2Production();
+	}
+	else
+	{
+		Phase2Attack();
+	}
+}
+
+void CBugBossScript::Phase2Production()
+{
+	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	CGameObject* mainCamera = curLevel->FindObjectByName(L"MainCamera");
+
+	if (m_LotusObjs.size() == 0)
+	{
+		// 포커스를 다시 보스로
+		CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
+		CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
+		cameraScript->Focus(GetOwner());
+
+		// light3 켜기
+		m_Light3->Light2D()->SetLightColor(Vec3(140.f / 255.f, 145.f / 255.f, 200.f / 255.f));
+
+		// 날개펴기
+		FlipPlay((int)BugBossAni::Wing, 8, false);
+	}
+
+	// 날개 idle
+	if (GetOwner()->FlipBookComponent()->GetCurFlipBookIdx() == (int)BugBossAni::Wing)
+	{
+		if (GetOwner()->FlipBookComponent()->GetIsFinish())
+		{
+			FlipPlay((int)BugBossAni::WingIdle, 8, true);
+		}
+	}
+
+	if (m_PhaseTime < 0.2f)
+	{
+		return;
+	}
+
+	// 연꽃 생성 6개
+	if (m_PhaseTime >= 0.2f && m_LotusObjs.size() < 6)
+	{
+		// 45 90 135 225 270 315 각도에 소환한다.
+		Ptr<CPrefab> lotus = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\LotusFlower.pref");
+		// 반지름 위치에 소환한다.
+		Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+		float angles[6] = { 45.0f, 90.0f, 135.0f, 225.0f, 270.0f, 315.0f };
+		float angle = angles[m_LotusObjs.size()] + 90.f;
+		angle = fmod(angle, 360.0f);
+		float X = pos.x + (150.f * cos(XMConvertToRadians(angle)));
+		float Y = pos.y - (150.f * sin(XMConvertToRadians(angle)));
+		m_LotusObjs.push_back(Instantiate(lotus, 0, Vec3(X, Y, 0.f), L"Lotus"));
+		
+		m_PhaseTime = 0.f;
+		return;
+	}
+
+	// 다 생성 됐으면 줌아웃
+	mainCamera->Camera()->SetScale(1.2f);
+
+	// 연꽃을 외곽으로 보낸다.
+	if (m_PhaseTime <= 1.5f)
+	{
+		for (int i = 0; i < 6; i++)
+		{
+			Vec3 pos = m_LotusObjs[i]->Transform()->GetRelativePos();
+			float angles[6] = { 45.0f, 90.0f, 135.0f, 225.0f, 270.0f, 315.0f };
+			float angle = angles[i] + 90.f;
+			angle = fmod(angle, 360.0f);
+			float X = pos.x + (480.f * DT * cos(XMConvertToRadians(angle)));
+			float Y = pos.y - (480.f * DT * sin(XMConvertToRadians(angle)));
+			m_LotusObjs[i]->Transform()->SetRelativePos(Vec3(X, Y, 0.f));
+		}
+	}
+
+	// 연출 끄기
+	if (m_PhaseTime >= 3.f)
+	{
+		m_PhaseIn = false;
+		m_PhaseTime = 0.f;
+
+		// 포커스를 다시 플레이어로
+		CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
+		CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
+		CGameObject* player = curLevel->FindObjectByName(L"Player");
+		cameraScript->Focus(player);
 	}
 }
 
@@ -431,6 +533,20 @@ void CBugBossScript::Phase1Attack1()
 
 		angle += 20.f;
 	}
+}
+
+void CBugBossScript::Phase2Attack()
+{
+	// 2대 맞으면 죽는 색 벌레 소환
+	//Ptr<CPrefab> lotus = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\LotusFlower.pref");
+	//// 반지름 위치에 소환한다.
+	//Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+	//float angles[6] = { 45.0f, 90.0f, 135.0f, 225.0f, 270.0f, 315.0f };
+	//float angle = angles[m_LotusObjs.size()] + 90.f;
+	//angle = fmod(angle, 360.0f);
+	//float X = pos.x + (150.f * cos(XMConvertToRadians(angle)));
+	//float Y = pos.y - (150.f * sin(XMConvertToRadians(angle)));
+	//m_LotusObjs.push_back(Instantiate(lotus, 0, Vec3(X, Y, 0.f), L"Lotus"));
 }
 
 void CBugBossScript::ChargeEffect(Vec3 _Color)
