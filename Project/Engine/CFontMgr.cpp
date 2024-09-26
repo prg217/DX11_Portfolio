@@ -5,7 +5,6 @@
 
 CFontMgr::CFontMgr()
 	: m_FW1Factory(nullptr)
-	, m_FontWrapper(nullptr)
 {
 }
 
@@ -14,8 +13,10 @@ CFontMgr::~CFontMgr()
 	if (nullptr != m_FW1Factory)
 		m_FW1Factory->Release();
 
-	if (nullptr != m_FontWrapper)
-		m_FontWrapper->Release();
+	for (const auto& pair : m_FontWrappers)
+	{
+		pair.second->Release();
+	}
 }
 
 void CFontMgr::Init()
@@ -25,15 +26,19 @@ void CFontMgr::Init()
 		assert(nullptr);
 	}
 
-	if (FAILED(m_FW1Factory->CreateFontWrapper(DEVICE, L"카페24 써라운드 에어", &m_FontWrapper)))
+	if (FAILED(m_FW1Factory->CreateFontWrapper(DEVICE, L"카페24 써라운드 에어", &m_FontWrappers[L"카페24 써라운드 에어"])))
+	{
+		assert(nullptr);
+	}
+	if (FAILED(m_FW1Factory->CreateFontWrapper(DEVICE, L"카페24 써라운드", &m_FontWrappers[L"카페24 써라운드"])))
 	{
 		assert(nullptr);
 	}
 }
 
-void CFontMgr::DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color)
+void CFontMgr::DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color, wstring _FontName)
 {
-	m_FontWrapper->DrawString(
+	m_FontWrappers[_FontName]->DrawString(
 		CONTEXT,
 		_pStr,				// String
 		_fFontSize,			// Font size
@@ -44,9 +49,9 @@ void CFontMgr::DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float 
 	);
 }
 
-void CFontMgr::DrawCenterFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color)
+void CFontMgr::DrawCenterFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color, wstring _FontName)
 {
-	m_FontWrapper->DrawString(
+	m_FontWrappers[_FontName]->DrawString(
 		CONTEXT,
 		_pStr,				// String
 		_fFontSize,			// Font size

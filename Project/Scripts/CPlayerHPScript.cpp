@@ -37,21 +37,19 @@ void CPlayerHPScript::Render()
 	}
 
 	wstring hpText = std::to_wstring(m_PlayerHP->GetHP()) + L" / " + std::to_wstring(m_PlayerHP->GetMaxHP());
+	wstring fontName = L"카페24 써라운드";
 
 	// 두껍게 만들기 위해 여러번 출력
 	float x = 185.f;
 	float y = 34.0f;
 	// 그림자
-	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x - 3, y, 30, FONT_RGBA(115, 128, 118, 80));
-	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x + 3, y, 30, FONT_RGBA(115, 128, 118, 80));
-	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x, y - 3, 30, FONT_RGBA(115, 128, 118, 80));
-	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x, y + 3, 30, FONT_RGBA(115, 128, 118, 80));
+	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x - 3, y, 30, FONT_RGBA(115, 128, 118, 80), fontName);
+	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x + 3, y, 30, FONT_RGBA(115, 128, 118, 80), fontName);
+	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x, y - 3, 30, FONT_RGBA(115, 128, 118, 80), fontName);
+	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x, y + 3, 30, FONT_RGBA(115, 128, 118, 80), fontName);
 
 	// 글씨
-	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x - 1, y, 30, FONT_RGBA(255, 255, 255, 255));
-	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x + 1, y, 30, FONT_RGBA(255, 255, 255, 255));
-	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x, y - 1, 30, FONT_RGBA(255, 255, 255, 255));
-	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x, y + 1, 30, FONT_RGBA(255, 255, 255, 255));
+	CFontMgr::GetInst()->DrawCenterFont(hpText.c_str(), x, y, 30, FONT_RGBA(255, 255, 255, 255), fontName);
 }
 
 void CPlayerHPScript::SaveToFile(FILE* _File)
