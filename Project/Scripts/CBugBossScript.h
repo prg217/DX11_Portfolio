@@ -27,6 +27,7 @@ enum class BugBossPhase
 };
 
 class CHPScript;
+enum class ColorBugType;
 
 class CBugBossScript :
     public CScript
@@ -101,6 +102,8 @@ public:
     
     void Hit();
     void Dead();
+
+    void Phase2Down(ColorBugType _ColorType);
 
 public:
     CLONE(CBugBossScript);

@@ -11,6 +11,7 @@
 #include "CCactusNeedleScript.h"
 #include "CCameraMoveScript.h"
 #include "CCameraPlayerTrackingScript.h"
+#include "CColorBugScript.h"
 #include "CCountDownDeleteScript.h"
 #include "CDoorOpenScript.h"
 #include "CFlowerLightAreaScript.h"
@@ -54,6 +55,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCactusNeedleScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CCameraPlayerTrackingScript");
+	_vec.push_back(L"CColorBugScript");
 	_vec.push_back(L"CCountDownDeleteScript");
 	_vec.push_back(L"CDoorOpenScript");
 	_vec.push_back(L"CFlowerLightAreaScript");
@@ -108,6 +110,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CCameraPlayerTrackingScript" == _strScriptName)
 		return new CCameraPlayerTrackingScript;
+	if (L"CColorBugScript" == _strScriptName)
+		return new CColorBugScript;
 	if (L"CCountDownDeleteScript" == _strScriptName)
 		return new CCountDownDeleteScript;
 	if (L"CDoorOpenScript" == _strScriptName)
@@ -204,6 +208,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::CAMERAPLAYERTRACKINGSCRIPT:
 		return new CCameraPlayerTrackingScript;
+		break;
+	case (UINT)SCRIPT_TYPE::COLORBUGSCRIPT:
+		return new CColorBugScript;
 		break;
 	case (UINT)SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:
 		return new CCountDownDeleteScript;
@@ -341,6 +348,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::CAMERAPLAYERTRACKINGSCRIPT:
 		return L"CCameraPlayerTrackingScript";
+		break;
+
+	case SCRIPT_TYPE::COLORBUGSCRIPT:
+		return L"CColorBugScript";
 		break;
 
 	case SCRIPT_TYPE::COUNTDOWNDELETESCRIPT:

@@ -5,6 +5,7 @@ enum class MonsterType
 {
     SpitCactus,
     BugRolling,
+    ColorBug,
 };
 
 class CHPScript;

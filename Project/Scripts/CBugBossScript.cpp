@@ -6,6 +6,8 @@
 #include "CHPScript.h"
 #include "CBossHPScript.h"
 
+#include "CColorBugScript.h"
+
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
 
@@ -642,4 +644,9 @@ void CBugBossScript::Hit()
 void CBugBossScript::Dead()
 {
 	// 죽음
+}
+
+void CBugBossScript::Phase2Down(ColorBugType _ColorType)
+{
+	// 다음 공격을 다운으로 바꾼다.
 }

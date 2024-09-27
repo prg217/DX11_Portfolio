@@ -193,12 +193,14 @@ void CGameObject::DeregisterComponent(COMPONENT_TYPE _Type, CScript* _Script)
 		{
 			if (_Script == m_vecScript[i])
 			{
+				delete m_vecScript[i];
 				m_vecScript.erase(m_vecScript.begin() + i);
 			}
 		}
 	}
 	else if (GetComponent(_Type) != nullptr)
 	{
+		delete m_arrCom[(UINT)_Type];
 		m_arrCom[(UINT)_Type] = nullptr;
 	}
 }

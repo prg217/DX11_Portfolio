@@ -2,7 +2,6 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts_d.pch
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.pdb
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.idb
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\pch.obj
-c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cjellybombscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cjellybombdetectscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cinteractionscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\chpscript.obj
@@ -12,6 +11,7 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cflowerlightscr
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cflowerlightareascript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cdooropenscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccountdowndeletescript.obj
+c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccolorbugscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccameraplayertrackingscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccameramovescript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ccactusneedlescript.obj
@@ -22,7 +22,6 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cbugballscript.
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cbossinscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cbosshpscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\canifinishdestroyscript.obj
-c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ctextboxscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cswingobjscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cstonebreakablescript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cspitcactusscript.obj
@@ -42,8 +41,10 @@ c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cliftscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\clevelchangescript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cjellypushscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cjellypushframescript.obj
+c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cjellybombscript.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.obj
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\cuiscript.obj
+c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\ctextboxscript.obj
 c:\assortrock\portfolio\dx11_portfolio\external\library\scripts\scripts_d.lib
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.tlog\cl.command.1.tlog
 c:\assortrock\portfolio\dx11_portfolio\project\scripts\x64\debug\scripts.tlog\cl.items.tlog

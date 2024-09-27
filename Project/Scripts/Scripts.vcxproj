@@ -176,6 +176,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCactusNeedleScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCameraPlayerTrackingScript.h" />
+    <ClInclude Include="CColorBugScript.h" />
     <ClInclude Include="CCountDownDeleteScript.h" />
     <ClInclude Include="CDoorOpenScript.h" />
     <ClInclude Include="CFlowerLightAreaScript.h" />
@@ -221,6 +222,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCactusNeedleScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCameraPlayerTrackingScript.cpp" />
+    <ClCompile Include="CColorBugScript.cpp" />
     <ClCompile Include="CCountDownDeleteScript.cpp" />
     <ClCompile Include="CDoorOpenScript.cpp" />
     <ClCompile Include="CFlowerLightAreaScript.cpp" />

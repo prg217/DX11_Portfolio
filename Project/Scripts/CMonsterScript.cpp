@@ -8,6 +8,7 @@
 
 #include "CSpitCactusScript.h"
 #include "CBugRollingScript.h"
+#include "CColorBugScript.h"
 
 CMonsterScript::CMonsterScript()
 	: CScript(UINT(SCRIPT_TYPE::MONSTERSCRIPT))
@@ -254,6 +255,12 @@ void CMonsterScript::Dead()
 	case MonsterType::BugRolling:
 	{
 		CBugRollingScript* monsterScript = dynamic_cast<CBugRollingScript*>(GetOwner()->GetScript("CBugRollingScript"));
+		monsterScript->Dead();
+	}
+	break;
+	case MonsterType::ColorBug:
+	{
+		CColorBugScript* monsterScript = dynamic_cast<CColorBugScript*>(GetOwner()->GetScript("CColorBugScript"));
 		monsterScript->Dead();
 	}
 	break;

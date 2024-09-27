@@ -114,11 +114,12 @@ void CTestLevel::CreateTestLevel()
 	//pLoadedLevel->AddObject(0, pMonster);
 
 	CGameObject* pObj = new CGameObject;
-	pObj->SetName(L"ColorBug_Blue");
+	pObj->SetName(L"ColorBug_Red");
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CCollider2D);
 	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(new CFlipBookComponent);
+	//pObj->AddComponent(new CFlipBookComponent);
+	pObj->AddComponent(new CSpriteComponent);
 	//pObj->AddComponent(new CLight2D);
 	
 	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
@@ -130,14 +131,14 @@ void CTestLevel::CreateTestLevel()
 	pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	pObj->Collider2D()->SetScale(Vec3(0.15f, 0.15f, 1.f));
 	
-	Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Boss\\ColorBug\\colorBug_Blue.flip");
-	pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
-	pObj->FlipBookComponent()->Play(0, 8, false);
+	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Boss\\ColorBug\\colorBug_Legs.flip");
+	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
+	//pObj->FlipBookComponent()->Play(0, 8, true);
 	//pObj->FlipBookComponent()->AddAlpha(0.5f);
 	//pObj->FlipBookComponent()->SetUseLight(false);
 
-	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\boss\\ball\\lightBall_W.sprite");
-	//pObj->SpriteComponent()->AddSprite(pSprite);
+	Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\boss\\colorBug\\colorBug_Red.sprite");
+	pObj->SpriteComponent()->AddSprite(pSprite);
 	//pObj->SpriteComponent()->AddColor(false, Vec3(0, 0, 0));
 
 	//pObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
