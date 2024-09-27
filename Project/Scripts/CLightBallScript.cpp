@@ -15,6 +15,7 @@ CLightBallScript::CLightBallScript()
 	, m_Speed(200.f)
 	, m_Destroy(false)
 	, m_Particle (nullptr)
+	, m_DeadOK(true)
 {
 }
 
@@ -24,6 +25,7 @@ CLightBallScript::CLightBallScript(const CLightBallScript& _Origin)
 	, m_Speed(200.f)
 	, m_Destroy(false)
 	, m_Particle(nullptr)
+	, m_DeadOK(_Origin.m_DeadOK)
 {
 }
 
@@ -80,7 +82,7 @@ void CLightBallScript::Tick()
 		return;
 	}
 
-	if (m_Time >= 4.5f)
+	if (m_Time >= 4.5f && m_DeadOK)
 	{
 		Destroy();
 	}

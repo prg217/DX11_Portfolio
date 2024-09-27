@@ -21,6 +21,9 @@ private:
     CGameObject* m_pFocusObj;
     CameraDontMove m_Dir;
 
+    bool m_Shaking;
+    float m_ShakingTime;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -41,6 +44,8 @@ public:
     void Move() { m_IsMove = true; }
 
     void Focus(CGameObject* _FocusObj) { m_pFocusObj = _FocusObj; }
+    
+    void Shaking();
 
 public:
     CLONE(CCameraPlayerTrackingScript);

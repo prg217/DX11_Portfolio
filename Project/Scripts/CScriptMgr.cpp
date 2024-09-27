@@ -40,6 +40,7 @@
 #include "CSpitCactusScript.h"
 #include "CStoneBreakableScript.h"
 #include "CSwingObjScript.h"
+#include "CSymbolScript.h"
 #include "CTextBoxScript.h"
 #include "CUIScript.h"
 
@@ -84,6 +85,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSpitCactusScript");
 	_vec.push_back(L"CStoneBreakableScript");
 	_vec.push_back(L"CSwingObjScript");
+	_vec.push_back(L"CSymbolScript");
 	_vec.push_back(L"CTextBoxScript");
 	_vec.push_back(L"CUIScript");
 }
@@ -168,6 +170,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CStoneBreakableScript;
 	if (L"CSwingObjScript" == _strScriptName)
 		return new CSwingObjScript;
+	if (L"CSymbolScript" == _strScriptName)
+		return new CSymbolScript;
 	if (L"CTextBoxScript" == _strScriptName)
 		return new CTextBoxScript;
 	if (L"CUIScript" == _strScriptName)
@@ -295,6 +299,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::SWINGOBJSCRIPT:
 		return new CSwingObjScript;
+		break;
+	case (UINT)SCRIPT_TYPE::SYMBOLSCRIPT:
+		return new CSymbolScript;
 		break;
 	case (UINT)SCRIPT_TYPE::TEXTBOXSCRIPT:
 		return new CTextBoxScript;
@@ -464,6 +471,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::SWINGOBJSCRIPT:
 		return L"CSwingObjScript";
+		break;
+
+	case SCRIPT_TYPE::SYMBOLSCRIPT:
+		return L"CSymbolScript";
 		break;
 
 	case SCRIPT_TYPE::TEXTBOXSCRIPT:

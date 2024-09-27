@@ -12,6 +12,8 @@ private:
 
     CGameObject* m_Particle;
 
+    bool m_DeadOK;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -23,8 +25,9 @@ public:
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
 
-private:
+public:
     void Destroy();
+    void SetDeadOK(bool _OK) { m_DeadOK = _OK; }
 
 public:
     CLONE(CLightBallScript);

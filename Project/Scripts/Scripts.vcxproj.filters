@@ -177,6 +177,9 @@
     <ClInclude Include="CColorBugScript.h">
       <Filter>Scripts\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="CSymbolScript.h">
+      <Filter>Scripts\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -309,6 +312,9 @@
       <Filter>Scripts\Boss</Filter>
     </ClCompile>
     <ClCompile Include="CColorBugScript.cpp">
+      <Filter>Scripts\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolScript.cpp">
       <Filter>Scripts\Boss</Filter>
     </ClCompile>
   </ItemGroup>

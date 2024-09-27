@@ -6,11 +6,15 @@
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
 
+#include <random>
+
 CCameraPlayerTrackingScript::CCameraPlayerTrackingScript()
 	: CScript(UINT(SCRIPT_TYPE::CAMERAPLAYERTRACKINGSCRIPT))
 	, m_IsMove(true)
 	, m_Speed(2000.f)
 	, m_pFocusObj(nullptr)
+	, m_Shaking(false)
+	, m_ShakingTime(0.f)
 {
 }
 
@@ -29,6 +33,34 @@ void CCameraPlayerTrackingScript::Tick()
 	if (PROJ_TYPE::ORTHOGRAPHIC == Camera()->GetProjType())
 	{
 		OrthoGraphicMove();
+
+		if (m_Shaking)
+		{
+			m_ShakingTime += DT;
+
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_real_distribution<float> distrib(-15.f, 15.f);  // 흔들림 범위
+
+			if (m_ShakingTime < 0.3f)
+			{
+				// 노이즈 생성 (매 프레임마다, 각 축에 대해 랜덤한 오프셋 추가)
+				float offsetX = distrib(gen);
+				float offsetY = distrib(gen);
+				float offsetZ = distrib(gen);
+
+				// 카메라 위치에 흔들림 적용
+				Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+				Vec3 shakeOffset = Vec3(offsetX, offsetY, offsetZ);
+				pos += shakeOffset;
+				GetOwner()->Transform()->SetRelativePos(pos);
+			}
+			else
+			{
+				m_Shaking = false;
+				m_ShakingTime = 0.f;
+			}
+		}
 	}
 
 	else if (PROJ_TYPE::PERSPECTIVE == Camera()->GetProjType())
@@ -56,6 +88,11 @@ void CCameraPlayerTrackingScript::SaveToFile(FILE* _File)
 
 void CCameraPlayerTrackingScript::LoadFromFile(FILE* _File)
 {
+}
+
+void CCameraPlayerTrackingScript::Shaking()
+{
+	m_Shaking = true;
 }
 
 void CCameraPlayerTrackingScript::OrthoGraphicMove()

@@ -114,7 +114,7 @@ void CTestLevel::CreateTestLevel()
 	//pLoadedLevel->AddObject(0, pMonster);
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"ColorBug_Green");
+	//pObj->SetName(L"DownEffect");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
@@ -123,7 +123,7 @@ void CTestLevel::CreateTestLevel()
 	//pObj->AddComponent(new CLight2D);
 	
 	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 1));
+	//pObj->Transform()->SetRelativeScale(Vec3(300, 300, 1));
 	//
 	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	//pObj->MeshRender()->SetMaterial(pMtrl);
@@ -131,9 +131,9 @@ void CTestLevel::CreateTestLevel()
 	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
 	//pObj->Collider2D()->SetScale(Vec3(0.15f, 0.15f, 1.f));
 	
-	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Boss\\ColorBug\\colorBug_Legs.flip");
+	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Boss\\Effect\\Down.flip");
 	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
-	//pObj->FlipBookComponent()->Play(0, 8, true);
+	//pObj->FlipBookComponent()->Play(0, 10, false);
 	//pObj->FlipBookComponent()->AddAlpha(0.5f);
 	//pObj->FlipBookComponent()->SetUseLight(false);
 
@@ -153,7 +153,7 @@ void CTestLevel::CreateTestLevel()
 	//pObj->ParticleSystem()->LoadFromFile(File);
 	//fclose(File);
 
-	//pLoadedLevel->AddObject(4, pObj);
+	//pLoadedLevel->AddObject(0, pObj);
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;

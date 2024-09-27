@@ -8,7 +8,9 @@
 #include "CPlayerScript.h"
 #include "CSwingObjScript.h"
 
+#include "CSymbolScript.h"
 #include "CColorBugScript.h"
+#include "CLightBallScript.h"
 
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
@@ -17,6 +19,7 @@
 
 CBugBossScript::CBugBossScript()
 	: CScript(UINT(SCRIPT_TYPE::BUGBOSSSCRIPT))
+	, m_CurLevel(nullptr)
 	, m_LightObj(nullptr)
 	, m_WhiteObj(nullptr)
 	, m_WingObj(nullptr)
@@ -29,17 +32,22 @@ CBugBossScript::CBugBossScript()
 	, m_Speed(1200.f)
 	, m_Phase(BugBossPhase::None)
 	, m_PhaseIn(false)
-	, m_AppearedTime(0.f)
+	, m_ProductionTime(0.f)
 	, m_PhaseTime(0.f)
 	, m_IsAttack(false)
 	, m_AttackCount(0)
 	, m_AttackColorType(ColorBugType::Blue)
 	, m_IsDown(false)
 	, m_Phase1Attack0_Obj(nullptr)
+	, m_AttackCooldown(3.f)
 	, m_HpScript(nullptr)
 	, m_Hit(false)
 	, m_SaveHitTime(0.f)
-	, m_InvincibilityTime(0.4f)
+	, m_InvincibilityTime(0.8f)
+	, m_LotusTime(0.f)
+	, m_LotusCount(0)
+	, m_Effect(false)
+	, m_Dead(false)
 {
 }
 
@@ -51,10 +59,10 @@ void CBugBossScript::Begin()
 {
 	GetRenderComponent()->GetDynamicMaterial();
 
-	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-	m_Player = curLevel->FindObjectByName(L"Player");
+	m_CurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	m_Player = m_CurLevel->FindObjectByName(L"Player");
 
-	CGameObject* hpFrame = curLevel->FindObjectByName(L"BHP");
+	CGameObject* hpFrame = m_CurLevel->FindObjectByName(L"BHP");
 	for (auto i : hpFrame->GetChildren())
 	{
 		if (wcscmp(i->GetName().c_str(), L"HPBar") == 0)
@@ -90,9 +98,9 @@ void CBugBossScript::Begin()
 		}
 	}
 
-	m_Light1 = curLevel->FindObjectByName(L"light1");
-	m_Light2 = curLevel->FindObjectByName(L"light2");
-	m_Light3 = curLevel->FindObjectByName(L"light3");
+	m_Light1 = m_CurLevel->FindObjectByName(L"light1");
+	m_Light2 = m_CurLevel->FindObjectByName(L"light2");
+	m_Light3 = m_CurLevel->FindObjectByName(L"light3");
 
 	FlipPlay((int)BugBossAni::Appeared, 0, false);
 
@@ -109,9 +117,24 @@ void CBugBossScript::Begin()
 
 void CBugBossScript::Tick()
 {
+	// 보스 피 깎기(테스트용)
+	if (KEY_TAP(KEY::P))
+	{
+		Hit();
+	}
+
+	if (m_Dead)
+	{
+		if (GetOwner()->FlipBookComponent()->GetIsFinish())
+		{
+			DeleteObject(GetOwner());
+		}
+		return;
+	}
+
 	if (m_Phase == BugBossPhase::Appeared)
 	{
-		m_AppearedTime += DT;
+		m_ProductionTime += DT;
 		Appeared();
 	}
 
@@ -150,6 +173,22 @@ void CBugBossScript::Tick()
 				m_PhaseIn = true;
 			}
 		}
+		m_ProductionTime = 0.f;
+	}
+
+	if (m_Phase == BugBossPhase::Phase3)
+	{
+		m_PhaseTime += DT;
+
+		if (m_PhaseIn)
+		{
+			m_LotusTime += DT;
+			m_ProductionTime += DT;
+
+			Phase3Production();
+		}
+
+		Phase3();
 	}
 
 	// 맞았을 때
@@ -197,7 +236,6 @@ void CBugBossScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObjec
 			{
 				if (pSwing->GetIsSwing() && !m_Hit)
 				{
-					m_Hit = true;
 					Hit();
 				}
 			}
@@ -229,9 +267,21 @@ void CBugBossScript::FlipPlay(int _FliBookIdx, int _FPS, bool _Repeat)
 	}
 }
 
+void CBugBossScript::FlipReversePlay(int _FliBookIdx, int _FPS, bool _Repeat)
+{
+	GetOwner()->FlipBookComponent()->ReversePlay(_FliBookIdx, _FPS, _Repeat);
+	m_LightObj->FlipBookComponent()->ReversePlay(_FliBookIdx, _FPS, _Repeat);
+	m_WhiteObj->FlipBookComponent()->ReversePlay(_FliBookIdx, _FPS, _Repeat);
+	// 날개는 날개 나오기 전까지의 숫자를 빼기
+	if (_FliBookIdx > (int)BugBossAni::StandAttack)
+	{
+		m_WingObj->FlipBookComponent()->ReversePlay(_FliBookIdx - (int)BugBossAni::Wing, _FPS, _Repeat);
+	}
+}
+
 void CBugBossScript::Appeared()
 {
-	if (m_AppearedTime >= 5.f)
+	if (m_ProductionTime >= 5.f)
 	{
 		FlipPlay((int)BugBossAni::Appeared, 8, true);
 		// 먼지 파티클, 반짝 파티클, 검 휘두르는 이펙트
@@ -245,40 +295,40 @@ void CBugBossScript::Appeared()
 			m_PhaseIn = true;
 
 			// 보스 HP바 활성화
-			CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-			CGameObject* hpFrame = curLevel->FindObjectByName(L"BHP");
+			CGameObject* hpFrame = m_CurLevel->FindObjectByName(L"BHP");
 			CBossHPScript* hpScript = dynamic_cast<CBossHPScript*>(hpFrame->GetScript("CBossHPScript"));
 			hpScript->Start();
 
 			// 카메라 포커스
-			CGameObject* mainCamera = curLevel->FindObjectByName(L"MainCamera");
+			CGameObject* mainCamera = m_CurLevel->FindObjectByName(L"MainCamera");
 			CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
 			CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
 
-			CGameObject* player = curLevel->FindObjectByName(L"Player");
+			CGameObject* player = m_CurLevel->FindObjectByName(L"Player");
 			cameraScript->Focus(player);
 
 			FlipPlay((int)BugBossAni::Idle, 5, true);
 		}
 
-		// 눈 빛 삭제
-		DeleteObject(m_ELight1);
-		DeleteObject(m_ELight2);
+		// 눈 빛 끄기
+		Vec3 eyesColor = Vec3(0.f, 0.f, 0.f);
+		m_ELight1->Light2D()->SetLightColor(eyesColor);
+		m_ELight2->Light2D()->SetLightColor(eyesColor);
 	}
-	else if (m_AppearedTime >= 4.f)
+	else if (m_ProductionTime >= 4.f)
 	{
 		// 포인트 라이트 확장
-		float R = (140.f / 0.5f) * (m_AppearedTime - 4.f);
+		float R = (140.f / 0.5f) * (m_ProductionTime - 4.f);
 		if (R > 140.f)
 		{
 			R = 140.f;
 		}
-		float G = (145.f / 0.5f) * (m_AppearedTime - 4.f);
+		float G = (145.f / 0.5f) * (m_ProductionTime - 4.f);
 		if (G > 145.f)
 		{
 			G = 145.f;
 		}
-		float B = (200.f / 0.5f) * (m_AppearedTime - 4.f);
+		float B = (200.f / 0.5f) * (m_ProductionTime - 4.f);
 		if (B > 200.f)
 		{
 			B = 200.f;
@@ -288,17 +338,17 @@ void CBugBossScript::Appeared()
 		m_Light2->Light2D()->SetLightColor(rgb);
 
 		// 눈 빛 끔
-		float eyesR = 140.f - (140.f / 1.f) * (m_AppearedTime - 4.f);
+		float eyesR = 140.f - (140.f / 1.f) * (m_ProductionTime - 4.f);
 		if (eyesR < 0.f)
 		{
 			eyesR = 0.f;
 		}
-		float eyesG = 145.f - (145.f / 1.f) * (m_AppearedTime - 4.f);
+		float eyesG = 145.f - (145.f / 1.f) * (m_ProductionTime - 4.f);
 		if (eyesG < 0.f)
 		{
 			eyesG = 0.f;
 		}
-		float eyesB = 200.f - (200.f / 1.f) * (m_AppearedTime - 4.f);
+		float eyesB = 200.f - (200.f / 1.f) * (m_ProductionTime - 4.f);
 		if (eyesB < 0.f)
 		{
 			eyesB = 0.f;
@@ -307,19 +357,19 @@ void CBugBossScript::Appeared()
 		m_ELight1->Light2D()->SetLightColor(eyesRGB);
 		m_ELight2->Light2D()->SetLightColor(eyesRGB);
 	}
-	else if (m_AppearedTime >= 2.f)
+	else if (m_ProductionTime >= 2.f)
 	{
-		float R = (140.f / 0.5f) * (m_AppearedTime - 2.f);
+		float R = (140.f / 0.5f) * (m_ProductionTime - 2.f);
 		if (R > 140.f)
 		{
 			R = 140.f;
 		}
-		float G = (145.f / 0.5f) * (m_AppearedTime - 2.f);
+		float G = (145.f / 0.5f) * (m_ProductionTime - 2.f);
 		if (G > 145.f)
 		{
 			G = 145.f;
 		}
-		float B = (200.f / 0.5f) * (m_AppearedTime - 2.f);
+		float B = (200.f / 0.5f) * (m_ProductionTime - 2.f);
 		if (B > 200.f)
 		{
 			B = 200.f;
@@ -449,14 +499,13 @@ void CBugBossScript::Phase2()
 	}
 	else
 	{
-		Phase2Attack();
+		Phase23Attack();
 	}
 }
 
 void CBugBossScript::Phase2Production()
 {
-	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-	CGameObject* mainCamera = curLevel->FindObjectByName(L"MainCamera");
+	CGameObject* mainCamera = m_CurLevel->FindObjectByName(L"MainCamera");
 
 	if (m_LotusObjs.size() == 0)
 	{
@@ -507,8 +556,10 @@ void CBugBossScript::Phase2Production()
 	// 다 생성 됐으면 줌아웃
 	mainCamera->Camera()->SetScale(1.2f);
 	// 빛을 조절해준다.
-	CGameObject* directionalLight = curLevel->FindObjectByName(L"DirectionalLight");
+	CGameObject* directionalLight = m_CurLevel->FindObjectByName(L"DirectionalLight");
 	directionalLight->Light2D()->SetLightColor(Vec3(45.f / 255.f, 45.f / 255.f, 60.f / 255.f));
+	m_Light1->Light2D()->SetLightColor(Vec3(0.f, 0.f, 0.f));
+	m_Light2->Light2D()->SetLightColor(Vec3(0.f, 0.f, 0.f));
 
 	// 연꽃을 외곽으로 보낸다.
 	if (m_PhaseTime <= 1.5f)
@@ -534,8 +585,54 @@ void CBugBossScript::Phase2Production()
 		// 포커스를 다시 플레이어로
 		CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
 		CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
-		CGameObject* player = curLevel->FindObjectByName(L"Player");
+		CGameObject* player = m_CurLevel->FindObjectByName(L"Player");
 		cameraScript->Focus(player);
+	}
+}
+
+void CBugBossScript::Phase3()
+{
+	Phase23Attack();
+}
+
+void CBugBossScript::Phase3Production()
+{
+	// 연꽃 없애고 어둡게 만들기
+	// 천천히 어둡게 만들기
+	CGameObject* directionalLight = m_CurLevel->FindObjectByName(L"DirectionalLight");
+	float RG = 45.f + (0.f - 45.f) * ((m_ProductionTime - 1.f) / 1.5f);
+	float B = 60.f + (0.f - 60.f) * ((m_ProductionTime - 1.f) / 1.5f);
+	directionalLight->Light2D()->SetLightColor(Vec3(RG / 255.f, RG / 255.f, B / 255.f));
+
+	m_Light3->Light2D()->SetLightColor(Vec3(45.f / 255.f, 45.f / 255.f, 80.f / 255.f));
+
+	// 연꽃 파괴
+	if (m_LotusTime >= 0.1f)
+	{
+		if (m_LotusCount < 6)
+		{
+			Vec3 pos = m_LotusObjs[m_LotusCount]->Transform()->GetRelativePos();
+			// 파괴 이펙트
+
+			DeleteObject(m_LotusObjs[m_LotusCount++]);
+
+			m_LotusTime = 0.f;
+		}
+		else
+		{
+			m_LotusObjs.clear();
+		}
+	}
+
+	if (m_ProductionTime > 1.5f)
+	{
+		// 플레이어에게 포인트 라이트 달아주기
+		m_Player->AddComponent(new CLight2D);
+		m_Player->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+		m_Player->Light2D()->SetRadius(50.f);
+		m_Player->Light2D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
+
+		m_PhaseIn = false;
 	}
 }
 
@@ -578,7 +675,7 @@ void CBugBossScript::Phase1Attack1()
 	}
 }
 
-void CBugBossScript::Phase2Attack()
+void CBugBossScript::Phase23Attack()
 {
 	// 날기 공격 중일 때 
 	if (m_IsAttack)
@@ -593,10 +690,10 @@ void CBugBossScript::Phase2Attack()
 	}
 	
 	// Down
-	if (!m_IsAttack && m_IsDown)
+	if (!m_IsAttack && m_IsDown && m_IsDownOK)
 	{
-		// 랜덤 위치... 날아가다 주저 앉음
-		if (m_PhaseTime <= 0.3f)
+		// 날아가다 주저 앉음
+		if (m_PhaseTime <= 0.6f)
 		{
 			Vec3 down = -1.f * GetOwner()->Transform()->GetRelativeDir(DIR::UP);
 			Vec3 pos = GetOwner()->Transform()->GetRelativePos();
@@ -605,6 +702,52 @@ void CBugBossScript::Phase2Attack()
 			pos.z = -2000.f;
 			GetOwner()->Transform()->SetRelativePos(pos);
 		}
+		else if (m_PhaseTime <= 5.6f)
+		{
+			// 5초 동안 주저 앉음
+			GetOwner()->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+			m_LightObj->FlipBookComponent()->AddColor(false);
+			m_WingObj->FlipBookComponent()->AddColor(false);
+			FlipPlay((int)BugBossAni::Down, 8, false);
+
+			// Down Effect
+			if (GetOwner()->FlipBookComponent()->GetIsFinish())
+			{
+				if (!m_Effect)
+				{
+					Ptr<CPrefab> downEffect = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\DownEffect.pref");
+					Instantiate(downEffect, 0, GetOwner()->Transform()->GetRelativePos(), L"DownEffect");
+					m_Effect = true;
+				}
+			}
+
+			// AttackLine 삭제
+			if (m_AttackLine != nullptr)
+			{
+				DeleteObject(m_AttackLine);
+				m_AttackLine = nullptr;
+			}
+
+			// 이 상태에서 HP가 12 이하면 3페이즈 돌입
+			if (m_HpScript->GetHP() <= 12 && m_Phase == BugBossPhase::Phase2)
+			{
+				m_Phase = BugBossPhase::Phase3;
+				m_PhaseIn = true;
+				m_AttackCooldown = 1.f;
+			}
+		}
+		else
+		{
+			// 다운 상태 해제
+			m_PhaseTime = 0.f;
+			m_IsDown = false;
+			m_IsDownOK = false;
+			m_AttackCount = -1;
+			m_Effect = false;
+			FlipReversePlay((int)BugBossAni::Down, 8, false);
+		}
+
+		return;
 	}
 
 	// 날기 공격 준비
@@ -615,6 +758,11 @@ void CBugBossScript::Phase2Attack()
 		{
 			FlipPlay((int)BugBossAni::WingAttack, 8, false);
 			m_IsAttack = true;
+			// 카메라 흔들림
+			CGameObject* mainCamera = m_CurLevel->FindObjectByName(L"MainCamera");
+			CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
+			CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
+			cameraScript->Shaking();
 		}
 	}
 
@@ -635,6 +783,51 @@ void CBugBossScript::Phase2Attack()
 		}
 	}
 
+	// Down이 끝나고 다시 중앙으로
+	if (m_AttackCount == -1)
+	{
+		Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+		// Down이 막 끝나고 위로 올라감
+		if (GetOwner()->FlipBookComponent()->GetCurFlipBookIdx() == (int)BugBossAni::Down)
+		{	
+			// 다시 WingIdle 상태로 바꿔줌
+			if (GetOwner()->FlipBookComponent()->GetIsFinish())
+			{
+				FlipPlay((int)BugBossAni::WingIdle, 8, true);
+			}
+
+			return;
+		}
+
+		if (m_PhaseTime <= 1.5f)
+		{
+			// 위로 올라가는 코드
+			Vec3 up = GetOwner()->Transform()->GetRelativeDir(DIR::UP);
+			pos += m_Speed * up * DT;
+			GetOwner()->Transform()->SetRelativePos(pos);
+		}
+		else if (m_PhaseTime <= 1.6f)
+		{
+			// 중앙으로 이동
+			GetOwner()->Transform()->SetRelativePos(Vec3(0.f, pos.y, pos.z));
+			m_SavePos2 = GetOwner()->Transform()->GetRelativePos();
+		}
+		// 다시 저장된 위치로 이동
+		else if (m_PhaseTime <= 2.6f)
+		{
+			pos = m_SavePos2 + (m_SavePos - m_SavePos2) * ((m_PhaseTime - 1.6f) / 1.f);
+			GetOwner()->Transform()->SetRelativePos(pos);
+		}
+		else
+		{
+			// 저장된 위치로 가고 다시 0부터 시작
+			m_AttackCount = 0;
+			m_PhaseTime = 0.f;
+		}
+		
+		return;
+	}
+
 	if (m_AttackCount == 0 && m_PhaseTime >= 2.5f)
 	{
 		// 색 벌레 소환
@@ -649,31 +842,65 @@ void CBugBossScript::Phase2Attack()
 		std::uniform_int_distribution<> distrib(0, 2);
 		int random = distrib(gen);
 
+		CGameObject* symbol = new CGameObject;
+		symbol->SetName(L"Symbol");
+		symbol->AddComponent(new CTransform);
+		symbol->AddComponent(new CMeshRender);
+		symbol->AddComponent(new CSpriteComponent);
+		symbol->AddComponent(new CSymbolScript);
+		symbol->Transform()->SetRelativePos(m_SavePos);
+		symbol->Transform()->SetRelativeScale(Vec3(300.f, 300.f, 1.f));
+		symbol->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+		symbol->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl"));
 		switch (random)
 		{
 		case 0:
+		{
 			// 파랑
 			m_AttackColor = Vec3(0.1f, 0.27f, 1.7f);
 			m_AttackColorType = ColorBugType::Blue;
-			// 색상 무늬 띄워야 함
+
+			Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\boss\\symbol\\Blue.sprite");
+			symbol->SpriteComponent()->AddSprite(pSprite);
+		}
 			break;
 		case 1:
+		{
 			// 초록
 			m_AttackColor = Vec3(0.f, 1.65f, 0.16f);
 			m_AttackColorType = ColorBugType::Green;
+
+			Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\boss\\symbol\\Green.sprite");
+			symbol->SpriteComponent()->AddSprite(pSprite);
+		}
 			break;
 		case 2:
+		{
 			// 빨강
 			m_AttackColor = Vec3(3.f, 0.25f, 0.25f);
 			m_AttackColorType = ColorBugType::Red;
+
+			Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\boss\\symbol\\Red.sprite");
+			symbol->SpriteComponent()->AddSprite(pSprite);
+		}
 			break;
 		default:
 			break;
 		}
+		symbol->SpriteComponent()->AddAlpha(0.7f);
+		symbol->SpriteComponent()->SetUseLight(false);
+		symbol->SpriteComponent()->AddColor(true, m_AttackColor);
+		CreateObject(symbol, 0);
 
 		m_LightObj->FlipBookComponent()->AddColor(true, m_AttackColor);
 		m_WingObj->FlipBookComponent()->AddColor(true, m_AttackColor);
 		FlipPlay((int)BugBossAni::WingAttackReady, 8, false);
+
+		// 페이즈 3일 경우 LightBall 8개 소환
+		if (m_Phase == BugBossPhase::Phase3)
+		{
+			Phase3SpawnLightBall();
+		}
 
 		m_AttackCount++;
 		m_PhaseTime = 0.f;
@@ -727,12 +954,26 @@ void CBugBossScript::Phase2Attack()
 			CreateObject(m_AttackLine, 0);
 			m_IsAttack = false;
 		}
-		
+		else
+		{
+			if (m_IsDown)
+			{
+				m_IsDownOK = true;
+				m_PhaseTime = 0.f;
+			}
+		}
 
-		if (m_PhaseTime >= 3.f)
+		if (m_PhaseTime >= m_AttackCooldown)
 		{
 			m_IsAttack = true;
 			m_PhaseTime = 0.f;
+			m_IsDownOK = false;
+
+			// 카메라 흔들림
+			CGameObject* mainCamera = m_CurLevel->FindObjectByName(L"MainCamera");
+			CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
+			CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
+			cameraScript->Shaking();
 		}
 	}
 }
@@ -766,6 +1007,64 @@ void CBugBossScript::SpawnColorBugs()
 	X = pos.x + (350.f * cos(XMConvertToRadians(angle)));
 	Y = pos.y - (350.f * sin(XMConvertToRadians(angle)));
 	m_LotusObjs.push_back(Instantiate(red, 0, Vec3(X, Y, 0.f), L"ColorBug_Red"));
+}
+
+void CBugBossScript::Phase3SpawnLightBall()
+{
+	// 현재 색 제외해서 각 4개씩 LightBall 총 8개 소환
+	Vec3 color1;
+	Vec3 color2;
+	switch (m_AttackColorType)
+	{
+	case ColorBugType::Blue:
+		color1 = Vec3(3.f, 0.25f, 0.25f); // 빨강
+		color2 = Vec3(0.f, 1.65f, 0.16f); // 초록
+		break;
+	case ColorBugType::Green:
+		color1 = Vec3(0.f, 1.65f, 0.16f); // 파랑
+		color2 = Vec3(3.f, 0.25f, 0.25f); // 빨강
+		break;
+	case ColorBugType::Red:
+		color1 = Vec3(0.f, 1.65f, 0.16f); // 초록
+		color2 = Vec3(0.f, 1.65f, 0.16f); // 파랑
+		break;
+	default:
+		break;
+	}
+
+	Vec3 pos = GetOwner()->Transform()->GetRelativePos();
+	float angle = 0.f;
+	for (int i = 0; i < 4; i++)
+	{
+		float X = pos.x + (240.f * cos(XMConvertToRadians(angle)));
+		float Y = pos.y + (240.f * sin(XMConvertToRadians(angle)));
+		CGameObject* lightBall = Instantiate(m_Phase1Attack0_Obj, 10, Vec3(X, Y, 0.f), L"LightBall");
+		lightBall->FlipBookComponent()->AddColor(true, color1);
+		float setAngle = ((angle / 180.f) * XM_PI) + ((270.f / 180.f) * XM_PI);
+		// 		setAngle += XM_PIDIV2; // 90도 보정
+		lightBall->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, setAngle));
+		CLightBallScript* script = dynamic_cast<CLightBallScript*>(lightBall->GetScript("CLightBallScript"));
+		script->SetDeadOK(false);
+		m_LightBallObjs.push_back(lightBall);
+
+		angle += 45.f;
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		float X = pos.x + (240.f * cos(XMConvertToRadians(angle)));
+		float Y = pos.y + (240.f * sin(XMConvertToRadians(angle)));
+		CGameObject* lightBall = Instantiate(m_Phase1Attack0_Obj, 10, Vec3(X, Y, 0.f), L"LightBall");
+
+		lightBall->FlipBookComponent()->AddColor(true, color2);
+		float setAngle = ((angle / 180.f) * XM_PI) + ((270.f / 180.f) * XM_PI);
+		lightBall->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, setAngle));
+		CLightBallScript* script = dynamic_cast<CLightBallScript*>(lightBall->GetScript("CLightBallScript"));
+		script->SetDeadOK(false);
+		m_LightBallObjs.push_back(lightBall);
+
+		angle += 45.f;
+	}
 }
 
 void CBugBossScript::ChargeEffect(Vec3 _Color)
@@ -815,20 +1114,22 @@ void CBugBossScript::ChargeEffect(Vec3 _Color)
 
 void CBugBossScript::HitEffect()
 {
+	// 빨갛게 변함+무적 시간 동안 반투명
+	GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl"));
+	GetOwner()->FlipBookComponent()->AddAlpha(0.3f);
+	GetOwner()->FlipBookComponent()->AddColor(true, Vec3(1.f, 0.3f, 0.2f));
 }
 
 void CBugBossScript::Active()
 {
-	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
 	// 연출 시작
 	m_Phase = BugBossPhase::Appeared;
 	// 방 어두워지게 만들고
-	CGameObject* directionalLight = curLevel->FindObjectByName(L"DirectionalLight");
+	CGameObject* directionalLight = m_CurLevel->FindObjectByName(L"DirectionalLight");
 	directionalLight->Light2D()->SetLightColor(Vec3(0, 0, 0));
 
 	// 카메라 포커스
-	CGameObject* mainCamera = curLevel->FindObjectByName(L"MainCamera");
+	CGameObject* mainCamera = m_CurLevel->FindObjectByName(L"MainCamera");
 	CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
 	CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
 	cameraScript->Focus(GetOwner());
@@ -846,11 +1147,6 @@ void CBugBossScript::Hit()
 
 	m_Hit = true;
 
-	// 빨갛게 변함+무적 시간 동안 반투명
-	GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl"));
-	GetOwner()->FlipBookComponent()->AddAlpha(0.3f);
-	GetOwner()->FlipBookComponent()->AddColor(true, Vec3(1.f, 0.3f, 0.2f));
-
 	// 데미지 주기
 	if (m_HpScript != nullptr)
 	{
@@ -861,13 +1157,39 @@ void CBugBossScript::Hit()
 void CBugBossScript::Dead()
 {
 	// 죽음
+	m_Dead = true;
+	// 죽음 애니메이션 재생 후 삭제
+	FlipPlay((int)BugBossAni::Dead, 8, false);
 }
 
-void CBugBossScript::Phase2Down(ColorBugType _ColorType)
+void CBugBossScript::Phase23Down(ColorBugType _ColorType)
 {
 	// 다음 공격을 다운으로 바꾼다.
 	if (m_AttackColorType == _ColorType)
 	{
 		m_IsDown = true;
+
+		// 레벨에 남아있는 색 벌레가 있으면 삭제
+		CGameObject* colorBug = m_CurLevel->FindObjectByName(L"ColorBug_Blue");
+		if (colorBug != nullptr)
+		{
+			DeleteObject(colorBug);
+		}
+		colorBug = m_CurLevel->FindObjectByName(L"ColorBug_Green");
+		if (colorBug != nullptr)
+		{
+			DeleteObject(colorBug);
+		}
+		colorBug = m_CurLevel->FindObjectByName(L"ColorBug_Red");
+		if (colorBug != nullptr)
+		{
+			DeleteObject(colorBug);
+		}
+
+		for (auto i : m_LightBallObjs)
+		{
+			CLightBallScript* script = dynamic_cast<CLightBallScript*>(i->GetScript("CLightBallScript"));
+			script->Destroy();
+		}
 	}
 }

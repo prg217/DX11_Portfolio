@@ -206,6 +206,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CSpitCactusScript.h" />
     <ClInclude Include="CStoneBreakableScript.h" />
     <ClInclude Include="CSwingObjScript.h" />
+    <ClInclude Include="CSymbolScript.h" />
     <ClInclude Include="CTextBoxScript.h" />
     <ClInclude Include="CUIScript.h" />
     <ClInclude Include="framework.h" />
@@ -252,6 +253,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CSpitCactusScript.cpp" />
     <ClCompile Include="CStoneBreakableScript.cpp" />
     <ClCompile Include="CSwingObjScript.cpp" />
+    <ClCompile Include="CSymbolScript.cpp" />
     <ClCompile Include="CTextBoxScript.cpp" />
     <ClCompile Include="CUIScript.cpp" />
     <ClCompile Include="pch.cpp">

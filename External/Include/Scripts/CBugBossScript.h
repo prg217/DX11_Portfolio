@@ -33,6 +33,8 @@ class CBugBossScript :
     public CScript
 {
 private:
+    CLevel* m_CurLevel;
+
     // =====GameObject=====
     CGameObject* m_Player;
     
@@ -61,7 +63,7 @@ private:
 
     bool m_PhaseIn; // 페이즈 최초 진입
 
-    float m_AppearedTime;
+    float m_ProductionTime;
     float m_PhaseTime;
 
     bool m_IsAttack; // 공격 중
@@ -69,12 +71,16 @@ private:
     Vec3 m_AttackColor;
     ColorBugType m_AttackColorType;
 
-    bool m_IsDown;
+    bool m_IsDown; // 다운 되어야 한다고 알려줌
+    bool m_IsDownOK; // 다운될 상황을 알려줌
     
     Vec3 m_SavePos;
+    Vec3 m_SavePos2;
 
     Ptr<CPrefab> m_Phase1Attack0_Obj;
     Ptr<CPrefab> m_Phase1Attack1_Obj;
+
+    float m_AttackCooldown;
     // ===============
 
     // =====HP=====
@@ -85,7 +91,14 @@ private:
     float m_InvincibilityTime; // 무적 시간
     // ============
 
+    float m_LotusTime;
+    int m_LotusCount;
     vector<CGameObject*> m_LotusObjs;
+    vector<CGameObject*> m_LightBallObjs;
+
+    bool m_Effect; // 이펙트를 활성화 했나 안했나
+
+    bool m_Dead;
 
 public:
     virtual void Begin() override;
@@ -100,17 +113,21 @@ public:
 
 private:
     void FlipPlay(int _FliBookIdx, int _FPS, bool _Repeat);
+    void FlipReversePlay(int _FliBookIdx, int _FPS, bool _Repeat);
 
     void Appeared(); // 등장 연출
     void Phase1();
     void Phase2();
     void Phase2Production(); // 페이즈 2 연출
+    void Phase3();
+    void Phase3Production(); // 페이즈 3 연출
     
     void Phase1Attack0();
     void Phase1Attack1();
 
-    void Phase2Attack();
+    void Phase23Attack();
     void SpawnColorBugs();
+    void Phase3SpawnLightBall();
 
     void ChargeEffect(Vec3 _Color);
 
@@ -122,7 +139,7 @@ public:
     void Hit();
     void Dead();
 
-    void Phase2Down(ColorBugType _ColorType);
+    void Phase23Down(ColorBugType _ColorType);
 
 public:
     CLONE(CBugBossScript);

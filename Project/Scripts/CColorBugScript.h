@@ -13,6 +13,8 @@ class CColorBugScript :
 {
 private:
     ColorBugType m_Type;
+
+    CGameObject* m_RotObj;
     
     float m_SaveTime;
     float m_Speed;
