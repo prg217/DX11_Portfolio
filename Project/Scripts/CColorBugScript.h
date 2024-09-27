@@ -15,6 +15,7 @@ private:
     ColorBugType m_Type;
     
     float m_SaveTime;
+    float m_Speed;
 
 public:
     virtual void Begin() override;

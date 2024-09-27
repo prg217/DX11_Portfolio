@@ -9,6 +9,8 @@
 
 CHPScript::CHPScript()
 	: CScript(UINT(SCRIPT_TYPE::HPSCRIPT))
+	, m_HP(0)
+	, m_MaxHP(0)
 	, m_HPBar(nullptr)
 	, m_Player(false)
 {
@@ -18,6 +20,8 @@ CHPScript::CHPScript()
 
 CHPScript::CHPScript(const CHPScript& _Origin)
 	: CScript(_Origin)
+	, m_HP(0)
+	, m_MaxHP(0)
 	, m_HPBar(nullptr)
 	, m_Player(false)
 {

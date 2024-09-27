@@ -29,6 +29,9 @@ public:
     int GetHP() { return m_HP; }
     int GetMaxHP() { return m_MaxHP; }
 
+    void SetMaxHP(int _maxHP) { m_MaxHP = _maxHP; }
+    void SetHP(int _HP) { m_HP = _HP; }
+
 public:
     CLONE(CHPScript);
     CHPScript();

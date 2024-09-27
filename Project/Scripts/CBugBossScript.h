@@ -33,6 +33,9 @@ class CBugBossScript :
     public CScript
 {
 private:
+    // =====GameObject=====
+    CGameObject* m_Player;
+    
     // 보스 애니메이션
     CGameObject* m_LightObj;
     CGameObject* m_WhiteObj;
@@ -47,6 +50,13 @@ private:
     CGameObject* m_ELight1;
     CGameObject* m_ELight2;
 
+    // 공격 라인
+    CGameObject* m_AttackLine;
+    // ===================
+
+    float m_Speed;
+
+    // =====Phase=====
     BugBossPhase m_Phase;
 
     bool m_PhaseIn; // 페이즈 최초 진입
@@ -57,15 +67,23 @@ private:
     bool m_IsAttack; // 공격 중
     int m_AttackCount;
     Vec3 m_AttackColor;
+    ColorBugType m_AttackColorType;
+
+    bool m_IsDown;
+    
+    Vec3 m_SavePos;
 
     Ptr<CPrefab> m_Phase1Attack0_Obj;
     Ptr<CPrefab> m_Phase1Attack1_Obj;
+    // ===============
 
+    // =====HP=====
     CGameObject* m_HPBar;
     CHPScript* m_HpScript;
     bool m_Hit;
     float m_SaveHitTime;
     float m_InvincibilityTime; // 무적 시간
+    // ============
 
     vector<CGameObject*> m_LotusObjs;
 
@@ -92,6 +110,7 @@ private:
     void Phase1Attack1();
 
     void Phase2Attack();
+    void SpawnColorBugs();
 
     void ChargeEffect(Vec3 _Color);
 
