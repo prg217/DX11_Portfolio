@@ -13,6 +13,8 @@ CHPScript::CHPScript()
 	, m_MaxHP(0)
 	, m_HPBar(nullptr)
 	, m_Player(false)
+	, m_OriginPosition(Vec3(0.f, 0.f, 0.f))
+	, m_OriginScale(Vec3(0.f, 0.f, 0.f))
 {
 	AddScriptParam(SCRIPT_PARAM::INT, "HP", &m_HP);
 	AddScriptParam(SCRIPT_PARAM::INT, "MaxHP", &m_MaxHP);
@@ -24,6 +26,8 @@ CHPScript::CHPScript(const CHPScript& _Origin)
 	, m_MaxHP(0)
 	, m_HPBar(nullptr)
 	, m_Player(false)
+	, m_OriginPosition(Vec3(0.f, 0.f, 0.f))
+	, m_OriginScale(Vec3(0.f, 0.f, 0.f))
 {
 }
 
@@ -121,23 +125,32 @@ void CHPScript::Hit(int _Damage, CGameObject* _HPBar)
 
 	if (m_HPBar != nullptr)
 	{
-		Vec3 scale = m_HPBar->Transform()->GetRelativeScale();
-		float hp = ((float)m_HP / (float)m_MaxHP);
-		m_HPBar->Transform()->SetRelativeScale(Vec3(hp, scale.y, scale.z));
+		if (m_OriginScale == Vec3(0.f, 0.f, 0.f))
+		{
+			m_OriginScale = m_HPBar->Transform()->GetRelativeScale();
+		}
+		float hp = static_cast<float>(m_HP) / static_cast<float>(m_MaxHP);
 
-		// HP 바의 원래 위치를 가져옴
-		Vec3 originalPosition = m_HPBar->Transform()->GetRelativePos();
+		if (m_OriginPosition == Vec3(0.f, 0.f, 0.f))
+		{
+			// HP 바의 원래 위치를 가져옴
+			m_OriginPosition = m_HPBar->Transform()->GetRelativePos();
+		}
 
-		//float ratio = 0.4f;
-		//if (wcscmp(GetOwner()->GetName().c_str(), L"BugBoss") == 0)
-		//{
-		//	ratio = 0.45f;
-		//}
+		// HP 바의 가로 크기를 체력 비율에 맞추기
+		float newScaleX = hp * m_OriginScale.x;
 
-		// HP 바의 왼쪽 끝이 고정되도록 위치를 조정
-		//float offsetX = (scale.x - hp) * ratio; 
-		float offsetX = ((float)(m_MaxHP - m_HP) / (float)m_MaxHP) * 0.25f; // 원래 크기에서 줄어든 크기만큼 왼쪽으로 이동
-		m_HPBar->Transform()->SetRelativePos(Vec3(originalPosition.x - offsetX, originalPosition.y, originalPosition.z));
+		m_HPBar->Transform()->SetRelativeScale(Vec3(newScaleX, m_OriginScale.y, m_OriginScale.z));
+
+		float ratio = 0.4f;
+		if (wcscmp(GetOwner()->GetName().c_str(), L"BugBoss") == 0)
+		{
+			ratio = 0.48f;
+		}
+		float positionOffset = (1.0f - hp) * ratio;
+
+		// 새 위치 설정 (왼쪽 고정)
+		m_HPBar->Transform()->SetRelativePos(Vec3(m_OriginPosition.x - positionOffset, m_OriginPosition.y, m_OriginPosition.z));
 	}
 }
 
@@ -152,15 +165,31 @@ void CHPScript::Heal(int _Heal)
 
 	if (m_HPBar != nullptr)
 	{
-		Vec3 scale = m_HPBar->Transform()->GetRelativeScale();
-		float hp = ((float)m_HP / (float)m_MaxHP);
-		m_HPBar->Transform()->SetRelativeScale(Vec3(hp, scale.y, scale.z));
+		if (m_OriginScale == Vec3(0.f, 0.f, 0.f))
+		{
+			m_OriginScale = m_HPBar->Transform()->GetRelativeScale();
+		}
+		float hp = static_cast<float>(m_HP) / static_cast<float>(m_MaxHP);
 
-		// HP 바의 원래 위치를 가져옴
-		Vec3 originalPosition = m_HPBar->Transform()->GetRelativePos();
+		if (m_OriginPosition == Vec3(0.f, 0.f, 0.f))
+		{
+			// HP 바의 원래 위치를 가져옴
+			m_OriginPosition = m_HPBar->Transform()->GetRelativePos();
+		}
 
-		// HP 바의 왼쪽 끝이 고정되도록 위치를 조정
-		float offsetX = ((float)(m_MaxHP - m_HP) / (float)m_MaxHP) * 0.25f; // 원래 크기에서 줄어든 크기만큼 왼쪽으로 이동
-		m_HPBar->Transform()->SetRelativePos(Vec3(originalPosition.x - offsetX, originalPosition.y, originalPosition.z));
+		// HP 바의 가로 크기를 체력 비율에 맞추기
+		float newScaleX = hp * m_OriginScale.x;
+
+		m_HPBar->Transform()->SetRelativeScale(Vec3(newScaleX, m_OriginScale.y, m_OriginScale.z));
+
+		float ratio = 0.4f;
+		if (wcscmp(GetOwner()->GetName().c_str(), L"BugBoss") == 0)
+		{
+			ratio = 0.48f;
+		}
+		float positionOffset = (1.0f - hp) * ratio;
+
+		// 새 위치 설정 (왼쪽 고정)
+		m_HPBar->Transform()->SetRelativePos(Vec3(m_OriginPosition.x - positionOffset, m_OriginPosition.y, m_OriginPosition.z));
 	}
 }

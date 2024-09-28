@@ -12,6 +12,9 @@ private:
 
     bool m_Player;
 
+    Vec3 m_OriginPosition;
+    Vec3 m_OriginScale;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
