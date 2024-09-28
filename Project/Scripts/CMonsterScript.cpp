@@ -79,6 +79,20 @@ void CMonsterScript::Begin()
 			break;
 		}
 	}
+
+
+	for (auto i : GetOwner()->GetChildren())
+	{
+		// ºû Àû¿ë ²ô±â
+		if (wcscmp(i->GetName().c_str(), L"HPFrame") == 0)
+		{
+			i->SpriteComponent()->SetUseLight(false);
+			for (auto j : i->GetChildren())
+			{
+				j->SpriteComponent()->SetUseLight(false);
+			}
+		}
+	}
 }
 
 void CMonsterScript::Tick()
@@ -156,6 +170,30 @@ void CMonsterScript::LoadFromFile(FILE* _File)
 
 void CMonsterScript::HitEffect()
 {
+	switch (m_MonsterType)
+	{
+	case MonsterType::SpitCactus:
+	{
+		CSpitCactusScript* monsterScript = dynamic_cast<CSpitCactusScript*>(GetOwner()->GetScript("CSpitCactusScript"));
+		monsterScript->HitEffect();
+	}
+	break;
+	case MonsterType::BugRolling:
+	{
+		CBugRollingScript* monsterScript = dynamic_cast<CBugRollingScript*>(GetOwner()->GetScript("CBugRollingScript"));
+		monsterScript->HitEffect();
+	}
+	break;
+	case MonsterType::ColorBug:
+	{
+		CColorBugScript* monsterScript = dynamic_cast<CColorBugScript*>(GetOwner()->GetScript("CColorBugScript"));
+		monsterScript->HitEffect();
+	}
+	break;
+	default:
+		break;
+	}
+
 	CGameObject* effect = new CGameObject;
 	effect->SetName(L"HitEffect");
 

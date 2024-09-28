@@ -34,7 +34,7 @@
 void CTestLevel::CreateTestLevel()
 {
 	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
-	strInitPath += L"level\\boss.lv";
+	strInitPath += L"level\\test.lv";
 
 	FILE* File = nullptr;
 	_wfopen_s(&File, strInitPath.c_str(), L"rb");
@@ -52,9 +52,8 @@ void CTestLevel::CreateTestLevel()
 	pAlphaBlendMtrl->SetTexParam(TEX_0, pTexture);
 
 	// Sound 재생
-	//Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\DM.wav");
-	//pSound->Play(0, 1.f, false);
-
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\BGM_10_MoonForestAmbience.wav");
+	pSound->Play(0, 0.5f, false);
 
 	// Level 생성
 	//CLevel* pLevel = new CLevel;
@@ -114,7 +113,7 @@ void CTestLevel::CreateTestLevel()
 	//pLoadedLevel->AddObject(0, pMonster);
 
 	//CGameObject* pObj = new CGameObject;
-	//pObj->SetName(L"DownEffect");
+	//pObj->SetName(L"Statue_Red");
 	//pObj->AddComponent(new CTransform);
 	//pObj->AddComponent(new CCollider2D);
 	//pObj->AddComponent(new CMeshRender);
@@ -123,21 +122,21 @@ void CTestLevel::CreateTestLevel()
 	//pObj->AddComponent(new CLight2D);
 	
 	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	//pObj->Transform()->SetRelativeScale(Vec3(300, 300, 1));
+	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 1));
 	//
 	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	//pObj->MeshRender()->SetMaterial(pMtrl);
 	//
 	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	//pObj->Collider2D()->SetScale(Vec3(0.15f, 0.15f, 1.f));
-	
+	//pObj->Collider2D()->SetScale(Vec3(0.5f, 0.7f, 1.f));
+	//
 	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Boss\\Effect\\Down.flip");
 	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
 	//pObj->FlipBookComponent()->Play(0, 10, false);
 	//pObj->FlipBookComponent()->AddAlpha(0.5f);
 	//pObj->FlipBookComponent()->SetUseLight(false);
 
-	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\boss\\colorBug\\colorBug_Green.sprite");
+	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\obstacle\\statue_red.sprite");
 	//pObj->SpriteComponent()->AddSprite(pSprite);
 	//pObj->SpriteComponent()->AddColor(false, Vec3(0, 0, 0));
 
@@ -153,7 +152,7 @@ void CTestLevel::CreateTestLevel()
 	//pObj->ParticleSystem()->LoadFromFile(File);
 	//fclose(File);
 
-	//pLoadedLevel->AddObject(0, pObj);
+	//pLoadedLevel->AddObject(28, pObj);
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;

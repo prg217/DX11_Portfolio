@@ -6,6 +6,10 @@
 #include "CCountDownDeleteScript.h"
 #include "CLiftScript.h"
 
+#include <Engine/CLevelMgr.h>
+#include <Engine/CLevel.h>
+#include <Engine/CLayer.h>
+
 CJellyPushScript::CJellyPushScript()
 	: CScript(UINT(SCRIPT_TYPE::JELLYPUSHSCRIPT))
 	, m_Type(JellyPushType::NONE)
@@ -44,6 +48,11 @@ CJellyPushScript::~CJellyPushScript()
 
 void CJellyPushScript::Begin()
 {
+	// 레이어 바꾸기
+	int LayerIdx = GetOwner()->GetLayerIdx();
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+	CLayer* pLayer = pCurLevel->GetLayer(LayerIdx);
+	pLayer->LayerChange(GetOwner(), 6);
 }
 
 void CJellyPushScript::Tick()

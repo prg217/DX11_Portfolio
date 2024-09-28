@@ -17,11 +17,16 @@ private:
     JellyPushType m_JellyType;
     PuzzleType m_PuzzleType;
     int m_PuzzleObjNum;
-    CGameObject* m_InteractionObj;
+    CGameObject* m_InteractionObj1;
+    CGameObject* m_InteractionObj2;
+
+    CGameObject* m_LinkObj;
+    bool m_LinkOK;
 
     // =====STONE_BLOCK퍼즐에 필요한 변수들=====
     bool m_Open;
     Vec3 m_Pos;
+    //Vec3 m_Pos2;
     float m_GoalPosY;
     float m_Speed;
     Vec2 m_Slice;
@@ -44,6 +49,9 @@ private:
     void StoneBlock();
     void FlowerBloom(JellyPushType _JellyPushType);
     void FlowerFall();
+
+public:
+    bool GetLinkOK() { return m_LinkOK; }
 
 public:
     CLONE(CJellyPushFrameScript);

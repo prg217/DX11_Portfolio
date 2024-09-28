@@ -32,6 +32,7 @@ public:
 
 public:
     void Dead();
+    void HitEffect();
 
 public:
     CLONE(CColorBugScript);

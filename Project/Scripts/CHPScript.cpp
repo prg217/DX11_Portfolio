@@ -119,8 +119,14 @@ void CHPScript::Hit(int _Damage, CGameObject* _HPBar)
 		// HP 바의 원래 위치를 가져옴
 		Vec3 originalPosition = m_HPBar->Transform()->GetRelativePos();
 
+		float ratio = 0.4f;
+		if (wcscmp(GetOwner()->GetName().c_str(), L"BugBoss") == 0)
+		{
+			ratio = 0.45f;
+		}
+
 		// HP 바의 왼쪽 끝이 고정되도록 위치를 조정
-		float offsetX = (scale.x - hp) * 0.4f; // 원래 크기에서 줄어든 크기만큼 왼쪽으로 이동
+		float offsetX = (scale.x - hp) * ratio; // 원래 크기에서 줄어든 크기만큼 왼쪽으로 이동
 		m_HPBar->Transform()->SetRelativePos(Vec3(originalPosition.x - offsetX, originalPosition.y, originalPosition.z));
 	}
 }

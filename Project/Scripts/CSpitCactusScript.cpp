@@ -141,3 +141,7 @@ void CSpitCactusScript::Dead()
 	GetOwner()->FlipBookComponent()->Play(1, 8, false);
 	// 죽음 애니메이션 다 재생 후 삭제
 }
+
+void CSpitCactusScript::HitEffect()
+{
+}

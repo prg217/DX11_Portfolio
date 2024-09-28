@@ -182,6 +182,8 @@ private:
 	void Move();
 	void AniState();
 	void RunParticle();
+	void RunSound();
+	void WalkSound();
 
 	void DanceEffect();
 	void DanceEffectDelete();
@@ -196,6 +198,7 @@ private:
 	void RollingParticle();
 
 	void LiftMove();
+	void LiftSound();
 	void PushMove();
 
 	void HitEffect();

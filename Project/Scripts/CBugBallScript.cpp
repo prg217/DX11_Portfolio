@@ -192,6 +192,9 @@ void CBugBallScript::Hit()
 		return;
 	}
 
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_94_BugBallHit.wav");
+	pSound->Play(1, 1.f, false);
+
 	// 빛나다가 보스 방향으로 회전 한다.
 	GetOwner()->FlipBookComponent()->AddColor(true, Vec3(1.f, 1.f, 1.f));
 	m_Time = 0.f;

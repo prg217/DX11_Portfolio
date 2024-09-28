@@ -39,7 +39,7 @@ CBugBossScript::CBugBossScript()
 	, m_AttackColorType(ColorBugType::Blue)
 	, m_IsDown(false)
 	, m_Phase1Attack0_Obj(nullptr)
-	, m_AttackCooldown(3.f)
+	, m_AttackCooldown(0.f)
 	, m_HpScript(nullptr)
 	, m_Hit(false)
 	, m_SaveHitTime(0.f)
@@ -171,9 +171,9 @@ void CBugBossScript::Tick()
 			{
 				m_Phase = BugBossPhase::Phase3;
 				m_PhaseIn = true;
+				m_ProductionTime = 0.f;
 			}
 		}
-		m_ProductionTime = 0.f;
 	}
 
 	if (m_Phase == BugBossPhase::Phase3)
@@ -200,7 +200,9 @@ void CBugBossScript::Tick()
 		{
 			m_Hit = false;
 			m_SaveHitTime = 0.f;
-
+		}
+		else if (m_SaveHitTime >= 0.2f)
+		{
 			GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 			GetOwner()->FlipBookComponent()->AddAlpha(1.f);
 			GetOwner()->FlipBookComponent()->AddColor(false);
@@ -281,7 +283,7 @@ void CBugBossScript::FlipReversePlay(int _FliBookIdx, int _FPS, bool _Repeat)
 
 void CBugBossScript::Appeared()
 {
-	if (m_ProductionTime >= 5.f)
+	if (m_ProductionTime >= 3.4f)
 	{
 		FlipPlay((int)BugBossAni::Appeared, 8, true);
 		// 먼지 파티클, 반짝 파티클, 검 휘두르는 이펙트
@@ -315,20 +317,20 @@ void CBugBossScript::Appeared()
 		m_ELight1->Light2D()->SetLightColor(eyesColor);
 		m_ELight2->Light2D()->SetLightColor(eyesColor);
 	}
-	else if (m_ProductionTime >= 4.f)
+	else if (m_ProductionTime >= 3.f)
 	{
 		// 포인트 라이트 확장
-		float R = (140.f / 0.5f) * (m_ProductionTime - 4.f);
+		float R = 140.f * ((m_ProductionTime - 3.f) / 0.4f);
 		if (R > 140.f)
 		{
 			R = 140.f;
 		}
-		float G = (145.f / 0.5f) * (m_ProductionTime - 4.f);
+		float G = 145.f * ((m_ProductionTime - 3.f) / 0.4f);
 		if (G > 145.f)
 		{
 			G = 145.f;
 		}
-		float B = (200.f / 0.5f) * (m_ProductionTime - 4.f);
+		float B = 200.f * ((m_ProductionTime - 3.f) / 0.4f);
 		if (B > 200.f)
 		{
 			B = 200.f;
@@ -338,17 +340,17 @@ void CBugBossScript::Appeared()
 		m_Light2->Light2D()->SetLightColor(rgb);
 
 		// 눈 빛 끔
-		float eyesR = 140.f - (140.f / 1.f) * (m_ProductionTime - 4.f);
+		float eyesR = 140.f * (1.f - (m_ProductionTime - 3.f) / 0.4f);
 		if (eyesR < 0.f)
 		{
 			eyesR = 0.f;
 		}
-		float eyesG = 145.f - (145.f / 1.f) * (m_ProductionTime - 4.f);
+		float eyesG = 145.f * (1.f - (m_ProductionTime - 3.f) / 0.4f);
 		if (eyesG < 0.f)
 		{
 			eyesG = 0.f;
 		}
-		float eyesB = 200.f - (200.f / 1.f) * (m_ProductionTime - 4.f);
+		float eyesB = 200.f * (1.f - (m_ProductionTime - 3.f) / 0.4f);
 		if (eyesB < 0.f)
 		{
 			eyesB = 0.f;
@@ -378,6 +380,9 @@ void CBugBossScript::Appeared()
 		Vec3 rgb = Vec3(R / 255.f, G / 255.f, B / 255.f);
 		m_ELight1->Light2D()->SetLightColor(rgb);
 		m_ELight2->Light2D()->SetLightColor(rgb);
+
+		Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_110_BossMoonMoth_Activation.wav");
+		pSound->Play(1, 1.f, false);
 	}
 }
 
@@ -385,6 +390,7 @@ void CBugBossScript::Phase1()
 {
 	if (m_PhaseIn && m_PhaseTime >= 1.f)
 	{
+		m_ProductionTime = 0.f;
 		// 난수 생성 엔진 (시간에 기반한 시드값 사용)
 		static std::mt19937 engine(static_cast<unsigned int>(std::time(nullptr)));
 		std::uniform_int_distribution<int> dist(0, 2);
@@ -465,6 +471,9 @@ void CBugBossScript::Phase1()
 		// 공격 날리기
 		if (GetOwner()->FlipBookComponent()->GetCurIdx() == 8 && !m_IsAttack)
 		{
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_112_BossMoonMoth_BulletAttack.wav");
+			pSound->Play(1, 1.f, false);
+
 			if (m_AttackCount >= 1)
 			{
 				// 볼 공격
@@ -538,6 +547,10 @@ void CBugBossScript::Phase2Production()
 	// 연꽃 생성 6개
 	if (m_PhaseTime >= 0.2f && m_LotusObjs.size() < 6)
 	{
+		Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_212_LotusLanternIn.wav");
+		pSound->Stop();
+		pSound->Play(1, 1.f, false);
+
 		// 45 90 135 225 270 315 각도에 소환한다.
 		Ptr<CPrefab> lotus = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\LotusFlower.pref");
 		// 반지름 위치에 소환한다.
@@ -611,6 +624,9 @@ void CBugBossScript::Phase3Production()
 	{
 		if (m_LotusCount < 6)
 		{
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_213_LotusLanternOut.wav");
+			pSound->Play(1, 1.f, true);
+
 			Vec3 pos = m_LotusObjs[m_LotusCount]->Transform()->GetRelativePos();
 			// 파괴 이펙트
 
@@ -629,7 +645,7 @@ void CBugBossScript::Phase3Production()
 		// 플레이어에게 포인트 라이트 달아주기
 		m_Player->AddComponent(new CLight2D);
 		m_Player->Light2D()->SetLightType(LIGHT_TYPE::POINT);
-		m_Player->Light2D()->SetRadius(50.f);
+		m_Player->Light2D()->SetRadius(150.f);
 		m_Player->Light2D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
 
 		m_PhaseIn = false;
@@ -687,6 +703,15 @@ void CBugBossScript::Phase23Attack()
 		pos += m_Speed * DT * down;
 		pos.z = -2000.f;
 		GetOwner()->Transform()->SetRelativePos(pos);
+
+		m_ProductionTime += DT;
+		if (m_ProductionTime >= 0.2f)
+		{
+			Ptr<CPrefab> flyEffect = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\FlyEffect.pref");
+			CGameObject* flyEffectObj = Instantiate(flyEffect, 0, GetOwner()->Transform()->GetRelativePos(), L"FlyEffect");
+			flyEffectObj->Transform()->SetRelativeRotation(GetOwner()->Transform()->GetRelativeRotation());
+			m_ProductionTime = 0.f;
+		}
 	}
 	
 	// Down
@@ -709,6 +734,12 @@ void CBugBossScript::Phase23Attack()
 			m_LightObj->FlipBookComponent()->AddColor(false);
 			m_WingObj->FlipBookComponent()->AddColor(false);
 			FlipPlay((int)BugBossAni::Down, 8, false);
+
+			if (GetOwner()->FlipBookComponent()->GetCurIdx() == 1)
+			{
+				Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_118_BossMoonMoth_Down.wav");
+				pSound->Play(1, 1.f, false);
+			}
 
 			// Down Effect
 			if (GetOwner()->FlipBookComponent()->GetIsFinish())
@@ -734,6 +765,8 @@ void CBugBossScript::Phase23Attack()
 				m_Phase = BugBossPhase::Phase3;
 				m_PhaseIn = true;
 				m_AttackCooldown = 1.f;
+
+				m_WingObj->FlipBookComponent()->SetUseLight(false);
 			}
 		}
 		else
@@ -753,11 +786,14 @@ void CBugBossScript::Phase23Attack()
 	// 날기 공격 준비
 	if (GetOwner()->FlipBookComponent()->GetCurFlipBookIdx() == (int)BugBossAni::WingAttackReady)
 	{
+		Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_116_BossMoonMoth_Fly.wav");
+		pSound->Play(1, 1.f, false);
 		// 날기 공격 시작
 		if (GetOwner()->FlipBookComponent()->GetIsFinish())
 		{
 			FlipPlay((int)BugBossAni::WingAttack, 8, false);
 			m_IsAttack = true;
+
 			// 카메라 흔들림
 			CGameObject* mainCamera = m_CurLevel->FindObjectByName(L"MainCamera");
 			CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
@@ -907,7 +943,7 @@ void CBugBossScript::Phase23Attack()
 		return;
 	}
 
-	if (m_PhaseTime >= 2.5f)
+	if (m_AttackCount != 0 && m_PhaseTime >= 2.5f - m_AttackCooldown)
 	{
 		if (m_IsAttack)
 		{
@@ -963,11 +999,14 @@ void CBugBossScript::Phase23Attack()
 			}
 		}
 
-		if (m_PhaseTime >= m_AttackCooldown)
+		if (m_PhaseTime >= 3.f - m_AttackCooldown)
 		{
 			m_IsAttack = true;
 			m_PhaseTime = 0.f;
 			m_IsDownOK = false;
+
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_116_BossMoonMoth_Fly.wav");
+			pSound->Play(1, 1.f, true);
 
 			// 카메라 흔들림
 			CGameObject* mainCamera = m_CurLevel->FindObjectByName(L"MainCamera");
@@ -1069,6 +1108,9 @@ void CBugBossScript::Phase3SpawnLightBall()
 
 void CBugBossScript::ChargeEffect(Vec3 _Color)
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_111_BossMoonMoth_Charge.wav");
+	pSound->Play(1, 1.f, false);
+
 	CGameObject* charge = new CGameObject;
 	charge->SetName(L"Charge");
 	charge->AddComponent(new CTransform);
@@ -1147,6 +1189,9 @@ void CBugBossScript::Hit()
 
 	m_Hit = true;
 
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_113_BossMoonMoth_Hit.wav");
+	pSound->Play(1, 1.f, true);
+
 	// 데미지 주기
 	if (m_HpScript != nullptr)
 	{
@@ -1160,6 +1205,14 @@ void CBugBossScript::Dead()
 	m_Dead = true;
 	// 죽음 애니메이션 재생 후 삭제
 	FlipPlay((int)BugBossAni::Dead, 8, false);
+
+	GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+	GetOwner()->FlipBookComponent()->AddAlpha(1.f);
+	GetOwner()->FlipBookComponent()->AddColor(false);
+	GetOwner()->FlipBookComponent()->SetUseLight(false);
+
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_117_BossMoonMoth_Death.wav");
+	pSound->Play(1, 1.f, false);
 }
 
 void CBugBossScript::Phase23Down(ColorBugType _ColorType)
@@ -1186,10 +1239,18 @@ void CBugBossScript::Phase23Down(ColorBugType _ColorType)
 			DeleteObject(colorBug);
 		}
 
-		for (auto i : m_LightBallObjs)
+		if (m_LightBallObjs.size() != 0)
 		{
-			CLightBallScript* script = dynamic_cast<CLightBallScript*>(i->GetScript("CLightBallScript"));
-			script->Destroy();
+			for (int i = 0; i < 8; i++)
+			{
+				if (m_LightBallObjs[i] != nullptr)
+				{
+					CLightBallScript* script = dynamic_cast<CLightBallScript*>(m_LightBallObjs[i]->GetScript("CLightBallScript"));
+					script->SetDeadOK(true);
+					script->Destroy();
+				}
+			}
+			m_LightBallObjs.clear();
 		}
 	}
 }

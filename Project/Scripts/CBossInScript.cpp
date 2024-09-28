@@ -70,9 +70,16 @@ void CBossInScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherO
 			pos = m_Door3->Transform()->GetRelativePos();
 			m_Door3->Transform()->SetRelativePos(Vec3(pos.x, m_SaveDoorPosY, pos.z));
 
+			_OtherObject->Transform()->SetRelativePos(Vec3(_OtherObject->Transform()->GetRelativePos().x, 700.f, 700.f));
+
 			m_Door2->AddComponent(new CCollider2D);
-			m_Door2->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+			m_Door2->Collider2D()->SetOffset(Vec3(0.f, 0.2f, 0.f));
 			m_Door2->Collider2D()->SetScale(Vec3(3.f, 0.3f, 1.f));
+
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\BGM_17_MoonForestBossIntro.wav");
+			pSound->Stop();
+			pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\BGM_16_MoonForestBoss.wav");
+			pSound->Play(0, 0.5f, false);
 		}
 			break;
 		default:

@@ -162,9 +162,6 @@
     <ClInclude Include="CBossInScript.h">
       <Filter>Scripts\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="CDoorOpenScript.h">
-      <Filter>Scripts\Obstacle</Filter>
-    </ClInclude>
     <ClInclude Include="CLightBallScript.h">
       <Filter>Scripts\Boss</Filter>
     </ClInclude>
@@ -179,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="CSymbolScript.h">
       <Filter>Scripts\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CDoorOpenScript.h">
+      <Filter>Scripts\Interaction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -299,9 +299,6 @@
     <ClCompile Include="CBossInScript.cpp">
       <Filter>Scripts\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="CDoorOpenScript.cpp">
-      <Filter>Scripts\Obstacle</Filter>
-    </ClCompile>
     <ClCompile Include="CLightBallScript.cpp">
       <Filter>Scripts\Boss</Filter>
     </ClCompile>
@@ -316,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="CSymbolScript.cpp">
       <Filter>Scripts\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CDoorOpenScript.cpp">
+      <Filter>Scripts\Interaction</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

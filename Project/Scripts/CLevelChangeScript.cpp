@@ -57,5 +57,20 @@ void CLevelChangeScript::LoadFromFile(FILE* _File)
 void CLevelChangeScript::NextLevel()
 {
 	CLevelMgr::GetInst()->LevelNameChange(m_LeveName);
+
+	if (m_LeveName.compare(L"boss") == 0)
+	{
+		Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\BGM_10_MoonForestAmbience.wav");
+		pSound->Stop();
+		pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\BGM_17_MoonForestBossIntro.wav");
+		pSound->Play(0, 0.5f, false);
+	}
+	if (m_LeveName.compare(L"test") == 0)
+	{
+		Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\BGM_17_MoonForestBossIntro.wav");
+		pSound->Stop();
+		pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\BGM_10_MoonForestAmbience.wav");
+		pSound->Play(0, 0.5f, false);
+	}
 }
 

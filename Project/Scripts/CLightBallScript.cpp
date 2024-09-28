@@ -77,7 +77,10 @@ void CLightBallScript::Tick()
 	{
 		if (GetOwner()->FlipBookComponent()->GetIsFinish())
 		{
-			DeleteObject(GetOwner());
+			if (m_DeadOK)
+			{
+				DeleteObject(GetOwner());
+			}
 		}
 		return;
 	}
@@ -164,6 +167,9 @@ void CLightBallScript::LoadFromFile(FILE* _File)
 
 void CLightBallScript::Destroy()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_97_BugBulletDisappear.wav");
+	pSound->Play(1, 1.f, false);
+
 	GetOwner()->FlipBookComponent()->Play(0, 10, false);
 	GetOwner()->FlipBookComponent()->AddColor(false);
 

@@ -140,6 +140,9 @@ void CPlayerScript::Tick()
 		// Q 버튼을 누르면 춤을 춘다.
 		if (KEY_TAP(KEY::Q) && !m_IsDance)
 		{
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_321_OguHealCharge.wav");
+			pSound->Play(1, 1.f, false);
+
 			m_SaveDanceTime = TIME;
 			m_IsDance = true;
 			DanceEffect();
@@ -171,6 +174,8 @@ void CPlayerScript::Tick()
 		if (KEY_TAP(KEY::A))
 		{
 			Swing();
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_0_Swing1_1.wav");
+			pSound->Play(1, 1.f, false);
 		}
 	}
 
@@ -694,51 +699,67 @@ void CPlayerScript::AniState()
 		break;
 	case OguAniState::WALK_DOWN:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_DOWN, 10, true);
+		WalkSound();
 		break;
 	case OguAniState::WALK_UP:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_UP, 10, true);
+		WalkSound();
 		break;
 	case OguAniState::WALK_LEFT:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_LEFT, 10, true);
+		WalkSound();
 		break;
 	case OguAniState::WALK_RIGHT:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_RIGHT, 10, true);
+		WalkSound();
 		break;
 	case OguAniState::WALK_LEFTDOWN:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_LEFTDOWN, 10, true);
+		WalkSound();
 		break;
 	case OguAniState::WALK_LEFTUP:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_LEFTUP, 10, true);
+		WalkSound();
 		break;
 	case OguAniState::WALK_RIGHTDOWN:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_RIGHTDOWN, 10, true);
+		WalkSound();
 		break;
 	case OguAniState::WALK_RIGHTUP:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_WALK_RIGHTUP, 10, true);
+		WalkSound();
 		break;
 	case OguAniState::RUN_DOWN:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_DOWN, 10, true);
+		RunSound();
 		break;
 	case OguAniState::RUN_UP:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_UP, 10, true);
+		RunSound();
 		break;
 	case OguAniState::RUN_LEFT:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_LEFT, 10, true);
+		RunSound();
 		break;
 	case OguAniState::RUN_RIGHT:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_RIGHT, 10, true);
+		RunSound();
 		break;
 	case OguAniState::RUN_LEFTDOWN:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_LEFTDOWN, 10, true);
+		RunSound();
 		break;
 	case OguAniState::RUN_LEFTUP:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_LEFTUP, 10, true);
+		RunSound();
 		break;
 	case OguAniState::RUN_RIGHTDOWN:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_RIGHTDOWN, 10, true);
+		RunSound();
 		break;
 	case OguAniState::RUN_RIGHTUP:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_RUN_RIGHTUP, 10, true);
+		RunSound();
 		break;
 	case OguAniState::IDLE_DANCE:
 		FlipBookComponent()->Play((int)OGU_FLIPBOOK_IDX::OGU_IDLE_DANCE, 10, true);
@@ -969,6 +990,18 @@ void CPlayerScript::RunParticle()
 	CreateObject(pParticleObj, 0);
 }
 
+void CPlayerScript::RunSound()
+{
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_7_Run_Ground_1.wav");
+	pSound->Play(1, 1.f, false);
+}
+
+void CPlayerScript::WalkSound()
+{
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_4_Walk_Ground_1.wav");
+	pSound->Play(1, 1.f, false);
+}
+
 void CPlayerScript::DanceEffect()
 {
 	// 포인트 라이트 추가
@@ -1067,6 +1100,9 @@ void CPlayerScript::DanceHeal()
 	{
 		if (m_HPScript != nullptr)
 		{
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_322_OguHeal.wav");
+			pSound->Play(1, 1.f, false);
+
 			int hp = m_HPScript->GetHP();
 			int maxHp = m_HPScript->GetMaxHP();
 			if (maxHp > hp)
@@ -1182,6 +1218,9 @@ void CPlayerScript::AniFinishCheck()
 
 void CPlayerScript::RollingStart()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_294_OguRoll.wav");
+	pSound->Play(1, 1.f, false);
+
 	if (m_CurPS == PlayerState::NONE)
 	{
 		switch (m_CurAS)
@@ -1675,24 +1714,34 @@ void CPlayerScript::LiftMove()
 	// Move
 	if (KEY_PRESSED(KEY::LEFT))
 	{
+		LiftSound();
 		vPos.x -= DT * m_Speed;
 	}
 	if (KEY_PRESSED(KEY::RIGHT))
 	{
+		LiftSound();
 		vPos.x += DT * m_Speed;
 	}
 	if (KEY_PRESSED(KEY::UP))
 	{
+		LiftSound();
 		vPos.y += DT * m_Speed;
 		vPos.z += DT * m_Speed;
 	}
 	if (KEY_PRESSED(KEY::DOWN))
 	{
+		LiftSound();
 		vPos.y -= DT * m_Speed;
 		vPos.z -= DT * m_Speed;
 	}
 
 	Transform()->SetRelativePos(vPos);
+}
+
+void CPlayerScript::LiftSound()
+{
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_218_LiftWalk.wav");
+	pSound->Play(1, 1.f, false);
 }
 
 void CPlayerScript::PushMove()
@@ -2195,6 +2244,9 @@ void CPlayerScript::Hit()
 	}
 
 	m_Hit = true;
+
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_95_OguHit.wav");
+	pSound->Play(1, 1.f, false);
 
 	// 피격 이펙트
 	HitEffect();

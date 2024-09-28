@@ -635,3 +635,7 @@ void CBugRollingScript::Dead()
 	DeleteObject(GetOwner());
 }
 
+void CBugRollingScript::HitEffect()
+{
+}
+

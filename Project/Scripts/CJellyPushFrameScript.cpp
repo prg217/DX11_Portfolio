@@ -11,7 +11,10 @@
 CJellyPushFrameScript::CJellyPushFrameScript()
 	: CScript(UINT(SCRIPT_TYPE::JELLYPUSHFRAMESCRIPT))
 	, m_JellyType(JellyPushType::NONE)
-	, m_InteractionObj(nullptr)
+	, m_InteractionObj1(nullptr)
+	, m_InteractionObj2(nullptr)
+	, m_LinkObj(nullptr)
+	, m_LinkOK(false)
 	, m_PuzzleObjNum(0)
 	, m_Open(false)
 	, m_GoalPosY(0)
@@ -20,13 +23,16 @@ CJellyPushFrameScript::CJellyPushFrameScript()
 	AddScriptParam(SCRIPT_PARAM::INT, "JellyPushType", &m_JellyType);
 	AddScriptParam(SCRIPT_PARAM::INT, "PuzzleType", &m_PuzzleType);
 	AddScriptParam(SCRIPT_PARAM::INT, "PuzzleObjNumber", &m_PuzzleObjNum);
-	AddScriptParam(SCRIPT_PARAM::GAMEOBJECT, "InteractionObj", &m_InteractionObj);
+	AddScriptParam(SCRIPT_PARAM::GAMEOBJECT, "InteractionObj", &m_InteractionObj1);
 }
 
 CJellyPushFrameScript::CJellyPushFrameScript(const CJellyPushFrameScript& _Origin)
 	: CScript(_Origin)
 	, m_JellyType(JellyPushType::NONE)
-	, m_InteractionObj(nullptr)
+	, m_InteractionObj1(nullptr)
+	, m_InteractionObj2(nullptr)
+	, m_LinkObj(nullptr)
+	, m_LinkOK(false)
 	, m_PuzzleObjNum(0)
 	, m_Open(false)
 	, m_GoalPosY(0)
@@ -48,7 +54,22 @@ void CJellyPushFrameScript::Begin()
 		switch (m_PuzzleObjNum)
 		{
 		case 0:
-			m_InteractionObj = curLevel->FindObjectByName(L"StoneBlock");
+			m_InteractionObj1 = curLevel->FindObjectByName(L"StoneBlock");
+			break;
+		case 1:
+			m_InteractionObj1 = curLevel->FindObjectByName(L"SB1");
+			break;
+		case 2:
+			if (wcscmp(GetOwner()->GetName().c_str(), L"Red2F_0") == 0)
+			{
+				m_LinkObj = curLevel->FindObjectByName(L"Red2F_1");
+			}
+			else if (wcscmp(GetOwner()->GetName().c_str(), L"Red2F_1") == 0)
+			{
+				m_LinkObj = curLevel->FindObjectByName(L"Red2F_0");
+			}
+			m_InteractionObj1 = curLevel->FindObjectByName(L"SB2");
+			m_InteractionObj2 = curLevel->FindObjectByName(L"SB3");
 			break;
 		default:
 			break;
@@ -58,7 +79,7 @@ void CJellyPushFrameScript::Begin()
 		switch (m_PuzzleObjNum)
 		{
 		case 0:
-			m_InteractionObj = curLevel->FindObjectByName(L"FlowerLight");
+			m_InteractionObj1 = curLevel->FindObjectByName(L"FlowerLight");
 			break;
 		default:
 			break;
@@ -93,6 +114,28 @@ void CJellyPushFrameScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 
 		if (jellyScript->GetJellyPushType() == m_JellyType && !m_Open)
 		{
+			if (m_LinkObj != nullptr)
+			{
+				CJellyPushFrameScript* script = dynamic_cast<CJellyPushFrameScript*>(m_LinkObj->GetScript("CJellyPushFrameScript"));
+				if (script->GetLinkOK() == false)
+				{
+					m_LinkOK = true;
+
+					// 더 이상 반응 할 수 없게 콜라이더를 제거해준다.
+					if (GetOwner()->GetComponent(COMPONENT_TYPE::COLLIDER2D) != nullptr)
+					{
+						DeleteComponent(GetOwner(), COMPONENT_TYPE::COLLIDER2D);
+					}
+					// 더 이상 충돌 할 수 없게 콜라이더를 제거해준다.
+					if (m_InteractionObj1->GetComponent(COMPONENT_TYPE::COLLIDER2D) != nullptr)
+					{
+						DeleteComponent(m_InteractionObj1, COMPONENT_TYPE::COLLIDER2D);
+					}
+
+					return;
+				}
+			}
+
 			switch (m_PuzzleType)
 			{
 			case PuzzleType::STONE_BLOCK:
@@ -104,9 +147,9 @@ void CJellyPushFrameScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 					DeleteComponent(GetOwner(), COMPONENT_TYPE::COLLIDER2D);
 				}
 				// 더 이상 충돌 할 수 없게 콜라이더를 제거해준다.
-				if (m_InteractionObj->GetComponent(COMPONENT_TYPE::COLLIDER2D) != nullptr)
+				if (m_InteractionObj1->GetComponent(COMPONENT_TYPE::COLLIDER2D) != nullptr)
 				{
-					DeleteComponent(m_InteractionObj, COMPONENT_TYPE::COLLIDER2D);
+					DeleteComponent(m_InteractionObj1, COMPONENT_TYPE::COLLIDER2D);
 				}
 				break;
 			default:
@@ -154,20 +197,43 @@ void CJellyPushFrameScript::Open()
 
 	// 스프라이트 Slice 부분을 줄여 삐져나오는 아래 부분을 없애준다.
 	m_Slice.y -= 40.f * DT;
-	m_InteractionObj->SpriteComponent()->SliceAmend(true, Vec2(m_Slice.x, m_Slice.y));
-	if (m_InteractionObj->GetChildren().size() != 0)
+	m_InteractionObj1->SpriteComponent()->SliceAmend(true, Vec2(m_Slice.x, m_Slice.y));
+	if (m_InteractionObj2 != nullptr)
 	{
-		CGameObject* bug = m_InteractionObj->GetChildren()[0];
+		m_InteractionObj2->SpriteComponent()->SliceAmend(true, Vec2(m_Slice.x, m_Slice.y));
+	}
+
+	if (m_InteractionObj1->GetChildren().size() != 0)
+	{
+		CGameObject* bug = m_InteractionObj1->GetChildren()[0];
 		bug->SpriteComponent()->SliceAmend(true, Vec2(m_Slice.x, m_Slice.y));
+	}
+	if (m_InteractionObj2 != nullptr)
+	{
+		if (m_InteractionObj2->GetChildren().size() != 0)
+		{
+			CGameObject* bug = m_InteractionObj2->GetChildren()[0];
+			bug->SpriteComponent()->SliceAmend(true, Vec2(m_Slice.x, m_Slice.y));
+		}
 	}
 
 	if (m_Pos.y <= m_GoalPosY)
 	{
-		if (m_InteractionObj->GetChildren().size() != 0)
+		if (m_InteractionObj1->GetChildren().size() != 0)
 		{
-			for (auto i : m_InteractionObj->GetChildren())
+			for (auto i : m_InteractionObj1->GetChildren())
 			{
 				DeleteObject(i);
+			}
+		}
+		if (m_InteractionObj2 != nullptr)
+		{
+			if (m_InteractionObj2->GetChildren().size() != 0)
+			{
+				for (auto i : m_InteractionObj2->GetChildren())
+				{
+					DeleteObject(i);
+				}
 			}
 		}
 
@@ -181,16 +247,17 @@ void CJellyPushFrameScript::Open()
 		m_Open = false;
 	}
 
-	m_InteractionObj->Transform()->SetRelativePos(m_Pos.x, m_Pos.y, 490.f);
+	m_InteractionObj1->Transform()->SetRelativePos(m_Pos.x, m_Pos.y, 490.f);
+	m_InteractionObj2->Transform()->SetRelativePos(m_InteractionObj2->Transform()->GetRelativePos().x, m_Pos.y, 490.f);
 }
 
 void CJellyPushFrameScript::StoneBlock()
 {
 	// m_StoneBlock을 연다.
-	m_Pos = m_InteractionObj->Transform()->GetRelativePos();
+	m_Pos = m_InteractionObj1->Transform()->GetRelativePos();
 	m_GoalPosY = m_Pos.y - 15.f;
 
-	Ptr<CSprite> sprite = m_InteractionObj->SpriteComponent()->GetSprite();
+	Ptr<CSprite> sprite = m_InteractionObj1->SpriteComponent()->GetSprite();
 	m_Slice = sprite->GetSliceUV() * sprite->GetTexSize();
 
 	// 카메라 포커스
@@ -198,12 +265,12 @@ void CJellyPushFrameScript::StoneBlock()
 	CGameObject* mainCamera = curLevel->FindObjectByName(L"MainCamera");
 	CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
 	CCameraPlayerTrackingScript* cameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
-	cameraScript->Focus(m_InteractionObj);
+	cameraScript->Focus(m_InteractionObj1);
 
 	// 그림 빛 추가
-	if (m_InteractionObj->GetChildren().size() != 0 && !m_Open)
+	if (m_InteractionObj1->GetChildren().size() != 0 && !m_Open)
 	{
-		CGameObject* bug = m_InteractionObj->GetChildren()[0];
+		CGameObject* bug = m_InteractionObj1->GetChildren()[0];
 		bug->SpriteComponent()->AddColor(true, Vec3(0.7f, 0.99f, 0.8f));
 
 		// 포인트 라이트 추가
@@ -220,7 +287,31 @@ void CJellyPushFrameScript::StoneBlock()
 		pLight->Light2D()->SetRadius(35.f);
 
 		CreateObject(pLight, 0);
-		AddChildObject(m_InteractionObj, pLight);
+		AddChildObject(m_InteractionObj1, pLight);
+	}
+	if (m_InteractionObj2 != nullptr)
+	{
+		if (m_InteractionObj2->GetChildren().size() != 0 && !m_Open)
+		{
+			CGameObject* bug = m_InteractionObj2->GetChildren()[0];
+			bug->SpriteComponent()->AddColor(true, Vec3(0.7f, 0.99f, 0.8f));
+
+			// 포인트 라이트 추가
+			CGameObject* pLight = new CGameObject;
+			pLight->SetName(L"StoneBlock_Light");
+			pLight->AddComponent(new CTransform);
+			pLight->AddComponent(new CLight2D);
+
+			pLight->Transform()->SetRelativePos(Vec3(0, 0, 0));
+			pLight->Transform()->SetRelativeScale(Vec3(1, 1, 0));
+
+			pLight->Light2D()->SetLightColor(Vec3(0.62f, 0.99f, 0.97f));
+			pLight->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+			pLight->Light2D()->SetRadius(35.f);
+
+			CreateObject(pLight, 0);
+			AddChildObject(m_InteractionObj2, pLight);
+		}
 	}
 
 	m_Open = true;
@@ -228,7 +319,7 @@ void CJellyPushFrameScript::StoneBlock()
 
 void CJellyPushFrameScript::FlowerBloom(JellyPushType _JellyPushType)
 {
-	CScript* script = m_InteractionObj->GetScript("CFlowerLightScript");
+	CScript* script = m_InteractionObj1->GetScript("CFlowerLightScript");
 	CFlowerLightScript* flowerLightScript = dynamic_cast<CFlowerLightScript*>(script);
 	
 	flowerLightScript->Bloom(_JellyPushType);
@@ -236,7 +327,7 @@ void CJellyPushFrameScript::FlowerBloom(JellyPushType _JellyPushType)
 
 void CJellyPushFrameScript::FlowerFall()
 {
-	CScript* script = m_InteractionObj->GetScript("CFlowerLightScript");
+	CScript* script = m_InteractionObj1->GetScript("CFlowerLightScript");
 	CFlowerLightScript* flowerLightScript = dynamic_cast<CFlowerLightScript*>(script);
 
 	flowerLightScript->Fall();

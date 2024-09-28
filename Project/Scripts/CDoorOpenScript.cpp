@@ -51,6 +51,9 @@ void CDoorOpenScript::Tick()
 void CDoorOpenScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
 	// 문을 연다.
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_168_GateOnceOff.wav");
+	pSound->Play(1, 1.f, false);
+
 	m_Pos = m_Door1->Transform()->GetRelativePos();
 	m_GoalPosY = m_Pos.y - 10.f;
 	Ptr<CSprite> sprite = m_Door1->SpriteComponent()->GetSprite();

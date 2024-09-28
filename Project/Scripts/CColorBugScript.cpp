@@ -142,6 +142,8 @@ void CColorBugScript::LoadFromFile(FILE* _File)
 void CColorBugScript::Dead()
 {
 	// Á×´Â ÀÌÆåÆ®
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_108_MonsterBugColorBeatle_Death.wav");
+	pSound->Play(1, 1.f, true);
 
 	// BugBoss¿¡°Ô ½ÅÈ£ º¸³¿
 	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -150,4 +152,10 @@ void CColorBugScript::Dead()
 	bossScript->Phase23Down(m_Type);
 
 	DeleteObject(GetOwner());
+}
+
+void CColorBugScript::HitEffect()
+{
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_107_MonsterBugColorBeatle_Hit.wav");
+	pSound->Play(1, 1.f, true);
 }

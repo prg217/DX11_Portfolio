@@ -42,6 +42,7 @@ public:
     void Stop();
 
     void Dead();
+    void HitEffect();
 
 public:
     CLONE(CSpitCactusScript);

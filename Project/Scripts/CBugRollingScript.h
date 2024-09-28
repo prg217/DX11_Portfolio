@@ -85,6 +85,7 @@ public:
     void Attack();
     void Stop();
     void Dead();
+    void HitEffect();
 
 public:
     CLONE(CBugRollingScript);
