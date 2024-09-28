@@ -95,6 +95,15 @@ void SpriteComUI::Update()
 	{
 		spriteCom->SetUseLight(useLight);
 	}
+
+	// ¾ËÆÄ°ª
+	ImGui::Text("Alpha");
+	ImGui::SameLine(100);
+	float alpha = spriteCom->GetAlpha();
+	if (ImGui::DragFloat("##SpriteAlpha", &alpha))
+	{
+		spriteCom->AddAlpha(alpha);
+	}
 }
 
 void SpriteComUI::SelectSprite(DWORD_PTR _ListUI)

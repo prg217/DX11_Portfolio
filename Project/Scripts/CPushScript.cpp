@@ -11,22 +11,23 @@ CPushScript::CPushScript()
 	: CScript(UINT(SCRIPT_TYPE::PUSHSCRIPT))
 	, m_pPlayer(nullptr)
 	, m_pPlayerScript(nullptr)
-	, m_Speed(0)
+	, m_Speed(0.f)
 	, m_PlayerCurAS(OguAniState::IDLE)
 	, m_IsPush(false)
-	, m_PlayerOvelapTime(0.f)
+	, m_POvelapTime(0.f)
 {
 	AddScriptParam(SCRIPT_PARAM::FLOAT, "m_Speed", &m_Speed);
+	AddScriptParam(SCRIPT_PARAM::FLOAT, "m_POvelapTime", &m_POvelapTime);
 }
 
 CPushScript::CPushScript(const CPushScript& _Origin)
 	: CScript(_Origin)
 	, m_pPlayer(_Origin.m_pPlayer)
 	, m_pPlayerScript(_Origin.m_pPlayerScript)
-	, m_Speed(0)
+	, m_Speed(0.f)
 	, m_PlayerCurAS(OguAniState::IDLE)
 	, m_IsPush(false)
-	, m_PlayerOvelapTime(0.f)
+	, m_POvelapTime(0.f)
 {
 }
 
@@ -45,6 +46,39 @@ void CPushScript::Begin()
 
 void CPushScript::Tick()
 {
+	if (m_IsPush)
+	{
+		if (GetOwner()->GetScript("CJellyPushScript") != nullptr)
+		{
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_44_Jelly_Push.wav");
+			pSound->Play(1, 1.f, false);
+		}
+		else
+		{
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_26_StonePushable_Push.wav");
+			pSound->Play(1, 1.f, false);
+		}
+
+		// 왜인지 자꾸 0이 됨
+		m_POvelapTime = TIME;
+	}
+
+	if (m_POvelapTime != 0.f)
+	{
+		if (TIME - m_POvelapTime >= 0.2f)
+		{
+			if (GetOwner()->GetScript("CJellyPushScript") != nullptr)
+			{
+				Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_44_Jelly_Push.wav");
+				pSound->Stop();
+			}
+			else
+			{
+				Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_26_StonePushable_Push.wav");
+				pSound->Stop();
+			}
+		}
+	}
 }
 
 void CPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
@@ -57,7 +91,7 @@ void CPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObj
 	if (m_pPlayer == _OtherObject)
 	{
 		m_Speed = m_pPlayerScript->GetSpeed() + 100.f;
-		m_IsPush = true;			
+		m_IsPush = true;	
 	}
 	else if (_OtherObject->GetLayerIdx() == 6)
 	{
@@ -95,19 +129,6 @@ void CPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, 
 
 	if (m_pPlayer == _OtherObject)
 	{
-		m_PlayerOvelapTime = TIME;
-
-		if (GetOwner()->GetScript("CJellyPushScript") != nullptr)
-		{
-			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_44_Jelly_Push.wav");
-			pSound->Play(1, 1.f, false);
-		}
-		else
-		{
-			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_26_StonePushable_Push.wav");
-			pSound->Play(1, 1.f, false);
-		}
-
 		m_PlayerCurAS = m_pPlayerScript->GetCurAS();
 		Vec3 force = Vec3(0.f, 0.f, 0.f);
 
@@ -234,23 +255,6 @@ void CPushScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObjec
 	else if (m_pPlayer == _OtherObject)
 	{
 		m_IsPush = false;
-	}
-
-	if (m_pPlayer == _OtherObject)
-	{
-		if (TIME - m_PlayerOvelapTime >= 0.2f)
-		{
-			if (GetOwner()->GetScript("CJellyPushScript") != nullptr)
-			{
-				Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_44_Jelly_Push.wav");
-				pSound->Stop();
-			}
-			else
-			{
-				Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_26_StonePushable_Push.wav");
-				pSound->Stop();
-			}
-		}
 	}
 }
 

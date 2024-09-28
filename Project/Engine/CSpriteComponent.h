@@ -40,6 +40,7 @@ public:
     bool GetAddColor() { return m_AddColor; }
     Vec3 GetColor() { return m_Color; }
     bool GetUseLight() { return m_UseLight; }
+    float GetAlpha() { return m_Alpha; }
 
     void SetSprite(Ptr<CSprite> _Sprite) { m_Sprite = _Sprite; }
 

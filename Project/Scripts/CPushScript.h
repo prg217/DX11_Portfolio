@@ -17,7 +17,7 @@ private:
 
     bool m_IsPush;
 
-    float m_PlayerOvelapTime;
+    float m_POvelapTime;
 
 public:
     virtual void Begin() override;

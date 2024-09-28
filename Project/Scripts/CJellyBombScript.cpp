@@ -117,6 +117,7 @@ void CJellyBombScript::Bomb()
 	}
 	else if (TIME - m_SaveTime >= 2.f)
 	{
+		m_RadiusLight->Light2D()->SetLightColor(Vec3(3.f, 5.f, 3.f));
 		m_RadiusLight->Light2D()->SetRadius(60.f);
 	}
 	else if (TIME - m_SaveTime >= 1.8f)

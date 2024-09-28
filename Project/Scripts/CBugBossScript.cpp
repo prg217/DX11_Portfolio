@@ -852,7 +852,7 @@ void CBugBossScript::Phase23Attack()
 		else if (m_PhaseTime <= 2.6f)
 		{
 			pos = m_SavePos2 + (m_SavePos - m_SavePos2) * ((m_PhaseTime - 1.6f) / 1.f);
-			GetOwner()->Transform()->SetRelativePos(pos);
+			GetOwner()->Transform()->SetRelativePos(Vec3(pos.x, pos.z, 4000.f));
 		}
 		else
 		{
@@ -1205,6 +1205,8 @@ void CBugBossScript::Dead()
 	m_Dead = true;
 	// 죽음 애니메이션 재생 후 삭제
 	FlipPlay((int)BugBossAni::Dead, 8, false);
+
+	GetOwner()->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
 	GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 	GetOwner()->FlipBookComponent()->AddAlpha(1.f);
