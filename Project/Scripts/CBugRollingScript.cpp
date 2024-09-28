@@ -436,6 +436,9 @@ void CBugRollingScript::Chase()
 
 void CBugRollingScript::Move()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_82_MonsterBugRolling_Rolling.wav");
+	pSound->Play(1, 1.f, false);
+
 	Vec3 vPos = GetOwner()->Transform()->GetRelativePos();
 
 	switch (m_CurDir)
@@ -551,6 +554,9 @@ void CBugRollingScript::MoveEndAni()
 
 void CBugRollingScript::StunEffect()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_82_MonsterBugRolling_Rolling.wav");
+	pSound->Stop();
+
 	if (GetOwner()->IsDead())
 	{
 		return;
@@ -613,6 +619,9 @@ void CBugRollingScript::Stop()
 
 void CBugRollingScript::Dead()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_84_MonsterBugRolling_Death.wav");
+	pSound->Play(1, 1.f, false);
+
 	// Á×À» ¶§´Â ÆÄ±« ÀÌÆåÆ® Ãâ·Â
 	CGameObject* deadEffect = new CGameObject;
 	deadEffect->AddComponent(new CTransform);
@@ -637,5 +646,7 @@ void CBugRollingScript::Dead()
 
 void CBugRollingScript::HitEffect()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_83_MonsterBugRolling_Hit.wav");
+	pSound->Play(1, 1.f, false);
 }
 

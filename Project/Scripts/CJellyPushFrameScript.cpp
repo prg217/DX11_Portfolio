@@ -248,11 +248,17 @@ void CJellyPushFrameScript::Open()
 	}
 
 	m_InteractionObj1->Transform()->SetRelativePos(m_Pos.x, m_Pos.y, 490.f);
-	m_InteractionObj2->Transform()->SetRelativePos(m_InteractionObj2->Transform()->GetRelativePos().x, m_Pos.y, 490.f);
+	if (m_InteractionObj2 != nullptr)
+	{
+		m_InteractionObj2->Transform()->SetRelativePos(m_InteractionObj2->Transform()->GetRelativePos().x, m_Pos.y, 490.f);
+	}
 }
 
 void CJellyPushFrameScript::StoneBlock()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_168_GateOnceOff.wav");
+	pSound->Play(1, 1.f, false);
+
 	// m_StoneBlockÀ» ¿¬´Ù.
 	m_Pos = m_InteractionObj1->Transform()->GetRelativePos();
 	m_GoalPosY = m_Pos.y - 15.f;

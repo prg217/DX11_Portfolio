@@ -53,8 +53,6 @@ void CLiftScript::Tick()
 
 	Ending();
 	
-
-	
 }
 
 void CLiftScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
@@ -154,6 +152,9 @@ void CLiftScript::Moving()
 	if (!m_Start && !m_End
 		&& (GetOwner()->GetParent() == m_pPlayer))
 	{
+		Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_46_Jelly_Lift.wav");
+		pSound->Play(1, 1.f, false);
+
 		m_PlayerCurAS = m_pPlayerScript->GetCurAS();
 
 		switch (m_PlayerCurAS)

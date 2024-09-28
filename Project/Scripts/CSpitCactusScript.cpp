@@ -98,6 +98,9 @@ void CSpitCactusScript::LoadFromFile(FILE* _File)
 
 void CSpitCactusScript::SpawnNeedle()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_85_MonsterSpitCactus_Shoot.wav");
+	pSound->Play(1, 1.f, false);
+
 	// 상하좌우 프리팹 가시 발사
 	if (m_NeedleObj0 != nullptr)
 	{
@@ -135,6 +138,9 @@ void CSpitCactusScript::Stop()
 
 void CSpitCactusScript::Dead()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_87_MonsterSpitCactus_Death.wav");
+	pSound->Play(1, 1.f, false);
+
 	// 공격 멈추고 죽음 애니메이션
 	m_Attack = false;
 	m_Dead = true;
@@ -144,4 +150,6 @@ void CSpitCactusScript::Dead()
 
 void CSpitCactusScript::HitEffect()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_86_MonsterSpitCactus_Hit.wav");
+	pSound->Play(1, 1.f, false);
 }

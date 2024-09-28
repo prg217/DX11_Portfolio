@@ -54,6 +54,9 @@ void CStoneBreakableScript::LoadFromFile(FILE* _File)
 
 void CStoneBreakableScript::Destroy()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_681_StoneBreakableDestroy.wav");
+	pSound->Play(1, 1.f, true);
+
 	m_Destroy = true;
 
 	GetOwner()->FlipBookComponent()->Play(0, 10, false);

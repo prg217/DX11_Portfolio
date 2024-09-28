@@ -72,6 +72,9 @@ void CJellyBombScript::LoadFromFile(FILE* _File)
 
 void CJellyBombScript::BombStart()
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_88_JellyBomb_Activation.wav");
+	pSound->Play(1, 1.f, false);
+
 	CreateLight(80.f, Vec3(0.62f, 0.99f, 0.97f));
 	CreateLight(0.f, Vec3(0.52f, 0.69f, 0.5f));
 
@@ -83,8 +86,11 @@ void CJellyBombScript::Bomb()
 {
 	// 빛이 작았다가 커짐
 	// 좀 줄었다가 다시 커졌다가... 커져서
-	if (TIME - m_SaveTime >= 1.2f)
+	if (TIME - m_SaveTime >= 3.f)
 	{
+		Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_89_ObjectExplosion.wav");
+		pSound->Play(1, 1.f, false);
+
 		// 익스플로전 이펙트 소환, 폭발, 오브젝트 삭제
 		DetectDestroy();
 
@@ -93,27 +99,43 @@ void CJellyBombScript::Bomb()
 		DeleteObject(GetOwner());
 		m_IsBomb = false;
 	}
-	else if (TIME - m_SaveTime >= 1.f)
+	else if (TIME - m_SaveTime >= 2.8f)
 	{
 		m_RadiusLight->Light2D()->SetRadius(60.f);
 	}
-	else if (TIME - m_SaveTime >= 0.9f)
+	else if (TIME - m_SaveTime >= 2.6f)
 	{
 		m_RadiusLight->Light2D()->SetRadius(35.f);
 	}
-	else if (TIME - m_SaveTime >= 0.7f)
+	else if (TIME - m_SaveTime >= 2.4f)
 	{
-		m_RadiusLight->Light2D()->SetRadius(50.f);
+		m_RadiusLight->Light2D()->SetRadius(60.f);
 	}
-	else if (TIME - m_SaveTime >= 0.5f)
+	else if (TIME - m_SaveTime >= 2.2f)
 	{
 		m_RadiusLight->Light2D()->SetRadius(35.f);
 	}
-	else if (TIME - m_SaveTime >= 0.3f)
+	else if (TIME - m_SaveTime >= 2.f)
+	{
+		m_RadiusLight->Light2D()->SetRadius(60.f);
+	}
+	else if (TIME - m_SaveTime >= 1.8f)
+	{
+		m_RadiusLight->Light2D()->SetRadius(35.f);
+	}
+	else if (TIME - m_SaveTime >= 1.5f)
 	{
 		m_RadiusLight->Light2D()->SetRadius(50.f);
 	}
-	else if (TIME - m_SaveTime >= 0.2f)
+	else if (TIME - m_SaveTime >= 1.2f)
+	{
+		m_RadiusLight->Light2D()->SetRadius(35.f);
+	}
+	else if (TIME - m_SaveTime >= 0.8f)
+	{
+		m_RadiusLight->Light2D()->SetRadius(50.f);
+	}
+	else if (TIME - m_SaveTime >= 0.4f)
 	{
 		m_RadiusLight->Light2D()->SetRadius(35.f);
 	}

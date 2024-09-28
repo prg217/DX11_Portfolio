@@ -22,6 +22,7 @@ CJellyPushScript::CJellyPushScript()
 	, m_SaveShakingTime(0)
 	, m_Split(false)
 	, m_SplitTime(0.f)
+	, m_PlayerOverlapTime(0.f)
 {
 	AddScriptParam(SCRIPT_PARAM::INT, "JellyPushType", &m_Type);
 	AddScriptParam(SCRIPT_PARAM::INT, "Speed", &m_Speed);
@@ -39,6 +40,7 @@ CJellyPushScript::CJellyPushScript(const CJellyPushScript& _Origin)
 	, m_SaveShakingTime(0)
 	, m_Split(false)
 	, m_SplitTime(0.f)
+	, m_PlayerOverlapTime(0.f)
 {
 }
 
@@ -129,9 +131,12 @@ void CJellyPushScript::Tick()
 void CJellyPushScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
 	// 플레이어와 닿았으면 흔들린다.
-	if (_OtherObject->GetLayerIdx() == 3)
+	if (_OtherObject->GetLayerIdx() == 3 && TIME - m_PlayerOverlapTime >= 2.f)
 	{
+		Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_75_JellyCollision.wav");
+		pSound->Play(1, 1.f, false);
 		m_Shaking = true;
+		m_PlayerOverlapTime = TIME;
 	}
 
 	// 부모가 있으면 return
@@ -171,6 +176,10 @@ void CJellyPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObj
 		return;
 	}
 
+	if (_OtherObject->GetLayerIdx() == 3)
+	{
+		m_PlayerOverlapTime = TIME;
+	}
 	// 미니 젤리 일 경우
 	// 같은 색이면 같이 밀려짐
 	// 다른 색이면 그 색에 따라 합성됨(서로 위치 가운데 지점으로 가다가 합쳐짐)
@@ -280,6 +289,9 @@ void CJellyPushScript::DestinationMove()
 
 void CJellyPushScript::CreateBigJellyPush(JellyPushType _Type)
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_45_Jelly_Combine.wav");
+	pSound->Play(1, 1.f, false);
+
 	// 합성 될 때 파티클 3개
 	CreateParticle();
 
@@ -337,6 +349,9 @@ void CJellyPushScript::CreateBigJellyPush(JellyPushType _Type)
 
 CGameObject* CJellyPushScript::CreateMiniJellyPush(JellyPushType _Type)
 {
+	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_76_JellyUnload.wav");
+	pSound->Play(1, 1.f, false);
+
 	CGameObject* jelly;
 
 	jelly = new CGameObject;

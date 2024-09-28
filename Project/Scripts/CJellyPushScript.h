@@ -34,6 +34,8 @@ private:
     bool m_Split;
     float m_SplitTime; // 큰 색 젤리에서 분열 된지 얼마나 지났는지
 
+    float m_PlayerOverlapTime;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;
