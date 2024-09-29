@@ -77,6 +77,10 @@ void CLightBallScript::Tick()
 	{
 		if (GetOwner()->FlipBookComponent()->GetIsFinish())
 		{
+			GetOwner()->FlipBookComponent()->AddAlpha(0.f);
+			DeleteComponent(GetOwner(), COMPONENT_TYPE::COLLIDER2D);
+			DeleteComponent(GetOwner(), COMPONENT_TYPE::LIGHT2D);
+
 			if (m_DeadOK)
 			{
 				DeleteObject(GetOwner());
@@ -125,7 +129,7 @@ void CLightBallScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 		// 회전
 		std::random_device rd;  // 시드로 사용할 랜덤 장치
 		std::mt19937 gen(rd()); // 난수 생성 엔진
-		std::uniform_real_distribution<float> dis(60.f, 150.f);
+		std::uniform_real_distribution<float> dis(60.f, 120.f);
 
 		Vec3 rot = GetOwner()->Transform()->GetRelativeRotation();
 		rot.z += ((dis(gen) / 180.f) * XM_PI);
@@ -172,6 +176,11 @@ void CLightBallScript::Destroy()
 
 	GetOwner()->FlipBookComponent()->Play(0, 10, false);
 	GetOwner()->FlipBookComponent()->AddColor(false);
+
+	for (auto i : GetOwner()->GetChildren())
+	{
+		DeleteObject(i);
+	}
 
 	m_Destroy = true;
 }

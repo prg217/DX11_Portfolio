@@ -65,5 +65,5 @@
   .\Project\Engine\tilemap.fx
   .\Project\Engine\value.fx
   10개 파일이 복사되었습니다.
-  CTimeMgr.cpp
+  CPrefab.cpp
   Engine.vcxproj -> C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\Engine_D.lib

@@ -112,32 +112,32 @@ void CTestLevel::CreateTestLevel()
 	//
 	//pLoadedLevel->AddObject(0, pMonster);
 
-	CGameObject* pObj = new CGameObject;
-	pObj->SetName(L"Fence");
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CCollider2D);
-	pObj->AddComponent(new CMeshRender);
+	//CGameObject* pObj = new CGameObject;
+	//pObj->SetName(L"LowerRightCliff");
+	//pObj->AddComponent(new CTransform);
+	//pObj->AddComponent(new CCollider2D);
+	//pObj->AddComponent(new CMeshRender);
 	//pObj->AddComponent(new CFlipBookComponent);
-	pObj->AddComponent(new CSpriteComponent);
+	//pObj->AddComponent(new CSpriteComponent);
 	//pObj->AddComponent(new CLight2D);
 	
-	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(150, 150, 1));
-	
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pObj->MeshRender()->SetMaterial(pMtrl);
+	//pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
+	//pObj->Transform()->SetRelativeScale(Vec3(150, 150, 1));
 	//
-	pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pObj->Collider2D()->SetScale(Vec3(0.4f, 0.3f, 1.f));
+	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pObj->MeshRender()->SetMaterial(pMtrl);
+	//
+	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	//pObj->Collider2D()->SetScale(Vec3(0.4f, 0.3f, 1.f));
 	//
 	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Boss\\Effect\\Down.flip");
 	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
 	//pObj->FlipBookComponent()->Play(0, 10, false);
 	//pObj->FlipBookComponent()->AddAlpha(0.5f);
 	//pObj->FlipBookComponent()->SetUseLight(false);
-
-	Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\Obj\\Fence.sprite");
-	pObj->SpriteComponent()->AddSprite(pSprite);
+	//
+	//Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\background\\LowerRightCliff.sprite");
+	//pObj->SpriteComponent()->AddSprite(pSprite);
 	//pObj->SpriteComponent()->AddColor(true, Vec3(15, 15, 15));
 	//pObj->SpriteComponent()->AddAlpha(0.3f);
 

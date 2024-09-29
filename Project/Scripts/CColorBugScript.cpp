@@ -108,7 +108,7 @@ void CColorBugScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _Othe
 void CColorBugScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
 	// 벽에 부딪치면 못 나감
-	if (_OtherObject->GetLayerIdx() == 28 || _OtherObject->GetLayerIdx() == 29 || _OtherObject->GetLayerIdx() == 6 || _OtherObject->GetLayerIdx() == 10 || _OtherObject->GetLayerIdx() == 4)
+	if (_OtherObject->GetLayerIdx() == 28 || _OtherObject->GetLayerIdx() == 29 || _OtherObject->GetLayerIdx() == 6 || _OtherObject->GetLayerIdx() == 10)
 	{
 		// 보스 예외
 		if (wcscmp(_OtherObject->GetName().c_str(), L"BugBoss") == 0)

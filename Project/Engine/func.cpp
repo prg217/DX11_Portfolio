@@ -38,6 +38,10 @@ void AddChildObject(CGameObject* _Parent, CGameObject* _Child)
 
 void DeleteComponent(CGameObject* _Obj, COMPONENT_TYPE _ComType)
 {
+	if (_Obj->GetComponent(_ComType) == nullptr)
+	{
+		return;
+	}
 	tTask task = {};
 	task.Type = TASK_TYPE::DEL_COMPONENT;
 	task.Param_0 = (DWORD_PTR)_Obj;

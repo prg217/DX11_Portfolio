@@ -855,7 +855,7 @@ void CBugBossScript::Phase23Attack()
 		else if (m_PhaseTime <= 2.6f)
 		{
 			pos = m_SavePos2 + (m_SavePos - m_SavePos2) * ((m_PhaseTime - 1.6f) / 1.f);
-			GetOwner()->Transform()->SetRelativePos(Vec3(pos.x, pos.z, -4000.f));
+			GetOwner()->Transform()->SetRelativePos(Vec3(pos.x, pos.y, -4000.f));
 		}
 		else
 		{

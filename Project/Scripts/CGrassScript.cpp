@@ -6,6 +6,8 @@
 
 #include "CSwingObjScript.h"
 
+#include <random>
+
 CGrassScript::CGrassScript()
 	: CScript(UINT(SCRIPT_TYPE::GRASSSCRIPT))
 	, m_GrassType(GrassType::Glowing_Purple)
@@ -81,6 +83,35 @@ void CGrassScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherOb
 	// 플레이어와 직접적으로 부딪쳤을 때
 	if (_OtherObject->GetLayerIdx() == 3)
 	{
+		std::random_device rd;  // 하드웨어 기반 난수 생성기
+		std::mt19937 gen(rd()); // Mersenne Twister 난수 생성기
+		std::uniform_int_distribution<int> dist(0, 2); // 0부터 2까지의 범위에서 균등 분포
+		int random = dist(gen); // 랜덤 값 반환
+
+		switch (random)
+		{
+		case 0:
+		{
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_152_GlowingReedTouch_1.wav");
+			pSound->Play(1, 1.f, true);
+		}
+		break;
+		case 1:
+		{
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_153_GlowingReedTouch_2.wav");
+			pSound->Play(1, 1.f, true);
+		}
+		break;
+		case 3:
+		{
+			Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\SFX_154_GlowingReedTouch_3.wav");
+			pSound->Play(1, 1.f, true);
+		}
+		break;
+		default:
+			break;
+		}
+
 		m_SaveTime = TIME;
 		m_GlowingActive = true;
 		for (auto i : GetOwner()->GetChildren())
