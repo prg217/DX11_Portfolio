@@ -113,6 +113,9 @@ void CBugBossScript::Begin()
 	// 프리팹 등록
 	m_Phase1Attack0_Obj = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\LightBall.pref");
 	m_Phase1Attack1_Obj = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\BugBall.pref");
+
+	// 기존 위치 저장
+	m_SavePos = GetOwner()->Transform()->GetRelativePos();
 }
 
 void CBugBossScript::Tick()
@@ -852,7 +855,7 @@ void CBugBossScript::Phase23Attack()
 		else if (m_PhaseTime <= 2.6f)
 		{
 			pos = m_SavePos2 + (m_SavePos - m_SavePos2) * ((m_PhaseTime - 1.6f) / 1.f);
-			GetOwner()->Transform()->SetRelativePos(Vec3(pos.x, pos.z, 4000.f));
+			GetOwner()->Transform()->SetRelativePos(Vec3(pos.x, pos.z, -4000.f));
 		}
 		else
 		{
@@ -868,9 +871,6 @@ void CBugBossScript::Phase23Attack()
 	{
 		// 색 벌레 소환
 		SpawnColorBugs();
-
-		// 기존 위치 저장
-		m_SavePos = GetOwner()->Transform()->GetRelativePos();
 
 		// 색 지정
 		std::random_device rd;

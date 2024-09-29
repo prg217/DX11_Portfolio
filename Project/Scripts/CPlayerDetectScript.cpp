@@ -5,14 +5,12 @@
 
 CPlayerDetectScript::CPlayerDetectScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERDETECTSCRIPT))
-	, m_MonsterScript(nullptr)
 	, m_PlayerIn(false)
 {
 }
 
 CPlayerDetectScript::CPlayerDetectScript(const CPlayerDetectScript& _Origin)
 	: CScript(_Origin)
-	, m_MonsterScript(nullptr)
 	, m_PlayerIn(false)
 {
 }
@@ -31,10 +29,15 @@ void CPlayerDetectScript::Tick()
 
 void CPlayerDetectScript::BeginOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
-	if (_OtherObject->GetLayerIdx() == 3)
+	if (_OtherObject->GetLayerIdx() == 4)
 	{
 		m_PlayerIn = true;
-		m_MonsterScript->PlayerDetect(m_PlayerIn);
+		
+		CMonsterScript* script = dynamic_cast<CMonsterScript*>(_OtherObject->GetScript("CMonsterScript"));
+		if (script != nullptr)
+		{
+			script->PlayerDetect(m_PlayerIn);
+		}
 	}
 }
 
@@ -44,10 +47,14 @@ void CPlayerDetectScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _Other
 
 void CPlayerDetectScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject, CCollider2D* _OtherCollider)
 {
-	if (_OtherObject->GetLayerIdx() == 3)
+	if (_OtherObject->GetLayerIdx() == 4)
 	{
 		m_PlayerIn = false;
-		m_MonsterScript->PlayerDetect(m_PlayerIn);
+		CMonsterScript* script = dynamic_cast<CMonsterScript*>(_OtherObject->GetScript("CMonsterScript"));
+		if (script != nullptr)
+		{
+			script->PlayerDetect(m_PlayerIn);
+		}
 	}
 }
 

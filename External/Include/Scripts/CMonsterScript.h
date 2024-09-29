@@ -3,6 +3,8 @@
 
 enum class MonsterType
 {
+    None,
+
     SpitCactus,
     BugRolling,
     ColorBug,

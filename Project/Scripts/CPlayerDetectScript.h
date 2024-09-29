@@ -7,8 +7,6 @@ class CPlayerDetectScript :
     public CScript
 {
 private:
-    CMonsterScript* m_MonsterScript;
-
     bool m_PlayerIn;
 
 public:
@@ -23,8 +21,6 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
 
 public:
-    void SetMonsterScript(CMonsterScript* _Script) { m_MonsterScript = _Script; }
-
     bool GetPlayerIn() { return m_PlayerIn; }
 
 public:

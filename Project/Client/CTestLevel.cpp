@@ -113,22 +113,22 @@ void CTestLevel::CreateTestLevel()
 	//pLoadedLevel->AddObject(0, pMonster);
 
 	CGameObject* pObj = new CGameObject;
-	pObj->SetName(L"LightRay");
+	pObj->SetName(L"Fence");
 	pObj->AddComponent(new CTransform);
-	//pObj->AddComponent(new CCollider2D);
+	pObj->AddComponent(new CCollider2D);
 	pObj->AddComponent(new CMeshRender);
 	//pObj->AddComponent(new CFlipBookComponent);
 	pObj->AddComponent(new CSpriteComponent);
 	//pObj->AddComponent(new CLight2D);
 	
 	pObj->Transform()->SetRelativePos(Vec3(0, 0, 0));
-	pObj->Transform()->SetRelativeScale(Vec3(1000, 1000, 1));
+	pObj->Transform()->SetRelativeScale(Vec3(150, 150, 1));
 	
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pObj->MeshRender()->SetMaterial(pAlphaBlendMtrl);
+	pObj->MeshRender()->SetMaterial(pMtrl);
 	//
-	//pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	//pObj->Collider2D()->SetScale(Vec3(0.5f, 0.7f, 1.f));
+	pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	pObj->Collider2D()->SetScale(Vec3(0.4f, 0.3f, 1.f));
 	//
 	//Ptr<CFlipBook> pFlip = CAssetMgr::GetInst()->FindAsset<CFlipBook>(L"Animation\\Boss\\Effect\\Down.flip");
 	//pObj->FlipBookComponent()->AddFlipBook(0, pFlip);
@@ -136,10 +136,10 @@ void CTestLevel::CreateTestLevel()
 	//pObj->FlipBookComponent()->AddAlpha(0.5f);
 	//pObj->FlipBookComponent()->SetUseLight(false);
 
-	Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\background\\LightRay.sprite");
+	Ptr<CSprite> pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\Obj\\Fence.sprite");
 	pObj->SpriteComponent()->AddSprite(pSprite);
-	pObj->SpriteComponent()->AddColor(true, Vec3(15, 15, 15));
-	pObj->SpriteComponent()->AddAlpha(0.3f);
+	//pObj->SpriteComponent()->AddColor(true, Vec3(15, 15, 15));
+	//pObj->SpriteComponent()->AddAlpha(0.3f);
 
 	//pObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
 	//pObj->Light2D()->SetRadius(10.f);
@@ -153,7 +153,7 @@ void CTestLevel::CreateTestLevel()
 	//pObj->ParticleSystem()->LoadFromFile(File);
 	//fclose(File);
 
-	//pLoadedLevel->AddObject(0, pObj);
+	//pLoadedLevel->AddObject(28, pObj);
 /*
 	// 카메라 오브젝트
 	CGameObject* CamObj = new CGameObject;

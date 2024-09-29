@@ -247,7 +247,7 @@ void CJellyPushFrameScript::Open()
 		m_Open = false;
 	}
 
-	m_InteractionObj1->Transform()->SetRelativePos(m_Pos.x, m_Pos.y, 490.f);
+	m_InteractionObj1->Transform()->SetRelativePos(m_Pos.x, m_Pos.y, 489.5f);
 	if (m_InteractionObj2 != nullptr)
 	{
 		m_InteractionObj2->Transform()->SetRelativePos(m_InteractionObj2->Transform()->GetRelativePos().x, m_Pos.y, 490.f);

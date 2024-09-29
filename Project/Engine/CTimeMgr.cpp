@@ -48,8 +48,8 @@ void CTimeMgr::Tick()
 	m_E_DeltaTime = (float)(m_llCurCount.QuadPart - m_llPrevCount.QuadPart) / (float)m_llFrequency.QuadPart;
 
 	// DT 보정
-	if (1.f / 60.f < m_E_DeltaTime)
-		m_E_DeltaTime = 1.f / 60.f;
+	//if (1.f / 60.f < m_E_DeltaTime)
+	//	m_E_DeltaTime = 1.f / 60.f;
 
 	// 누적시간을 통해서 프로그램이 실행된 이후로 지나간 시간값을 기록
 	m_E_Time += m_E_DeltaTime;

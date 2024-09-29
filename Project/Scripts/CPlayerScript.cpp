@@ -10,6 +10,7 @@
 #include "CPushScript.h"
 #include "CHPScript.h"
 #include "CAniFinishDestroyScript.h"
+#include "CPlayerDetectScript.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript(UINT(SCRIPT_TYPE::PLAYERSCRIPT))
@@ -68,6 +69,23 @@ void CPlayerScript::Begin()
 	}
 
 	m_HPScript = dynamic_cast<CHPScript*>(GetOwner()->GetScript("CHPScript"));
+
+	// 몬스터에게 플레이어가 안에 왔다고 알려주는 오브젝트 만들어서 자식에 넣기
+	CGameObject* pObj = new CGameObject;
+	pObj->SetName(L"Player_Detect");
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CCollider2D);
+	pObj->AddComponent(new CPlayerDetectScript);
+
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+
+	pObj->Collider2D()->SetIndependentScale(true);
+	pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
+	pObj->Collider2D()->SetScale(Vec3(550.f, 550.f, 1.f));
+
+	CreateObject(pObj, 8);
+	AddChildObject(GetOwner(), pObj);
 }
 
 void CPlayerScript::Tick()

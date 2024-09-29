@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CMonsterScript.h"
 
-#include "CPlayerDetectScript.h"
 #include "CHPScript.h"
 #include "CSwingObjScript.h"
 #include "CAniFinishDestroyScript.h"
@@ -18,7 +17,7 @@ CMonsterScript::CMonsterScript()
 	, m_HitOK(true)
 	, m_Hit(false)
 	, m_SaveHitTime(0)
-	, m_MonsterType(MonsterType::SpitCactus)
+	, m_MonsterType(MonsterType::None)
 {
 	AddScriptParam(SCRIPT_PARAM::INT, "MonsterType", &m_MonsterType);
 }
@@ -42,26 +41,6 @@ CMonsterScript::~CMonsterScript()
 void CMonsterScript::Begin()
 {
 	m_HpScript = dynamic_cast<CHPScript*>(GetOwner()->GetScript("CHPScript"));
-
-	// 플레이어 감지 오브젝트 만들어서 자식에 넣기
-	CGameObject* pObj = new CGameObject;
-	pObj->SetName(L"Player_Detect");
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CCollider2D);
-	pObj->AddComponent(new CPlayerDetectScript);
-
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
-
-	pObj->Collider2D()->SetIndependentScale(true);
-	pObj->Collider2D()->SetOffset(Vec3(0.f, 0.f, 0.f));
-	pObj->Collider2D()->SetScale(Vec3(550.f, 550.f, 1.f));
-
-	CPlayerDetectScript* script = dynamic_cast<CPlayerDetectScript*>(pObj->GetScript("CPlayerDetectScript"));
-	script->SetMonsterScript(this);
-
-	CreateObject(pObj, 8);
-	AddChildObject(GetOwner(), pObj);
 
 	// 자식에 있는 HPBar를 찾아서 저장
 	for (auto i : GetOwner()->GetChildren())
