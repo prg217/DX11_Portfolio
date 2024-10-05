@@ -183,6 +183,7 @@ void CJellyPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObj
 	// 미니 젤리 일 경우
 	// 같은 색이면 같이 밀려짐
 	// 다른 색이면 그 색에 따라 합성됨(서로 위치 가운데 지점으로 가다가 합쳐짐)
+
 	switch (m_Type)
 	{
 	case JellyPushType::CYAN:
@@ -194,6 +195,11 @@ void CJellyPushScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObj
 
 		if (jellyPushScript != nullptr)
 		{
+			// 같은 색이면 return
+			if (m_Type == jellyPushScript->GetJellyPushType())
+			{
+				return;
+			}
 			// 자신이 이미 오버랩을 수행했다면 return
 			if (m_IsOverlap)
 			{

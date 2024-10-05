@@ -131,6 +131,13 @@ void CJellyPushFrameScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _Oth
 					{
 						DeleteComponent(m_InteractionObj1, COMPONENT_TYPE::COLLIDER2D);
 					}
+					if (m_InteractionObj2 != nullptr)
+					{
+						if (m_InteractionObj2->GetComponent(COMPONENT_TYPE::COLLIDER2D) != nullptr)
+						{
+							DeleteComponent(m_InteractionObj2, COMPONENT_TYPE::COLLIDER2D);
+						}
+					}
 
 					return;
 				}

@@ -181,6 +181,6 @@ void CLightBallScript::Destroy()
 	{
 		DeleteObject(i);
 	}
-
+	m_Particle = nullptr;
 	m_Destroy = true;
 }

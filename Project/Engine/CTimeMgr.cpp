@@ -66,7 +66,7 @@ void CTimeMgr::Tick()
 	
 	if (1.f < AccTime)
 	{		
-		swprintf_s(m_TimeInfo, L"DeltaTime : %f, FPS : %d ", m_E_DeltaTime, m_FPS);
+		//swprintf_s(m_TimeInfo, L"DeltaTime : %f, FPS : %d ", m_E_DeltaTime, m_FPS);
 		//TextOut(CEngine::GetInst()->GetMainDC(), 10, 10, szBuff, wcslen(szBuff));		
 		AccTime = 0.f;
 		m_FPS = 0;
