@@ -37,13 +37,6 @@ enum class BugRollingDir
     RIGHTUP,
 };
 
-enum class BugRollingState
-{
-    IDLE,
-    ROLLING,
-    STUN,
-};
-
 class CMonsterScript;
 enum class JellyPushType;
 
@@ -57,11 +50,11 @@ private:
 
     float m_Speed;
     
+    bool m_Attack;
     bool m_End;
     float m_ChaseTime; // 추격 시간
     BugRollingAni m_CurAni;
     BugRollingDir m_CurDir;
-    BugRollingState m_CurState;
 
     JellyPushType m_JellyType;
 
@@ -85,6 +78,7 @@ private:
     void Move(); // 이동
     void MoveEndAni();
 
+    void Stun();
     void StunEffect();
     void StunDelete();
 

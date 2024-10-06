@@ -180,6 +180,7 @@
     <ClInclude Include="CPlayerDetectScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
+    <ClInclude Include="CTestLevelSoundScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -317,5 +318,6 @@
     <ClCompile Include="CPlayerDetectScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
+    <ClCompile Include="CTestLevelSoundScript.cpp" />
   </ItemGroup>
 </Project>

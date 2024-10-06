@@ -47,6 +47,8 @@ public:
     
     void Shaking();
 
+    void SetCameraSpeed(float _Speed) { m_Speed = _Speed; }
+
 public:
     CLONE(CCameraPlayerTrackingScript);
     CCameraPlayerTrackingScript();

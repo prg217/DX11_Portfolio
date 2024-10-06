@@ -151,7 +151,7 @@ void CLightBallScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObj
 		Vec3 up = GetOwner()->Transform()->GetRelativeDir(DIR::UP);
 		Vec3 pos = GetOwner()->Transform()->GetRelativePos();
 
-		pos += m_Speed * 2.f * DT * -up;
+		pos += m_Speed * 2.5f * DT * -up;
 
 		GetOwner()->Transform()->SetRelativePos(pos);
 	}

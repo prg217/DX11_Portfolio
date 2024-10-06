@@ -112,6 +112,7 @@ enum class OguAniState
 };
 
 class CHPScript;
+class CCameraPlayerTrackingScript;
 
 class CPlayerScript :
     public CScript
@@ -127,6 +128,8 @@ private:
 
 	CGameObject*	m_HPBar;
 	CHPScript*		m_HPScript;
+
+	CCameraPlayerTrackingScript* m_CameraScript;
 
 	bool			m_Hit; // 맞았을 때
 	float			m_SaveHitTime;
@@ -203,7 +206,7 @@ private:
 
 	void HitEffect();
 
-
+	void SetSpeed(float _Speed);
 
 public:
 	OguAniState GetCurAS() { return m_CurAS; }

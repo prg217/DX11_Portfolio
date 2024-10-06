@@ -52,8 +52,8 @@ void CTestLevel::CreateTestLevel()
 	pAlphaBlendMtrl->SetTexParam(TEX_0, pTexture);
 
 	// Sound 재생
-	Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\BGM_10_MoonForestAmbience.wav");
-	pSound->Play(0, 0.5f, false);
+	//Ptr<CSound> pSound = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\BGM_10_MoonForestAmbience.wav");
+	//pSound->Play(0, 0.5f, false);
 
 	// Level 생성
 	//CLevel* pLevel = new CLevel;

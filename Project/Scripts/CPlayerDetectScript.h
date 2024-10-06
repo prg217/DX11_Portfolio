@@ -6,9 +6,6 @@ class CMonsterScript;
 class CPlayerDetectScript :
     public CScript
 {
-private:
-    bool m_PlayerIn;
-
 public:
     virtual void Begin() override;
     virtual void Tick() override;
@@ -19,9 +16,6 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
-
-public:
-    bool GetPlayerIn() { return m_PlayerIn; }
 
 public:
     CLONE(CPlayerDetectScript);

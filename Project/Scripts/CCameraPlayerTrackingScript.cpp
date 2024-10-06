@@ -11,7 +11,7 @@
 CCameraPlayerTrackingScript::CCameraPlayerTrackingScript()
 	: CScript(UINT(SCRIPT_TYPE::CAMERAPLAYERTRACKINGSCRIPT))
 	, m_IsMove(true)
-	, m_Speed(2000.f)
+	, m_Speed(400.f)
 	, m_pFocusObj(nullptr)
 	, m_Shaking(false)
 	, m_ShakingTime(0.f)

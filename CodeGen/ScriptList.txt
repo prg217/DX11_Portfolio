@@ -38,5 +38,6 @@ CSpitCactusScript
 CStoneBreakableScript
 CSwingObjScript
 CSymbolScript
+CTestLevelSoundScript
 CTextBoxScript
 CUIScript

@@ -5,6 +5,8 @@
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
 
+#include "CCameraPlayerTrackingScript.h"
+
 #include "CCountDownDeleteScript.h"
 #include "COguDancePointLightScript.h"
 #include "CPushScript.h"
@@ -59,6 +61,8 @@ void CPlayerScript::Begin()
 	GetRenderComponent()->GetDynamicMaterial();
 
 	CLevel* curLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+	// hp
 	CGameObject* hpFrame = curLevel->FindObjectByName(L"PHP");
 	for (auto i : hpFrame->GetChildren())
 	{
@@ -67,8 +71,12 @@ void CPlayerScript::Begin()
 			m_HPBar = i;
 		}
 	}
-
 	m_HPScript = dynamic_cast<CHPScript*>(GetOwner()->GetScript("CHPScript"));
+
+	// camera
+	CGameObject* mainCamera = curLevel->FindObjectByName(L"MainCamera");
+	CScript* script = mainCamera->GetScript("CCameraPlayerTrackingScript");
+	m_CameraScript = dynamic_cast<CCameraPlayerTrackingScript*>(script);
 
 	// 몬스터에게 플레이어가 안에 왔다고 알려주는 오브젝트 만들어서 자식에 넣기
 	CGameObject* pObj = new CGameObject;
@@ -366,7 +374,7 @@ void CPlayerScript::Move()
 	if (KEY_TAP(KEY::LSHIFT))
 	{
 		m_IsRun = true;
-		m_Speed = m_MaxSpeed;
+		SetSpeed(m_MaxSpeed);
 
 		// 달리는 파티클
 		if (!m_IsRunParticle)
@@ -382,7 +390,7 @@ void CPlayerScript::Move()
 	{
 		m_IsRun = false;
 		m_IsRunParticle = false;
-		m_Speed = m_MinSpeed;
+		SetSpeed(m_MinSpeed);
 	}
 
 	if (KEY_PRESSED(KEY::LEFT) && KEY_PRESSED(KEY::UP))
@@ -1786,13 +1794,13 @@ void CPlayerScript::PushMove()
 	if (KEY_TAP(KEY::LSHIFT)) // (대각선일 때만...)
 	{
 		m_IsRun = true;
-		m_Speed = m_MaxSpeed;
+		SetSpeed(m_MaxSpeed);
 	}
 	if (KEY_RELEASED(KEY::LSHIFT))
 	{
 		m_IsRun = false;
 		m_IsRunParticle = false;
-		m_Speed = m_MinSpeed;
+		SetSpeed(m_MinSpeed);
 	}
 
 	if (KEY_PRESSED(KEY::LEFT) && KEY_PRESSED(KEY::UP))
@@ -1888,7 +1896,7 @@ void CPlayerScript::PushMove()
 	{
 		if (KEY_PRESSED(KEY::LEFT))
 		{
-			m_Speed = m_MinSpeed;
+			SetSpeed(m_MinSpeed);
 			if (m_CurAS == OguAniState::PUSH_LEFT || m_CurAS == OguAniState::WALK_LEFT || m_CurAS != OguAniState::RUN_LEFT)
 			{
 				m_CurAS = OguAniState::PUSH_LEFT;
@@ -1901,7 +1909,7 @@ void CPlayerScript::PushMove()
 		}
 		else if (KEY_PRESSED(KEY::RIGHT))
 		{
-			m_Speed = m_MinSpeed;
+			SetSpeed(m_MinSpeed);
 			if (m_CurAS == OguAniState::PUSH_RIGHT || m_CurAS == OguAniState::WALK_RIGHT || m_CurAS == OguAniState::RUN_RIGHT)
 			{
 				m_CurAS = OguAniState::PUSH_RIGHT;
@@ -1914,7 +1922,7 @@ void CPlayerScript::PushMove()
 		}
 		else if (KEY_PRESSED(KEY::UP))
 		{
-			m_Speed = m_MinSpeed;
+			SetSpeed(m_MinSpeed);
 			if (m_CurAS == OguAniState::PUSH_UP || m_CurAS == OguAniState::WALK_UP || m_CurAS == OguAniState::RUN_UP)
 			{
 				m_CurAS = OguAniState::PUSH_UP;
@@ -1927,7 +1935,7 @@ void CPlayerScript::PushMove()
 		}
 		else if (KEY_PRESSED(KEY::DOWN))
 		{
-			m_Speed = m_MinSpeed;
+			SetSpeed(m_MinSpeed);
 			if (m_CurAS == OguAniState::PUSH_DOWN || m_CurAS == OguAniState::WALK_DOWN || m_CurAS == OguAniState::RUN_DOWN)
 			{
 				m_CurAS = OguAniState::PUSH_DOWN;
@@ -2163,6 +2171,12 @@ void CPlayerScript::HitEffect()
 	effect->FlipBookComponent()->SetUseLight(false);
 
 	CreateObject(effect, 0);
+}
+
+void CPlayerScript::SetSpeed(float _Speed)
+{
+	m_Speed = _Speed;
+	m_CameraScript->SetCameraSpeed(m_Speed * 2.f);
 }
 
 void CPlayerScript::LiftEnd()

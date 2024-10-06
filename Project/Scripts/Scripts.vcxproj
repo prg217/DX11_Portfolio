@@ -207,6 +207,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CStoneBreakableScript.h" />
     <ClInclude Include="CSwingObjScript.h" />
     <ClInclude Include="CSymbolScript.h" />
+    <ClInclude Include="CTestLevelSoundScript.h" />
     <ClInclude Include="CTextBoxScript.h" />
     <ClInclude Include="CUIScript.h" />
     <ClInclude Include="framework.h" />
@@ -254,6 +255,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CStoneBreakableScript.cpp" />
     <ClCompile Include="CSwingObjScript.cpp" />
     <ClCompile Include="CSymbolScript.cpp" />
+    <ClCompile Include="CTestLevelSoundScript.cpp" />
     <ClCompile Include="CTextBoxScript.cpp" />
     <ClCompile Include="CUIScript.cpp" />
     <ClCompile Include="pch.cpp">

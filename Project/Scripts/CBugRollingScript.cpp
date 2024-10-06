@@ -77,7 +77,7 @@ void CBugRollingScript::Tick()
 	}
 
 	// 공격 활성화
-	if (m_Attack)
+	if (m_Attack && !m_Stun)
 	{
 		// 구르는 도중에는 피격이 불가능하다.
 		m_pMonsterScript->SetHitOK(false);
@@ -180,9 +180,7 @@ void CBugRollingScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherOb
 			// 꽃의 빛 색이 내 타입과 같을 때
 			if (areaScript->GetJellyPushType() == m_JellyType && !m_Stun)
 			{
-				m_Stun = true;
-
-				Stop();
+				Stun();
 
 				// 기절 이펙트
 				StunEffect();
@@ -197,19 +195,6 @@ void CBugRollingScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherOb
 
 				// 기절 이펙트 삭제
 				StunDelete();
-
-				// 현재 플레이어가 안에 있는지 정보를 얻고, 안에 있으면 다시 공격을 한다.
-				for (auto i : GetOwner()->GetChildren())
-				{
-					CPlayerDetectScript* detectScript = dynamic_cast<CPlayerDetectScript*>(i->GetScript("CPlayerDetectScript"));
-					if (detectScript != nullptr)
-					{
-						if (detectScript->GetPlayerIn() == true)
-						{
-							Attack();
-						}
-					}
-				}
 			}
 		}
 	}
@@ -273,19 +258,6 @@ void CBugRollingScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _Othe
 
 			// 기절 이펙트 삭제
 			StunDelete();
-
-			// 현재 플레이어가 안에 있는지 정보를 얻고, 안에 있으면 다시 공격을 한다.
-			for (auto i : GetOwner()->GetChildren())
-			{
-				CPlayerDetectScript* detectScript = dynamic_cast<CPlayerDetectScript*>(i->GetScript("CPlayerDetectScript"));
-				if (detectScript != nullptr)
-				{
-					if (detectScript->GetPlayerIn() == true)
-					{
-						Attack();
-					}
-				}
-			}
 		}
 	}
 }
@@ -549,6 +521,18 @@ void CBugRollingScript::MoveEndAni()
 		break;
 	default:
 		break;
+	}
+}
+
+void CBugRollingScript::Stun()
+{
+	m_Stun = true;
+	m_End = true;
+
+	// 파티클 비활성화
+	if (m_RollParticle != nullptr)
+	{
+		m_RollParticle->Transform()->SetRelativePos(Vec3(0, 30, 0));
 	}
 }
 
