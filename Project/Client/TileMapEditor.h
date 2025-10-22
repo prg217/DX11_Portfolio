@@ -22,7 +22,6 @@ class TileMapEditor :
     // 아틀라스 텍스쳐 한 개 : 선택UI에서 한 개의 이미지만을 고르게 함, 그리고 클릭할 때마다 이미지 인덱스 바뀌기
     // 아틀라스 텍스쳐 여러 개 : 여러 이미지를 고르게 함
 
-    // 나중에 못가는 곳 막아두게 콜라이더 에디터도 만들어야 할 듯
 private:
     TME_TileMapView* m_TileMapView;     // 타일맵 직접적으로 보기 및 수정
     TME_SelectTex* m_SelectTex;         // 텍스쳐 선택

@@ -269,6 +269,14 @@ void MenuUI::Assets()
 		{
 			CEditorMgr::GetInst()->FindEditorUI("TileMapEditor")->SetActive(IsTileMapActive);
 		}
+
+		EditorUI* pTextEditor = CEditorMgr::GetInst()->FindEditorUI("TextEditor");
+		bool IsTextActive = pTextEditor->IsActive();
+
+		if (ImGui::MenuItem("Text Editor", nullptr, &IsTextActive))
+		{
+			CEditorMgr::GetInst()->FindEditorUI("TextEditor")->SetActive(IsTextActive);
+		}
 		
 		ImGui::EndMenu();
 	}

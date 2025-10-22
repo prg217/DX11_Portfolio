@@ -104,7 +104,8 @@ void TME_TileMapView::OneTexView(int _Row, int _Col)
 		// 개별 아이디 부여
 		ImGui::PushID(tileMapIdx);
 
-		if (ImGui::ImageButton(m_OneTex->GetSRV().Get(), ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio), leftTopUV, rightBottomUV, -1, tint_col, border_col))
+		if (ImGui::ImageButton(m_OneTex->GetSRV().Get(), ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio),
+			leftTopUV, rightBottomUV, -1, tint_col, border_col))
 		{
 			// 버튼을 눌렀을 경우 현재 타일맵의 인덱스 구조체의 ImgIdx를 +1한다.
 			// 만약 m_ImgIdxMax가 넘는다면 0으로 회귀

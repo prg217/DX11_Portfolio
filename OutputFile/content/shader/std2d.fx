@@ -69,7 +69,6 @@ float4 PS_Std2D(VTX_OUT _in) : SV_Target
                 float2(texelSize.x, texelSize.y) // DownRight
         };
 
-        // 텍셀 크기와 외곽선 두께를 설정
         float outlineThickness = 3.5; // 외곽선 두께
         float threshold = 0.1f;
             

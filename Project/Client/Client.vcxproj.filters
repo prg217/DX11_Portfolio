@@ -157,6 +157,9 @@
     <Filter Include="EditorUI\01. Inspector\ComponentUI\11. RigidBody">
       <UniqueIdentifier>{326fe27d-3c87-406a-8072-b591633bdd6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EditorUI\11. TextEditor">
+      <UniqueIdentifier>{4e588068-74b1-4c79-8bc1-6bfb8cc704db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -344,6 +347,9 @@
     </ClInclude>
     <ClInclude Include="RigidBodyUI.h">
       <Filter>EditorUI\01. Inspector\ComponentUI\11. RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="TextEditor.h">
+      <Filter>EditorUI\11. TextEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -533,6 +539,9 @@
     </ClCompile>
     <ClCompile Include="RigidBodyUI.cpp">
       <Filter>EditorUI\01. Inspector\ComponentUI\11. RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="TextEditor.cpp">
+      <Filter>EditorUI\11. TextEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

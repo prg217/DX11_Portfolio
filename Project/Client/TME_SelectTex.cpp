@@ -24,7 +24,7 @@ void TME_SelectTex::Init()
 
 void TME_SelectTex::Update()
 {
-	// 선택된 아틀라스 텍스쳐
+	// 선택된 텍스쳐
 	if (m_SelectTex != nullptr)
 	{
 		ImGui::Text("Select");
@@ -36,7 +36,7 @@ void TME_SelectTex::Update()
 		ImGui::Separator();
 	}
 
-	// 아틀라스 텍스쳐들을 불러옴
+	// 텍스쳐들을 불러옴
 	vector<string> vecTexNames;
 	CAssetMgr::GetInst()->GetAssetNames(ASSET_TYPE::TEXTURE, vecTexNames);
 
@@ -50,8 +50,8 @@ void TME_SelectTex::Update()
 		// 실제 해상도 대비 출력 Image 의 비율
 		float ratio = m_WidthSize / pTex->Width();
 
-		//ImGui::Image(pTex->GetSRV().Get(), ImVec2((m_WidthSize), pTex->Height() * ratio), ImVec2(0, 0), ImVec2(1, 1), tint_col, border_col);
-		if (ImGui::ImageButton(pTex->GetSRV().Get(), ImVec2((m_WidthSize), pTex->Height() * ratio), ImVec2(0, 0), ImVec2(1, 1), -1, tint_col, border_col))
+		if (ImGui::ImageButton(pTex->GetSRV().Get(), ImVec2((m_WidthSize), pTex->Height() * ratio),
+			ImVec2(0, 0), ImVec2(1, 1), -1, tint_col, border_col))
 		{
 			m_SelectTex = pTex;
 

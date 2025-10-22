@@ -82,7 +82,7 @@ void CSpriteComponent::Binding()
 void CSpriteComponent::SaveToFile(FILE* _File)
 {
 	SaveAssetRef(m_Sprite, _File);
-	// 아웃라이너 유무
+	// 외곽선 유무
 	fwrite(&m_Outline, sizeof(bool), 1, _File);
 	// 색 추가 유무 및 색
 	fwrite(&m_AddColor, sizeof(bool), 1, _File);

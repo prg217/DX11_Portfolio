@@ -23,6 +23,7 @@
 #include "TME_Detail.h"
 #include "TME_SelectTex.h"
 #include "TME_TileMapView.h"
+#include "TextEditor.h"
 
 void CEditorMgr::InitImGui()
 {
@@ -30,6 +31,9 @@ void CEditorMgr::InitImGui()
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+    io.Fonts->AddFontFromFileTTF("C:/Windows/Fonts/malgun.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesKorean());
+
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
@@ -189,6 +193,13 @@ void CEditorMgr::CreateEditorUI()
     pUI = new TileMapEditor;
     pUI->Init();
     pUI->SetName("TileMapEditor");
+    pUI->SetActive(false);
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
+    // TextEditor
+    pUI = new TextEditor;
+    pUI->Init();
+    pUI->SetName("TextEditor");
     pUI->SetActive(false);
     m_mapUI.insert(make_pair(pUI->GetName(), pUI));
 }
