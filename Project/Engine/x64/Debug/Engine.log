@@ -65,8 +65,177 @@
   .\Project\Engine\tilemap.fx
   .\Project\Engine\value.fx
   10개 파일이 복사되었습니다.
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\particle.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\particletick.fx(120,17-136): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\particletick.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\setcolor.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\debug.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\func.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\postprocess.fx(98,11-130): warning X3206: implicit truncation of vector type
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\postprocess.fx(141,12-31): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\postprocess.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\std2d.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\struct.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\tilemap.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\value.cso
+  pch.cpp
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\define.h(25,9): warning C4005: 'DELETE': 매크로 재정의
+  (소스 파일 'pch.cpp'을(를) 컴파일하는 중)
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winnt.h(10205,9):
+      'DELETE'의 이전 정의를 참조하십시오.
+  
+  CFlipBookComponent.cpp
+  CAsset.cpp
+  CAssetInit.cpp
+  CAssetMgr.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(4813,18): warning C4244: '=': 'const wchar_t'에서 'char'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  (소스 파일 '/CAssetMgr.cpp'을(를) 컴파일하는 중)
+      C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(4813,18):
+      템플릿 인스턴스화 컨텍스트(가장 오래된 인스턴스화 컨텍스트)가
+          C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CAssetMgr.cpp(84,27):
+          컴파일되는 함수 템플릿 인스턴스화 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_const_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+              C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CAssetMgr.cpp(84,20):
+              'CAssetMgr::GetAssetNames'에서 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string'에 대한 첫 번째 참조를 확인하세요.
+          C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xstring(812,17):
+          컴파일되는 함수 템플릿 인스턴스화 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct_from_iter<const wchar_t*,const wchar_t*,_Size_type>(_Iter,const _Sent,_Size)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Size_type=unsigned __int64,
+              _Iter=const wchar_t *,
+              _Sent=const wchar_t *,
+              _Size=unsigned __int64
+          ]
+          C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xstring(968,18):
+          컴파일되는 함수 템플릿 인스턴스화 '_OutIt *std::_Copy_n_unchecked4<const wchar_t*,_Size,char*>(_InIt,_SizeTy,_OutIt)'에 대한 참조를 확인하세요.
+          with
+          [
+              _OutIt=char *,
+              _Size=unsigned __int64,
+              _InIt=const wchar_t *,
+              _SizeTy=unsigned __int64
+          ]
+  
+  CCamera.cpp
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CCamera.cpp(170,39): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  (소스 파일 '/CCamera.cpp'을(를) 컴파일하는 중)
+  
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CCamera.cpp(171,41): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  (소스 파일 '/CCamera.cpp'을(를) 컴파일하는 중)
+  
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CCamera.cpp(202,32): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  (소스 파일 '/CCamera.cpp'을(를) 컴파일하는 중)
+  
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CCamera.cpp(203,34): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  (소스 파일 '/CCamera.cpp'을(를) 컴파일하는 중)
+  
+  CCollider2D.cpp
+  CCollisionMgr.cpp
+  CComponent.cpp
+  CComputeShader.cpp
+  CConstBuffer.cpp
+  CDevice.cpp
+  CEngine.cpp
+  CEntity.cpp
+  CFlipBook.cpp
+  CFontMgr.cpp
+  CGameObject.cpp
+  CGraphicShader.cpp
+  CKeyMgr.cpp
+  CLayer.cpp
+  CLevel.cpp
+  코드를 생성하고 있습니다...
+C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CComputeShader.cpp(48,1): warning C4715: 'CComputeShader::Execute': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  컴파일하고 있습니다...
+  CLevelMgr.cpp
+  CLight2D.cpp
+  CMaterial.cpp
+  CMesh.cpp
+  CMeshRender.cpp
+  CParticleSystem.cpp
+  CParticleTickCS.cpp
+  CPathMgr.cpp
+  CPrefab.cpp
+  CRenderComponent.cpp
+  CRenderMgr.cpp
+  CRigidBody.cpp
+  CScript.cpp
+  CSetColorCS.cpp
+  CShader.cpp
+  CSound.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(4813,18): warning C4244: '=': 'const wchar_t'에서 'char'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  (소스 파일 '/CSound.cpp'을(를) 컴파일하는 중)
+      C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(4813,18):
+      템플릿 인스턴스화 컨텍스트(가장 오래된 인스턴스화 컨텍스트)가
+          C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CSound.cpp(107,13):
+          컴파일되는 함수 템플릿 인스턴스화 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_const_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+              C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CSound.cpp(107,13):
+              'CSound::Load'에서 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string'에 대한 첫 번째 참조를 확인하세요.
+          C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xstring(812,17):
+          컴파일되는 함수 템플릿 인스턴스화 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct_from_iter<const wchar_t*,const wchar_t*,_Size_type>(_Iter,const _Sent,_Size)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Size_type=unsigned __int64,
+              _Iter=const wchar_t *,
+              _Sent=const wchar_t *,
+              _Size=unsigned __int64
+          ]
+          C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xstring(968,18):
+          컴파일되는 함수 템플릿 인스턴스화 '_OutIt *std::_Copy_n_unchecked4<const wchar_t*,_Size,char*>(_InIt,_SizeTy,_OutIt)'에 대한 참조를 확인하세요.
+          with
+          [
+              _OutIt=char *,
+              _Size=unsigned __int64,
+              _InIt=const wchar_t *,
+              _SizeTy=unsigned __int64
+          ]
+  
+  CSprite.cpp
+  CSpriteComponent.cpp
+  CStructuredBuffer.cpp
+  CTaskMgr.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  CTexture.cpp
   CTileMap.cpp
 C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(276,35): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   (소스 파일 '/CTileMap.cpp'을(를) 컴파일하는 중)
   
+  CTimeMgr.cpp
+  CTransform.cpp
+  Engine.cpp
+  extern.cpp
+  func.cpp
+  코드를 생성하고 있습니다...
   Engine.vcxproj -> C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\Engine_D.lib

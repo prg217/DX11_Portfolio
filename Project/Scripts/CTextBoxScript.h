@@ -12,6 +12,7 @@ private:
     float m_SaveTime;
     float m_NextTime;
 
+    int m_textSize;
     int m_TextCount;
     float m_TextPosY;
     int m_TextIdx;
@@ -31,7 +32,8 @@ public:
 
 public:
     void IsName() { m_IsName = true; }
-    void SetText(wstring _Text); 
+    void SetText(wstring _Text);
+    void LoadText(const wstring& _FileName);
     void TextClear() { m_vText.clear(); }
 
 public:

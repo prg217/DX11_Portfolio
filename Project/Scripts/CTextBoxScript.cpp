@@ -8,6 +8,7 @@ CTextBoxScript::CTextBoxScript()
 	, m_IsName(false)
 	, m_SaveTime(0.f)
 	, m_NextTime(0.1f)
+	, m_textSize(0)
 	, m_TextCount(1)
 	, m_TextPosY(600.f)
 	, m_TextIdx(0)
@@ -22,6 +23,7 @@ CTextBoxScript::CTextBoxScript(const CTextBoxScript& _Origin)
 	, m_IsName(_Origin.m_IsName)
 	, m_SaveTime(0.f)
 	, m_NextTime(_Origin.m_NextTime)
+	, m_textSize(0)
 	, m_TextCount(1)
 	, m_TextPosY(600.f)
 	, m_TextIdx(0)
@@ -165,5 +167,66 @@ void CTextBoxScript::LoadFromFile(FILE* _File)
 void CTextBoxScript::SetText(wstring _Text)
 {
 	m_vText.push_back(_Text);
+}
+
+void CTextBoxScript::LoadText(const wstring& _FileName)
+{
+	// 임시로 받을 string 텍스트
+	vector<string> stringText;
+
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"textBox\\";
+	strInitPath += _FileName;
+	strInitPath += L".textBox";
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	if (File == nullptr)
+	{
+		return;
+	}
+
+	fread(&m_textSize, sizeof(int), 1, File);
+	stringText.clear();
+	stringText.reserve(m_textSize);
+
+	for (int i = 0; i < m_textSize; ++i)
+	{
+		size_t strLen = 0;
+		fread(&strLen, sizeof(size_t), 1, File);
+
+		if (strLen > 0)
+		{
+			vector<char> buffer(strLen + 1, 0);
+			fread(buffer.data(), sizeof(char), strLen, File);
+			stringText.push_back(string(buffer.data()));
+		}
+		// 내용이 비었으면
+		else
+		{
+			stringText.push_back("");
+		}
+
+		fclose(File);
+
+		// 임시로 받은 string텍스트 wstring변환
+		if (stringText.empty())
+		{
+			return;
+		}
+
+		m_vText.clear();
+		m_vText.reserve(m_textSize);
+
+		for (int i = 0; i < m_textSize; ++i)
+		{
+			int size_needed = MultiByteToWideChar(CP_UTF8, 0, stringText[i].c_str(), (int)stringText[i].size(), NULL, 0);
+			std::wstring wstr(size_needed, 0);
+			MultiByteToWideChar(CP_UTF8, 0, stringText[i].c_str(), (int)stringText[i].size(), &wstr[0], size_needed);
+
+			m_vText.push_back(wstr);
+		}
+	}
 }
 

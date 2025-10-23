@@ -85,7 +85,8 @@ void CBugNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 				m_SameType = true;
 				// 여기서 하드 코딩 대신에 대화 파일 불러오기를 해서 보내면 될 것 같은데
 				npcScript->TextClear();
-				npcScript->SetText(L"헤롱 헤롱...");
+				//npcScript->SetText(L"헤롱 헤롱...");
+				npcScript->LoadText(L"BugNPC_dizzy");
 
 				GetOwner()->FlipBookComponent()->Play(0, 10, true);
 			}

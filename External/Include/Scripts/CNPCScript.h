@@ -5,7 +5,8 @@ class CNPCScript :
     public CScript
 {
 private:
-    vector<wstring> m_Text;
+    vector<wstring> m_vText;
+    wstring m_NPCName;
 
 public:
     virtual void Begin() override;
@@ -18,9 +19,14 @@ public:
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
 
+private:
+    void CreateTextBox();
+
 public:
+    void SetName(wstring _Text);
     void SetText(wstring _Text);
-    void TextClear() { m_Text.clear(); }
+    void LoadText(const wstring& _FileName);
+    void TextClear() { m_vText.clear(); }
 
 public:
     CLONE(CNPCScript);
