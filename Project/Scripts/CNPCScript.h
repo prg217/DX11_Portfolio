@@ -8,6 +8,10 @@ private:
     vector<wstring> m_vText;
     wstring m_NPCName;
 
+    int m_textSize;
+
+    CGameObject* m_pTextBox;
+
 public:
     virtual void Begin() override;
     virtual void Tick() override;

@@ -2,11 +2,14 @@
 #include <Engine/CScript.h>
 
 enum class JellyPushType;
+class CNPCScript;
 
 class CBugNPCScript :
     public CScript
 {
 private:
+    CNPCScript* m_npcScript;
+
     JellyPushType m_JellyPushType;
 
     bool m_SameType;

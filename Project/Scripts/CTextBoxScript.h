@@ -12,7 +12,6 @@ private:
     float m_SaveTime;
     float m_NextTime;
 
-    int m_textSize;
     int m_TextCount;
     float m_TextPosY;
     int m_TextIdx;

@@ -6,11 +6,15 @@
 
 CNPCScript::CNPCScript()
 	: CScript(UINT(SCRIPT_TYPE::NPCSCRIPT))
+	, m_pTextBox(nullptr)
+	, m_textSize(0)
 {
 }
 
 CNPCScript::CNPCScript(const CNPCScript& _Origin)
 	: CScript(_Origin)
+	, m_pTextBox(nullptr)
+	, m_textSize(0)
 {
 }
 
@@ -65,26 +69,26 @@ void CNPCScript::CreateTextBox()
 	Ptr<CSprite> pSprite;
 	Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DAlphaBlendMtrl");
 
-	CGameObject* pTextBox = new CGameObject;
-	pTextBox->SetName(L"TextBox");
-	pTextBox->AddComponent(new CTransform);
-	pTextBox->AddComponent(new CMeshRender);
-	pTextBox->AddComponent(new CSpriteComponent);
-	pTextBox->AddComponent(new CUIScript);
-	pTextBox->AddComponent(new CTextBoxScript);
+	m_pTextBox = new CGameObject;
+	m_pTextBox->SetName(L"TextBox");
+	m_pTextBox->AddComponent(new CTransform);
+	m_pTextBox->AddComponent(new CMeshRender);
+	m_pTextBox->AddComponent(new CSpriteComponent);
+	m_pTextBox->AddComponent(new CUIScript);
+	m_pTextBox->AddComponent(new CTextBoxScript);
 
-	pTextBox->Transform()->SetRelativePos(0.f, -230.0f, 0.f);
-	pTextBox->Transform()->SetRelativeScale(900.f, 300.f, 0.f);
+	m_pTextBox->Transform()->SetRelativePos(0.f, -230.0f, 0.f);
+	m_pTextBox->Transform()->SetRelativeScale(900.f, 300.f, 0.f);
 
-	pTextBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pTextBox->MeshRender()->SetMaterial(pMtrl);
+	m_pTextBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	m_pTextBox->MeshRender()->SetMaterial(pMtrl);
 
 	pSprite = CAssetMgr::GetInst()->FindAsset<CSprite>(L"sprite\\ui\\textBox_main.sprite");
-	pTextBox->SpriteComponent()->AddSprite(pSprite);
-	pTextBox->SpriteComponent()->AddColor(true, Vec3(0.45f, 0.38f, 0.32f));
-	pTextBox->SpriteComponent()->SetUseLight(false);
+	m_pTextBox->SpriteComponent()->AddSprite(pSprite);
+	m_pTextBox->SpriteComponent()->AddColor(true, Vec3(0.45f, 0.38f, 0.32f));
+	m_pTextBox->SpriteComponent()->SetUseLight(false);
 
-	CScript* script = pTextBox->GetScript("CTextBoxScript");
+	CScript* script = m_pTextBox->GetScript("CTextBoxScript");
 	CTextBoxScript* texScript = dynamic_cast<CTextBoxScript*>(script);
 
 	if (m_vText.size() == 0)
@@ -96,7 +100,7 @@ void CNPCScript::CreateTextBox()
 		texScript->SetText(i);
 	}
 
-	CreateObject(pTextBox, 31);
+	CreateObject(m_pTextBox, 31);
 
 	// 이름표도 만들어서 붙여줌
 	CGameObject* pTextBoxName = new CGameObject;
@@ -123,10 +127,9 @@ void CNPCScript::CreateTextBox()
 
 	texScript->IsName();
 	texScript->SetText(m_NPCName);
-	//SetName(L"벌레 주민");
 
 	CreateObject(pTextBoxName, 31);
-	AddChildObject(pTextBox, pTextBoxName);
+	AddChildObject(m_pTextBox, pTextBoxName);
 }
 
 void CNPCScript::SetName(wstring _Text)
@@ -136,13 +139,66 @@ void CNPCScript::SetName(wstring _Text)
 
 void CNPCScript::SetText(wstring _Text)
 {
-	// 이걸 인스펙터에서 할지 아님 BugNPC에서 할지...
 	m_vText.push_back(_Text);
 }
 
 void CNPCScript::LoadText(const wstring& _FileName)
 {
-	//CScript* script = pTextBox->GetScript("CTextBoxScript");
-	//CTextBoxScript* texScript = dynamic_cast<CTextBoxScript*>(script);
-	//texScript->LoadText(_FileName);
+	// 임시로 받을 string 텍스트
+	vector<string> stringText;
+
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"textBox\\";
+	strInitPath += _FileName;
+	strInitPath += L".textBox";
+
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+
+	if (File == nullptr)
+	{
+		return;
+	}
+
+	fread(&m_textSize, sizeof(int), 1, File);
+	stringText.clear();
+	stringText.reserve(m_textSize);
+
+	for (int i = 0; i < m_textSize; ++i)
+	{
+		size_t strLen = 0;
+		fread(&strLen, sizeof(size_t), 1, File);
+
+		if (strLen > 0)
+		{
+			vector<char> buffer(strLen + 1, 0);
+			fread(buffer.data(), sizeof(char), strLen, File);
+			stringText.push_back(string(buffer.data()));
+		}
+		// 내용이 비었으면
+		else
+		{
+			stringText.push_back("");
+		}
+
+		fclose(File);
+
+		// 임시로 받은 string텍스트 wstring변환
+		if (stringText.empty())
+		{
+			return;
+		}
+
+		m_vText.clear();
+		m_vText.reserve(m_textSize);
+
+		for (int i = 0; i < m_textSize; ++i)
+		{
+			int size_needed = MultiByteToWideChar(CP_UTF8, 0, stringText[i].c_str(), (int)stringText[i].size(), NULL, 0);
+			std::wstring wstr(size_needed, 0);
+			MultiByteToWideChar(CP_UTF8, 0, stringText[i].c_str(), (int)stringText[i].size(), &wstr[0], size_needed);
+
+			m_vText.push_back(wstr);
+		}
+	}
 }

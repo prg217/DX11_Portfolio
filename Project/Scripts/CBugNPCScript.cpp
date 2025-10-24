@@ -30,6 +30,9 @@ CBugNPCScript::~CBugNPCScript()
 
 void CBugNPCScript::Begin()
 {
+	m_npcScript = dynamic_cast<CNPCScript*>(GetOwner()->GetScript("CNPCScript"));
+
+	m_npcScript->SetName(L"벌레 주민");
 }
 
 void CBugNPCScript::Tick()
@@ -78,15 +81,12 @@ void CBugNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 		CFlowerLightAreaScript* areaScript = dynamic_cast<CFlowerLightAreaScript*>(_OtherObject->GetScript("CFlowerLightAreaScript"));
 		if (areaScript != nullptr)
 		{
-			CNPCScript* npcScript = dynamic_cast<CNPCScript*>(GetOwner()->GetScript("CNPCScript"));
 			// 꽃의 빛 색이 내 타입과 같을 때
 			if (areaScript->GetJellyPushType() == m_JellyPushType && !m_SameType)
 			{
 				m_SameType = true;
-				// 여기서 하드 코딩 대신에 대화 파일 불러오기를 해서 보내면 될 것 같은데
-				npcScript->TextClear();
-				//npcScript->SetText(L"헤롱 헤롱...");
-				npcScript->LoadText(L"BugNPC_dizzy");
+				m_npcScript->TextClear();
+				m_npcScript->LoadText(L"BugNPC_dizzy");
 
 				GetOwner()->FlipBookComponent()->Play(0, 10, true);
 			}
@@ -95,8 +95,8 @@ void CBugNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 			{
 				m_SameType = false;
 				// 정신차리는 애니메이션 뒤 idle 애니메이션 
-				npcScript->TextClear();
-				npcScript->SetText(L"저 뒤에 있는 표지판... 아래쪽이 다 부서줬네...\n다른 곳에는 멀쩡한 표지판이 있을거야...");
+				m_npcScript->TextClear();
+				m_npcScript->LoadText(L"BugNPC_idle");
 
 				GetOwner()->FlipBookComponent()->Play(1, 10, false);
 				m_WakeUp = true;
@@ -114,7 +114,7 @@ void CBugNPCScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObj
 		m_SameType = false;
 		CNPCScript* npcScript = dynamic_cast<CNPCScript*>(GetOwner()->GetScript("CNPCScript"));
 		npcScript->TextClear();
-		npcScript->SetText(L"저 뒤에 있는 표지판... 아래쪽이 다 부서줬네...\n다른 곳에는 멀쩡한 표지판이 있을거야...");
+		m_npcScript->LoadText(L"BugNPC_idle");
 
 		GetOwner()->FlipBookComponent()->Play(1, 10, false);
 		m_WakeUp = true;
