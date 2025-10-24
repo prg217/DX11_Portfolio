@@ -6,7 +6,7 @@ class TME_Detail :
 private:
     vector<tTileEditInfo>   m_vecTileInfo;
 
-    bool                    m_SeveralAtlas;
+    bool                    m_MultipleImg; // 여러 개의 이미지를 쓰는지 체크
     int                     m_Row;
     int                     m_Col;
     Vec2                    m_TileSize;

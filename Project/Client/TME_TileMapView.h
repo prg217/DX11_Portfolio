@@ -7,7 +7,7 @@ private:
     // =======타일 정보=======
     vector<tTileEditInfo>       m_vecTileInfo;      // 각각의 타일의 정보
 
-    bool                        m_SeveralAtlas;
+    bool                        m_MultipleImg;
 
     int                         m_Col;
     int                         m_Row;
@@ -53,7 +53,7 @@ public:
 
     void SetTileEditInfo(vector<tTileEditInfo> _TileInfo);
     void SetOneTex(Ptr<CTexture> _Tex);
-    void SetSeveralAtlas(bool _SeveralAtlas);
+    void SetMultipleImg(bool _MultipleImg);
     void SetRow(int _Row);
     void SetCol(int _Col);
     void SetTileSize(Vec2 _TileSize);

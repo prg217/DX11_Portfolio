@@ -7,7 +7,7 @@
 
 TME_SelectTex::TME_SelectTex()
 	: m_SelectTex(nullptr)
-	, m_SeveralAtlas(false)
+	, m_MultipleImg(false)
 	, m_WidthSize(80)
 {
 }
@@ -56,7 +56,7 @@ void TME_SelectTex::Update()
 			m_SelectTex = pTex;
 
 			// 한 개의 텍스쳐만 쓴다면 바로 텍스쳐 적용
-			if (!m_SeveralAtlas)
+			if (!m_MultipleImg)
 			{
 				GetTileMapView()->SetOneTex(m_SelectTex);
 			}
@@ -69,9 +69,9 @@ void TME_SelectTex::Update()
 	}
 }
 
-void TME_SelectTex::SetSeveralAtlas(bool _SeveralAtlas)
+void TME_SelectTex::SetMultipleImg(bool _MultipleImg)
 {
-	m_SeveralAtlas = _SeveralAtlas;
+	m_MultipleImg = _MultipleImg;
 }
 
 void TME_SelectTex::SetSelectTexture(Ptr<CTexture> _Tex)

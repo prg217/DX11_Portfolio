@@ -5,7 +5,7 @@
 
 TME_TileMapView::TME_TileMapView()
 	: m_OneTex(nullptr)
-	, m_SeveralAtlas(nullptr)
+	, m_MultipleImg(nullptr)
 	, m_Col(10)
 	, m_Row(10)
 	, m_TileSize(Vec2(2048, 2048))
@@ -48,7 +48,7 @@ void TME_TileMapView::Update()
 			WheelCheck();
 
 			// 여러 개의 아틀라스 텍스쳐를 쓴다면 나타나는 메뉴
-			if (m_SeveralAtlas)
+			if (m_MultipleImg)
 			{
 				SeveralTexView(j, i);
 			}
@@ -170,9 +170,9 @@ void TME_TileMapView::SetOneTex(Ptr<CTexture> _Tex)
 	m_OneTex = _Tex;
 }
 
-void TME_TileMapView::SetSeveralAtlas(bool _SeveralAtlas)
+void TME_TileMapView::SetMultipleImg(bool _MultipleImg)
 {
-	m_SeveralAtlas = _SeveralAtlas;
+	m_MultipleImg = _MultipleImg;
 }
 
 void TME_TileMapView::SetRow(int _Row)

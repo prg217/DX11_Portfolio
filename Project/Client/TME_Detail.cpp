@@ -8,7 +8,7 @@
 #include <Engine/CTileMap.h>
 
 TME_Detail::TME_Detail()
-	: m_SeveralAtlas(nullptr)
+	: m_MultipleImg(nullptr)
 	, m_Row(10)
 	, m_Col(10)
 	, m_TileSize(Vec2(2048, 2048))
@@ -65,21 +65,21 @@ void TME_Detail::Update()
 		GetTileMapView()->SetTileSize(m_TileSize);
 	}
 
-	// SeveralAtlas 여러 개의 아틀라스 텍스쳐를 쓰는지 체크
-	ImGui::Text("SeveralAtlas");
+	// MultipleImg 여러 개의 이미지를 쓰는지 체크
+	ImGui::Text("MultipleImg");
 	ImGui::SameLine(150);
-	if (ImGui::Checkbox("##SeveralAtlas", &m_SeveralAtlas))
+	if (ImGui::Checkbox("##MultipleImg", &m_MultipleImg))
 	{
 		// 만약 이 값이 변경되면 다른 TME_Sub UI쪽에도 전달
-		GetSelectTex()->SetSeveralAtlas(m_SeveralAtlas);
-		GetTileMapView()->SetSeveralAtlas(m_SeveralAtlas);
+		GetSelectTex()->SetMultipleImg(m_MultipleImg);
+		GetTileMapView()->SetMultipleImg(m_MultipleImg);
 	}
 
 	ImGui::Text("");
 	ImGui::Separator();
 
 	// 한 개의 아틀라스 텍스쳐를 쓴다면 나타나는 메뉴
-	if (!m_SeveralAtlas)
+	if (!m_MultipleImg)
 	{
 		ImGui::Text("AtlasTileSize");
 		ImGui::SameLine(150);
@@ -118,13 +118,13 @@ void TME_Detail::SaveLoad()
 				pTileMap->SetTileInfo(tileMapIdx, m_vecTileInfo[tileMapIdx].ImgIdx, m_vecTileInfo[tileMapIdx].tex);
 			}
 		}
-		if (!m_SeveralAtlas)
+		if (!m_MultipleImg)
 		{
 			// 한 개의 이미지만 사용할 경우 0번 자리에 사용할 이미지를 넣음
 			pTileMap->SetTileInfo(0, m_vecTileInfo[0].ImgIdx, GetTileMapView()->GetOneTex());
 		}
 
-		pTileMap->SetSeveralAtlas(m_SeveralAtlas);
+		pTileMap->SetMultipleImg(m_MultipleImg);
 
 		wchar_t szSelect[256] = {};
 
@@ -199,7 +199,7 @@ void TME_Detail::SaveLoad()
 			return;
 		}
 
-		m_SeveralAtlas = pTileMap->GetSeveralAtlas();
+		m_MultipleImg = pTileMap->GetSeveralAtlas();
 		m_Row = pTileMap->GetRow();
 		m_Col = pTileMap->GetCol();
 		m_TileSize = pTileMap->GetTileSize();
@@ -217,7 +217,7 @@ void TME_Detail::SaveLoad()
 			}
 		}
 
-		if (!m_SeveralAtlas)
+		if (!m_MultipleImg)
 		{
 			//m_vecTileInfo[0].tex = pTileMap->GetTe;
 		}
@@ -226,10 +226,10 @@ void TME_Detail::SaveLoad()
 		GetTileMapView()->SetRow(m_Row);
 		GetTileMapView()->SetCol(m_Col);
 		GetTileMapView()->SetTileSize(m_TileSize);
-		GetSelectTex()->SetSeveralAtlas(m_SeveralAtlas);
-		GetTileMapView()->SetSeveralAtlas(m_SeveralAtlas);
+		GetSelectTex()->SetMultipleImg(m_MultipleImg);
+		GetTileMapView()->SetMultipleImg(m_MultipleImg);
 
-		if (!m_SeveralAtlas)
+		if (!m_MultipleImg)
 		{
 			GetTileMapView()->SetAtlasTileSize(m_AtlasTileSize);
 			GetSelectTex()->SetSelectTexture(m_vecTileInfo[0].tex);

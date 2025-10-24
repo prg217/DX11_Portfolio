@@ -6,7 +6,7 @@ class TME_SelectTex :
 private:
     Ptr<CTexture>   m_SelectTex;
 
-    bool            m_SeveralAtlas;
+    bool            m_MultipleImg;
 
     float           m_WidthSize;
     ImVec4          tint_col;
@@ -17,7 +17,7 @@ public:
     virtual void Update() override;
 
 public:
-    void SetSeveralAtlas(bool _SeveralAtlas);
+    void SetMultipleImg(bool _MultipleImg);
     void SetSelectTexture(Ptr<CTexture> _Tex);
 
     Ptr<CTexture> GetSelectTexture() { return m_SelectTex; }

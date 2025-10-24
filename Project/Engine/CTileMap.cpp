@@ -10,7 +10,7 @@
 
 CTileMap::CTileMap()
 	: CRenderComponent(COMPONENT_TYPE::TILEMAP)
-	, m_SeveralAtlas(false)
+	, m_MultipleImg(false)
 	, m_Row(1)
 	, m_Col(1)
 	, m_AtlasMaxRow(0)
@@ -26,7 +26,7 @@ CTileMap::CTileMap()
 
 CTileMap::CTileMap(const CTileMap& _Origin)
 	: CRenderComponent(_Origin)
-	, m_SeveralAtlas(_Origin.m_SeveralAtlas)
+	, m_MultipleImg(_Origin.m_MultipleImg)
 	, m_Row(_Origin.m_Row)
 	, m_Col(_Origin.m_Col)
 	, m_TileSize(_Origin.m_TileSize)
@@ -64,7 +64,7 @@ void CTileMap::Render()
 	m_Buffer->SetData(m_vecTileInfo.data(), sizeof(tTileInfo) * m_Row * m_Col);
 	m_Buffer->Binding(15);
 
-	if (m_SeveralAtlas)
+	if (m_MultipleImg)
 	{
 		/*
 		GetMaterial()->SetScalarParam(INT_3, 1);
@@ -136,7 +136,7 @@ void CTileMap::Render()
 	GetMaterial()->SetScalarParam(INT_1, m_AtlasMaxRow);
 	GetMaterial()->SetScalarParam(INT_2, m_AtlasMaxCol);
 	GetMaterial()->SetScalarParam(VEC2_1, Vec2(m_Col, m_Row));
-	if (!m_SeveralAtlas)
+	if (!m_MultipleImg)
 	{
 		GetMaterial()->SetScalarParam(VEC2_0, m_AtlasTileSliceUV);
 	}
@@ -188,7 +188,7 @@ void CTileMap::ChangeTileMapSize()
 
 void CTileMap::SetAtlasTexture(Ptr<CTexture> _Atlas)
 {
-	if (m_TileAtlas.size() > 0 && !m_SeveralAtlas)
+	if (m_TileAtlas.size() > 0 && !m_MultipleImg)
 	{
 		m_TileAtlas[0] = _Atlas;
 	}
@@ -197,7 +197,7 @@ void CTileMap::SetAtlasTexture(Ptr<CTexture> _Atlas)
 		m_TileAtlas.push_back(_Atlas);
 	}
 
-	if (m_SeveralAtlas)
+	if (m_MultipleImg)
 	{
 		for (int i = 0; i < m_Col; i++)
 		{
@@ -224,7 +224,7 @@ void CTileMap::SetAtlasTileSize(Vec2 _TileSize)
 {
 	m_AtlasTileSize = _TileSize;
 
-	if (m_SeveralAtlas || m_TileAtlas.size() <= 0)
+	if (m_MultipleImg || m_TileAtlas.size() <= 0)
 	{
 		return;
 	}
@@ -238,9 +238,9 @@ void CTileMap::SetAtlasTileSize(Vec2 _TileSize)
 	}
 }
 
-void CTileMap::SetSeveralAtlas(bool _SeveralAtlas)
+void CTileMap::SetMultipleImg(bool _SeveralAtlas)
 {
-	m_SeveralAtlas = _SeveralAtlas;
+	m_MultipleImg = _SeveralAtlas;
 }
 
 void CTileMap::SetTileInfo(int _TileMapIdx, int _ImgIdx, Ptr<CTexture> _Tex)
@@ -270,13 +270,13 @@ void CTileMap::SaveToFile(FILE* _File)
 		fwrite(&m_vecTileInfo[i], sizeof(tTileInfo), 1, _File);
 	}
 
-	fwrite(&m_SeveralAtlas, sizeof(bool), 1, _File);
+	fwrite(&m_MultipleImg, sizeof(bool), 1, _File);
 
 	// 아틀라스 텍스쳐
 	m_AtlasVecSize = m_TileAtlas.size();
 	fwrite(&m_AtlasVecSize, sizeof(int), 1, _File);
 
-	if (m_SeveralAtlas)
+	if (m_MultipleImg)
 	{
 		for (auto i : m_TileAtlas)
 		{
@@ -311,14 +311,14 @@ void CTileMap::LoadFromFile(FILE* _File)
 		fread(&m_vecTileInfo[i], sizeof(tTileInfo), 1, _File);
 	}
 
-	fread(&m_SeveralAtlas, sizeof(bool), 1, _File);
+	fread(&m_MultipleImg, sizeof(bool), 1, _File);
 
 	// 아틀라스 텍스쳐
 	fread(&m_AtlasVecSize, sizeof(int), 1, _File);
 	m_TileAtlas.clear();
 	m_TileAtlas.resize(m_AtlasVecSize);
 
-	if (m_SeveralAtlas)
+	if (m_MultipleImg)
 	{
 		for (int i = 0; i < m_AtlasVecSize; i++)
 		{

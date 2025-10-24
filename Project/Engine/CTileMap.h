@@ -13,7 +13,7 @@ class CTileMap :
     public CRenderComponent
 {
 private:
-    bool                    m_SeveralAtlas;     // 여러 개의 Atlas 텍스쳐를 쓰는지 유무
+    bool                    m_MultipleImg;     // 여러 개의 이미지를 쓰는지 유무
     int                     m_AtlasVecSize;     // m_TileAtlas 사이즈 저장
 
     int                     m_Row;              // TileMap 의 행 숫자
@@ -39,13 +39,13 @@ public:
     void SetTileSize(Vec2 _Size);
     void SetAtlasTexture(Ptr<CTexture> _Atlas);
     void SetAtlasTileSize(Vec2 _TileSize);
-    void SetSeveralAtlas(bool _SeveralAtlas);
+    void SetMultipleImg(bool _SeveralAtlas);
     void SetTileInfo(int _TileMapIdx, int _ImgIdx, Ptr<CTexture> _Tex);
 
     int GetRow() { return m_Row; }
     int GetCol() { return m_Col; }
     Vec2 GetTileSize() { return m_TileSize; }
-    bool GetSeveralAtlas() { return m_SeveralAtlas; }
+    bool GetSeveralAtlas() { return m_MultipleImg; }
     Vec2 GetAtlasTileSize() { return m_AtlasTileSize; }
     int GetImageIdx(int _TileMapIdx) { return m_vecTileInfo[_TileMapIdx].ImgIdx; }
     Ptr<CTexture> GetTileAtlas(int _TileMapIdx) { return m_TileAtlas[_TileMapIdx]; }
