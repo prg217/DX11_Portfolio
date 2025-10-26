@@ -7,6 +7,7 @@
 CTexture::CTexture()
 	: CAsset(ASSET_TYPE::TEXTURE)
 	, m_Desc{}
+	, m_IsArray(false)
 {
 
 }
@@ -58,6 +59,102 @@ void CTexture::Clear_CS_UAV()
 	UINT i = -1;
 	ID3D11UnorderedAccessView* pUAV = nullptr;
 	CONTEXT->CSSetUnorderedAccessViews(m_RecentBindingRegisterNum, 1, &pUAV, &i);
+}
+
+int CTexture::CreateTextureArray(UINT _Width, UINT _Height, UINT _ArraySize, DXGI_FORMAT _PixelFormat, UINT _Flags, D3D11_USAGE _Usage)
+{
+	m_Desc.Width = _Width;
+	m_Desc.Height = _Height;
+	m_Desc.Format = _PixelFormat;
+	m_Desc.ArraySize = _ArraySize;  // 배열 크기!
+	m_Desc.BindFlags = _Flags;
+	m_Desc.Usage = _Usage;
+
+	if (D3D11_USAGE::D3D11_USAGE_DYNAMIC == _Usage)
+	{
+		m_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	}
+	else
+	{
+		m_Desc.CPUAccessFlags = 0;
+	}
+
+	m_Desc.MiscFlags = 0;
+	m_Desc.MipLevels = 1;
+	m_Desc.SampleDesc.Count = 1;
+	m_Desc.SampleDesc.Quality = 0;
+
+	if (FAILED(DEVICE->CreateTexture2D(&m_Desc, nullptr, m_Tex2D.GetAddressOf())))
+	{
+		return E_FAIL;
+	}
+
+	// ShaderResourceView 생성 (배열용)
+	if (m_Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
+	{
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Format = m_Desc.Format;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;  // 중요!
+		srvDesc.Texture2DArray.MostDetailedMip = 0;
+		srvDesc.Texture2DArray.MipLevels = 1;
+		srvDesc.Texture2DArray.FirstArraySlice = 0;
+		srvDesc.Texture2DArray.ArraySize = _ArraySize;
+
+		if (FAILED(DEVICE->CreateShaderResourceView(m_Tex2D.Get(), &srvDesc, m_SRV.GetAddressOf())))
+		{
+			return E_FAIL;
+		}
+	}
+
+	// RTV, DSV 등도 필요하면 배열용으로 생성
+	if (m_Desc.BindFlags & D3D11_BIND_RENDER_TARGET)
+	{
+		DEVICE->CreateRenderTargetView(m_Tex2D.Get(), nullptr, m_RTV.GetAddressOf());
+	}
+
+	if (m_Desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
+	{
+		DEVICE->CreateUnorderedAccessView(m_Tex2D.Get(), nullptr, m_UAV.GetAddressOf());
+	}
+
+	m_IsArray = true;
+	return S_OK;
+}
+
+int CTexture::CopyToArray(UINT _ArrayIndex, Ptr<CTexture> _SrcTexture)
+{
+	if (!m_IsArray || !_SrcTexture)
+		return E_FAIL;
+
+	if (_ArrayIndex >= m_Desc.ArraySize)
+		return E_FAIL;
+
+	// 소스 텍스처 정보
+	const D3D11_TEXTURE2D_DESC& srcDesc = _SrcTexture->GetDesc();
+
+	// 복사할 영역 설정
+	D3D11_BOX srcBox = {};
+	srcBox.left = 0;
+	srcBox.right = srcDesc.Width;
+	srcBox.top = 0;
+	srcBox.bottom = srcDesc.Height;
+	srcBox.front = 0;
+	srcBox.back = 1;
+
+	// 배열의 특정 인덱스 계산
+	UINT dstSubresource = D3D11CalcSubresource(0, _ArrayIndex, m_Desc.MipLevels);
+
+	// 텍스처 복사
+	CONTEXT->CopySubresourceRegion(
+		m_Tex2D.Get(),              // 대상 (배열)
+		dstSubresource,             // 대상 인덱스
+		0, 0, 0,                    // x, y, z
+		_SrcTexture->GetTex2D().Get(), // 소스 텍스처
+		0,                          // 소스 서브리소스
+		&srcBox                     // 복사할 영역
+	);
+
+	return S_OK;
 }
 
 int CTexture::Load(const wstring& _FilePath)

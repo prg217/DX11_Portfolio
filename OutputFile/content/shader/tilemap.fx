@@ -22,7 +22,7 @@ struct tTileInfo
 #define AtlasMaxCol         g_int_2
 #define TileSliceUV         g_vec2_0
 #define TileColRow          g_vec2_1
-#define IsSeveralAtlas      g_int_3
+#define IsMultipleImg      g_int_3
 
 StructuredBuffer<tTileInfo> g_Buffer : register(t15);
 // ===============================
@@ -70,12 +70,29 @@ float4 PS_TileMap(VS_OUT _in) : SV_Target
         float2 CurColRow = floor(_in.vUV);
         int Idx = TileColRow.x * CurColRow.y + CurColRow.x;
         
-        if (IsSeveralAtlas == 1)
+        if (IsMultipleImg == 1)
         {
-            float2 vLeftTopUV = float2(CurColRow.y, CurColRow.x) * TileSliceUV;
-        
-            float2 vUV = vLeftTopUV + frac(_in.vUV) * TileSliceUV;
-            vOutColor = Texs.Sample(g_sam_1, float3(vUV, Idx));
+            // 순서대로 이미지 나오게 해야함          
+            float2 vUV = frac(_in.vUV) * TileSliceUV;
+            int row = Idx % AtlasMaxCol; // 세로 위치 (0~9)
+            int col = Idx / AtlasMaxCol; // 가로 위치
+            
+            vUV.x += col * TileSliceUV.x; // 가로 방향
+            vUV.y += row * TileSliceUV.y; // 세로 방향
+            
+            // 텍스쳐가 문제인듯
+            //vOutColor = AtlasTex.Sample(g_sam_1, vUV);
+            //vOutColor = Texs.Sample(g_sam_1, float3(vUV, Idx));
+            
+            // 여긴 바르게 출력되는 것 같은데... 이미지가 마지막만 나오는게 문제 ㅠㅠ
+            if (Idx == 99)
+            {
+                vOutColor = Texs.Sample(g_sam_1, float3(vUV, Idx));
+            }
+            if (Idx == 1) // 이게 세로로 가야하는데 가로로 감
+            {
+                vOutColor = float4(0.f, 1.f, 0.f, 1.f);
+            }
         }
         else
         {

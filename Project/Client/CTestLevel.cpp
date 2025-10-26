@@ -76,23 +76,23 @@ void CTestLevel::CreateTestLevel()
 	pLoadedLevel->GetLayer(31)->SetName(L"UI");
 
 	// TileMap Object
-	//CGameObject* pTileMapObj = new CGameObject;
-	//pTileMapObj->SetName(L"TileMap");
-	//
-	//pTileMapObj->AddComponent(new CTransform);
-	//pTileMapObj->AddComponent(new CTileMap);
-	//
-	//pTileMapObj->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 500.f));
-	//
-	//strInitPath = CPathMgr::GetInst()->GetContentPath();
-	//strInitPath += L"tile\\boss.tile";
-	//
-	//File = nullptr;
-	//_wfopen_s(&File, strInitPath.c_str(), L"rb");
-	//
-	//pTileMapObj->TileMap()->LoadFromFile(File);
-	//fclose(File);
-	//pLoadedLevel->AddObject(2, pTileMapObj);
+	CGameObject* pTileMapObj = new CGameObject;
+	pTileMapObj->SetName(L"TileMap_Test");
+	
+	pTileMapObj->AddComponent(new CTransform);
+	pTileMapObj->AddComponent(new CTileMap);
+	
+	pTileMapObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	
+	strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"tile\\test2.tile";
+	
+	File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+	
+	pTileMapObj->TileMap()->LoadFromFile(File);
+	fclose(File);
+	pLoadedLevel->AddObject(2, pTileMapObj);
 
 	// Effect Object
 	//CGameObject* pMonster = new CGameObject;

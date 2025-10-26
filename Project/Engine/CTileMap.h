@@ -14,6 +14,7 @@ class CTileMap :
 {
 private:
     bool                    m_MultipleImg;     // 여러 개의 이미지를 쓰는지 유무
+
     int                     m_AtlasVecSize;     // m_TileAtlas 사이즈 저장
 
     int                     m_Row;              // TileMap 의 행 숫자

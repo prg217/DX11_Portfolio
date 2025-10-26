@@ -217,11 +217,6 @@ void TME_Detail::SaveLoad()
 			}
 		}
 
-		if (!m_MultipleImg)
-		{
-			//m_vecTileInfo[0].tex = pTileMap->GetTe;
-		}
-
 		GetTileMapView()->SetTileEditInfo(m_vecTileInfo);
 		GetTileMapView()->SetRow(m_Row);
 		GetTileMapView()->SetCol(m_Col);

@@ -17,6 +17,7 @@ private:
 
     UINT                                m_RecentBindingRegisterNum;
 
+    bool                                    m_IsArray;  // 배열 텍스처인가?
 
 public:
     ComPtr<ID3D11Texture2D>             GetTex2D() { return m_Tex2D; }
@@ -49,6 +50,12 @@ public:
     // ComputeShader - u register
     void Binding_CS_UAV(UINT _RegisterNum);
     void Clear_CS_UAV();
+
+    // Texture2DArray 생성 함수
+    int CreateTextureArray(UINT _Width, UINT _Height, UINT _ArraySize, DXGI_FORMAT _PixelFormat, UINT _Flags, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
+    // 배열의 특정 인덱스에 텍스처 복사
+    int CopyToArray(UINT _ArrayIndex, Ptr<CTexture> _SrcTexture);
+    bool IsTextureArray() { return m_IsArray; }
     
 
     virtual int Load(const wstring& _FilePath) override;
