@@ -22,6 +22,7 @@ CTileMap::CTileMap()
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileMapMtrl"));	
 
 	m_Buffer = new CStructuredBuffer;
+	m_pTexArray = new CTexture();
 }
 
 CTileMap::CTileMap(const CTileMap& _Origin)
@@ -68,26 +69,7 @@ void CTileMap::Render()
 	{
 		GetMaterial()->SetScalarParam(INT_3, 1);
 
-		Ptr<CTexture> pTexArray = new CTexture();
-		pTexArray->CreateTextureArray(
-			m_TileSize.x, m_TileSize.y, m_TileAtlas.size(),
-			DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE
-			);
-
-		for (int i = 0; i < m_Col; i++)
-		{
-			for (int j = 0; j < m_Row; j++)
-			{
-				int tileMapIdx = m_Col * j + i;
-
-				// 마지막만 인식됨
-				//GetMaterial()->SetTexParam(TEX_0, m_TileAtlas[tileMapIdx]);
-				Ptr<CTexture> pTex = m_TileAtlas[tileMapIdx];
-				pTexArray->CopyToArray(tileMapIdx, pTex.Get());
-			}
-		}
-
-		GetMaterial()->SetTexParam(TEXARR_0, pTexArray);
+		GetMaterial()->SetTexParam(TEXARR_0, m_pTexArray);
 	}
 	else
 	{
@@ -158,24 +140,7 @@ void CTileMap::SetAtlasTexture(Ptr<CTexture> _Atlas)
 		m_TileAtlas.push_back(_Atlas);
 	}
 
-	if (m_MultipleImg)
-	{
-		//for (int i = 0; i < m_Col; i++)
-		//{
-		//	for (int j = 0; j < m_Row; j++)
-		//	{
-		//		int tileMapIdx = m_Col * j + i;
-		//
-		//		//m_vecTileInfo[tileMapIdx].tex = m_TileAtlas[tileMapIdx];
-		//	}
-		//}
-		
-		//if (nullptr == m_TileAtlas[0])
-		//	m_AtlasResolution = Vec2(0.f, 0.f);
-		//
-		//SetAtlasTileSize(m_AtlasTileSize);
-	}
-	else
+	if (!m_MultipleImg)
 	{
 		if (nullptr == m_TileAtlas[0])
 			m_AtlasResolution = Vec2(0.f, 0.f);
@@ -285,6 +250,11 @@ void CTileMap::LoadFromFile(FILE* _File)
 
 	if (m_MultipleImg)
 	{
+		m_pTexArray->CreateTextureArray(
+			m_TileSize.x, m_TileSize.y, m_TileAtlas.size(),
+			DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE
+		);
+
 		for (int i = 0; i < m_Col; i++)
 		{
 			for (int j = 0; j < m_Row; j++)
@@ -293,8 +263,13 @@ void CTileMap::LoadFromFile(FILE* _File)
 
 				LoadAssetRef(m_TileAtlas[tileMapIdx], _File);
 				SetAtlasTexture(m_TileAtlas[tileMapIdx]);
-			} 
-		}
+
+				// 크기 맞추기
+				Ptr<CTexture> pResizedTex = m_TileAtlas[tileMapIdx]->CreateResized(m_TileSize.x, m_TileSize.y);
+				// 텍스쳐 배열에 텍스쳐 넣기 
+				m_pTexArray->CopyToArray(tileMapIdx, pResizedTex.Get());
+			}
+		} 
 	}
 	else
 	{

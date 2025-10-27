@@ -21,6 +21,7 @@ private:
     int                     m_Col;              // TileMap 의 열 숫자
     Vec2                    m_TileSize;         // Tile 1개의 크기
 
+    Ptr<CTexture>                   m_pTexArray;
     vector<Ptr<CTexture>>   m_TileAtlas;        // Tile 개별 이미지를 보유하고 있는 아틀라스 텍스쳐
     int                     m_TileAtlasCount;   
     Vec2                    m_AtlasResolution;  // Atlas 텍스쳐 해상도

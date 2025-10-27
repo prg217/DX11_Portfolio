@@ -66,7 +66,7 @@ int CTexture::CreateTextureArray(UINT _Width, UINT _Height, UINT _ArraySize, DXG
 	m_Desc.Width = _Width;
 	m_Desc.Height = _Height;
 	m_Desc.Format = _PixelFormat;
-	m_Desc.ArraySize = _ArraySize;  // 배열 크기!
+	m_Desc.ArraySize = _ArraySize;
 	m_Desc.BindFlags = _Flags;
 	m_Desc.Usage = _Usage;
 
@@ -89,12 +89,11 @@ int CTexture::CreateTextureArray(UINT _Width, UINT _Height, UINT _ArraySize, DXG
 		return E_FAIL;
 	}
 
-	// ShaderResourceView 생성 (배열용)
 	if (m_Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
 	{
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Format = m_Desc.Format;
-		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;  // 중요!
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
 		srvDesc.Texture2DArray.MostDetailedMip = 0;
 		srvDesc.Texture2DArray.MipLevels = 1;
 		srvDesc.Texture2DArray.FirstArraySlice = 0;
@@ -129,32 +128,90 @@ int CTexture::CopyToArray(UINT _ArrayIndex, Ptr<CTexture> _SrcTexture)
 	if (_ArrayIndex >= m_Desc.ArraySize)
 		return E_FAIL;
 
-	// 소스 텍스처 정보
 	const D3D11_TEXTURE2D_DESC& srcDesc = _SrcTexture->GetDesc();
 
-	// 복사할 영역 설정
-	D3D11_BOX srcBox = {};
-	srcBox.left = 0;
-	srcBox.right = srcDesc.Width;
-	srcBox.top = 0;
-	srcBox.bottom = srcDesc.Height;
-	srcBox.front = 0;
-	srcBox.back = 1;
+	// DirectXTex를 사용한 변환
+	DirectX::ScratchImage srcImage;
+	if (FAILED(DirectX::CaptureTexture(DEVICE, CONTEXT,
+		_SrcTexture->GetTex2D().Get(),
+		srcImage)))
+	{
+		return E_FAIL;
+	}
 
-	// 배열의 특정 인덱스 계산
+	// 배열로 복사
 	UINT dstSubresource = D3D11CalcSubresource(0, _ArrayIndex, m_Desc.MipLevels);
-
-	// 텍스처 복사
-	CONTEXT->CopySubresourceRegion(
-		m_Tex2D.Get(),              // 대상 (배열)
-		dstSubresource,             // 대상 인덱스
-		0, 0, 0,                    // x, y, z
-		_SrcTexture->GetTex2D().Get(), // 소스 텍스처
-		0,                          // 소스 서브리소스
-		&srcBox                     // 복사할 영역
+	CONTEXT->UpdateSubresource(
+		m_Tex2D.Get(),
+		dstSubresource,
+		nullptr,
+		srcImage.GetPixels(),
+		(UINT)srcImage.GetImages()->rowPitch,
+		(UINT)srcImage.GetImages()->slicePitch
 	);
 
 	return S_OK;
+}
+
+Ptr<CTexture> CTexture::CreateResized(UINT _TargetWidth, UINT _TargetHeight)
+{
+	if (this == nullptr)
+	{
+		return nullptr;
+	}
+
+	const D3D11_TEXTURE2D_DESC& srcDesc = GetDesc();
+
+	// 크기가 이미 같으면 자기자신 반환
+	if (srcDesc.Width == _TargetWidth && srcDesc.Height == _TargetHeight)
+	{
+		return this;
+	}
+
+	// DirectXTex로 리사이즈
+	DirectX::ScratchImage srcImage;
+	if (FAILED(DirectX::CaptureTexture(DEVICE, CONTEXT, m_Tex2D.Get(), srcImage)))
+	{
+		return nullptr;
+	}
+
+	DirectX::ScratchImage resizedImage;
+	if (FAILED(DirectX::Resize(srcImage.GetImages(),
+		srcImage.GetImageCount(),
+		srcImage.GetMetadata(),
+		_TargetWidth,
+		_TargetHeight,
+		DirectX::TEX_FILTER_LINEAR,
+		resizedImage)))
+	{
+		return nullptr;
+	}
+
+	// 새 텍스처 생성
+	ComPtr<ID3D11Texture2D> pNewTex;
+	if (FAILED(DirectX::CreateTexture(DEVICE,
+		resizedImage.GetImages(),
+		resizedImage.GetImageCount(),
+		resizedImage.GetMetadata(),
+		(ID3D11Resource**)pNewTex.GetAddressOf())))
+	{
+		return nullptr;
+	}
+
+	// CTexture 래핑
+	Ptr<CTexture> pResult = new CTexture;
+	pResult->m_Tex2D = pNewTex;
+
+	// SRV 생성
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = resizedImage.GetMetadata().format;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+
+	DEVICE->CreateShaderResourceView(pNewTex.Get(), &srvDesc,
+		pResult->m_SRV.GetAddressOf());
+
+	return pResult;
 }
 
 int CTexture::Load(const wstring& _FilePath)
