@@ -115,7 +115,7 @@ void TME_Detail::SaveLoad()
 			{
 				int tileMapIdx = m_Col * j + i;
 
-				pTileMap->SetTileInfo(tileMapIdx, m_vecTileInfo[tileMapIdx].ImgIdx, m_vecTileInfo[tileMapIdx].tex);
+				pTileMap->SetTileInfo(tileMapIdx, tileMapIdx, m_vecTileInfo[tileMapIdx].tex);
 			}
 		}
 		if (!m_MultipleImg)
@@ -221,8 +221,8 @@ void TME_Detail::SaveLoad()
 		GetTileMapView()->SetRow(m_Row);
 		GetTileMapView()->SetCol(m_Col);
 		GetTileMapView()->SetTileSize(m_TileSize);
-		GetSelectTex()->SetMultipleImg(m_MultipleImg);
 		GetTileMapView()->SetMultipleImg(m_MultipleImg);
+		GetSelectTex()->SetMultipleImg(m_MultipleImg);
 
 		if (!m_MultipleImg)
 		{

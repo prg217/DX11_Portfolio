@@ -208,9 +208,13 @@ void CTileMap::SaveToFile(FILE* _File)
 
 	if (m_MultipleImg)
 	{
-		for (auto i : m_TileAtlas)
+		for (int i = 0; i < m_Col; i++)
 		{
-			SaveAssetRef(i, _File);
+			for (int j = 0; j < m_Row; j++)
+			{
+				int tileMapIdx = m_Col * j + i;
+				SaveAssetRef(m_TileAtlas[tileMapIdx], _File);
+			}
 		}
 	}
 	else

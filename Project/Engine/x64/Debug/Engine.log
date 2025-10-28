@@ -65,23 +65,7 @@
   .\Project\Engine\tilemap.fx
   .\Project\Engine\value.fx
   10개 파일이 복사되었습니다.
-  CTileMap.cpp
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(206,35): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  (소스 파일 '/CTileMap.cpp'을(를) 컴파일하는 중)
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(254,48): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  (소스 파일 '/CTileMap.cpp'을(를) 컴파일하는 중)
-  
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(254,28): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  (소스 파일 '/CTileMap.cpp'을(를) 컴파일하는 중)
-  
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(254,14): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  (소스 파일 '/CTileMap.cpp'을(를) 컴파일하는 중)
-  
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(268,96): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  (소스 파일 '/CTileMap.cpp'을(를) 컴파일하는 중)
-  
-C:\AssortRock\Portfolio\DX11_Portfolio\Project\Engine\CTileMap.cpp(268,82): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  (소스 파일 '/CTileMap.cpp'을(를) 컴파일하는 중)
-  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\tilemap.cso
   Engine.vcxproj -> C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\Engine_D.lib

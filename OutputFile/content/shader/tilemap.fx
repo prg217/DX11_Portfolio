@@ -74,8 +74,11 @@ float4 PS_TileMap(VS_OUT _in) : SV_Target
         {
             // 순서대로 이미지 나오게 해야함
             // 가로로 0 10 20 30 이래야 하는데 0 1 2 3 이래서 문제
-            // 그리고 색감이 이상함
-            vOutColor = Texs.Sample(g_sam_1, float3(_in.vUV, Idx));
+            //vOutColor = Texs.Sample(g_sam_1, float3(_in.vUV, g_Buffer[Idx].ImgIdx));
+
+            int newImgIdx = CurColRow.x * TileColRow.x + CurColRow.y;
+            
+            vOutColor = Texs.Sample(g_sam_1, float3(_in.vUV, g_Buffer[newImgIdx].ImgIdx));
         }
         else
         {

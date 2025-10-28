@@ -130,7 +130,6 @@ int CTexture::CopyToArray(UINT _ArrayIndex, Ptr<CTexture> _SrcTexture)
 
 	const D3D11_TEXTURE2D_DESC& srcDesc = _SrcTexture->GetDesc();
 
-	// DirectXTex를 사용한 변환
 	DirectX::ScratchImage srcImage;
 	if (FAILED(DirectX::CaptureTexture(DEVICE, CONTEXT,
 		_SrcTexture->GetTex2D().Get(),
@@ -139,15 +138,54 @@ int CTexture::CopyToArray(UINT _ArrayIndex, Ptr<CTexture> _SrcTexture)
 		return E_FAIL;
 	}
 
+	DirectX::ScratchImage processedImage;
+
+	// 포맷 변환
+	const DirectX::Image* finalImage;
+	DirectX::TexMetadata finalMetadata;
+
+	// processedImage에 데이터가 있으면 그걸 사용
+	if (processedImage.GetImageCount() > 0)
+	{
+		finalImage = processedImage.GetImages();
+		finalMetadata = processedImage.GetMetadata();
+	}
+	else
+	{
+		finalImage = srcImage.GetImages();
+		finalMetadata = srcImage.GetMetadata();
+	}
+
+	// 포맷이 다르면 변환
+	if (finalMetadata.format != m_Desc.Format)
+	{
+		DirectX::ScratchImage converted;
+
+		if (FAILED(DirectX::Convert(
+			finalImage,
+			1,
+			finalMetadata,
+			m_Desc.Format,
+			DirectX::TEX_FILTER_DEFAULT,
+			DirectX::TEX_THRESHOLD_DEFAULT,
+			converted)))
+		{
+			return E_FAIL;
+		}
+
+		processedImage = std::move(converted);
+		finalImage = processedImage.GetImages();
+	}
+
 	// 배열로 복사
 	UINT dstSubresource = D3D11CalcSubresource(0, _ArrayIndex, m_Desc.MipLevels);
 	CONTEXT->UpdateSubresource(
 		m_Tex2D.Get(),
 		dstSubresource,
 		nullptr,
-		srcImage.GetPixels(),
-		(UINT)srcImage.GetImages()->rowPitch,
-		(UINT)srcImage.GetImages()->slicePitch
+		finalImage->pixels,
+		(UINT)finalImage->rowPitch,
+		(UINT)finalImage->slicePitch
 	);
 
 	return S_OK;

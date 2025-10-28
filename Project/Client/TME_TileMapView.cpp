@@ -41,9 +41,9 @@ void TME_TileMapView::Update()
 	}
 
 	// 타일맵 보여주기
-	for (int i = 0; i < m_Row; i++)
+	for (int i = 0; i < m_Col; i++)
 	{
-		for (int j = 0; j < m_Col; j++)
+		for (int j = 0; j < m_Row; j++)
 		{
 			WheelCheck();
 
@@ -58,7 +58,7 @@ void TME_TileMapView::Update()
 				OneTexView(j, i);
 			}
 
-			if (j != m_Col - 1)
+			if (j != m_Row - 1)
 			{
 				ImGui::SameLine();
 			}
@@ -86,12 +86,12 @@ void TME_TileMapView::WheelCheck()
 
 void TME_TileMapView::OneTexView(int _Row, int _Col)
 {
-	int tileMapIdx = m_Row * _Row + _Col; // 현재 타일맵의 인덱스
+	int tileMapIdx = m_Col * _Row + _Col; // 현재 타일맵의 인덱스
 	int idx = m_vecTileInfo[tileMapIdx].ImgIdx; // 현재 타일맵의 이미지 인덱스
 
 	// 이미지 인덱스의 이미지를 출력하기 위해 필요한 이미지 행렬 위치
-	int imageRow = idx / m_Row;
-	int imageCol = idx % m_Row;
+	int imageRow = idx / m_Col;
+	int imageCol = idx % m_Col;
 
 	// 실제 해상도 대비 출력 Image 의 비율
 	float ratio = (m_TileSize.x * m_WheelScale) / m_TileSize.y;
@@ -132,7 +132,7 @@ void TME_TileMapView::OneTexView(int _Row, int _Col)
 
 void TME_TileMapView::SeveralTexView(int _Row, int _Col)
 {
-	int tileMapIdx = m_Row * _Row + _Col; // 현재 타일맵의 인덱스
+	int tileMapIdx = m_Col * _Row + _Col; // 현재 타일맵의 인덱스
 	Ptr<CTexture> tex = m_vecTileInfo[tileMapIdx].tex;
 
 	// 실제 해상도 대비 출력 Image 의 비율
@@ -202,8 +202,8 @@ void TME_TileMapView::SetAtlasTileSize(Vec2 _AtlasTileSize)
 	
 	m_AtlasTileSliceUV = m_AtlasTileSize / atlasResolution;
 
-	int atlasMaxCol = int(atlasResolution.x / m_AtlasTileSize.x);
-	int atlasMaxRow = int(atlasResolution.y / m_AtlasTileSize.y);
-	m_ImgIdxMax = m_Row * atlasMaxRow + atlasMaxCol;
+	int atlasMaxCol = int(atlasResolution.y / m_AtlasTileSize.y);
+	int atlasMaxRow = int(atlasResolution.x / m_AtlasTileSize.x);
+	m_ImgIdxMax = m_Col * atlasMaxRow + atlasMaxCol;
 }
 
