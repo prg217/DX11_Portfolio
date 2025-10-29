@@ -85,9 +85,8 @@ void CBugNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 			if (areaScript->GetJellyPushType() == m_JellyPushType && !m_SameType)
 			{
 				m_SameType = true;
-				m_npcScript->TextClear();
-				m_npcScript->LoadText(L"BugNPC_dizzy");
-
+				//m_npcScript->LoadText(L"BugNPC_dizzy");
+				m_npcScript->LoadText(L"test");
 				GetOwner()->FlipBookComponent()->Play(0, 10, true);
 			}
 			// 아닐 때
@@ -95,7 +94,6 @@ void CBugNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 			{
 				m_SameType = false;
 				// 정신차리는 애니메이션 뒤 idle 애니메이션 
-				m_npcScript->TextClear();
 				m_npcScript->LoadText(L"BugNPC_idle");
 
 				GetOwner()->FlipBookComponent()->Play(1, 10, false);
@@ -113,7 +111,6 @@ void CBugNPCScript::EndOverlap(CCollider2D* _OwnCollider, CGameObject* _OtherObj
 	{
 		m_SameType = false;
 		CNPCScript* npcScript = dynamic_cast<CNPCScript*>(GetOwner()->GetScript("CNPCScript"));
-		npcScript->TextClear();
 		m_npcScript->LoadText(L"BugNPC_idle");
 
 		GetOwner()->FlipBookComponent()->Play(1, 10, false);

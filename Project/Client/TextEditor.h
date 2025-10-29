@@ -7,7 +7,7 @@ class TextEditor :
     public EditorUI
 {
 private:
-    int m_textSize;
+    int m_TextSize;
     vector<string> m_vText;
 
 public:

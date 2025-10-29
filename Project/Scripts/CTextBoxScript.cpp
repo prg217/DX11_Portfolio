@@ -1,13 +1,17 @@
 #include "pch.h"
 #include "CTextBoxScript.h"
 
+#include "CUIScript.h"
+
 #include <Engine/CFontMgr.h>
 
 CTextBoxScript::CTextBoxScript()
 	: CScript(UINT(SCRIPT_TYPE::TEXTBOXSCRIPT))
+	, m_IsShowText(false)
 	, m_IsName(false)
 	, m_SaveTime(0.f)
 	, m_NextTime(0.1f)
+	, m_TextSize(0)
 	, m_TextCount(1)
 	, m_TextPosY(600.f)
 	, m_TextIdx(0)
@@ -19,9 +23,11 @@ CTextBoxScript::CTextBoxScript()
 
 CTextBoxScript::CTextBoxScript(const CTextBoxScript& _Origin)
 	: CScript(_Origin)
+	, m_IsShowText(false)
 	, m_IsName(_Origin.m_IsName)
 	, m_SaveTime(0.f)
 	, m_NextTime(_Origin.m_NextTime)
+	, m_TextSize(0)
 	, m_TextCount(1)
 	, m_TextPosY(600.f)
 	, m_TextIdx(0)
@@ -38,11 +44,20 @@ CTextBoxScript::~CTextBoxScript()
 void CTextBoxScript::Begin()
 {
 	m_SaveTime = TIME;
+	
+	m_pUIScript = dynamic_cast<CUIScript*>(GetOwner()->GetScript("CUIScript"));
+
+	vector<CGameObject*> pTextBoxName = GetOwner()->GetChildren();
+
+	if (pTextBoxName.size() > 0)
+	{
+		m_TextBoxNameScript = dynamic_cast<CTextBoxScript*>(pTextBoxName[0]->GetScript("CTextBoxScript"));
+	}
 }
 
 void CTextBoxScript::Tick()
 {
-	if (m_TextIdx == -1)
+	if (m_TextIdx >= m_vText.size())
 	{
 		return;
 	}
@@ -79,7 +94,125 @@ void CTextBoxScript::Tick()
 
 void CTextBoxScript::Render()
 {
-	if (m_TextIdx == -1)
+	if (m_TextIdx >= m_vText.size())
+	{
+		return;
+	}
+
+	ShowText();
+}
+
+void CTextBoxScript::SaveToFile(FILE* _File)
+{
+
+}
+
+void CTextBoxScript::LoadFromFile(FILE* _File)
+{
+}
+
+void CTextBoxScript::SetName(wstring _Text)
+{
+	m_vText.push_back(_Text);
+}
+
+void CTextBoxScript::LoadText(const wstring& _FileName)
+{
+	// 임시로 받을 string 텍스트
+	vector<string> stringText;
+	
+	wstring strInitPath = CPathMgr::GetInst()->GetContentPath();
+	strInitPath += L"textBox\\";
+	strInitPath += _FileName;
+	strInitPath += L".textBox";
+	
+	FILE* File = nullptr;
+	_wfopen_s(&File, strInitPath.c_str(), L"rb");
+	
+	if (File == nullptr)
+	{
+		return;
+	}
+	
+	fread(&m_TextSize, sizeof(int), 1, File);
+	stringText.clear();
+	stringText.reserve(m_TextSize);
+	
+	for (int i = 0; i < m_TextSize; i++)
+	{
+		size_t strLen = 0;
+		fread(&strLen, sizeof(size_t), 1, File);
+	
+		if (strLen > 0)
+		{
+			vector<char> buffer(strLen + 1, 0);
+			fread(buffer.data(), sizeof(char), strLen, File);
+			stringText.push_back(string(buffer.data()));
+		}
+		// 내용이 비었으면
+		else
+		{
+			stringText.push_back("");
+		}
+	}
+	
+	fclose(File);
+	
+	// ===== 임시로 받은 string텍스트 wstring변환 =====
+	if (stringText.empty())
+	{
+		return;
+	}
+	
+	m_vText.clear();
+	m_vText.reserve(m_TextSize);
+	
+	for (int i = 0; i < m_TextSize; i++)
+	{
+		int size_needed = MultiByteToWideChar(CP_UTF8, 0, stringText[i].c_str(), (int)stringText[i].size(), NULL, 0);
+		std::wstring wstr(size_needed, 0);
+		MultiByteToWideChar(CP_UTF8, 0, stringText[i].c_str(), (int)stringText[i].size(), &wstr[0], size_needed);
+	
+		m_vText.push_back(wstr);
+	}
+}
+
+void CTextBoxScript::Active(bool _Active)
+{
+	m_IsShowText = _Active;
+
+	if (m_IsName)
+	{
+		return;
+	}
+
+	if (m_TextBoxNameScript != nullptr)
+	{
+		m_TextBoxNameScript->Active(_Active);
+	}
+	m_pUIScript->UIActive(_Active);
+
+	if (_Active)
+	{
+		m_SaveTime = TIME;
+		m_TextCount = 1;
+		m_TextPosY = 600.f;
+		m_TextIdx = 0;
+		m_NextObj = nullptr;
+		m_IsNext = false;
+		m_IsSkip = false;
+
+		Transform()->SetRelativePos(0.f, -230.0f, 0.f);
+	}
+	else
+	{
+		Transform()->SetRelativePos(-2000.f, -2000.0f, 0.f);
+	}
+}
+
+void CTextBoxScript::ShowText()
+{
+	if (!m_IsShowText)
 	{
 		return;
 	}
@@ -128,19 +261,16 @@ void CTextBoxScript::Render()
 				{
 					m_TextIdx = -1;
 					m_TextCount = 1;
-					// 대화창 삭제
-					for (int i = 0; i < GetOwner()->GetChildren().size(); i++)
-					{
-						DeleteObject(GetOwner()->GetChildren()[i]);
-					}
-					DeleteObject(GetOwner());
+
+					// 대화창 해제
+					Active(false);
 				}
 			}
 		}
 
 		m_IsSkip = false;
 		// 대화를 한 번에 보게 한다.
-		if ((KEY_TAP(KEY::S) || KEY_TAP(KEY::A)) && m_TextIdx != -1 && !m_IsNext) // 또는 마우스 클릭
+		if ((KEY_TAP(KEY::S) || KEY_TAP(KEY::A)) && m_TextIdx != -1 && !m_IsNext && m_TextCount > 3) // 또는 마우스 클릭
 		{
 			m_TextCount = m_vText[m_TextIdx].length();
 			int lineCount = std::count(m_vText[m_TextIdx].begin(), m_vText[m_TextIdx].end(), L'\n');
@@ -151,24 +281,5 @@ void CTextBoxScript::Render()
 
 		CFontMgr::GetInst()->DrawCenterFont(text.c_str(), 650, m_TextPosY, 30, FONT_RGBA(236, 230, 206, 255));
 	}
-}
-
-void CTextBoxScript::SaveToFile(FILE* _File)
-{
-	//m_IsName
-}
-
-void CTextBoxScript::LoadFromFile(FILE* _File)
-{
-}
-
-void CTextBoxScript::SetText(wstring _Text)
-{
-	m_vText.push_back(_Text);
-}
-
-void CTextBoxScript::LoadText(const wstring& _FileName)
-{
-	
 }
 

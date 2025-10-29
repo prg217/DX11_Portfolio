@@ -2,16 +2,21 @@
 #include <Engine/CScript.h>
 #include <Engine/define.h>
 
+class CUIScript;
+
 class CTextBoxScript :
     public CScript
 {
 private:
+    bool m_IsShowText;
+
     bool m_IsName;
     vector<wstring> m_vText;
 
     float m_SaveTime;
     float m_NextTime;
 
+    int m_TextSize;
     int m_TextCount;
     float m_TextPosY;
     int m_TextIdx;
@@ -20,6 +25,9 @@ private:
 
     bool m_IsNext; // 다음으로 넘어갈 때 누르는 결정키라고 표시
     bool m_IsSkip; // 스킵할 때 누르는 결정키라고 표시
+
+    CUIScript* m_pUIScript;
+    CTextBoxScript* m_TextBoxNameScript;
 
 public:
     virtual void Begin() override;
@@ -31,9 +39,14 @@ public:
 
 public:
     void IsName() { m_IsName = true; }
-    void SetText(wstring _Text);
+    void SetName(wstring _Text);
     void LoadText(const wstring& _FileName);
     void TextClear() { m_vText.clear(); }
+
+    void Active(bool _Active);
+
+private:
+    void ShowText();
 
 public:
     CLONE(CTextBoxScript);

@@ -1,16 +1,19 @@
 #pragma once
 #include <Engine/CScript.h>
 
+class CTextBoxScript;
+
 class CNPCScript :
     public CScript
 {
 private:
-    vector<wstring> m_vText;
     wstring m_NPCName;
 
-    int m_textSize;
-
     CGameObject* m_pTextBox;
+    CGameObject* m_pTextBoxName;
+
+    CTextBoxScript* m_pTextBoxScript;
+    CTextBoxScript* m_pTextBoxNameScript;
 
 public:
     virtual void Begin() override;
@@ -24,13 +27,11 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
 
 private:
-    void CreateTextBox();
+    void ActiveTextBox();
 
 public:
     void SetName(wstring _Text);
-    void SetText(wstring _Text);
     void LoadText(const wstring& _FileName);
-    void TextClear() { m_vText.clear(); }
 
 public:
     CLONE(CNPCScript);

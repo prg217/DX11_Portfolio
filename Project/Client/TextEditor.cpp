@@ -4,7 +4,7 @@
 #include <Engine/CPathMgr.h>
 
 TextEditor::TextEditor()
-	: m_textSize(0)
+	: m_TextSize(0)
 {
 	UseMenuBar(true);
 }
@@ -73,7 +73,7 @@ void TextEditor::SaveLoad()
 {
 	if (ImGui::Button("Save##TextBox", ImVec2(50.f, 18.f)))
 	{
-		m_textSize = m_vText.size();
+		m_TextSize = m_vText.size();
 
 		wchar_t szSelect[256] = {};
 
@@ -102,7 +102,7 @@ void TextEditor::SaveLoad()
 			if (nullptr == File)
 				return;
 
-			fwrite(&m_textSize, sizeof(int), 1, File);
+			fwrite(&m_TextSize, sizeof(int), 1, File);
 
 			for (const string& str : m_vText)
 			{
@@ -149,11 +149,11 @@ void TextEditor::SaveLoad()
 			if (nullptr == File)
 				return;
 
-			fread(&m_textSize, sizeof(int), 1, File);
+			fread(&m_TextSize, sizeof(int), 1, File);
 			m_vText.clear();
-			m_vText.reserve(m_textSize);
+			m_vText.reserve(m_TextSize);
 
-			for (int i = 0; i < m_textSize; ++i)
+			for (int i = 0; i < m_TextSize; ++i)
 			{
 				size_t strLen = 0;
 				fread(&strLen, sizeof(size_t), 1, File);

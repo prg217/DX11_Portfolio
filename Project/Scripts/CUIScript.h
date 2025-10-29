@@ -12,6 +12,9 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
 
 public:
+    void UIActive(bool _Active);
+
+public:
     CLONE(CUIScript);
     CUIScript();
     CUIScript(const CUIScript& _Origin);
