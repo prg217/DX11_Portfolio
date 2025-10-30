@@ -8,7 +8,6 @@
 
 CNPCScript::CNPCScript()
 	: CScript(UINT(SCRIPT_TYPE::NPCSCRIPT))
-	, m_NPCName{}
 	, m_pTextBox(nullptr)
 {
 	AddScriptParam(SCRIPT_PARAM::WSTRING, "NPC Name", &m_NPCName);
@@ -16,7 +15,6 @@ CNPCScript::CNPCScript()
 
 CNPCScript::CNPCScript(const CNPCScript& _Origin)
 	: CScript(_Origin)
-	, m_NPCName{}
 	, m_pTextBox(nullptr)
 {
 }
@@ -79,6 +77,7 @@ void CNPCScript::ActiveTextBox()
 	m_pTextBoxNameScript->IsName();
 	m_pTextBoxNameScript->SetName(m_NPCName);
 
+	m_pTextBoxScript->LoadText(m_SaveTextFileName);
 	m_pTextBoxScript->Active(true);
 }
 
@@ -89,5 +88,5 @@ void CNPCScript::SetName(wstring _Text)
 
 void CNPCScript::LoadText(const wstring& _FileName)
 {
-	m_pTextBoxScript->LoadText(_FileName);
+	m_SaveTextFileName = _FileName;
 }

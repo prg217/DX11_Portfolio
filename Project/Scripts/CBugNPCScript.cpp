@@ -85,8 +85,7 @@ void CBugNPCScript::Overlap(CCollider2D* _OwnCollider, CGameObject* _OtherObject
 			if (areaScript->GetJellyPushType() == m_JellyPushType && !m_SameType)
 			{
 				m_SameType = true;
-				//m_npcScript->LoadText(L"BugNPC_dizzy");
-				m_npcScript->LoadText(L"test");
+				m_npcScript->LoadText(L"BugNPC_dizzy");
 				GetOwner()->FlipBookComponent()->Play(0, 10, true);
 			}
 			// ¾Æ´Ò ¶§

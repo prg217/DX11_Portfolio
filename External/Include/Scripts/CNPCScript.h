@@ -8,6 +8,7 @@ class CNPCScript :
 {
 private:
     wstring m_NPCName;
+    wstring m_SaveTextFileName;
 
     CGameObject* m_pTextBox;
     CGameObject* m_pTextBoxName;
