@@ -72,9 +72,9 @@ float4 PS_TileMap(VS_OUT _in) : SV_Target
         
         if (IsMultipleImg == 1)
         {
-            int newImgIdx = CurColRow.x * TileColRow.x + CurColRow.y;
+            //int newImgIdx = CurColRow.x * TileColRow.x + CurColRow.y;
             
-            vOutColor = Texs.Sample(g_sam_1, float3(_in.vUV, g_Buffer[newImgIdx].ImgIdx));
+            vOutColor = Texs.Sample(g_sam_1, float3(_in.vUV, g_Buffer[Idx].ImgIdx));
         }
         else
         {

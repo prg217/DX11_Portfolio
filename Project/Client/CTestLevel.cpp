@@ -85,7 +85,7 @@ void CTestLevel::CreateTestLevel()
 	pTileMapObj->Transform()->SetRelativePos(Vec3(-2000.f, 0.f, 0.f));
 	
 	strInitPath = CPathMgr::GetInst()->GetContentPath();
-	strInitPath += L"tile\\test4.tile";
+	strInitPath += L"tile\\test1.tile";
 	
 	File = nullptr;
 	_wfopen_s(&File, strInitPath.c_str(), L"rb");
