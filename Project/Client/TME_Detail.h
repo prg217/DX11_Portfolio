@@ -7,8 +7,8 @@ private:
     vector<tTileEditInfo>   m_vecTileInfo;
 
     bool                    m_MultipleImg; // 여러 개의 이미지를 쓰는지 체크
-    int                     m_Row;
     int                     m_Col;
+    int                     m_Row;
     Vec2                    m_TileSize;
     Vec2                    m_AtlasTileSize;
 

@@ -65,5 +65,7 @@
   .\Project\Engine\tilemap.fx
   .\Project\Engine\value.fx
   10개 파일이 복사되었습니다.
-  CGameObject.cpp
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\tilemap.cso
   Engine.vcxproj -> C:\AssortRock\Portfolio\DX11_Portfolio\External\Library\Engine\Engine_D.lib

@@ -54,8 +54,8 @@ public:
     void SetTileEditInfo(vector<tTileEditInfo> _TileInfo);
     void SetOneTex(Ptr<CTexture> _Tex);
     void SetMultipleImg(bool _MultipleImg);
-    void SetRow(int _Row);
     void SetCol(int _Col);
+    void SetRow(int _Row);
     void SetTileSize(Vec2 _TileSize);
     void SetAtlasTileSize(Vec2 _AtlasTileSize);
 

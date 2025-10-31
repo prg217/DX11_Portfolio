@@ -50,12 +50,12 @@ void TME_TileMapView::Update()
 			// 여러 개의 아틀라스 텍스쳐를 쓴다면 나타나는 메뉴
 			if (m_MultipleImg)
 			{
-				SeveralTexView(j, i);
+				SeveralTexView(i, j);
 			}
 			// 한 개의 아틀라스 텍스쳐를 쓴다면 나타나는 메뉴
 			else
 			{
-				OneTexView(j, i);
+				OneTexView(i, j);
 			}
 
 			if (j != m_Row - 1)
@@ -86,21 +86,21 @@ void TME_TileMapView::WheelCheck()
 
 void TME_TileMapView::OneTexView(int _Row, int _Col)
 {
-	int tileMapIdx = m_Col * _Row + _Col; // 현재 타일맵의 인덱스
+	int tileMapIdx = m_Row * _Row + _Col; // 현재 타일맵의 인덱스
 	int idx = m_vecTileInfo[tileMapIdx].ImgIdx; // 현재 타일맵의 이미지 인덱스
 
 	// 이미지 인덱스의 이미지를 출력하기 위해 필요한 이미지 행렬 위치
-	int imageRow = idx / m_Col;
-	int imageCol = idx % m_Col;
+	int imageRow = idx / m_Row;
+	int imageCol = idx % m_Row;
 
 	// 실제 해상도 대비 출력 Image 의 비율
 	float ratio = (m_TileSize.x * m_WheelScale) / m_TileSize.y;
 
 	if (m_OneTex != nullptr)
 	{
-		ImVec2 leftTopUV = ImVec2(m_AtlasTileSliceUV.x * imageRow, m_AtlasTileSliceUV.y * imageCol);
-		ImVec2 rightBottomUV = ImVec2(m_AtlasTileSliceUV.x * (imageRow + 1), m_AtlasTileSliceUV.y * (imageCol + 1));
-
+		ImVec2 leftTopUV = ImVec2(m_AtlasTileSliceUV.x * imageCol, m_AtlasTileSliceUV.y * imageRow);
+		ImVec2 rightBottomUV = ImVec2(m_AtlasTileSliceUV.x * (imageCol + 1), m_AtlasTileSliceUV.y * (imageRow + 1));
+		 
 		// 개별 아이디 부여
 		ImGui::PushID(tileMapIdx);
 
@@ -132,7 +132,8 @@ void TME_TileMapView::OneTexView(int _Row, int _Col)
 
 void TME_TileMapView::SeveralTexView(int _Row, int _Col)
 {
-	int tileMapIdx = m_Col * _Row + _Col; // 현재 타일맵의 인덱스
+	int tileMapIdx = m_Row * _Row + _Col; // 현재 타일맵의 인덱스
+	//int tileMapIdx = m_Col * _Col + _Row; // 현재 타일맵의 인덱스
 	Ptr<CTexture> tex = m_vecTileInfo[tileMapIdx].tex;
 
 	// 실제 해상도 대비 출력 Image 의 비율
@@ -175,14 +176,14 @@ void TME_TileMapView::SetMultipleImg(bool _MultipleImg)
 	m_MultipleImg = _MultipleImg;
 }
 
-void TME_TileMapView::SetRow(int _Row)
-{
-	m_Row = _Row;
-}
-
 void TME_TileMapView::SetCol(int _Col)
 {
 	m_Col = _Col;
+}
+
+void TME_TileMapView::SetRow(int _Row)
+{
+	m_Row = _Row;
 }
 
 void TME_TileMapView::SetTileSize(Vec2 _TileSize)
@@ -204,6 +205,6 @@ void TME_TileMapView::SetAtlasTileSize(Vec2 _AtlasTileSize)
 
 	int atlasMaxCol = int(atlasResolution.y / m_AtlasTileSize.y);
 	int atlasMaxRow = int(atlasResolution.x / m_AtlasTileSize.x);
-	m_ImgIdxMax = m_Col * atlasMaxRow + atlasMaxCol;
+	m_ImgIdxMax = m_Row * atlasMaxRow + atlasMaxCol;
 }
 

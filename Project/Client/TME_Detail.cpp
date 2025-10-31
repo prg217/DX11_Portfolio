@@ -9,8 +9,8 @@
 
 TME_Detail::TME_Detail()
 	: m_MultipleImg(nullptr)
-	, m_Row(10)
 	, m_Col(10)
+	, m_Row(10)
 	, m_TileSize(Vec2(2048, 2048))
 	, m_AtlasTileSize(Vec2(1, 1))
 {
@@ -104,18 +104,25 @@ void TME_Detail::SaveLoad()
 	if (ImGui::Button("Save##TileMap", ImVec2(50.f, 18.f)))
 	{
 		CTileMap* pTileMap = new CTileMap;
-		pTileMap->SetRowCol(m_Row, m_Col);
+		pTileMap->SetRowCol(m_Col, m_Row);
 		pTileMap->SetTileSize(m_TileSize);
 		pTileMap->SetAtlasTileSize(m_AtlasTileSize);
 
 		m_vecTileInfo = GetTileMapView()->GetTileEditInfo();
-		for (int i = 0; i < m_Col; i++)
+		for (int i = 0; i < m_Row; i++)
 		{
-			for (int j = 0; j < m_Row; j++)
+			for (int j = 0; j < m_Col; j++)
 			{
-				int tileMapIdx = m_Col * j + i;
+				int tileMapIdx = m_Row * j + i;
 
-				pTileMap->SetTileInfo(tileMapIdx, tileMapIdx, m_vecTileInfo[tileMapIdx].tex);
+				if (m_MultipleImg)
+				{
+					pTileMap->SetTileInfo(tileMapIdx, tileMapIdx, m_vecTileInfo[tileMapIdx].tex);
+				}
+				else
+				{
+					pTileMap->SetTileInfo(tileMapIdx, m_vecTileInfo[tileMapIdx].ImgIdx, m_vecTileInfo[tileMapIdx].tex);
+				}
 			}
 		}
 		if (!m_MultipleImg)
@@ -200,26 +207,26 @@ void TME_Detail::SaveLoad()
 		}
 
 		m_MultipleImg = pTileMap->GetSeveralAtlas();
-		m_Row = pTileMap->GetRow();
-		m_Col = pTileMap->GetCol();
+		m_Col = pTileMap->GetRow();
+		m_Row = pTileMap->GetCol();
 		m_TileSize = pTileMap->GetTileSize();
 		m_AtlasTileSize = pTileMap->GetAtlasTileSize();
 
-		for (int i = 0; i < m_Col; i++)
+		for (int i = 0; i < m_Row; i++)
 		{
-			for (int j = 0; j < m_Row; j++)
+			for (int j = 0; j < m_Col; j++)
 			{
-				int tileMapIdx = m_Col * j + i;
+				int tileMapIdx = m_Row * j + i;
 
-				m_vecTileInfo.resize(m_Col * m_Row);
+				m_vecTileInfo.resize(m_Row * m_Col);
 				m_vecTileInfo[tileMapIdx].ImgIdx = pTileMap->GetImageIdx(tileMapIdx);
 				m_vecTileInfo[tileMapIdx].tex = pTileMap->GetTileAtlas(tileMapIdx);
 			}
 		}
 
 		GetTileMapView()->SetTileEditInfo(m_vecTileInfo);
-		GetTileMapView()->SetRow(m_Row);
 		GetTileMapView()->SetCol(m_Col);
+		GetTileMapView()->SetRow(m_Row);
 		GetTileMapView()->SetTileSize(m_TileSize);
 		GetTileMapView()->SetMultipleImg(m_MultipleImg);
 		GetSelectTex()->SetMultipleImg(m_MultipleImg);
