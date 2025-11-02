@@ -26,20 +26,18 @@ TME_TileMapView::~TME_TileMapView()
 
 void TME_TileMapView::Init()
 {
-}
-
-void TME_TileMapView::Update()
-{
 	// 타일 개수
 	UINT TileCount = m_Col * m_Row;
 
 	// 타일 정보를 저장하는 벡터의 데이터 개수가 타일개수랑 다르면 리사이즈
 	if (m_vecTileInfo.size() != TileCount)
 	{
-		//m_vecTileInfo.clear();
 		m_vecTileInfo.resize(TileCount);
 	}
+}
 
+void TME_TileMapView::Update()
+{
 	// 타일맵 보여주기
 	for (int i = 0; i < m_Col; i++)
 	{
@@ -47,12 +45,12 @@ void TME_TileMapView::Update()
 		{
 			WheelCheck();
 
-			// 여러 개의 아틀라스 텍스쳐를 쓴다면 나타나는 메뉴
+			// 여러 개의 텍스쳐를 쓴다면 나타나는 메뉴
 			if (m_MultipleImg)
 			{
 				SeveralTexView(i, j);
 			}
-			// 한 개의 아틀라스 텍스쳐를 쓴다면 나타나는 메뉴
+			// 한 개의 텍스쳐를 쓴다면 나타나는 메뉴
 			else
 			{
 				OneTexView(i, j);
@@ -133,7 +131,6 @@ void TME_TileMapView::OneTexView(int _Row, int _Col)
 void TME_TileMapView::SeveralTexView(int _Row, int _Col)
 {
 	int tileMapIdx = m_Row * _Row + _Col; // 현재 타일맵의 인덱스
-	//int tileMapIdx = m_Col * _Col + _Row; // 현재 타일맵의 인덱스
 	Ptr<CTexture> tex = m_vecTileInfo[tileMapIdx].tex;
 
 	// 실제 해상도 대비 출력 Image 의 비율
@@ -143,7 +140,8 @@ void TME_TileMapView::SeveralTexView(int _Row, int _Col)
 	ImGui::PushID(tileMapIdx);
 	if (tex != nullptr)
 	{
-		if (ImGui::ImageButton(tex->GetSRV().Get(), ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio), uv_min, uv_max, -1, tint_col, border_col))
+		if (ImGui::ImageButton(tex->GetSRV().Get(), ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio)
+			, uv_min, uv_max, -1, tint_col, border_col))
 		{
 			m_vecTileInfo[tileMapIdx].tex = GetSelectTex()->GetSelectTexture();
 		}
@@ -151,7 +149,8 @@ void TME_TileMapView::SeveralTexView(int _Row, int _Col)
 	else
 	{
 		// 텍스쳐가 없으면 빈 이미지를 보여준다.
-		if (ImGui::ImageButton(nullptr, ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio), uv_min, uv_max, -1, tint_col, border_col))
+		if (ImGui::ImageButton(nullptr, ImVec2((m_TileSize.x * m_WheelScale), m_TileSize.y * ratio),
+			uv_min, uv_max, -1, tint_col, border_col))
 		{
 			m_vecTileInfo[tileMapIdx].tex = GetSelectTex()->GetSelectTexture();
 		}
@@ -178,12 +177,24 @@ void TME_TileMapView::SetMultipleImg(bool _MultipleImg)
 
 void TME_TileMapView::SetCol(int _Col)
 {
-	m_Col = _Col;
+	// 변경 점이 있다면 리사이즈
+	if (m_Col != _Col)
+	{
+		m_Col = _Col;
+
+		m_vecTileInfo.resize(m_Col * m_Row);
+	}
 }
 
 void TME_TileMapView::SetRow(int _Row)
 {
-	m_Row = _Row;
+	// 변경 점이 있다면 리사이즈
+	if (m_Row != _Row)
+	{
+		m_Row = _Row;
+
+		m_vecTileInfo.resize(m_Col * m_Row);
+	}
 }
 
 void TME_TileMapView::SetTileSize(Vec2 _TileSize)
