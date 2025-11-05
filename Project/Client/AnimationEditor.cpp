@@ -101,24 +101,6 @@ void AnimationEditor::Sprite(int _Count)
 	const char* nameID_1 = tempID.c_str();
 	ImGui::InputText(nameID_1, (char*)SpriteName.c_str(), ImGuiInputTextFlags_::ImGuiInputTextFlags_ReadOnly);
 
-	if (ImGui::BeginDragDropTarget())
-	{
-		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
-		if (payload)
-		{
-			TreeNode** ppNode = (TreeNode**)payload->Data;
-			TreeNode* pNode = *ppNode;
-
-			Ptr<CAsset> pAsset = (CAsset*)pNode->GetData();
-			if (ASSET_TYPE::SPRITE == pAsset->GetAssetType())
-			{
-				SetSprite((CSprite*)pAsset.Get(), _Count);
-			}
-		}
-
-		ImGui::EndDragDropTarget();
-	}
-
 	tempID = "##SpriteBtn" + tempCount;
 	const char* nameID_2 = tempID.c_str();
 	ImGui::SameLine();
